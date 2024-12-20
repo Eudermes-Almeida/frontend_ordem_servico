@@ -1,0 +1,37 @@
+
+// DEU CERTO
+bairro:"CENTRO"
+celular2:"37-9-8845-4828"
+cep:"35500-210"
+cidade:"DIVINOPOLIS"
+contato:"EUDERMES"
+cpfcnpj:"00360305000104"
+email:"EUDERMES11@GMAIL.COM"
+fone: "37-9-9989-2848"
+fonefixo:"37-3221-2113"
+inscestadual:"98989898958745"
+nomefantasia:"CLIENTE 24 10 2024 0633"
+num:"450"
+razaosocial: "AGRODIL COMÉRCIO DE PRODUTOS AGROPECUÁRIOS"
+ruanum: "RUA SERGIPE"
+segmento: ""
+tipo:"J"
+
+
+//DEU ERRADO
+bairro:"CENTRO"
+celular2: undefined
+cep:"38.183-000"
+cidade:"ARAXA"
+contato: "PAULO"
+cpfcnpj:"4.149.637/0020-68"
+email: undefined
+fone:undefined
+fonefixo:undefined
+inscestadual: undefined
+nomefantasia:"SUPERMERCADOS ABC LOJA 17 (ARAXA ) (ADICAO DISTRIBUICAO EXPESS)"
+num: undefined
+razaosocial:"SUPERMERCADOS ABC LOJA 17 (ARAXA )"
+ruanum:"RUA JOAO PAULO II    05"
+segmento: undefined
+tipo: "J"

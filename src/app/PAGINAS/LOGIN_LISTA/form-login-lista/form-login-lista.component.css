@@ -1,0 +1,63 @@
+/* Estilos do Formulário Centralizado */
+.centralizado-formulario {
+    background-color: #1a1a1a;
+    padding: 10px; /* Aumentei o padding para dar um espaço melhor */
+    margin: 10px;
+    border: 2px solid orange;
+    border-radius: 10px;
+    max-width: 95%; /* Limite de largura para o formulário */
+    width: 95%; /* Largura total do container */
+    box-shadow: 0 0 10px rgba(255, 165, 0, 0.5);
+}
+
+.tabela-scroll {
+    max-height: 300px; /* Ajuste a altura conforme necessário */
+    overflow-y: auto;
+    overflow-x: hidden; /* Oculta rolagem horizontal se não for necessária */
+}
+
+.nome-cliente{
+    width: 100%;
+    color: white;
+}
+
+.card {
+    background-color: black;
+    color: orange;
+    width: 100%;
+    max-width: 100%; /* Limite de largura para o formulário */
+    border: 2px solid orange;
+    border-radius: 10px;
+    margin: 10px; /* Margem de 5px entre os cards */
+}
+
+
+.form-row {
+    display: flex;
+    justify-content: space-between; /* Alinha os elementos uniformemente */
+    align-items: center; /* Alinha os elementos verticalmente */
+    margin-bottom: 5px; /* Espaçamento entre as linhas */
+}
+
+.form-group {
+    flex: 1; /* Faz com que todos os elementos ocupem a mesma largura */
+    margin-right: 10px; /* Espaço à direita entre os elementos */
+}
+
+.form-group:last-child {
+    margin-right: 1; /* Remove margem do último elemento */
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .form-row {
+        flex-direction: column; /* Coloca os elementos em coluna em telas pequenas */
+    }
+
+    .form-group {
+        margin-right: 0; /* Remove a margem direita em telas pequenas */
+        margin-bottom: 10px; /* Adiciona espaço inferior em telas pequenas */
+    }
+
+
+}

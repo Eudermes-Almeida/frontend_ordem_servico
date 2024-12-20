@@ -1,0 +1,904 @@
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<div class="d-flex justify-content-center flex-column"> <!-- Adicione flex-column para empilhar os elementos -->
+    <form [formGroup]="formulario" id="meuFormulario" class="centralizado-formulario">
+        <!--<p class="text-secondary" style="text-align: center; font-size: larger;">Escolha o Cliente:</p>-->
+        <div class="alert alert-warning alert-dismissible fade show" role="alert" *ngIf="exibirAlertOsSalva">
+          A ordem de serviço <strong>{{os.os}}</strong> foi salva com sucesso!
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div class="alert alert-warning alert-dismissible fade show" role="alert" *ngIf="exibirAlertErroValidacao">
+          Existe algum campo obrigatório sem preenchimento.
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        
+        <div class="form-row align-items-center">
+            <div class="form-group col-3">
+                <div class="d-flex align-items-center">
+                    <label for="numOs">Número O.S. :</label>
+                </div>
+                
+                <input 
+        type="text" 
+        id="numOs" 
+        #numOs 
+        formControlName="os" 
+        class="form-control">
+            </div>
+
+            <div class="form-group col-3">
+                <label for="nomefantasia">Nome Fantasia:</label>
+                <input 
+                  type="text" 
+                  formControlName="fantasia" 
+                  id="nomefantasia" 
+                  name="nomefantasia" 
+                  required 
+                  class="form-control"
+                  placeholder="Digite o nome fantasia"
+                >
+              </div>
+        
+            
+             
+              <div class="form-group col-3">
+                <label for="status">Status:</label>
+                <select
+                  id="status"
+                  name="status"
+                  formControlName="status"
+                  class="form-control"
+                  (change)="onStatusChange($event)"
+                  [ngClass]="{'is-invalid': formulario.get('status')?.invalid && formulario.get('status')?.touched}"
+                >
+                <option *ngFor="let city of statusOs" [value]="city.valor">{{ city.valor }}</option>
+                </select>
+                <p *ngIf="exibeMensagemErroValidacao" style="color: red;">Obrigatório alterar Status</p>
+              </div>
+
+
+              <div class="form-group col-3">
+                <label for="tecnico">Tecnico:</label>
+                <select
+                  id="tecnico"
+                  name="tecnico"
+                  formControlName="tecnico"
+                  class="form-control"
+                  (change)="onTecnicosChange($event)"
+                  [ngClass]="{'is-invalid': formulario.get('tecnico')?.invalid && formulario.get('tecnico')?.touched}"
+                >
+                <option *ngFor="let city of tecnicos" [value]="city.valor">{{ city.valor }}</option>
+                </select>
+                <div *ngIf="formulario.get('tecnico')?.invalid && formulario.get('tecnico')?.touched" class="text-danger">
+                  Campo Técnico é obrigatório.
+                </div>
+              </div>
+
+
+              <div class="form-group col-3">
+                <div class="d-flex align-items-center">
+                    <label for="dt orca">Dt Orçamento:</label>
+                </div>
+                
+                <input 
+        type="text" 
+        id="dataorca" 
+        #dataorca 
+        formControlName="dataorca" 
+        class="form-control">
+            </div>
+
+            <div class="form-group col-3">
+                <div class="d-flex align-items-center">
+                    <label for="fechamentp">Dt Encerramento:</label>
+                </div>
+                
+                <input 
+        type="text" 
+        id="fechamento" 
+        #fechamento 
+        formControlName="fechamento" 
+        class="form-control">
+            </div>
+      
+        </div>
+               <!----------------------------------------------------------------------------------------->
+       
+        <div class="form-row align-items-center">
+            
+              <div class="form-group col-3">
+                <label for="tarefa1">Tarefa executada 1:</label>
+                <select
+                  id="tarefa1"
+                  name="tarefa1"
+                  formControlName="tarefa1"
+                  class="form-control"
+                  (change)="onTarefaRealizadaChange($event)"
+                  [ngClass]="{'is-invalid': formulario.get('tarefa1')?.invalid && formulario.get('tarefa1')?.touched}"
+                >
+                <option *ngFor="let city of tarefaExecutada" [value]="city.valor">{{ city.valor }}</option>
+                </select>
+                <div *ngIf="formulario.get('tarefa1')?.invalid && formulario.get('tarefa1')?.touched" class="text-danger">
+                  Campo Tarefa 1 é obrigatório.
+                </div>
+              </div>
+
+
+              <div class="form-group col-3">
+                <label for="tarefa2">Tarefa executada 2:</label>
+                <select id="tarefa2" name="tarefa2" (change)="onTarefaRealizadaChange($event)" class="form-control" formControlName="tarefa2">
+                  <option *ngFor="let city of tarefaExecutada" [value]="city.valor">{{ city.valor }}</option>
+                </select>
+              </div>
+
+              <div class="form-group col-3">
+                <label for="tarefa3">Tarefa executada 3:</label>
+                <select id="tarefa3" name="tarefa3" (change)="onTarefaRealizadaChange($event)" class="form-control" formControlName="tarefa3">
+                  <option *ngFor="let city of tarefaExecutada" [value]="city.valor">{{ city.valor }}</option>
+                </select>
+              </div>
+
+              <div class="form-group col-3">
+                <div class="d-flex align-items-center">
+                    <label for="obs3">Observação 3:</label>
+                </div>
+                
+                <input 
+        type="text" 
+        id="obs3" 
+        #obs3 
+        formControlName="obs3" 
+        class="form-control">
+            </div>
+
+            <div class="form-group col-3">
+                <div class="d-flex align-items-center">
+                    <label for="valorassistencia">Mão de obra:</label>
+                </div>
+                
+                <input 
+            type="text" 
+            id="valorassistencia" 
+            #valorassistencia 
+            formControlName="valorassistencia" 
+            class="form-control"
+            (input)="onValorSubTotais()"
+            style="text-align: center;">
+            </div>
+              
+        </div>
+    
+
+    <!-- Adicionando uma margem superior para separar o formulário da tabela -->
+<div class="mt-3 tabela-scroll" style="max-height: 300px; overflow-y: auto;"> <!-- Define a altura máxima e ativa a rolagem --> 
+  
+
+    <!----------------------------------------------------------------------------------------->
+
+    <div class="form-row align-items-center">
+        <div class="borda_azul">
+          <div class="form-group col-3">
+            <label for="baterias">Baterias:</label>
+            <select id="baterias" name="baterias" (change)="onModelosBateriaChange($event)" class="form-control" formControlName="baterias">
+              <option *ngFor="let city of modeloBaterias" [value]="city.valor">{{ city.valor }}</option>
+            </select>
+          </div>
+
+          <div class="form-group col-3">
+            <div class="d-flex align-items-center">
+                <label for="qt1">Quantidade:</label>
+            </div>
+            <input 
+                type="text" 
+                id="qt1" 
+                #qt1 
+                formControlName="qt1" 
+                class="form-control" 
+                (input)="atualizarValortotal1()"> <!-- Chama a função ao digitar -->
+        </div>
+        
+        <div class="form-group col-3">
+            <div class="d-flex align-items-center">
+                <label for="valorunit1">Unitário:</label>
+            </div>
+            <input 
+                type="text" 
+                id="valorunit1" 
+                #valorunit1 
+                formControlName="valorunit1" 
+                class="form-control" 
+                (input)="atualizarValortotal1()"> <!-- Chama a função ao digitar -->
+        </div>
+        
+
+    <div class="form-group col-3">
+        <div class="d-flex align-items-center">
+            <label for="valortotal1">Total:</label>
+        </div>
+        
+        <input 
+type="text" 
+id="valortotal1" 
+#valortotal1 
+formControlName="valortotal1" 
+class="form-control total"
+(input)="onValorSubTotais()">
+    </div>
+
+</div>
+    
+<div class="borda_azul">
+    <div class="form-group col-3">
+        <label for="material2">Material 2:</label>
+        <select id="material2" name="material2" (change)="onMaterialChange($event)" class="form-control" formControlName="material2">
+          <option *ngFor="let city of materiais" [value]="city.valor">{{ city.valor }}</option>
+        </select>
+      </div>
+
+      <div class="form-group col-3">
+        <div class="d-flex align-items-center">
+            <label for="qt2">Quantidade:</label>
+        </div>
+        
+        <input 
+type="text" 
+id="qt2" 
+#qt2 
+formControlName="qt2"
+(input)="atualizarValortotal2()">
+    </div>
+
+    <div class="form-group col-3">
+        <div class="d-flex align-items-center">
+            <label for="valorunit2">Unitário:</label>
+        </div> 
+        
+        <input 
+type="text" 
+id="valorunit2" 
+#valorunit2
+formControlName="valorunit2" 
+(input)="atualizarValortotal2()">
+    </div>
+
+    <div class="form-group col-3">
+        <div class="d-flex align-items-center">
+            <label for="valortotal2">Total:</label>
+        </div>
+        
+        <input 
+type="text" 
+id="valortotal2" 
+#valortotal2 
+formControlName="valortotal2" 
+class="form-control total"
+(input)="onValorSubTotais()">
+    </div>
+</div>
+       
+  </div>
+
+  <!---------------------------------------------------------------------------------------------->
+  <div class="form-row align-items-center">
+    <div class="borda_azul">
+    <div class="form-group col-3">
+      <label for="material3">Material 3:</label>
+      <select id="material3" name="material3" (change)="onMaterialChange($event)" class="form-control" formControlName="material3">
+        <option *ngFor="let city of materiais" [value]="city.valor">{{ city.valor }}</option>
+      </select>
+    </div>
+
+    <div class="form-group col-3">
+      <div class="d-flex align-items-center">
+          <label for="qt3">Quantidade:</label>
+      </div>
+      
+      <input 
+type="text" 
+id="qt3" 
+#qt3 
+formControlName="qt3" 
+class="form-control"
+(input)="atualizarValortotal3()">
+  </div>
+
+  <div class="form-group col-3">
+      <div class="d-flex align-items-center">
+          <label for="valorunit3">Unitário:</label>
+      </div>
+      
+      <input 
+type="text" 
+id="valorunit3" 
+#valorunit3
+formControlName="valorunit3" 
+class="form-control"
+(input)="atualizarValortotal3()">
+  </div>
+
+  <div class="form-group col-3">
+      <div class="d-flex align-items-center">
+          <label for="valortotal3">Total:</label>
+      </div>
+      
+      <input 
+type="text" 
+id="valortotal3" 
+#valortotal3
+formControlName="valortotal3" 
+class="form-control total"
+(input)="onValorSubTotais()">
+  </div>
+</div>
+<div class="borda_azul">
+  <div class="form-group col-3">
+    <div class="d-flex align-items-center">
+        <label for="outrositens">Outros:</label>
+    </div>
+    
+    <input 
+type="text" 
+id="outrositens" 
+#outrositens 
+formControlName="outrositens" 
+class="form-control">
+</div>
+
+  <div class="form-group col-3">
+    <div class="d-flex align-items-center">
+        <label for="qtoutrositens">Quantidade:</label>
+    </div>
+    
+    <input 
+type="text" 
+id="qtoutrositens" 
+#qtoutrositens
+formControlName="qtoutrositens" 
+class="form-control"
+(input)="atualizarValorTotalOutrosItens()">
+</div>
+
+<div class="form-group col-3">
+    <div class="d-flex align-items-center">
+        <label for="valorunitoutrositens">Unitário:</label>
+    </div>
+    
+    <input 
+type="text" 
+id="valorunitoutrositens" 
+#valorunitoutrositens
+formControlName="valorunitoutrositens" 
+class="form-control"
+(input)="atualizarValorTotalOutrosItens()">
+</div>
+
+<div class="form-group col-3">
+    <div class="d-flex align-items-center">
+        <label for="valortotaloutrositens">Total:</label>
+    </div>
+    
+    <input 
+type="text" 
+id="valortotaloutrositens" 
+#valortotaloutrositens 
+formControlName="valortotaloutrositens" 
+class="form-control total"
+(input)="onValorSubTotais()">
+</div>
+</div>
+     
+</div>
+ 
+<!------------------------------------------------------------------------------------------->
+<div class="form-row align-items-center">
+    
+    <div class="borda_azul deslocamento">
+    <div class="form-group col-3">
+      <div class="d-flex align-items-center">
+          <label for="qtdeslocamento">Qt km:</label>
+      </div>
+      
+      <input 
+type="text" 
+id="qtdeslocamento" 
+#qtdeslocamento 
+formControlName="qtdeslocamento" 
+class="form-control"
+(input)="atualizarValorTotalDeslocamento()">
+  </div>
+
+  <div class="form-group col-3">
+      <div class="d-flex align-items-center">
+          <label for="valorunitariodeslocamento">Km unit:</label>
+      </div>
+      
+      <input 
+type="text" 
+id="valorunitariodeslocamento" 
+#valorunitariodeslocamento 
+formControlName="valorunitariodeslocamento" 
+class="form-control"
+(input)="atualizarValorTotalDeslocamento()">
+  </div>
+
+  <div class="form-group col-3 ">
+      <div class="d-flex align-items-center">
+          <label for="valortotaldeslocamento">Total Km:</label>
+      </div>
+      
+      <input 
+type="text" 
+id="valortotaldeslocamento" 
+#valortotaldeslocamento 
+formControlName="valortotaldeslocamento" 
+class="form-control total"
+(input)="onValorSubTotais()">
+  </div>
+</div>
+
+<div class="borda_azul">
+  <div class="form-group col-3">
+    <div class="d-flex align-items-center">
+      <label for="totalbruto">Total Bruto:</label>
+    </div>
+    <input 
+      type="text" 
+      id="totalbruto" 
+      formControlName="totalbruto" 
+      class="form-control">
+  </div>
+
+  <div class="form-group col-3">
+    <div class="d-flex align-items-center">
+      <label for="valordesconto">Desc $:</label>
+    </div>
+    <input 
+      type="text" 
+      id="valordesconto" 
+      formControlName="valordesconto" 
+      class="form-control"
+      (input)="onDescontovalor()">
+  </div>
+
+  <div class="form-group col-3">
+    <div class="d-flex align-items-center">
+      <label for="desconto">Desc %:</label>
+    </div>
+    <input 
+      type="text" 
+      id="desconto" 
+      formControlName="desconto" 
+      class="form-control"
+      (input)="onDescontoPercentual()">
+  </div>
+
+  <div class="form-group col-3">
+    <div class="d-flex align-items-center">
+      <label for="totaliq">Total Liq:</label>
+    </div>
+    <input 
+      type="text" 
+      id="totaliq" 
+      formControlName="totaliq" 
+      class="form-control">
+  </div>
+</div>
+
+     
+</div>
+<!------------------------------------------------------------------------------------------->
+
+</div>
+<div class="btn-salvar-ordem-servico">
+    <a routerLink="/home" routerLinkActive="active"><button type="button" class="btn btn-primary" *ngIf="exibirBotaoSair">SAIR</button></a> 
+    <button class="btn btn-primary m-2" *ngIf="exibirBotaoSalvar" [routerLink]="['/os/consulta/alterapg1', os.os]">Pagina 1</button>
+    <button class="btn btn-primary m-2" (click)="atualizarOS()" *ngIf="exibirBotaoSalvar">Salvar</button>
+    <p style="color: orange;" *ngIf="exibirTextoOssalva">Ordem de serviço salva!</p>
+    </div>  
+</form>
+</div>
+<button class="btn btn-primary" (click)="gerarPDF()" *ngIf="exibirBotaoImprimir">Imprimir</button>
+
+
+<!-----------------------------------------------------IMPRIMIR ORDEM SERVIÇO---------------------->
+
+<!--------------------------CABEÇALHO --------------------------------------->
+
+<div id="pdf-content" class="container" *ngIf="exibirImpOs">
+  <div class="header">
+    <h1>COMPROVANTE DE FECHAMENTO ORDEM DE SERVIÇO</h1>
+    <div class="header-content">
+        <img src="assets/logo_pt_br.jpg" alt="Logo" class="logo" />
+        <div class="header-text">
+            <h2>Só Monitores & Nobreaks</h2>
+            <p>Razão Social: Alessandra Ap Pires Almeida - CNPJ: 13.092.364/0001-90</p>
+            <div class="icone">
+            <p>Rua Joaquim Nabuco 411 - Porto Velho - Divinópolis - <span class="phone-number">37-3212-6708</span></p>
+            <i class="bi bi-whatsapp" style="font-size: 30px; padding: 5px; color: #25D366;"></i>
+
+          </div>
+          </div>
+    </div>
+</div>
+
+<!--------------------------PRIMEIRA LINHA --------------------------------------->
+
+<!-- Primeira tabela -->
+
+<table class="info-table">
+  <thead>
+      <tr>
+          <th>Nº OS</th>
+          <th>DATA ENT</th>
+          <th>HORA</th>
+          <th>STATUS</th>
+          <th>DATA FECH</th>
+          <th>GARANTIA</th>
+          <th>OS ORIGINAL</th>
+          <th>ATENDENTE</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="color: red;"><strong>{{os.os}}</strong></td>
+          <td>{{ os.data | date:'dd-MM-yyyy' }}</td>
+          <td>{{os.hora}}</td>
+          <td>{{os.status}}</td>
+          <td>{{ os.fechamento | date:'dd-MM-yyyy' }}</td>
+          <td>{{os.garantia}}</td>
+          <td>{{os.osoriginal}}</td>
+          <td>{{os.atendente}}</td>
+      </tr>
+  </tbody>
+</table>
+
+<!-- Segunda tabela -->
+<table class="info-table">
+    <tr>
+        <th>COD CLIENTE</th>
+        <th>NOME FANTASIA</th>
+        <th>RAZÃO SOCIAL</th>
+        <th>FONE CLIENTE</th>
+        <th>CONTATO</th>
+    </tr>
+    <tr>
+        <td>{{os.codcli}}</td>
+        <td>{{os.fantasia}}</td>
+        <td>{{os.rzsocial}}</td>
+        <td>{{cliente.fone}}</td>
+        <td>{{cliente.contato}}</td>
+    </tr>
+    <!-- Outras linhas -->
+    <tr>
+        <th>EQUIPAMENTO</th>
+        <th>MARCA</th>
+        <th>MODELO</th>
+        <th>TOPOLOGIA</th>
+        <th>COR</th>
+    </tr>
+    <tr>
+        <td>{{os.equipamento}}</td>
+        <td>{{os.marca}}</td>
+        <td>{{os.modelo}}</td>
+        <td>{{os.topologia}}</td>
+        <td>{{os.cor}}</td>
+    </tr>
+    <!-- Outras linhas -->
+    <tr>
+        <th>DEFEITO1</th>
+        <th>DEFEITO2</th>
+        <th>VENDA</th>
+    </tr>
+    <tr>
+        <td>{{os.defeito1}}</td>
+        <td>{{os.defeito2}}</td>
+        <td>{{os.venda}}</td>
+    </tr>
+    <!-- Outras linhas -->
+    <tr>
+        <th>SERIAL</th>
+        <th>PATRIMONIO</th>
+        <th>OBSERVAÇÃO 1</th>
+        <th>OBSERVAÇÃO 2</th>
+        <th>OBSERVAÇÃO 3</th>
+    </tr>
+    <tr>
+        <td>{{os.serial}}</td>
+        <td>{{os.patrimonio}}</td>
+        <td>{{os.obs1}}</td>
+        <td>{{os.obs2}}</td>
+        <td>{{os.obs3}}</td>
+    </tr>
+    <!-------------------------------------->
+    <tr>
+      <th>DEFEITO INFO CLIENTE:</th>
+      <th>SERVIÇO REALIZADO 1</th>
+      <th>SERVIÇO REALIZADO 2</th>
+      <th>SERVIÇO REALIZADO 3</th>
+      <th>TECNICO</th>
+  </tr>
+  <tr>
+      <td>{{os.defeito1}}</td>
+      <td>{{os.tarefa1}}</td>
+      <td>{{os.tarefa2}}</td>
+      <td>{{os.tarefa3}}</td>
+      <td>{{os.tecnico}}</td>
+  </tr>
+
+
+    <!----LISTA DE MATERIAIS-->
+    <tr class="com_borda cinza">
+      <th>MATERIAL</th>
+      <th>QT</th>
+      <th>VALOR UNIT</th>
+      <th>SUB TOTAL</th>
+  </tr>
+  <tr class="com_borda">
+      <td>BATERIAS: {{os.baterias}}</td>
+      <td>{{os.qt1}}</td>
+      <td>{{os.valorunit1}}</td>
+      <td>{{os.valortotal1}}</td>
+  </tr>
+  <tr class="com_borda">
+    <td>{{os.material2}}</td>
+    <td>{{os.qt2}}</td>
+    <td>{{os.valorunit2}}</td>
+    <td>{{os.valortotal2}}</td>
+</tr>
+<tr class="com_borda">
+  <td>{{os.material3}}</td>
+  <td>{{os.qt3}}</td>
+  <td>{{os.valorunit3}}</td>
+  <td>{{os.valortotal3}}</td>
+</tr>
+<tr class="com_borda">
+  <td>{{os.outrositens}}</td>
+  <td>{{os.qtoutrositens}}</td>
+  <td>{{os.valorunitoutrositens}}</td>
+  <td>{{os.valortotaloutrositens}}</td>
+</tr>
+<tr class="com_borda">
+  <td>DESLOCAMENTO (Km):</td>
+  <td>{{os.qtdeslocamento}}</td>
+  <td>{{os.valorunitariodeslocamento}}</td>
+  <td>{{os.valortotaldeslocamento}}</td>
+</tr>
+<tr class="somatorio_final">
+  <td>Mão de obra</td>
+  <td>Total Bruto</td>
+  <td>Desconto Valor</td>
+  <td>Desconto %</td>
+  <td>Total Liquido</td>
+</tr>
+<tr class="valores_somatorio_final">
+  <td>{{os.valorassistencia}}</td>
+  <td>{{os.totalbruto}}</td>
+  <td>{{os.valordesconto}}</td>
+  <td>{{os.desconto}}</td>
+  <td class="totaliq">{{os.totaliq}}</td>
+</tr>
+</table>
+
+
+ <!--------------------------GARANTIAS --------------------------------------->
+ <div class="garantias">
+  <h6 style="text-align: center;"><p style="color: red;">GARANTIAS:</p></h6>
+  <p> MÃO DE OBRA E PEÇAS: 90 DIAS   - VENDA  EQUIPAMENTOS SEMI-NOVOS: 180 DIAS   - VENDA  EQUIPAMENTOS NOVOS: CONFORME FABRICANTE</p>
+  <P>BATERIAS: 180 DIAS     - GARANTIA NÃO COBRE: SOBRE CARGA - SOBRE TENSÃO - DESCARGA ATMOSFÉRICA - MAL USO</P>
+  <P>A GARANTIA É ANALIZADA E EXECUTADA NO LABORATÓRIO  DA  SÓ MONITORES & NOBREAKS, FRETE FOB.</P>
+</div>
+
+  <!--------------------------ASSINATURA --------------------------------------->
+  <div class="assinatura">
+    <div class="assinatura-cliente">ASSINATURA REPRESENTANTE CLIENTE:</div>
+    <div class="assinatura-monitores">ASSINATURA REPRESENTANTE SÓ MONITORES & NOBREAKS:</div>
+  </div>
+<p class="separador">- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</p> 
+  
+
+
+<!-----------------------------------------------------IMPRIMIR ORDEM SERVIÇO---------------------->
+
+<!--------------------------CABEÇALHO --------------------------------------->
+
+<div id="pdf-content" class="container">
+  <div class="header">
+    <h1>COMPROVANTE DE FECHAMENTO ORDEM DE SERVIÇO</h1>
+    <div class="header-content">
+        <img src="assets/logo_pt_br.jpg" alt="Logo" class="logo" />
+        <div class="header-text">
+            <h2>Só Monitores & Nobreaks</h2>
+            <p>Razão Social: Alessandra Ap Pires Almeida - CNPJ: 13.092.364/0001-90</p>
+            <div class="icone">
+            <p>Rua Joaquim Nabuco 411 - Porto Velho - Divinópolis - <span class="phone-number">37-3212-6708</span></p>
+            <i class="bi bi-whatsapp" style="font-size: 30px; padding: 5px; color: #25D366;"></i>
+
+          </div>
+          </div>
+    </div>
+</div>
+
+<!--------------------------PRIMEIRA LINHA --------------------------------------->
+
+<!-- Primeira tabela -->
+<table class="info-table">
+  <thead>
+      <tr>
+          <th>Nº OS</th>
+          <th>DATA ENT</th>
+          <th>HORA</th>
+          <th>STATUS</th>
+          <th>DATA FECH</th>
+          <th>GARANTIA</th>
+          <th>OS ORIGINAL</th>
+          <th>ATENDENTE</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="color: red;"><strong>{{os.os}}</strong></td>
+          <td>{{ os.data | date:'dd-MM-yyyy' }}</td>
+          <td>{{os.hora}}</td>
+          <td>{{os.status}}</td>
+          <td>{{ os.fechamento | date:'dd-MM-yyyy' }}</td>
+          <td>{{os.garantia}}</td>
+          <td>{{os.osoriginal}}</td>
+          <td>{{os.atendente}}</td>
+      </tr>
+  </tbody>
+</table>
+
+<!-- Segunda tabela -->
+<table class="info-table">
+    <tr>
+        <th>COD CLIENTE</th>
+        <th>NOME FANTASIA</th>
+        <th>RAZÃO SOCIAL</th>
+        <th>FONE CLIENTE</th>
+        <th>CONTATO</th>
+    </tr>
+    <tr>
+        <td>{{os.codcli}}</td>
+        <td>{{os.fantasia}}</td>
+        <td>{{os.rzsocial}}</td>
+        <td>{{cliente.fone}}</td>
+        <td>{{cliente.contato}}</td>
+    </tr>
+    <!-- Outras linhas -->
+    <tr>
+        <th>EQUIPAMENTO</th>
+        <th>MARCA</th>
+        <th>MODELO</th>
+        <th>TOPOLOGIA</th>
+        <th>COR</th>
+    </tr>
+    <tr>
+        <td>{{os.equipamento}}</td>
+        <td>{{os.marca}}</td>
+        <td>{{os.modelo}}</td>
+        <td>{{os.topologia}}</td>
+        <td>{{os.cor}}</td>
+    </tr>
+    <!-- Outras linhas -->
+    <tr>
+        <th>DEFEITO1</th>
+        <th>DEFEITO2</th>
+        <th>VENDA</th>
+    </tr>
+    <tr>
+        <td>{{os.defeito1}}</td>
+        <td>{{os.defeito2}}</td>
+        <td>{{os.venda}}</td>
+    </tr>
+    <!-- Outras linhas -->
+    <tr>
+        <th>SERIAL</th>
+        <th>PATRIMONIO</th>
+        <th>OBSERVAÇÃO 1</th>
+        <th>OBSERVAÇÃO 2</th>
+        <th>OBSERVAÇÃO 3</th>
+    </tr>
+    <tr>
+        <td>{{os.serial}}</td>
+        <td>{{os.patrimonio}}</td>
+        <td>{{os.obs1}}</td>
+        <td>{{os.obs2}}</td>
+        <td>{{os.obs3}}</td>
+    </tr>
+    <!-------------------------------------->
+    <tr>
+      <th>DEFEITO INFO CLIENTE:</th>
+      <th>SERVIÇO REALIZADO 1</th>
+      <th>SERVIÇO REALIZADO 2</th>
+      <th>SERVIÇO REALIZADO 3</th>
+      <th>TECNICO</th>
+  </tr>
+  <tr>
+      <td>{{os.defeito1}}</td>
+      <td>{{os.tarefa1}}</td>
+      <td>{{os.tarefa2}}</td>
+      <td>{{os.tarefa3}}</td>
+      <td>{{os.tecnico}}</td>
+  </tr>
+
+
+    <!----LISTA DE MATERIAIS-->
+    <tr class="com_borda cinza">
+      <th>MATERIAL</th>
+      <th>QT</th>
+      <th>VALOR UNIT</th>
+      <th>SUB TOTAL</th>
+  </tr>
+  <tr class="com_borda">
+      <td>BATERIAS: {{os.baterias}}</td>
+      <td>{{os.qt1}}</td>
+      <td>{{os.valorunit1}}</td>
+      <td>{{os.valortotal1}}</td>
+  </tr>
+  <tr class="com_borda">
+    <td>{{os.material2}}</td>
+    <td>{{os.qt2}}</td>
+    <td>{{os.valorunit2}}</td>
+    <td>{{os.valortotal2}}</td>
+</tr>
+<tr class="com_borda">
+  <td>{{os.material3}}</td>
+  <td>{{os.qt3}}</td>
+  <td>{{os.valorunit3}}</td>
+  <td>{{os.valortotal3}}</td>
+</tr>
+<tr class="com_borda">
+  <td>{{os.outrositens}}</td>
+  <td>{{os.qtoutrositens}}</td>
+  <td>{{os.valorunitoutrositens}}</td>
+  <td>{{os.valortotaloutrositens}}</td>
+</tr>
+<tr class="com_borda">
+  <td>DESLOCAMENTO (Km):</td>
+  <td>{{os.qtdeslocamento}}</td>
+  <td>{{os.valorunitariodeslocamento}}</td>
+  <td>{{os.valortotaldeslocamento}}</td>
+</tr>
+<tr class="somatorio_final">
+  <td>Mão de obra</td>
+  <td>Total Bruto</td>
+  <td>Desconto Valor</td>
+  <td>Desconto %</td>
+  <td>Total Liquido</td>
+</tr>
+<tr class="valores_somatorio_final">
+  <td>{{os.valorassistencia}}</td>
+  <td>{{os.totalbruto}}</td>
+  <td>{{os.valordesconto}}</td>
+  <td>{{os.desconto}}</td>
+  <td class="totaliq">{{os.totaliq}}</td>
+</tr>
+
+
+</table>
+
+ <!--------------------------GARANTIAS --------------------------------------->
+ <div class="garantias">
+  <h6 style="text-align: center;"><p style="color: red;">GARANTIAS:</p></h6>
+  <p> MÃO DE OBRA E PEÇAS: 90 DIAS   - VENDA  EQUIPAMENTOS SEMI-NOVOS: 180 DIAS   - VENDA  EQUIPAMENTOS NOVOS: CONFORME FABRICANTE</p>
+  <P>BATERIAS: 180 DIAS     - GARANTIA NÃO COBRE: SOBRE CARGA - SOBRE TENSÃO - DESCARGA ATMOSFÉRICA - MAL USO</P>
+  <P>A GARANTIA É ANALIZADA E EXECUTADA NO LABORATÓRIO  DA  SÓ MONITORES & NOBREAKS, FRETE FOB.</P>
+</div>
+
+  <!--------------------------ASSINATURA --------------------------------------->
+  <div class="assinatura">
+    <div class="assinatura-cliente">ASSINATURA REPRESENTANTE CLIENTE:</div>
+    <div class="assinatura-monitores">ASSINATURA REPRESENTANTE SÓ MONITORES & NOBREAKS:</div>
+  </div>
+
+</div>
+</div>
+
+
+
+
+
+
+
+
+

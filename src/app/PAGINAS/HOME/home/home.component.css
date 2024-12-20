@@ -1,0 +1,32 @@
+.todo{
+  background: black;
+}
+
+
+html, body {
+    height: 100%; /* Garante que o body ocupe a tela inteira */
+    margin: 0;
+  }
+  
+  div {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Garante que o div ocupe a altura total da tela */
+  }
+  
+  app-cabecalho {
+    flex-shrink: 0; /* O cabeçalho não encolhe */
+  }
+  
+  app-menu-lateral {
+    flex-shrink: 0; /* O menu lateral também não encolhe */
+  }
+  
+  app-carousel {
+    flex-grow: 1; /* O carousel cresce para ocupar o espaço restante */
+  }
+  
+  app-rodape {
+    flex-shrink: 0; /* O rodapé não encolhe e fica na parte inferior */
+  }
+  

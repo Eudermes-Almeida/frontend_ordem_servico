@@ -1,0 +1,212 @@
+<div  class="d-flex justify-content-center">
+  <form [formGroup]="formulario" id="meuFormulario" class="centralizado-formulario todo">
+
+    <div class="alert alert-warning alert-dismissible fade show" role="alert" *ngIf="exibirAlertClienteSalvo">
+      O Cliente <strong>{{cliente.id}}</strong> foi salvo com sucesso!
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <div class="alert alert-warning alert-dismissible fade show" role="alert" *ngIf="exibirAlertValidacao">
+      Existem campos obrigatórios do formulário que não foram preenchidos!
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+
+    <div class="form-row">
+      <button style="margin: 15px;" class="btn btn-primary" (click)="limpar()">Limpar</button>
+        
+
+        <div class="form-group">
+          <label for="nomefantasia">Nome Fantasia:</label>
+          <input 
+    type="text" 
+    id="nomefantasia" 
+    #nomefantasia 
+    formControlName="nomefantasia" 
+    class="form-control"
+    formControlName="nomefantasia"
+    [ngClass]="{'is-invalid': formulario.get('tipo')?.invalid && formulario.get('tipo')?.touched}">
+    <div *ngIf="formulario.get('nomefantasia')?.invalid && formulario.get('nomefantasia')?.touched" class="text-danger">
+      Campo Fantasia é obrigatório.
+    </div>    
+        </div>
+        
+
+        <div class="form-group">
+          <label for="razaosocial">Razão Social:</label>
+          <input 
+    type="text" 
+    id="razaosocial" 
+    #razaosocial 
+    formControlName="razaosocial" 
+    class="form-control"
+    [ngClass]="{'is-invalid': formulario.get('razaosocial')?.invalid && formulario.get('razaosocial')?.touched}">
+    <div *ngIf="formulario.get('razaosocial')?.invalid && formulario.get('razaosocial')?.touched" class="text-danger">
+      Campo Razão Social é obrigatório.
+    </div>    
+        </div>
+    </div>
+
+    <div class="form-row">
+
+    <div class="form-group col-3">
+      <label for="tipo">Tipo:</label>
+      <select id="tipo" name="tipo" (change)="onTipoChange($event)" class="form-control cidade"
+      formControlName="tipo" 
+    [ngClass]="{'is-invalid': formulario.get('tipo')?.invalid && formulario.get('tipo')?.touched}">
+        <option> </option>
+        <option>F</option>
+        <option>J</option>
+        <option>T</option>
+      </select>
+      <div *ngIf="formulario.get('tipo')?.invalid && formulario.get('tipo')?.touched" class="text-danger">
+        Campo Tipo é obrigatório.
+      </div>
+    </div>
+
+      <div class="form-group">
+        <label for="cpfcnpj">Cpf/Cnpj:</label>
+        <input type="text" formControlName="cpfcnpj" id="cpfcnpj" name="cpfcnpj">
+      </div>
+      
+
+      <div class="form-group">
+        <label for="contato">Contato:</label>
+        <input 
+  type="text" 
+  id="contato" 
+  #contato
+  formControlName="contato" 
+  class="form-control"
+  [ngClass]="{'is-invalid': formulario.get('contato')?.invalid && formulario.get('contato')?.touched}">
+  <div *ngIf="formulario.get('contato')?.invalid && formulario.get('contato')?.touched" class="text-danger">
+    Campo Contato é obrigatório.
+  </div>    
+      </div>
+
+
+    </div>
+
+
+    
+    <div class="form-row">
+
+      <div class="form-group">
+        <label for="ruanum">Rua:</label>
+        <input 
+  type="text" 
+  id="ruanum" 
+  #ruanum
+  formControlName="ruanum" 
+  class="form-control"
+  [ngClass]="{'is-invalid': formulario.get('ruanum')?.invalid && formulario.get('ruanum')?.touched}">
+  <div *ngIf="formulario.get('ruanum')?.invalid && formulario.get('ruanum')?.touched" class="text-danger">
+    Campo Rua nº  é obrigatório.
+  </div>    
+      </div>
+
+
+      <div class="form-group">
+        <label for="num">Nº:</label>
+        <input type="text" formControlName="num" id="num" name="num">
+      </div>
+
+      <div class="form-group">
+        <label for="bairro">Bairro :</label>
+        <input 
+  type="text" 
+  id="bairro" 
+  #bairro
+  formControlName="bairro" 
+  class="form-control"
+  [ngClass]="{'is-invalid': formulario.get('bairro')?.invalid && formulario.get('bairro')?.touched}">
+  <div *ngIf="formulario.get('bairro')?.invalid && formulario.get('bairro')?.touched" class="text-danger">
+    Campo Bairro  é obrigatório.
+  </div>    
+      </div>
+    </div>
+
+
+    <div class="form-row">
+
+
+      <div class="form-group col-3">
+        <label for="cidade">Cidade:</label>
+        <select id="cidade" name="cidade" (change)="onCityChange($event)" class="form-control cidade" formControlName="cidade"
+      [ngClass]="{'is-invalid': formulario.get('cidade')?.invalid && formulario.get('cidade')?.touched}">
+      <option *ngFor="let city of cidades" [value]="city.valor">{{ city.valor }}</option>
+        </select>
+        <div *ngIf="formulario.get('cidade')?.invalid && formulario.get('cidade')?.touched" class="text-danger">
+          Campo Cidade é obrigatório.
+        </div>
+      </div>
+
+
+      <div class="form-group">
+        <div class="form-group">
+          <div class="cep">
+              <label for="cep">CEP:</label>
+              <button class="btn-cep" (click)="buscaCep()">Viacep</button>
+          </div>
+      </div>
+      
+        <input type="text" formControlName="cep" id="cep" name="cep">
+      </div>
+      <div class="form-group">
+        <label for="fonefixo">Fone Fixo:</label>
+        <input type="text" formControlName="fonefixo" id="fonefixo" name="fonefixo">
+      </div>
+    </div>
+    <div class="form-row">
+
+      <div class="form-group">
+        <label for="fone">Fone :</label>
+        <input 
+  type="text" 
+  id="fone" 
+  #fone
+  formControlName="fone" 
+  class="form-control"
+  [ngClass]="{'is-invalid': formulario.get('fone')?.invalid && formulario.get('fone')?.touched}">
+  <div *ngIf="formulario.get('fone')?.invalid && formulario.get('fone')?.touched" class="text-danger">
+    Campo Fone é obrigatório.
+  </div>    
+      </div>
+
+
+      <div class="form-group">
+        <label for="celular2">Celular 2:</label>
+        <input type="text" formControlName="celular2" id="celular2" name="celular2">
+      </div>
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" formControlName="email" id="email" name="email">
+      </div>
+    </div>
+    <div class="form-row">
+
+      <div class="form-group col-3">
+        <label for="segmento">Segmento:</label>
+        <select id="segmento" name="segmento" (change)="onSegmentoChange($event)" class="form-control cidade"
+        formControlName="segmento" 
+      [ngClass]="{'is-invalid': formulario.get('segmento')?.invalid && formulario.get('segmento')?.touched}">
+      <option *ngFor="let city of segmentos" [value]="city.valor">{{ city.valor }}</option>
+        </select>
+        <div *ngIf="formulario.get('segmento')?.invalid && formulario.get('segmento')?.touched" class="text-danger">
+          Campo Segmento é obrigatório.
+        </div>
+      </div>
+
+
+      <div class="form-group">
+        <label for="inscestadual">Inscrição Estadual:</label>
+        <input type="text" formControlName="inscestadual" id="inscestadual" name="inscestadual">
+      </div>
+      <div>
+        <button style="margin-top: 20px;" class="btn btn-primary" (click)="buscanovocliente()">CADASTRAR CLIENTE</button>
+      </div>
+    </div>
+    
+  </form>
+
+</div>

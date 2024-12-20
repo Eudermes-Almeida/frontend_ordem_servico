@@ -1,0 +1,115 @@
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<div class="d-flex justify-content-center flex-column"> <!-- Adicione flex-column para empilhar os elementos -->
+    <form [formGroup]="formulario" id="meuFormulario" class="centralizado-formulario">
+        <!--<p class="text-secondary" style="text-align: center; font-size: larger;">Escolha o Cliente:</p>-->
+        <div class="form-row align-items-center">
+            
+            <div class="form-group col-3">
+                <label for="cidade">Tipo Parâmetro:</label>
+                <select
+                  formControlName="tipoParametro" 
+                  id="tipoParametro" 
+                  name="tipoParametro"
+                  (change)="tipoParametroChange($event)">
+                  <option></option>
+                  <option>ATENDENTES</option>
+                  <option>CIDADE</option>
+                  <option>COR</option>
+                  <option>DEFEITOS CLIENTES</option>
+                  <option>EQUIPAMENTO</option>
+                  <option>MARCA ACESSÓRIO</option>
+                  <option>MARCA BATERIA</option>
+                  <option>MARCA ESTABILIZADOR</option>
+                  <option>MARCA MONITOR</option>
+                  <option>MARCA NOBREAK</option>
+                  <option>MATERIAIS</option>
+                  <option>MODELO ACESSORIO</option>
+                  <option>MODELO BATERIA</option>
+                  <option>MODELO ESTABILIZADOR</option>
+                  <option>MODELO MONITOR</option>
+                  <option>MODELO NOBREAK</option>
+                  <option>SEGMENTO</option>
+                  <option>STATUS</option>
+                  <option>TAREFA EXECUTADA</option>
+                  <option>TECNICO</option>
+                  <option>TOPOLOGIA BATERIA</option>
+                  <option>TOPOLOGIA MONITOR</option>
+                  <option>TOPOLOGIA NOBREAK</option>
+                </select>
+              </div>
+
+                  <div class="form-group col-3">
+                    <label for="cidade">Ação:</label>
+                    <select
+                    formControlName="acao" 
+                    id="acao" 
+                    name="acao"
+                    (change)="acaoChange($event)">
+                      <option></option>
+                      <option>ADICIONAR PARAMETRO</option>
+                      <option>ALTERAR PARAMETRO</option>
+                      <option>APAGAR PARAMETRO</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group col-3" *ngIf="exibirInputId">
+                    <label for="id">Id:</label>
+                    <input 
+                      type="text" 
+                      formControlName="id" 
+                      id="id" 
+                      name="id" 
+                      class="id"
+                      placeholder="Digite o id do parâmetro"
+                      (keydown)="onIdKey($event)"
+                      (input)="onIdKey($event)"
+                    >
+                  </div>  
+
+                  
+            <div class="form-group col-3" *ngIf="exibirInputNomeParametro">
+                <label for="inserirParametro">Nome parâmetro:</label>
+                <input 
+                  type="text" 
+                  formControlName="inserirParametro" 
+                  id="inserirParametro" 
+                  name="inserirParametro" 
+                  class="inserirParametro"
+                  placeholder="Digite o nome do parâmetro"
+                  (keydown)="inserirParametroKey($event)"
+                  (input)="inserirParametroKey($event)"
+                >
+              </div>  
+
+              <button  class="btn btn-primary" (click)="processaParametro()">Processar</button>
+              <button style="margin-left: 10px;" class="btn btn-primary" (click)="limpar()">Limpar</button>
+        </div>
+
+        <div class="mt-3 tabela-scroll">
+            <div class="tabela_config">
+                <p style="color: white;">Tipo Parâmetro: <strong>{{this.tipoParametroSelecionado}}</strong></p>
+                <table class="table table-dark table-hover">
+                    <thead>
+                        <tr>
+                            <th style="color: orange;">Id</th>
+                            <th style="color: orange;">Tipo</th>
+                            <th style="color: orange;">Parâmetro</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of arrayTabela">
+                          <td>{{ item.id }}</td>
+                          <td>{{ item.parametro }}</td>
+                          <td>{{ item.valor }}</td>
+                        </tr>
+                      </tbody>
+                </table>
+            </div>
+        </div>
+    
+</form>
+</div>
+
+
+

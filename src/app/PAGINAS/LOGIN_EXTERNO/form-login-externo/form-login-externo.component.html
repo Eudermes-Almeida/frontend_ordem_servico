@@ -1,0 +1,33 @@
+
+<body>
+    <div class="login-container">
+        <h1>Login</h1>
+        <form (ngSubmit)="onSubmit()">
+            <label for="username">Código do Cliente:</label>
+            <input 
+                type="text" 
+                id="username" 
+                name="username" 
+                placeholder="Digite o código do cliente" 
+                [(ngModel)]="codcli" 
+                required>
+    
+            <label for="password">Cpf ou Cnpj: (só numeros)</label>
+            <input 
+                type="text" 
+                id="password" 
+                name="password" 
+                placeholder="Digite seu Cpf ou Cnpj" 
+                [(ngModel)]="cpfCnpj" 
+                required>
+    
+                <div class="button-container">
+                    <button type="submit">Entrar</button>
+                    <button (click)="reloadPage()" type="button">Limpar</button>
+                </div>
+                
+            <p *ngIf="exibirMensagemErro" style="color: red;">Código do cliente ou cpf/cnpj inválidos</p>
+        </form>
+    </div>
+</body>
+

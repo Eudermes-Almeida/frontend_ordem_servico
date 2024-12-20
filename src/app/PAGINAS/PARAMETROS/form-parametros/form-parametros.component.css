@@ -1,0 +1,91 @@
+/* Estilos do Formulário Centralizado */
+.centralizado-formulario {
+    background-color: #1a1a1a;
+    padding: 10px; /* Aumentei o padding para dar um espaço melhor */
+    border: 2px solid orange;
+    border-radius: 10px;
+    max-width: 99%; /* Limite de largura para o formulário */
+    width: 100%; /* Largura total do container */
+    box-shadow: 0 0 10px rgba(255, 165, 0, 0.5);
+}
+
+.btn-salvar-ordem-servico{
+    display: flex;
+    flex-direction: row;
+    justify-content:space-between;
+    margin-top: 10px;
+    align-items: end;
+}
+
+
+.tabela-scroll {
+    max-height: 300px; /* Define o limite máximo de altura */
+    overflow-y: auto; /* Habilita a rolagem vertical */
+    /*border: 1px solid #ddd; /* Opcional: Adiciona uma borda para destacar a área de rolagem */
+}
+
+.tabela_config {
+    width: 100%; /* Garante que a tabela ocupe toda a largura do contêiner */
+    text-align: center;
+    
+}
+
+table {
+    max-width: 40%; /* Ajuste conforme necessário */
+    margin: 0 auto; /* Centraliza a tabela dentro do container */
+}
+
+.espaco-label {
+    margin-left: 7ch; /* 10 caracteres de espaço */
+}
+
+.espaco {
+    display: inline-block;
+    width: 10ch; /* 10 caracteres de espaço */
+}
+
+
+.form-row {
+    display: flex;
+    justify-content: space-between; /* Alinha os elementos uniformemente */
+    align-items: start; /* Alinha os elementos verticalmente */
+    margin-bottom: 5px; /* Espaçamento entre as linhas */
+}
+
+.form-group {
+    flex: 1; /* Faz com que todos os elementos ocupem a mesma largura */
+    margin-right: 10px; /* Espaço à direita entre os elementos */
+}
+
+.form-group:last-child {
+    margin-right: 1; /* Remove margem do último elemento */
+}
+
+label {
+    color: white; /* Cor dos labels */
+    margin-bottom: 1px; /* Espaçamento inferior do label */
+}
+
+input, select {
+    padding: 4px; /* Padding interno */
+    border: 1px solid orange;
+    border-radius: 4px;
+    background-color: black;
+    color: orange;
+    width: 100%; /* Faz com que os inputs ocupem a largura total */
+    height: 30px; /* Define altura uniforme para inputs */
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .form-row {
+        flex-direction: column; /* Coloca os elementos em coluna em telas pequenas */
+    }
+
+    .form-group {
+        margin-right: 0; /* Remove a margem direita em telas pequenas */
+        margin-bottom: 10px; /* Adiciona espaço inferior em telas pequenas */
+    }
+
+
+}

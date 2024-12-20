@@ -1,0 +1,67 @@
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark todo">
+    <div class="container-fluid">
+        <a class="navbar-brand" routerLink="/home" routerLinkActive="active">Home</a>
+       <!--<button class="btn - btn-primary btn-sm" (click)="reiniciarPagina()">Limpar</button>-->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
+            <ul class="navbar-nav mx-auto"> <!-- Adicione mx-auto para centralizar -->
+                <li class="nav-item dropdown">
+                    <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        CLIENTES
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-dark">
+                        <a class="dropdown-item" routerLink="/cliente/cadastro" routerLinkActive="active">Cadastrar Cliente</a>
+                        <li><a class="dropdown-item" routerLink="/cliente/consulta" routerLinkActive="active" >Consultar Cliente</a></li>
+                        <li><a class="dropdown-item" routerLink="/cliente/consulta" routerLinkActive="active">Alterar Cliente</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        ORDENS DE SERVIÇO
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-dark">
+                        <li><a class="dropdown-item" routerLink="/os/cadastro" routerLinkActive="active">Cadastrar Ordem Serviço</a></li>
+                        <li><a class="dropdown-item" routerLink="/os/consulta" routerLinkActive="active">Consultar Ordem Serviço</a></li>
+                        <li><a class="dropdown-item" routerLink="/os/consulta" routerLinkActive="active">Alterar Ordem Serviço</a></li>
+                        <li><a class="dropdown-item" routerLink="/os/lote" routerLinkActive="active">Cadastrar O.S. EM LOTE</a></li>
+                        <li><a class="dropdown-item" routerLink="/os/lote/imprime" routerLinkActive="active">Imprimir O. S. EM LOTE</a></li>
+                        <li><a class="dropdown-item" routerLink="/os/deletar" routerLinkActive="active" style="color: red;">Apagar Ordem Serviço</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        RELATÓRIOS
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-dark">
+                        <li><a class="dropdown-item" routerLink="/os/relatorio" routerLinkActive="active">Consultar Relatórios</a></li>
+                        
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        ORÇAMENTOS
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-dark">
+                        <li><a class="dropdown-item" routerLink="/os/orcamento" routerLinkActive="active">Cadastrar Orçamentos</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        PARÂMETROS
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-dark">
+                        <li><a class="dropdown-item" routerLink="/parametros" routerLinkActive="active">Adicionar Parâmetros</a></li>
+                        <li><a class="dropdown-item" routerLink="/parametros" routerLinkActive="active">Consultar Parâmetros</a></li>
+                        <li><a class="dropdown-item" routerLink="/parametros" routerLinkActive="active">Alterar Parâmetros</a></li>
+                        <li><a class="dropdown-item" routerLink="/parametros" routerLinkActive="active">Apagar Parâmetros</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+

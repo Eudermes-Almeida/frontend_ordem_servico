@@ -1,0 +1,36 @@
+html, body {
+    height: 100%; /* Certifique-se de que o corpo e o HTML ocupem 100% da altura */
+    margin: 0; /* Remove margens padrão */
+}
+
+.todo {
+    display: flex;
+    flex-direction: column; /* Organiza os componentes em coluna */
+    min-height: 100vh; /* Faz com que a div todo ocupe pelo menos 100% da altura da tela */
+    background-color: black; /* Cor de fundo da página */
+}
+
+app-cabecalho {
+    position: relative; /* Mantém o cabeçalho na sequência do fluxo do documento */
+    z-index: 1000; /* Certifique-se de que o cabeçalho esteja acima de outros elementos */
+    background-color: black; /* Cor de fundo do cabeçalho */
+    padding: 10px; /* Padding opcional */
+    height: 60px; /* Altura do cabeçalho */
+}
+
+app-menu-lateral {
+    margin-top: 70px; /* Aumente a margem superior para garantir que o menu fique abaixo do cabeçalho */
+    background-color: #f8f9fa; /* Cor de fundo opcional para o menu lateral */
+}
+
+app-form-cadastro-os {
+    flex: 1; /* Permite que o formulário ocupe o espaço restante */
+    margin-top: 10px; /* Opcional: margem entre menu lateral e formulário */
+}
+
+app-rodape {
+    flex-shrink: 0; /* Impede que o rodapé encolha */
+    background-color: black; /* Cor de fundo do rodapé */
+    padding: 10px; /* Padding opcional */
+    text-align: center; /* Centraliza o texto, se necessário */
+}
