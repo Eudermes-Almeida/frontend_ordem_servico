@@ -5,8 +5,12 @@
         
   
   
-  <p class="nome-cliente">{{objetoOs[0].fantasia | slice: 0:40 }}{{objetoOs[0].fantasia.length > 40 ? '...' : '' }}</p>
-  <p class="nome-cliente">Aprovações pendentes: {{objetoOs.length}}</p>
+  <p class="nome-cliente1">{{objetoOs[0].fantasia | slice: 0:40 }}{{objetoOs[0].fantasia.length > 40 ? '...' : '' }}</p>
+  <p class="nome-cliente">Aprovações pendentes: <span>{{objetoOs.length}}</span></p>
+  <p class="nome-cliente">Valor Total: <span>{{ objetoOs[0]?.somatoriaDTO?.somatotaliq | number:'1.2-2' }}</span></p>
+
+  
+  
   
 
   <div class="card" style="width: 90%;" *ngFor="let os of objetoOs">
@@ -34,13 +38,15 @@
 
   
     <div class="card-body">
-      <h5 class="card-title">ORDEM SERVIÇO: {{ os.os }}</h5>
-      <p class="card-text">Data Entrada: {{ os.data | date: 'dd/MM/yyyy' }}</p>
-      <p class="card-text">Status: {{ os.status }}</p>
-      <p class="card-text">Equipamento: {{ os.equipamento }}</p>
-      <p class="card-text">Marca: {{ os.marca }}</p>
-      <p class="card-text">Modelo: {{ os.modelo }}</p>
-      <p class="card-text">Valor Total: {{ os.totaliq }}</p>
+      <h5 class="card-title">ORDEM SERVIÇO: <span>{{ os.os }}</span></h5>
+      <p class="card-text">Data Entrada: <span>{{ os.data | date: 'dd/MM/yyyy' }}</span></p>
+      <p class="card-text">Status: <span>{{ os.status }}</span></p>
+      <p class="card-text">Equipamento: <span>{{ os.equipamento }}</span></p>
+      <p class="card-text">Marca: <span>{{ os.marca }}</span></p>
+      <p class="card-text">Modelo: <span>{{ os.modelo }}</span></p>
+      <p class="card-text">Valor Total: <span>{{ os.totaliq }}</span></p>
+    
+    
   
       <div>
         <a>

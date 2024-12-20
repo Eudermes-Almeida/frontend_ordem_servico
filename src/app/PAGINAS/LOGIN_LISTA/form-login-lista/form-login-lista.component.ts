@@ -37,7 +37,7 @@ carregaCodcliUrl(): void {
   const codcli = Number(codcliString);
   console.log("Valor convertido para número:", codcli);
 
-  this.getOsPorCodCli(codcli)
+  this.getAprovacaoOnline(codcli)
   
 }
 
@@ -46,7 +46,7 @@ carregaCodcliUrl(): void {
     cliente: Cliente = new Cliente();
     os: Os = new Os();
     objetocliente: Cliente[] = [];
-    objetoOs: Os[] = [];
+    objetoOs: any[] = [];
     
     ///////////CONTROLE DE RENDERIZAÇÃO/////////
    
@@ -124,6 +124,24 @@ carregaCodcliUrl(): void {
             console.error('Erro ao buscar clientes por cidade:', error);
             alert(`Erro ao buscar clientes na cidade ${codcli}.`);
           }
+        }
+      );
+    }
+
+    getAprovacaoOnline(codcli: number): void {
+      const status = 'aguardandoAprovacao'; // Status a ser enviado
+      //const codcli = 9271; // Código do cliente a ser enviado
+  
+      // Chama o método getAprovacaoOnline do serviço
+      this.servico.getAprovacaoOnline(status, codcli).subscribe(
+        (response) => {
+          // Armazena os dados recebidos na variável 'dadosAprovacao'
+          this.objetoOs = response;
+          console.log('Dados de Aprovação:', this.objetoOs);
+        },
+        (error) => {
+          // Trata qualquer erro que ocorra ao fazer a requisição
+          console.error('Erro ao obter aprovação online:', error);
         }
       );
     }

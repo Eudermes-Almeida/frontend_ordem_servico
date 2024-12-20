@@ -172,6 +172,16 @@ buscaCalculoComissaoTecnicos(dataInicio: string, dataFim: string, busca: string)
   return this.http.get<any>(urlComissao);
 }
 
+
+/////Retorna a relação que será passada para a consulta de orçamento on line:
+getAprovacaoOnline(status: string, codcli: number): Observable<any> {
+  // Monta a URL com os parâmetros passados
+  const url = `${this.urlServidor}relatorio/aprovacaoOnline?status=${status}&codcli=${codcli}`;
+  
+  // Faz a requisição GET para a API e retorna a resposta como Observable
+  return this.http.get<any>(url);
+}
+
 /////////////////////////SERVIÇO DE MEMORIZAÇÃO DE DADOS ENTRE PAGINAS//////////////////
 
 @Injectable({

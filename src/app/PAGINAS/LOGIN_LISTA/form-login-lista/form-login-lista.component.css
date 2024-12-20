@@ -18,9 +18,27 @@
 
 .nome-cliente{
     width: 100%;
+    color: orange;
+    margin: 1px;
+    padding: 1px;
+}
+
+.nome-cliente span{
+    width: 100%;
     color: white;
     margin: 1px;
     padding: 1px;
+}
+
+
+
+
+.nome-cliente1{
+    width: 100%;
+    color: aqua;
+    margin: 1px;
+    padding: 1px;
+
 }
 
 .card {
@@ -32,6 +50,23 @@
     border-radius: 10px;
     margin: 10px; /* Margem de 5px entre os cards */
 }
+
+.card-body .card-text {
+    color: orange; /* Cor laranja para os títulos */
+  }
+  
+  .card-body .card-text span {
+    color: white; /* Cor branca para os valores */
+  }
+
+  .card-title span{
+    color: white; /* Cor branca para os valores */
+}
+
+  
+  
+
+
 
 
 .form-row {
