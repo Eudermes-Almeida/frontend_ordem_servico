@@ -30,9 +30,6 @@
     padding: 1px;
 }
 
-
-
-
 .nome-cliente1{
     width: 100%;
     color: aqua;
@@ -46,7 +43,7 @@
     color: orange;
     width: 100%;
     max-width: 100%; /* Limite de largura para o formulário */
-    border: 2px solid orange;
+    border: 2px solid aqua;
     border-radius: 10px;
     margin: 10px; /* Margem de 5px entre os cards */
 }
@@ -62,12 +59,6 @@
   .card-title span{
     color: white; /* Cor branca para os valores */
 }
-
-  
-  
-
-
-
 
 .form-row {
     display: flex;
