@@ -48,21 +48,21 @@ export class FormcadclienteComponent implements OnInit {
     if (this.parametrosService) {
       this.buscarCidades();
       this.buscarSegmentos();
-      this.ativarFullscreen();
+      //this.ativarFullscreen();
     }
   }
 
-  ///ATIVAR FULL SCREEN:
-  ativarFullscreen(): void {
-    const elem = document.documentElement;
-    if (elem.requestFullscreen) {
-      elem.requestFullscreen();
-    } else if ((elem as any).webkitRequestFullscreen) { /* Safari */
-      (elem as any).webkitRequestFullscreen();
-    } else if ((elem as any).msRequestFullscreen) { /* IE11 */
-      (elem as any).msRequestFullscreen();
-    }
-  }
+  // ///ATIVAR FULL SCREEN:
+  // ativarFullscreen(): void {
+  //   const elem = document.documentElement;
+  //   if (elem.requestFullscreen) {
+  //     elem.requestFullscreen();
+  //   } else if ((elem as any).webkitRequestFullscreen) { /* Safari */
+  //     (elem as any).webkitRequestFullscreen();
+  //   } else if ((elem as any).msRequestFullscreen) { /* IE11 */
+  //     (elem as any).msRequestFullscreen();
+  //   }
+  // }
   
 
   buscarCidades(): void {

@@ -213,7 +213,7 @@ onMaterialChange(event: Event): void {
   // CONFIGURA AS FUNÇÕES QUE SERÃO EXECUTADAS NA INICIALIZAÇÃO DA PÁGINA
   ngOnInit(): void {
     if (this.parametrosService) {
-      this.ativarFullscreen();
+      //this.ativarFullscreen();
       this.buscarStatus();
       this.buscarTecnicos();
       this.buscarTarefasExecutadas();
@@ -259,17 +259,17 @@ onMaterialChange(event: Event): void {
     }
   }
 
-  ///////ATIVA FULL SCREEN////
-  ativarFullscreen(): void {
-    const elem = document.documentElement;
-    if (elem.requestFullscreen) {
-      elem.requestFullscreen();
-    } else if ((elem as any).webkitRequestFullscreen) { /* Safari */
-      (elem as any).webkitRequestFullscreen();
-    } else if ((elem as any).msRequestFullscreen) { /* IE11 */
-      (elem as any).msRequestFullscreen();
-    }
-  }
+  // ///////ATIVA FULL SCREEN////
+  // ativarFullscreen(): void {
+  //   const elem = document.documentElement;
+  //   if (elem.requestFullscreen) {
+  //     elem.requestFullscreen();
+  //   } else if ((elem as any).webkitRequestFullscreen) { /* Safari */
+  //     (elem as any).webkitRequestFullscreen();
+  //   } else if ((elem as any).msRequestFullscreen) { /* IE11 */
+  //     (elem as any).msRequestFullscreen();
+  //   }
+  // }
 
 
   ///////////////////BUSCA DADOS PARA POUPULAR OS SELECTS //////////////////

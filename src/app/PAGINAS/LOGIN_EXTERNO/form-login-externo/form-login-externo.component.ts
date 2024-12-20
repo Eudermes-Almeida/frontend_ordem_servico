@@ -21,7 +21,9 @@ export class FORMLOGINEXTERNOComponent {
   @ViewChild('numOsInput') numOsInput!: ElementRef;
 
   // CONFIGURA AS FUNÇÕES QUE SERÃO EXECUTADAS NA INICIALIZAÇÃO DA PÁGINA
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    document.exitFullscreen();
+  }
     
     cliente: Cliente = new Cliente();
     os: Os = new Os();

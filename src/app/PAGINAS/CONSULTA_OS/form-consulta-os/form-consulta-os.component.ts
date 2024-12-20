@@ -137,17 +137,17 @@ export class FORMCONSULTAOSComponent {
     });
   }
 
-  ///////ATIVA FULL SCREEN////
-  ativarFullscreen(): void {
-    const elem = document.documentElement;
-    if (elem.requestFullscreen) {
-      elem.requestFullscreen();
-    } else if ((elem as any).webkitRequestFullscreen) { /* Safari */
-      (elem as any).webkitRequestFullscreen();
-    } else if ((elem as any).msRequestFullscreen) { /* IE11 */
-      (elem as any).msRequestFullscreen();
-    }
-  }
+  // ///////ATIVA FULL SCREEN////
+  // ativarFullscreen(): void {
+  //   const elem = document.documentElement;
+  //   if (elem.requestFullscreen) {
+  //     elem.requestFullscreen();
+  //   } else if ((elem as any).webkitRequestFullscreen) { /* Safari */
+  //     (elem as any).webkitRequestFullscreen();
+  //   } else if ((elem as any).msRequestFullscreen) { /* IE11 */
+  //     (elem as any).msRequestFullscreen();
+  //   }
+  // }
 
   // Buscar clientes por Razao Social
   buscarClientesPorRazaoSocial(): void {

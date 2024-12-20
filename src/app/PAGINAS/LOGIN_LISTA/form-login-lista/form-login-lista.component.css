@@ -19,6 +19,8 @@
 .nome-cliente{
     width: 100%;
     color: white;
+    margin: 1px;
+    padding: 1px;
 }
 
 .card {

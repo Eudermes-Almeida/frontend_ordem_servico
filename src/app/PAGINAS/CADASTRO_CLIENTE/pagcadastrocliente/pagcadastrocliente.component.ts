@@ -24,16 +24,16 @@ export class PagcadastroclienteComponent implements OnInit {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         // Ativa o modo fullscreen ao acessar esta rota
-        this.telacheia();
+        //this.telacheia();
       }
     });
   }
 
-  telacheia(): void {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen().catch(err => {
-        console.error(`Error attempting to enable fullscreen mode: ${err.message}`);
-      });
-    }
-  }
+  // telacheia(): void {
+  //   if (!document.fullscreenElement) {
+  //     document.documentElement.requestFullscreen().catch(err => {
+  //       console.error(`Error attempting to enable fullscreen mode: ${err.message}`);
+  //     });
+  //   }
+  // }
 }

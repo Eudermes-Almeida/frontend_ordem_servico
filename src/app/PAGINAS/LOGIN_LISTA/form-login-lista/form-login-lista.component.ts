@@ -23,6 +23,8 @@ export class FORMLOGINLISTAComponent {
 // CONFIGURA AS FUNÇÕES QUE SERÃO EXECUTADAS NA INICIALIZAÇÃO DA PÁGINA
 ngOnInit(): void {
 
+ //document.exitFullscreen();
+
   this.carregaCodcliUrl();
   console.log(" entrou na pag lista")
           
@@ -63,52 +65,7 @@ carregaCodcliUrl(): void {
       marca:new FormControl(''),
       modelo:new FormControl(''),
       topologia:new FormControl(''),
-      cor: new FormControl(''),
-      serial:new FormControl(''),
-      patrimonio:new FormControl(''),
-      obs1:new FormControl(''),
-      obs2:new FormControl(''),
-      defeito1:new FormControl(''),
-      defeito2:new FormControl(''),
-      defeito3:new FormControl(''),
-      tarefa1:new FormControl(''),
-      tarefa2:new FormControl(''),
-      tarefa3:new FormControl(''),
-      baterias:new FormControl(''),
-      material2:new FormControl(''), 
-      material3:new FormControl(''),
-      outrositens:new FormControl(''),
-      qt1:new FormControl(''), 
-      qt2:new FormControl(''),
-      qt3:new FormControl(''),
-      qtoutrositens:new FormControl(''),
-      qtdeslocamento:new FormControl(''), 
-      valorunit1:new FormControl(''), 
-      valorunit2:new FormControl(''),
-      valorunit3:new FormControl(''), 
-      valorunitoutrositens:new FormControl(''),
-      valorunitariodeslocamento:new FormControl(''),
-      valortotal1:new FormControl(''), 
-      valortotal2:new FormControl(''),
-      valortotal3:new FormControl(''), 
-      valortotaloutrositens:new FormControl(''),
-      valortotaldeslocamento:new FormControl(''),
-      valorassistencia:new FormControl(''),
-      totalbruto:new FormControl(''),
-      valordesconto:new FormControl(''),
-      desconto:new FormControl(''),
-      totaliq:new FormControl(''),
-      fechamento:new FormControl(''),
-      tecnico:new FormControl(''),
-      garantia:new FormControl(''),
-      dataorca:new FormControl(''),
-      osoriginal:new FormControl(''),
-      venda:new FormControl(''),
-      modelofake:new FormControl(''),
-      obs3:new FormControl(''),
-      jaimp:new FormControl(''),
-      top10:new FormControl(''),
-      dataretro:new FormControl(''),
+      
        });
   
        constructor(

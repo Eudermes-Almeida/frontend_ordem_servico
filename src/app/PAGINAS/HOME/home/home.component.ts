@@ -16,31 +16,31 @@ export class HomeComponent {
 
 
   ngOnInit(): void {
-    this.ativarFullscreen(); 
-    this.telacheia();  
+    //this.ativarFullscreen(); 
+    //this.telacheia();  
 
 }
 
-ativarFullscreen(): void {
-  const elem = document.documentElement;
-  if (elem.requestFullscreen) {
-    elem.requestFullscreen();
-  } else if ((elem as any).webkitRequestFullscreen) { /* Safari */
-    (elem as any).webkitRequestFullscreen();
-  } else if ((elem as any).msRequestFullscreen) { /* IE11 */
-    (elem as any).msRequestFullscreen();
-  }
-}
+// ativarFullscreen(): void {
+//   const elem = document.documentElement;
+//   if (elem.requestFullscreen) {
+//     elem.requestFullscreen();
+//   } else if ((elem as any).webkitRequestFullscreen) { /* Safari */
+//     (elem as any).webkitRequestFullscreen();
+//   } else if ((elem as any).msRequestFullscreen) { /* IE11 */
+//     (elem as any).msRequestFullscreen();
+//   }
+// }
 
 
 
-telacheia(): void {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen().catch((err) => {
-      console.error('Erro ao tentar ativar o fullscreen:', err);
-    });
-  }
-}
+// telacheia(): void {
+//   if (!document.fullscreenElement) {
+//     document.documentElement.requestFullscreen().catch((err) => {
+//       console.error('Erro ao tentar ativar o fullscreen:', err);
+//     });
+//   }
+// }
 
 
 

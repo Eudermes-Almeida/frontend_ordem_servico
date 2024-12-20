@@ -26,7 +26,7 @@ export class MenuLateralComponent {
   }
 
   ngOnInit(): void {
-    this.telacheia()
+    //this.telacheia()
   }
   
 
@@ -34,7 +34,7 @@ export class MenuLateralComponent {
     window.location.reload();
 
     await this.delay(1000); // Atraso de 1000 ms = 1 segundo
-    this.telacheia();
+    ///this.telacheia();
     
   }
 
@@ -42,19 +42,19 @@ export class MenuLateralComponent {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-telacheia(){
+// telacheia(){
 
-  // Verifica se a página já está em tela cheia
-  if (!document.fullscreenElement) {
-    // Se não estiver, solicita para entrar em tela cheia
-    document.documentElement.requestFullscreen();
-  } else {
-    // Se já estiver em tela cheia, sai do modo tela cheia
-    if (document.exitFullscreen) {
-      document.exitFullscreen();
-    }
-  }
-}
+//   // Verifica se a página já está em tela cheia
+//   if (!document.fullscreenElement) {
+//     // Se não estiver, solicita para entrar em tela cheia
+//     document.documentElement.requestFullscreen();
+//   } else {
+//     // Se já estiver em tela cheia, sai do modo tela cheia
+//     if (document.exitFullscreen) {
+//       document.exitFullscreen();
+//     }
+//   }
+//}
 
 
 

@@ -176,7 +176,7 @@ onGarantiaChange(event: Event): void {
       this.buscarCor();
       this.buscarDefeitosCliente();
       this.buscarAtendente();
-      this.ativarFullscreen();
+      //this.ativarFullscreen();
     }
 
     // Chama o método para carregar o número da OS da URL assim que a página for carregada
@@ -198,16 +198,16 @@ onGarantiaChange(event: Event): void {
   }
 
   ///////ATIVA FULL SCREEN////
-  ativarFullscreen(): void {
-    const elem = document.documentElement;
-    if (elem.requestFullscreen) {
-      elem.requestFullscreen();
-    } else if ((elem as any).webkitRequestFullscreen) { /* Safari */
-      (elem as any).webkitRequestFullscreen();
-    } else if ((elem as any).msRequestFullscreen) { /* IE11 */
-      (elem as any).msRequestFullscreen();
-    }
-  }
+  // ativarFullscreen(): void {
+  //   const elem = document.documentElement;
+  //   if (elem.requestFullscreen) {
+  //     elem.requestFullscreen();
+  //   } else if ((elem as any).webkitRequestFullscreen) { /* Safari */
+  //     (elem as any).webkitRequestFullscreen();
+  //   } else if ((elem as any).msRequestFullscreen) { /* IE11 */
+  //     (elem as any).msRequestFullscreen();
+  //   }
+  // }
 
   
   // busca os Equipamentos no parametro para popular o select

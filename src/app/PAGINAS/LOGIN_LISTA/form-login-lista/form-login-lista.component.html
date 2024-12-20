@@ -3,13 +3,35 @@
 <div class="d-flex justify-content-center flex-column"> <!-- Adicione flex-column para empilhar os elementos -->
     <form [formGroup]="formulario" id="meuFormulario" class="centralizado-formulario">
         
-  <!----------------------TABELA COM AS ORDENS DE SERVIÇO------------------------------------------------------>
+  
   
   <p class="nome-cliente">{{objetoOs[0].fantasia | slice: 0:40 }}{{objetoOs[0].fantasia.length > 40 ? '...' : '' }}</p>
+  <p class="nome-cliente">Aprovações pendentes: {{objetoOs.length}}</p>
   
 
   <div class="card" style="width: 90%;" *ngFor="let os of objetoOs">
-    <img src="assets/nobreak.jpg" class="card-img-top" alt="Nobreak">
+
+    <div>
+      <img *ngIf="os.equipamento === 'MONITOR'; else checkNobreak" 
+           src="assets/monitores.jpg" 
+           class="card-img-top" 
+           alt="Monitor">
+      
+      <ng-template #checkNobreak>
+        <img *ngIf="os.equipamento === 'NOBREAK'; else defaultImage" 
+             src="assets/nobreak.jpg" 
+             class="card-img-top" 
+             alt="Nobreak">
+      </ng-template>
+    
+      <ng-template #defaultImage>
+        <img src="assets/estabilizadores.jpg" 
+             class="card-img-top" 
+             alt="Estabilizador">
+      </ng-template>
+    </div>
+    
+
   
     <div class="card-body">
       <h5 class="card-title">ORDEM SERVIÇO: {{ os.os }}</h5>
