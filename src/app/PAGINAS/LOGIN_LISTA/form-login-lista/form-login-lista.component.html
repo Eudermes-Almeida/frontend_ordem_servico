@@ -1,66 +1,72 @@
-<div class="d-flex justify-content-center flex-column">
+<div class="d-flex flex-column align-items-center"> <!-- Flex centralizado -->
   <form [formGroup]="formulario" id="meuFormulario" class="centralizado-formulario">
-
-    <p class="nome-cliente1">{{ objetoOs[0].fantasia | slice: 0:40 }}{{ objetoOs[0].fantasia.length > 40 ? '...' : '' }}</p>
-    <p class="nome-cliente">Aprovações pendentes: <span>{{ objetoOs.length }}</span></p>
+        
+    @if(objetoOs.length >0){
+    <p class="nome-cliente1">{{objetoOs[0].fantasia | slice: 0:40 }}{{objetoOs[0].fantasia.length > 40 ? '...' : '' }}</p>
+    <p class="nome-cliente">Aprovações pendentes: <span>{{objetoOs.length}}</span></p>
     <p class="nome-cliente">Valor Total: <span>{{ objetoOs[0]?.somatoriaDTO?.somatotaliq | number:'1.2-2' }}</span></p>
+    }@else {
+      <p class="nome-cliente1">Não existe aprovações pendentes neste momento, tente mais tarde. Obrigado.</p>
+    }
 
-    <div class="card" style="width: 90%;" *ngFor="let os of objetoOs; let i = index">
 
-      <div>
-        <img *ngIf="os.equipamento === 'MONITOR'; else checkNobreak" 
-             src="assets/monitores.jpg" 
-             class="card-img-top" 
-             alt="Monitor">
-        
-        <ng-template #checkNobreak>
-          <img *ngIf="os.equipamento === 'NOBREAK'; else defaultImage" 
-               src="assets/nobreak.jpg" 
-               class="card-img-top" 
-               alt="Nobreak">
-        </ng-template>
+    <div class="row w-100"> <!-- Grid para organizar os cards -->
+      <div class="col-12 col-md-6 col-lg-4" *ngFor="let os of objetoOs"> <!-- Configurações responsivas -->
+        <div class="card">
+          <div>
+            <img *ngIf="os.equipamento === 'MONITOR'; else checkNobreak" 
+                 src="assets/monitores.jpg" 
+                 class="card-img-top" 
+                 alt="Monitor">
+            
+            <ng-template #checkNobreak>
+              <img *ngIf="os.equipamento === 'NOBREAK'; else defaultImage" 
+                   src="assets/nobreak.jpg" 
+                   class="card-img-top" 
+                   alt="Nobreak">
+            </ng-template>
+          
+            <ng-template #defaultImage>
+              <img src="assets/estabilizadores.jpg" 
+                   class="card-img-top" 
+                   alt="Estabilizador">
+            </ng-template>
+          </div>
+          
+          <div class="card-body">
+            <h5 class="card-title">ORDEM SERVIÇO: <span>{{ os.os }}</span></h5>
+            <p class="card-text">Data Entrada: <span>{{ os.data | date: 'dd/MM/yyyy' }}</span></p>
+            <p class="card-text">Status: <span>{{ os.status }}</span></p>
+            <p class="card-text">Equipamento: <span>{{ os.equipamento }}</span></p>
+            <p class="card-text">Marca: <span>{{ os.marca }}</span></p>
+            <p class="card-text">Modelo: <span>{{ os.modelo }}</span></p>
+            <p class="card-text">Valor Total: <span>{{ os.totaliq }}</span></p>
+          
+            <div>
+              <a>
+                <label style="text-align: center; color: aqua; padding-right: 5px;">Ver detalhes:</label>
+                <button type="button" class="btn btn-dark" [routerLink]="['/os/consulta/alterapg1', os.os]">
+                  <i class="bi bi-search" style="font-size: 15px; color: green; margin: 10px;"></i>
+                </button>
+              </a>
+            </div>
       
-        <ng-template #defaultImage>
-          <img src="assets/estabilizadores.jpg" 
-               class="card-img-top" 
-               alt="Estabilizador">
-        </ng-template>
-      </div>
-      
-      <div class="card-body">
-        <h5 class="card-title">ORDEM SERVIÇO: <span>{{ os.os }}</span></h5>
-        <p class="card-text">Data Entrada: <span>{{ os.data | date: 'dd/MM/yyyy' }}</span></p>
-        <p class="card-text">Status: <span>{{ os.status }}</span></p>
-        <p class="card-text">Equipamento: <span>{{ os.equipamento }}</span></p>
-        <p class="card-text">Marca: <span>{{ os.marca }}</span></p>
-        <p class="card-text">Modelo: <span>{{ os.modelo }}</span></p>
-        <p class="card-text">Valor Total: <span>{{ os.totaliq }}</span></p>
-      
-        <div>
-          <a>
-            <label style="text-align: center; color: aqua; padding-right: 5px;">Ver detalhes:</label>
-            <button type="button" class="btn btn-dark" [routerLink]="['/os/consulta/alterapg1', os.os]">
-              <i class="bi bi-search" style="font-size: 15px; color: green; margin: 10px;"></i>
-            </button>
-          </a>
+            <!--Botões aprovar e reprovar:-->
+            <div class="form-check">
+              <input (click)="modificaStatusOs(os.os, 'APROVADA REMOTA')" class="form-check-input" type="radio" name="exampleRadios-{{ os.os }}" id="aprovar-{{ os.os }}" value="aprovar">
+              <label class="form-check-label" for="aprovar-{{ os.os }}">
+              Aprovar Orçamento
+            </label>
+            </div>
+            <div class="form-check">
+              <input (click)="modificaStatusOs(os.os, 'REPROVADA REMOTA')" class="form-check-input" type="radio" name="exampleRadios-{{ os.os }}" id="aprovar-{{ os.os }}" value="aprovar">
+              <label class="form-check-label" for="aprovar-{{ os.os }}">
+              Reprovar Orçamento
+            </label>
+            </div>
+          </div>
         </div>
-    
-        <!--Botões aprovar e reprovar:-->
-        <div class="form-check">
-          <input class="form-check-input" type="radio" [name]="'exampleRadios' + i" id="'exampleRadios1' + i" value="aprovar">
-          <label class="form-check-label" [for]="'exampleRadios1' + i">
-            Aprovar Orçamento
-          </label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="radio" [name]="'exampleRadios' + i" id="'exampleRadios2' + i" value="reprovar">
-          <label class="form-check-label" [for]="'exampleRadios2' + i">
-            Reprovar Orçamento
-          </label>
-        </div>
-        
       </div>
     </div>
-    
   </form>
 </div>

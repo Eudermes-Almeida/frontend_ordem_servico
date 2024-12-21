@@ -145,5 +145,31 @@ carregaCodcliUrl(): void {
         }
       );
     }
+
+    modificaStatusOs(osId: string, novoStatus: string) {
+      // Convertendo o osId para número antes de passá-lo para o serviço
+      const osIdNumerico = Number(osId);  // Ou use +osId
+      
+      // Chama o serviço para atualizar o status da OS específica
+      this.servico.atualizarStatusOrdemServico(osIdNumerico, novoStatus).subscribe({
+        next: () => {
+          console.log(`Status da OS ${osIdNumerico} atualizado para: ${novoStatus}`);
+          
+          // Atualize o status localmente (opcional)
+          const osAtualizada = this.objetoOs.find(os => os.os === osIdNumerico);
+          if (osAtualizada) {
+            osAtualizada.status = novoStatus;
+          }
+        },
+        error: (erro) => {
+          console.error(`Erro ao atualizar o status da OS ${osIdNumerico}:`, erro);
+        }
+      });
+    }
+    
+    
+
+
+    }
   
-}
+

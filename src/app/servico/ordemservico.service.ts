@@ -255,5 +255,14 @@ private osSubject = new BehaviorSubject<any>(null); // Inicializa com null
     return this.http.get(url);
   }
 
+  // Altera status da os (de Aguardando aprovação para aprovada remota)
+atualizarStatusOrdemServico(os: number, status: string): Observable<void> {
+  // Monta a URL com os parâmetros
+  const url = `${this.urlServidor}os/status?os=${os}&status=${status}`;
+  
+  // Retorna a chamada HTTP com método PATCH
+  return this.http.patch<void>(url, null);
+}
+
 
 }
