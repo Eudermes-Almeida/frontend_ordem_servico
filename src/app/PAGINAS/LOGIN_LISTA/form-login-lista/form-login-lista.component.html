@@ -42,14 +42,86 @@
             <p class="card-text">Modelo: <span>{{ os.modelo }}</span></p>
             <p class="card-text">Valor Total: <span>{{ os.totaliq }}</span></p>
           
-            <div>
-              <a>
-                <label style="text-align: center; color: aqua; padding-right: 5px;">Ver detalhes:</label>
-                <button type="button" class="btn btn-dark" [routerLink]="['/os/consulta/alterapg1', os.os]">
-                  <i class="bi bi-search" style="font-size: 15px; color: green; margin: 10px;"></i>
-                </button>
-              </a>
+            <!------------------------------------------------ACORDEON------------------->
+            <div class="accordion" [id]="'accordion-' + os.os">
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button 
+                    class="accordion-button accordion-config" 
+                    type="button" 
+                    data-bs-toggle="collapse" 
+                    [attr.data-bs-target]="'#collapse-' + os.os" 
+                    aria-expanded="false" 
+                    [attr.aria-controls]="'collapse-' + os.os">
+                    Detalhes OS: {{ os.os }}
+                  </button>
+                </h2>
+                <div 
+                  [id]="'collapse-' + os.os" 
+                  class="accordion-collapse collapse" 
+                  [attr.data-bs-parent]="'#accordion-' + os.os">
+                  <div class="accordion-body">
+                    <p> Número OS: <strong>{{os.os}}</strong></p>
+                    <p> Data Entrada: <strong>{{os.data | date: 'dd/MM/yyyy'}}</strong></p>
+                    <p> Data Orçamento: <strong>{{os.dataorca | date: 'dd/MM/yyyy'}}</strong></p>
+                    <p> Status: <strong>{{os.status}}</strong></p>
+                    <p>---------------------------</p>
+                    <p> Equipamento: <strong>{{os.equipamento}}</strong></p>
+                    <p> Marca:<strong>{{os.marca}}</strong></p>
+                    <p> Modelo: <strong>{{os.modelo}}</strong></p>
+                    <p> Topologia: <strong>{{os.topologia}}</strong></p>
+                    <p> Cor: <strong>{{os.cor}}</strong></p>
+                    <p> Serial:  <strong>{{os.serial}}</strong></p>
+                    <p> Patrimonio:  <strong>{{os.patrimonio}}</strong></p>
+                    <p>---------------------------</p>
+                    <p> Obs1: <strong>{{os.obs1}}</strong></p>
+                    <p> Obs2: <strong>{{os.obs2}}</strong></p>
+                    <p> Garantia: <strong>{{os.garantia}}</strong></p>
+                    <p> Atendente: <strong>{{os.atendente}}</strong></p>
+                    <p>---------------------------</p>
+                    <p> Técnico: <strong>{{os.tecnico}}</strong></p>
+                    <p> Tarefa 1:  <strong>{{os.tarefa1}}</strong></p>
+                    <p> Tarefa 2:  <strong>{{os.tarefa2}}</strong></p>
+                    <p> Tarefa 3:  <strong>{{os.tarefa3}}</strong></p>
+                    <p> Observação técnico:  <strong>{{os.obs3}}</strong></p>
+                    <p> Mão de obra:  <strong>{{os.valorassistencia}}</strong></p>
+                    <p>---------------------------</p>
+                    <p> Baterias: <strong>{{os.baterias}}</strong></p>
+                    <p> Qt Baterias:  <strong>{{os.qt1}}</strong></p>
+                    <p> VL unit Bat:  <strong>{{os.valorunit1}}</strong></p>
+                    <p> VL total Bat:  <strong>{{os.valortotal1}}</strong></p>
+                    <p>---------------------------</p>
+                    <p> Material 2:  <strong>{{os.material2}}</strong></p>
+                    <p> Qt material 2:  <strong>{{os.qt2}}</strong></p>
+                    <p> VL unit material 2:  <strong>{{os.valorunit2}}</strong></p>
+                    <p> VL total material 2:  <strong>{{os.valortotal2}}</strong></p>
+                    <p>---------------------------</p>
+                    <p> Material 3:  <strong>{{os.material3}}</strong></p>
+                    <p> Qt material 3:  <strong>{{os.qt3}}</strong></p>
+                    <p> VL unit material 3: <strong>{{os.valorunit3}}</strong></p>
+                    <p> VL total material 3: <strong>{{os.valortotal3}}</strong></p>
+                    <p>---------------------------</p>
+                    <p> Outros itens:  <strong>{{os.outrositens}}</strong></p>
+                    <p> Qt outros itens: <strong>{{os.qtoutrositens}}</strong></p>
+                    <p> VL unit outros itens: <strong>{{os.valorunitoutrositens}}</strong></p>
+                    <p> VL total outros itens: <strong>{{os.valortotaloutrositens}}</strong></p>
+                    <p>---------------------------</p>
+                    <p> Deslocamento:</p>
+                    <p> Qt Km deslocados:  <strong>{{os.qtdeslocamento}}</strong></p>
+                    <p> VL unit km:  <strong>{{os.valorunitariodeslocamento}}</strong></p>
+                    <p> VL total deslocamento: <strong>{{os.valortotaldeslocamento}}</strong></p>
+                    <p>---------------------------</p>
+                    <p> Total Bruto: <strong>{{os.totalbruto}}</strong></p>
+                    <p> Desconto (pix): <strong>{{os.valordesconto}}</strong></p>
+                    <p> Desconto %: <strong>{{os.desconto}}</strong></p>
+                    <p> Total Liquido: <strong>{{os.totaliq}}</strong></p>
+                  </div>
+                </div>
+              </div>
             </div>
+          
+
+            
       
             <!--Botões aprovar e reprovar:-->
             <div class="form-check">

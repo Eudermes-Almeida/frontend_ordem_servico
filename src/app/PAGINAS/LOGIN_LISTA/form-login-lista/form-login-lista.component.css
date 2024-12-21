@@ -70,6 +70,13 @@
     margin: 10px auto; /* Espaçamento entre os cards */
 }
 
+.accordion-config{
+    background-color: black !important;
+    color: aqua;
+    height: 10px;
+    
+}
+
 @media (min-width: 992px) { /* Para telas grandes */
   .centralizado-formulario {
     margin: 20px auto; /* Centraliza o formulário */
