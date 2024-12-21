@@ -11,6 +11,8 @@ import { RouterLink } from '@angular/router';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { Router } from '@angular/router';
+import QRCode from 'qrcode';
+
 
 
 @Component({
@@ -122,6 +124,10 @@ export class FORMCADASTROOSComponent {
   novaOs: number = 0;
   osParaImprimir: number = 0
   objetoOs: any[]=[];
+  
+  url: string = 'https://nhs.com.br/';
+  qrCodeUrl: string = '';
+
 
   ///////////CONTROLE DE RENDERIZAÇÃO/////////
   exibirTabela: boolean = false;
@@ -465,7 +471,19 @@ onGarantiaChange(event: Event): void {
       this.buscarTopologiaNobreaks();
       this.buscarTopologiaMonitores();
       this.buscarTopologiaBateria();
+
     }
+
+   
+    QRCode.toDataURL(this.url, { width: 300 })  // Define o tamanho para 300x300
+  .then((url) => {
+    this.qrCodeUrl = url;
+  })
+  .catch((err) => {
+    console.error('Erro ao gerar QR Code', err);
+  });
+
+
 
     // Escutar mudanças no campo de nomefantasia
     this.formulario.get('fantasia')?.valueChanges.subscribe((value: string) => {
@@ -481,6 +499,8 @@ onGarantiaChange(event: Event): void {
       }
     });
   }
+
+  
 
   // ///////ATIVA FULL SCREEN////
   // ativarFullscreen(): void {
