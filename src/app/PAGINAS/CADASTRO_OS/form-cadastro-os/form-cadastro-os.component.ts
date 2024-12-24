@@ -125,7 +125,7 @@ export class FORMCADASTROOSComponent {
   osParaImprimir: number = 0
   objetoOs: any[]=[];
   
-  url: string = 'https://nhs.com.br/';
+  url: string = 'http://192.168.15.14:7766/';
   qrCodeUrl: string = '';
 
 
