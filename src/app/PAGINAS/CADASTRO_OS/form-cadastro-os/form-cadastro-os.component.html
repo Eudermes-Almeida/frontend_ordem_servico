@@ -674,6 +674,12 @@ formControlName="serial"
       <div class="assinatura-cliente">ASSINATURA REPRESENTANTE SÓ MONITORES & NOBREAKS:</div>
       <div class="assinatura-cliente">ASSINATURA REPRESENTANTE CLIENTE:</div>
     </div>
+
+    <!-------------------------------QR CODE--------------------------->
+  <div style="text-align: center; margin-top: 50px;">
+    <h2 style="color: red;">Escaneie o QR Code para pesquisar seus orçamentos</h2>
+    <img *ngIf="qrCodeUrl" [src]="qrCodeUrl" alt="QR Code">
+  </div>
     
   <!--------------------------ETIQUETA PARA LABORATÓRIO --------------------------------------->
   <div class="etiqueta">
