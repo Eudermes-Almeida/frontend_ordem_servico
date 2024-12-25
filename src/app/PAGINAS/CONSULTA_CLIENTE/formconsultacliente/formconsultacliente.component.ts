@@ -7,6 +7,8 @@ import { Cliente } from '../../../modelo/Cliente';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Router } from '@angular/router';
+import { ChangeDetectorRef } from '@angular/core';
+
 @Component({
   selector: 'app-formconsultacliente',
   standalone: true,
@@ -53,6 +55,7 @@ export class FormconsultaclienteComponent {
   });
 
   constructor(
+    private cdr: ChangeDetectorRef,
     private router: Router,
     private parametrosService?: ParametrosService, 
     private servico?: OrdemservicoService,
@@ -61,6 +64,9 @@ export class FormconsultaclienteComponent {
 
   // CONFIGURA AS FUNÇÕES QUE SERÃO EXECUTADAS NA INICIALIZAÇÃO DA PÁGINA
   ngOnInit(): void {
+
+    event.preventDefault(); // Impede o envio do formulário
+
     if (this.parametrosService) {
       this.buscarCidades();
       this.buscarSegmentos();
@@ -88,27 +94,16 @@ export class FormconsultaclienteComponent {
   //escuta o input codcli ser ativado com a tecla enter:
   onClienteKey(event: KeyboardEvent): void {
     const input = (event.target as HTMLInputElement).value;
-
-    if (event.key === 'Enter') { // Dispara a busca ao digitar 4 algarismos
+    
+    if (event.key === 'Enter') { // Dispara a busca ao digitar a tecla enter
+      event.preventDefault();  // evita o submit antecipado
       const id = parseInt(input, 10); // Converte o valor para número
       this.getCliente(id); // Chama o método getCliente com o valor digitado
+      console.log(" este é o codcli digitado e apertado o enter " + id)
     }
   }
 
-  // ///ATIVAR FULL SCREEN:
-  // ativarFullscreen(): void {
-  //   const elem = document.documentElement;
-  //   if (elem.requestFullscreen) {
-  //     elem.requestFullscreen();
-  //   } else if ((elem as any).webkitRequestFullscreen) { /* Safari */
-  //     (elem as any).webkitRequestFullscreen();
-  //   } else if ((elem as any).msRequestFullscreen) { /* IE11 */
-  //     (elem as any).msRequestFullscreen();
-  //   }
-  // }
-
-
-
+  
   // Buscar clientes por Razao Social
   buscarClientesPorRazaoSocial(): void {
     const razaoSocial = this.formulario.get('razaosocial')?.value;
@@ -205,24 +200,26 @@ export class FormconsultaclienteComponent {
   }
 
   // Busca Clientes por id
-  getCliente(id: number): void {
-    this.servico.getClientePorId(id).subscribe(
-      (data: Cliente) => {
-        this.objetocliente = [data]; // Coloca o cliente dentro de um array
-        console.log('Cliente obtido:', this.objetocliente);
-      },
-      (error) => {
-        if (error.status === 404) {
-          alert(`Você informou o código ${id}, não existe cliente para este código`);
-        } else {
-          console.error('Erro ao buscar cliente:', error);
-          alert(`Você informou o código ${id}, não existe cliente para este código`);
-        }
+  // Método chamado ao buscar cliente
+getCliente(id: number): void {
+  this.servico.getClientePorId(id).subscribe(
+    (data: Cliente) => {
+      this.objetocliente = [data]; // Atualiza o array
+      this.cdr.detectChanges(); // Força a detecção de mudanças
+      console.log('Cliente obtido:', this.objetocliente);
+    },
+    (error) => {
+      if (error.status === 404) {
+        alert(`Você informou o código ${id}, não existe cliente para este código`);
+      } else {
+        console.error('Erro ao buscar cliente:', error);
+        alert(`Você informou o código ${id}, não existe cliente para este código`);
       }
-    );
-  }
+    }
+  );
+}
 
-  //escuta o input id
+  //escuta o input id precisa digitar 4 digitos para chamar o get cliente
   onClienteInput(event: Event): void {
     const input = (event.target as HTMLInputElement).value;
 
