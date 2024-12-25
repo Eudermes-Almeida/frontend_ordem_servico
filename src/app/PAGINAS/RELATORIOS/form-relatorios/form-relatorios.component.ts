@@ -49,6 +49,9 @@ buscaEescreveDatas(){
   dataFim: string = "";
   variavelEnviada: string = ""
   isLoading: boolean = false;
+  currentColor: string = 'white';
+  private intervalId: any;
+
 
 
   relatorios: string[] = ["faturamentoTotal", "faturamentoNobreak", "faturamentoManutencaoNobreak", "faturamentoManutencaoNobreakAbaixo3kva",
@@ -89,6 +92,7 @@ arrayTecnicoEudermes: any[] = [];
 arrayTecnicoVinicius: any[] = [];
 arrayTecnicoLeonardo: any[] = [];
 arrayTecnicoRafael: any[] = [];
+arrayAprovadasOuReprovadasRemotamente: any[]=[];
 
 /// array de status:
 
@@ -160,7 +164,12 @@ async selecionaRelatorios() {
   // Após o loop, chama as funções seguintes
   this.SelecionaRelatoriosStatus();
   this.buscaCalculoComissaoTecnicos();
-  
+  this.buscaOsAprovadasOuReprovadasRemotamente()
+
+  ////Se existir Alguma OS reprovada ou Aprovada Remotamente, irá ficar piscando o nome do relatório
+  //console.log(" Esta é a quantidade de os Aprovadas ou Reprovadas: " , this.arrayAprovadasOuReprovadasRemotamente[0]?.somatoriaDTO.qtOs )
+ 
+
 }
 
 
@@ -415,6 +424,53 @@ limpar() {
 onButtonClick() {
   this.isClickEvent = true; // Define a flag quando o botão é clicado
   this.limpar(); // Chama a função
+}
+
+
+////BUSCA OS APROVADAS E REPROVADAS REMOTAMENTE:
+
+buscaOsAprovadasOuReprovadasRemotamente(){
+  this.servico.buscaOsPorStatusRemoto().subscribe({
+    next: (data) => {
+      this.arrayAprovadasOuReprovadasRemotamente = data;
+      console.log('Lista de OS Aprovadas ou Reprovadas Remotamente', this.arrayAprovadasOuReprovadasRemotamente);
+      console.log ("Esta é a quantidade de os Aprovadas Remotamente " , this.arrayAprovadasOuReprovadasRemotamente[0]?.somatoriaDTO.qtOs)
+
+      /////FAZ PISCAR O NOME DO RELATÓRIO
+      if(this.arrayAprovadasOuReprovadasRemotamente[0]?.somatoriaDTO.qtOs > 0){
+        this.startBlinking();
+      }
+
+    },
+    error: (err) => {
+      console.error('Erro ao buscar ordens de serviço:', err);
+    }
+  });
+}
+
+//////FAZ O ELEMENTO RELATORIO OS APROVADA OU REPROVADA REMOTAMENTE PISCAR:
+
+startBlinking() {
+  // Evita múltiplos intervalos ao clicar repetidamente
+  if (this.intervalId) {
+    return;
+  }
+
+  this.intervalId = setInterval(() => {
+    this.currentColor = this.currentColor === 'white' ? 'orange' : 'white';
+  }, 1000);
+}
+
+stopBlinking() {
+  if (this.intervalId) {
+    clearInterval(this.intervalId);
+    this.intervalId = null;
+    this.currentColor = 'white'; // Opcional, para resetar a cor
+  }
+}
+
+ngOnDestroy() {
+  this.stopBlinking();
 }
 
 }

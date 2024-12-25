@@ -602,13 +602,16 @@
                   <button 
                 type="button" 
                 class="btn btn-dark" 
-                (click)="memorizaRelatorio(arrayStatusOsImpressaMasNaoFechada, 'ORDENS SERVIÇOS IMPRESSAS MAS NÃO FECHADAS' , 'STATUS')">
+                (click)="memorizaRelatorio(arrayAprovadasOuReprovadasRemotamente, 'ORDENS SERVIÇOS APROVADAS OU REPROVADAS REMOTAMENTE' , 'STATUS')">
                 <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
               </button>
               </a></td>
-                <td>OS impressas não Fechadas</td>
-                <td class="valor">{{ arrayStatusOsImpressaMasNaoFechada[0]?.somatoriaDTO.somatotaliq | number:'1.2-2' }}</td>
-                <td class="qt">{{arrayStatusOsImpressaMasNaoFechada[0]?.somatoriaDTO.qtOs}}</td>
+              <td [ngStyle]="{'color': currentColor}">
+                OS Aprovadas ou Reprovadas Remotamente
+              </td>
+              
+                <td class="valor">{{ arrayAprovadasOuReprovadasRemotamente[0]?.somatoriaDTO.somatotaliq | number:'1.2-2' }}</td>
+                <td class="qt">{{arrayAprovadasOuReprovadasRemotamente[0]?.somatoriaDTO.qtOs}}</td>
                 <td class="qt"> </td>
                 
               </tr>

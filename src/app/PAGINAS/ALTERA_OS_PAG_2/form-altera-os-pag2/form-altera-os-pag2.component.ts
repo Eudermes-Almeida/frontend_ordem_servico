@@ -65,6 +65,7 @@ export class FORMALTERAOSPAG2Component {
   exibeMensagemErroValidacao: boolean = false;
   exibirImpOs: boolean = false;
   exibirBotaoImprimir: boolean = false;
+  
 
   // CONFIGURA FORMULÁRIO
   formulario = new FormGroup({
@@ -753,6 +754,7 @@ gerarPDF() {
         setTimeout(() => URL.revokeObjectURL(pdfUrl), 100);
 
         this.exibirImpOs = false;
+
       });
     } else {
       console.error('Elemento para gerar o PDF não encontrado.');

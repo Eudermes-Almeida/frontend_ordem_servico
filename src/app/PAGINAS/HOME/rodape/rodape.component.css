@@ -1,33 +1,32 @@
 .footer-container {
-    background-color: #1c1c22;
-    padding: 2px 0; /* Metade da altura do cabeçalho */
-    color: white;
-    width: 100%; /* Ocupa 100% da largura */
-    text-align: center;
-  }
-  
-  .footer-text {
-    margin: 0;
-    font-size: 1.2rem; /* Ajuste o tamanho conforme necessário */
-  }
-  
-  .footer-links {
-    list-style-type: none;
-    margin: 0 px;
-    padding: 0;
-  }
-  
-  .footer-links li {
-    margin: 0 15px;
-  }
-  
-  .footer-link {
-    color: orange;
-    text-decoration: none;
-    font-size: 1.1rem; /* Ajuste o tamanho conforme necessário */
-  }
-  
-  .footer-link:hover {
-    text-decoration: underline;
-  }
-  
+  background-color: #1c1c22;
+  padding: 2px 0; /* Reduzir o padding vertical para diminuir a altura */
+  color: white;
+  width: 100%;
+  text-align: center;
+}
+
+.footer-text {
+  margin: 0;
+  font-size: 1rem; /* Reduzir o tamanho da fonte do texto para diminuir a altura */
+}
+
+.footer-links {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.footer-links li {
+  margin: 0 10px; /* Reduzir a margem lateral entre os itens */
+}
+
+.footer-link {
+  color: orange;
+  text-decoration: none;
+  font-size: 1rem; /* Reduzir o tamanho da fonte do link */
+}
+
+.footer-link:hover {
+  text-decoration: underline;
+}

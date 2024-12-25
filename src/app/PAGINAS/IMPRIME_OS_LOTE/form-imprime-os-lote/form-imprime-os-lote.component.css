@@ -17,6 +17,16 @@
     
 }
 
+.totaliq{
+
+    font-size: 30px !important;
+}
+
+.valores_somatorio_final .totaliq {
+    font-size: 30px !important;
+    font-weight: bold; /* Se você também quiser garantir que o texto fique em negrito */
+}
+
 .borda_azul {
     display: flex;
     border: 2px solid #007bff; /* Azul primário do Bootstrap */

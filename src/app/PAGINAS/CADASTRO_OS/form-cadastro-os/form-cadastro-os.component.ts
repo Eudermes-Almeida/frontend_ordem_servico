@@ -1032,6 +1032,10 @@ const dataFormatada = `${ano}-${mes}-${dia}T${horas}:${minutos}:${segundos}`;
             rzsocial: cliente.razaosocial,
         });
 
+        console.log("Este é o cpf do cliente " + cliente.cpfcnpj)
+        if(!cliente.cpfcnpj || cliente.cpfcnpj.length < 11){
+          alert(" Atenção!!! Cliente sem CPF ou CNPJ cadastrados")
+        }
         this.exibirBotaoImprimeOutrasOs = false;
         
 

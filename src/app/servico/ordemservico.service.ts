@@ -172,6 +172,14 @@ buscaCalculoComissaoTecnicos(dataInicio: string, dataFim: string, busca: string)
   return this.http.get<any>(urlComissao);
 }
 
+buscaOsPorStatusRemoto(): Observable<any> {
+  const url = `${this.urlServidor}relatorio/osPorStatusRemoto`;
+  return this.http.get<any>(url);
+}
+
+
+
+
 
 /////Retorna a relação que será passada para a consulta de orçamento on line:
 getAprovacaoOnline(status: string, codcli: number): Observable<any> {

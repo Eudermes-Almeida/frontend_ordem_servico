@@ -49,6 +49,7 @@
             <th>OS</th>
             <th *ngIf="configImp">Entrada</th>
             <th>Nome</th>
+            <th>CodCli</th>
             <th *ngIf="configImp">Status</th>
             <th>Equipamento</th>
             <th>Marca</th>
@@ -68,6 +69,7 @@
             <td>{{ dado.os }}</td>
             <td *ngIf="configImp">{{ dado.data | date: 'dd/MM/yyyy' }}</td>
             <td>{{ dado.fantasia | slice: 0:50 }}{{ dado.fantasia.length > 25 ? '...' : '' }}</td>
+            <td>{{ dado.codcli}}</td>
             <td *ngIf="configImp">{{dado.status}}</td>
             <td>{{dado.equipamento}}</td>
             <td>{{dado.marca}}</td>
