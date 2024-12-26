@@ -83,7 +83,6 @@
                     <p> Tarefa 1:  <strong>{{os.tarefa1}}</strong></p>
                     <p> Tarefa 2:  <strong>{{os.tarefa2}}</strong></p>
                     <p> Tarefa 3:  <strong>{{os.tarefa3}}</strong></p>
-                    <p> Observação técnico:  <strong>{{os.obs3}}</strong></p>
                     <p> Mão de obra:  <strong>{{os.valorassistencia}}</strong></p>
                     <p>---------------------------</p>
                     <p> Baterias: <strong>{{os.baterias}}</strong></p>
@@ -92,14 +91,14 @@
                     <p> VL total Bat:  <strong>{{os.valortotal1}}</strong></p>
                     <p>---------------------------</p>
                     <p> Material 2:  <strong>{{os.material2}}</strong></p>
-                    <p> Qt material 2:  <strong>{{os.qt2}}</strong></p>
-                    <p> VL unit material 2:  <strong>{{os.valorunit2}}</strong></p>
-                    <p> VL total material 2:  <strong>{{os.valortotal2}}</strong></p>
+                    <p> Qt material:  <strong>{{os.qt2}}</strong></p>
+                    <p> VL unit material:  <strong>{{os.valorunit2}}</strong></p>
+                    <p> VL total material:  <strong>{{os.valortotal2}}</strong></p>
                     <p>---------------------------</p>
                     <p> Material 3:  <strong>{{os.material3}}</strong></p>
-                    <p> Qt material 3:  <strong>{{os.qt3}}</strong></p>
-                    <p> VL unit material 3: <strong>{{os.valorunit3}}</strong></p>
-                    <p> VL total material 3: <strong>{{os.valortotal3}}</strong></p>
+                    <p> Qt material:  <strong>{{os.qt3}}</strong></p>
+                    <p> VL unit material: <strong>{{os.valorunit3}}</strong></p>
+                    <p> VL total material: <strong>{{os.valortotal3}}</strong></p>
                     <p>---------------------------</p>
                     <p> Outros itens:  <strong>{{os.outrositens}}</strong></p>
                     <p> Qt outros itens: <strong>{{os.qtoutrositens}}</strong></p>
@@ -129,12 +128,14 @@
               <label class="form-check-label" for="aprovar-{{ os.os }}">
               Aprovar Orçamento
             </label>
+      
             </div>
             <div class="form-check">
               <input (click)="modificaStatusOs(os.os, 'REPROVADA REMOTA')" class="form-check-input" type="radio" name="exampleRadios-{{ os.os }}" id="aprovar-{{ os.os }}" value="aprovar">
               <label class="form-check-label" for="aprovar-{{ os.os }}">
               Reprovar Orçamento
             </label>
+            
             </div>
           </div>
         </div>

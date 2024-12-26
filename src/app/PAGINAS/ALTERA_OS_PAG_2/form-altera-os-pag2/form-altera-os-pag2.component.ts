@@ -260,19 +260,7 @@ onMaterialChange(event: Event): void {
     }
   }
 
-  // ///////ATIVA FULL SCREEN////
-  // ativarFullscreen(): void {
-  //   const elem = document.documentElement;
-  //   if (elem.requestFullscreen) {
-  //     elem.requestFullscreen();
-  //   } else if ((elem as any).webkitRequestFullscreen) { /* Safari */
-  //     (elem as any).webkitRequestFullscreen();
-  //   } else if ((elem as any).msRequestFullscreen) { /* IE11 */
-  //     (elem as any).msRequestFullscreen();
-  //   }
-  // }
-
-
+  
   ///////////////////BUSCA DADOS PARA POUPULAR OS SELECTS //////////////////
   
   // busca os Equipamentos no parametro para popular o select
@@ -419,10 +407,8 @@ this.formulario.patchValue({
             valordesconto: os.valordesconto,
             desconto: os.desconto,
             totaliq: os.totaliq,
-            
             tecnico: os.tecnico,
             garantia: os.garantia,
-            
             osoriginal: os.osoriginal,
             venda: os.venda,
             modelofake: os.modelofake,
@@ -644,6 +630,14 @@ atualizarOS() {
   });
 }
 
+// ////// PREVINE QUE OCORRA UM SUBMITE SE TECLAR ENTER
+// preventSubmit(event: KeyboardEvent): void {
+//   if (event.key === 'Enter') {
+//     event.preventDefault();
+//   }
+// }
+
+
 geraObjetoOs() {
   // Obtém a data do formulário no formato "dd-MM-yyyy"
   const dataOrcaFormulario = this.formulario.value.dataorca;
@@ -699,28 +693,28 @@ geraObjetoOs() {
       tarefa2: String(this.formulario.value.tarefa2 || ""),
       tarefa3: String(this.formulario.value.tarefa3 || ""),
       obs3: String(this.formulario.value.obs3 || ""),
-      valorassistencia: String(this.formulario.value.valorassistencia || ""),
+      valorassistencia: String(parseFloat(this.formulario.value.valorassistencia || "0").toFixed(2)),
       baterias: String(this.formulario.value.baterias || ""),
       qt1: String(this.formulario.value.qt1 || ""),
-      valorunit1: String(this.formulario.value.valorunit1 || ""),
+      valorunit1: String(parseFloat(this.formulario.value.valorunit1 || "0").toFixed(2)),
       valortotal1: String(this.formulario.get('valortotal1')?.value),
       material2: String(this.formulario.value.material2 || ""),
       qt2: String(this.formulario.value.qt2 || ""),
-      valorunit2: String(this.formulario.value.valorunit2 || ""),
+      valorunit2: String(parseFloat(this.formulario.value.valorunit2 || "0").toFixed(2)),
       valortotal2: String(this.formulario.get('valortotal2')?.value),
       material3: String(this.formulario.value.material3 || ""),
       qt3: String(this.formulario.value.qt3 || ""),
-      valorunit3: String(this.formulario.value.valorunit3 || ""),
+      valorunit3: String(parseFloat(this.formulario.value.valorunit3 || "0").toFixed(2)),
       valortotal3: String(this.formulario.get('valortotal3')?.value),
       outrositens: String(this.formulario.value.outrositens || ""),
-      qtoutrositens: String(this.formulario.value.qtdeslocamento || ""),
-      valorunitoutrositens: String(this.formulario.value.valorunitoutrositens || ""),
+      qtoutrositens: String(this.formulario.value.qtoutrositens || ""),
+      valorunitoutrositens: String(parseFloat(this.formulario.value.valorunitoutrositens || "0").toFixed(2)),
       valortotaloutrositens: String(this.formulario.get('valortotaloutrositens')?.value),
       qtdeslocamento: String(this.formulario.value.qtdeslocamento || ""),
-      valorunitariodeslocamento: String(this.formulario.value.valorunitariodeslocamento || ""),
+      valorunitariodeslocamento: String(parseFloat(this.formulario.value.valorunitariodeslocamento || "0").toFixed(2)),
       valortotaldeslocamento: String(this.formulario.get('valortotaldeslocamento')?.value),
       totalbruto: String(this.formulario.get('totalbruto')?.value),
-      valordesconto: String(this.formulario.get('valordesconto')?.value),
+      valordesconto: String(parseFloat(this.formulario.value.valordesconto|| "0").toFixed(2)),
       desconto: String(this.formulario.get('desconto')?.value),
       totaliq: String(this.formulario.get('totaliq')?.value),
       fechamento: String(dataFechamentoFinalFormatada || ""),
