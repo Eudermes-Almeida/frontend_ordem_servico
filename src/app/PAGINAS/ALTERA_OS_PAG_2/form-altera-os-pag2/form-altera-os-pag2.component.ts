@@ -631,11 +631,11 @@ atualizarOS() {
 }
 
 // ////// PREVINE QUE OCORRA UM SUBMITE SE TECLAR ENTER
-// preventSubmit(event: KeyboardEvent): void {
-//   if (event.key === 'Enter') {
-//     event.preventDefault();
-//   }
-// }
+preventSubmit(event: KeyboardEvent): void {
+  if (event.key === 'Enter') {
+    event.preventDefault();
+  }
+}
 
 
 geraObjetoOs() {
