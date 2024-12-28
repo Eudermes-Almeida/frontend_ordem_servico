@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
+import QRCode from 'qrcode';
 
 
 
@@ -195,6 +196,8 @@ export class FORMCADOSComponent{
   objetocliente: Cliente[] = [];
   ultimaOs: number = 0;
   novaOs: number = 0;
+  urlQrcod: string = 'https://app.somonitores.tec.br/';
+  qrCodeUrl: string = '';
 
   os$ = new BehaviorSubject<any | null>(null); // Inicialize como `null`
 
@@ -1020,6 +1023,14 @@ onGarantiaChange10(event: Event): void {
       
     }
 
+    QRCode.toDataURL(this.urlQrcod, { width: 300 })  // Define o tamanho para 300x300
+      .then((url) => {
+        this.qrCodeUrl = url;
+      })
+      .catch((err) => {
+        console.error('Erro ao gerar QR Code', err);
+      });
+
     // Escutar mudanças no campo de nomefantasia
     this.formulario.get('fantasia')?.valueChanges.subscribe((value: string) => {
       if (value && value.length >= 4) {
@@ -1764,6 +1775,7 @@ onButtonClick() {
   this.isClickEvent = true; // Define a flag quando o botão é clicado
   this.limpar(); // Chama a função
 }
+
 
 
 }

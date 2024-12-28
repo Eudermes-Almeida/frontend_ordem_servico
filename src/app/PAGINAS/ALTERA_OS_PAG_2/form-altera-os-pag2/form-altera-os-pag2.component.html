@@ -1,7 +1,9 @@
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 <div class="d-flex justify-content-center flex-column"> <!-- Adicione flex-column para empilhar os elementos -->
-    <form [formGroup]="formulario" id="meuFormulario" class="centralizado-formulario">
+  <form [formGroup]="formulario" id="meuFormulario" class="centralizado-formulario" (keydown.enter)="$event.preventDefault()">
+  
+  
         <!--<p class="text-secondary" style="text-align: center; font-size: larger;">Escolha o Cliente:</p>-->
         <div class="alert alert-warning alert-dismissible fade show" role="alert" *ngIf="exibirAlertOsSalva">
           A ordem de serviço <strong>{{os.os}}</strong> foi salva com sucesso!
@@ -637,32 +639,32 @@ class="form-control total"
   <tr class="com_borda">
       <td>BATERIAS: {{os.baterias}}</td>
       <td>{{os.qt1}}</td>
-      <td>{{os.valorunit1 | number:'1.2-2' }}</td>
-      <td>{{os.valortotal1 | number:'1.2-2' }}</td>
+      <td>{{os.valorunit1}}</td>
+      <td>{{os.valortotal1}}</td>
   </tr>
   <tr class="com_borda">
     <td>{{os.material2}}</td>
     <td>{{os.qt2}}</td>
-    <td>{{os.valorunit2 | number:'1.2-2' }}</td>
-    <td>{{os.valortotal2 | number:'1.2-2' }}</td>
+    <td>{{os.valorunit2}}</td>
+    <td>{{os.valortotal2}}</td>
 </tr>
 <tr class="com_borda">
   <td>{{os.material3}}</td>
   <td>{{os.qt3}}</td>
-  <td>{{os.valorunit3 | number:'1.2-2' }}</td>
-  <td>{{os.valortotal3 | number:'1.2-2' }}</td>
+  <td>{{os.valorunit3}}</td>
+  <td>{{os.valortotal3}}</td>
 </tr>
 <tr class="com_borda">
   <td>{{os.outrositens}}</td>
   <td>{{os.qtoutrositens}}</td>
-  <td>{{os.valorunitoutrositens | number:'1.2-2' }}</td>
-  <td>{{os.valortotaloutrositens | number:'1.2-2' }}</td>
+  <td>{{os.valorunitoutrositens}}</td>
+  <td>{{os.valortotaloutrositens}}</td>
 </tr>
 <tr class="com_borda">
   <td>DESLOCAMENTO (Km):</td>
   <td>{{os.qtdeslocamento}}</td>
-  <td>{{os.valorunitariodeslocamento | number:'1.2-2' }}</td>
-  <td>{{os.valortotaldeslocamento | number:'1.2-2' }}</td>
+  <td>{{os.valorunitariodeslocamento}}</td>
+  <td>{{os.valortotaldeslocamento}}</td>
 </tr>
 <tr class="somatorio_final">
   <td>Mão de obra</td>
@@ -672,9 +674,9 @@ class="form-control total"
   <td>Total Liquido</td>
 </tr>
 <tr class="valores_somatorio_final">
-  <td>{{os.valorassistencia | number:'1.2-2' }}</td>
-  <td>{{os.totalbruto | number:'1.2-2' }}</td>
-  <td>{{os.valordesconto | number:'1.2-2' }}</td>
+  <td>{{os.valorassistencia}}</td>
+  <td>{{os.totalbruto}}</td>
+  <td>{{os.valordesconto}}</td>
   <td>{{os.desconto}}</td>
   <td class="totaliq">{{os.totaliq}}</td>
 </tr>

@@ -45,6 +45,7 @@ export class FORMORCAMENTOComponent {
   razaoSociaTemplat: string = "";
   foneClienteTemplat: string = "";
   contatoClienteTemplat: string = "";
+  numeroWhatsapp: string = ""
 
   ///////////CONTROLE DE RENDERIZAÇÃO/////////
   exibirTabela: boolean = false;
@@ -779,8 +780,10 @@ gerarPDF = () => {
       console.error('Erro ao gerar o PDF:', error);
   });
 }, 1000); // Ajuste o tempo se necessário
+
 }
 
+//////LIMPAR TELA//////////////
 private isClickEvent: boolean = false;
 limpar() {
   if (!this.isClickEvent) {
@@ -791,12 +794,48 @@ limpar() {
   this.router.navigate(['/home']).then(() => {
     this.router.navigate(['os/orcamento']);
   });
+
+  
 }
 
 onButtonClick() {
   this.isClickEvent = true; // Define a flag quando o botão é clicado
   this.limpar(); // Chama a função
 }
+
+///ENVIA MENSAGEM AVISANDO QUE O ORÇAMENTO ESTÁ PRONTO///////////
+enviarMensagemWhatsapp() {
+  if (this.objetocliente.length > 0 && this.objetocliente[0]) {
+    console.log("Este é o cliente.fone", this.objetocliente[0].fone);
+
+    const fone = this.objetocliente[0].fone.replace(/[^0-9]/g, '');
+    const fonefixo = this.objetocliente[0].fonefixo?.replace(/[^0-9]/g, '');
+
+    if (fone.length >= 10) {
+      this.numeroWhatsapp = fone;
+    } else if (fonefixo && fonefixo.length >= 10) {
+      this.numeroWhatsapp = fonefixo;
+    } else {
+      alert("Este cliente não possui número válido de WhatsApp");
+      console.log("Este cliente não possui número válido de WhatsApp");
+      return;
+    }
+
+    // Gera a URL do WhatsApp
+    const mensagem = "Olá, Você já pode acessar o link: https://app.somonitores.tec.br/ e analisar seu orçamento. Para sua segurança será pedido o seu código de cliente: " + this.objetocliente[0].id + " e cpf ou cnpj.";
+    const urlWhatsApp = `https://wa.me/55${this.numeroWhatsapp}?text=${encodeURIComponent(mensagem)}`;
+    console.log("URL WhatsApp:", urlWhatsApp);
+
+    // Redireciona para o WhatsApp
+    window.open(urlWhatsApp, '_blank'); // Abre em uma nova aba
+    // ou
+    // location.href = urlWhatsApp; // Abre na mesma aba
+  } else {
+    alert("Nenhum cliente selecionado ou válido.");
+    console.log("Nenhum cliente selecionado ou válido.");
+  }
+}
+
 
 
 }

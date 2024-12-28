@@ -125,7 +125,7 @@ export class FORMCADASTROOSComponent {
   osParaImprimir: number = 0
   objetoOs: any[]=[];
   
-  url: string = 'http://192.168.15.14:7766/';
+  urlQrcod: string = 'https://app.somonitores.tec.br/';
   qrCodeUrl: string = '';
 
 
@@ -475,7 +475,7 @@ onGarantiaChange(event: Event): void {
     }
 
    
-    QRCode.toDataURL(this.url, { width: 300 })  // Define o tamanho para 300x300
+    QRCode.toDataURL(this.urlQrcod, { width: 300 })  // Define o tamanho para 300x300
   .then((url) => {
     this.qrCodeUrl = url;
   })
