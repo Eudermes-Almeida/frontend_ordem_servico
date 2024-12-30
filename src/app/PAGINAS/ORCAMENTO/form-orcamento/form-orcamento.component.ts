@@ -46,6 +46,7 @@ export class FORMORCAMENTOComponent {
   foneClienteTemplat: string = "";
   contatoClienteTemplat: string = "";
   numeroWhatsapp: string = ""
+  chamaGerarPdf: boolean = true;
 
   ///////////CONTROLE DE RENDERIZAÇÃO/////////
   exibirTabela: boolean = false;
@@ -609,7 +610,10 @@ this.osClicadasCheckbox.forEach((osItem: any) => {
   this.atualizarOS(id, objetoOs); // Passa o objeto gerado para o método atualizarOS
 });
 
+if(this.chamaGerarPdf){
 this.gerarPDF();
+}else{this.chamaGerarPdf = true;}
+
 }
 
 
@@ -804,36 +808,50 @@ onButtonClick() {
 }
 
 ///ENVIA MENSAGEM AVISANDO QUE O ORÇAMENTO ESTÁ PRONTO///////////
+
 enviarMensagemWhatsapp() {
-  if (this.objetocliente.length > 0 && this.objetocliente[0]) {
-    console.log("Este é o cliente.fone", this.objetocliente[0].fone);
+  console.log("Este é o codcli retirado da OS:", this.objetoOs[0].codcli);
+  this.chamaGerarPdf = false;
 
-    const fone = this.objetocliente[0].fone.replace(/[^0-9]/g, '');
-    const fonefixo = this.objetocliente[0].fonefixo?.replace(/[^0-9]/g, '');
+  this.getCliente(Number(this.objetoOs[0].codcli))
+    .then(() => {
+      console.log("Este é o cliente que foi buscado:", this.objetocliente[0]);
 
-    if (fone.length >= 10) {
-      this.numeroWhatsapp = fone;
-    } else if (fonefixo && fonefixo.length >= 10) {
-      this.numeroWhatsapp = fonefixo;
-    } else {
-      alert("Este cliente não possui número válido de WhatsApp");
-      console.log("Este cliente não possui número válido de WhatsApp");
-      return;
-    }
+      if (this.objetocliente.length > 0 && this.objetocliente[0]) {
+        console.log("Este é o cliente.fone:", this.objetocliente[0].fone);
 
-    // Gera a URL do WhatsApp
-    const mensagem = "Olá, Você já pode acessar o link: https://app.somonitores.tec.br/ e analisar seu orçamento. Para sua segurança será pedido o seu código de cliente: " + this.objetocliente[0].id + " e cpf ou cnpj.";
-    const urlWhatsApp = `https://wa.me/55${this.numeroWhatsapp}?text=${encodeURIComponent(mensagem)}`;
-    console.log("URL WhatsApp:", urlWhatsApp);
+        const fone = this.objetocliente[0].fone.replace(/[^0-9]/g, '');
+        const fonefixo = this.objetocliente[0].fonefixo?.replace(/[^0-9]/g, '');
 
-    // Redireciona para o WhatsApp
-    window.open(urlWhatsApp, '_blank'); // Abre em uma nova aba
-    // ou
-    // location.href = urlWhatsApp; // Abre na mesma aba
-  } else {
-    alert("Nenhum cliente selecionado ou válido.");
-    console.log("Nenhum cliente selecionado ou válido.");
-  }
+        if (fone.length >= 10) {
+          this.numeroWhatsapp = fone;
+        } else if (fonefixo && fonefixo.length >= 10) {
+          this.numeroWhatsapp = fonefixo;
+        } else {
+          alert("Este cliente não possui número válido de WhatsApp");
+          console.log("Este cliente não possui número válido de WhatsApp");
+          return;
+        }
+
+        // Gera a URL do WhatsApp
+        const mensagem = "Olá, Você já pode acessar o link: https://app.somonitores.tec.br/ e analisar seu orçamento. Para sua segurança será pedido o seu código de cliente: " + this.objetocliente[0].id + " e cpf ou cnpj.";
+        const urlWhatsApp = `https://wa.me/55${this.numeroWhatsapp}?text=${encodeURIComponent(mensagem)}`;
+        console.log("URL WhatsApp:", urlWhatsApp);
+
+        // Redireciona para o WhatsApp
+        window.open(urlWhatsApp, '_blank'); // Abre em uma nova aba
+        // ou
+        // location.href = urlWhatsApp; // Abre na mesma aba
+      } else {
+        alert("Nenhum cliente selecionado ou válido.");
+        console.log("Nenhum cliente selecionado ou válido.");
+      }
+    })
+    .catch(error => {
+      console.error("Erro ao buscar cliente:", error);
+    });
+
+    this.processarOSSelecionadas();
 }
 
 
