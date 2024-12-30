@@ -7,7 +7,7 @@ import { ParametrosCombobox } from '../modelo/ParametrosCombobox'; // Certifique
 })
 export class ParametrosService {
 
-    urlServidor: string = 'http://localhost:8080/';
+    urlServidor: string = 'http://localhost:8085/';
   
     //URL BUSCAR CIDADES
   urlCidades = this.urlServidor +'parametro/parametro?parametro=CIDADE';

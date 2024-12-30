@@ -20,7 +20,7 @@ import { BehaviorSubject } from 'rxjs';
 export class OrdemservicoService {
 
   // quando mudar de servidor, basta alterar este endereço///////////////////
-  urlServidor: string = 'http://localhost:8080/'
+  urlServidor: string = 'http://localhost:8085/'
 
   // URL ULTIMO CLIENTE CADASTRADO
   url:string = this.urlServidor+'cliente/ultimocliente';
