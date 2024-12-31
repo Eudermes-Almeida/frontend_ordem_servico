@@ -61,6 +61,7 @@ export class FORMORCAMENTOComponent {
   exibirCabecalho: boolean = false;
   exibirSeparador: boolean = true;
   primeiraVezFor: boolean = true;
+  exibirBotoesGerarPdfEnviarEmailEnviarWhats: boolean = false;
   
 
   // CONFIGURA FORMULÁRIO
@@ -328,6 +329,7 @@ export class FORMORCAMENTOComponent {
         console.error('Erro ao buscar última OS:', error);
       }
     });
+    
 }
 
 
@@ -377,6 +379,7 @@ onNumOsKey(event: KeyboardEvent): void {
         }
       }
     );
+    
   }
 
 // Escuta o input Cod Cliente APOS DIGITAR O ENTER
@@ -418,6 +421,7 @@ onCodCliInput(event: Event): void {
         }
       }
     );
+    
   }
 
   // Escuta o input Cod Cliente
@@ -451,6 +455,7 @@ onCodCliInput(event: Event): void {
         }
       }
     );
+    
   }
   // Escuta o input Ultimas O.S APOS DIGITAR O ENTER
 onUltimasOsKey(event: KeyboardEvent): void {
@@ -481,6 +486,7 @@ onUltimasOsKey(event: KeyboardEvent): void {
         }
       }
     );
+    
   }
 
   // Escuta o input Ultimas O.S APOS DIGITAR O ENTER
@@ -518,12 +524,14 @@ onOspeloSerialKey(event: KeyboardEvent): void {
         }
       }
     );
+    
   }
 
   ///PEGA AS OS COM CHECKBOX CLICADAS E COLOCA DENTRO DE UM ARRAY////
   onCheckboxChange(index: number, event: Event): void {
     const isChecked = (event.target as HTMLInputElement).checked; // Obtém o estado do checkbox
     this.objetoOs[index].selected = isChecked; // Atualiza a propriedade 'selected' no objeto correspondente
+    this.exibirBotoesGerarPdfEnviarEmailEnviarWhats = true;
   
   
     // Adiciona ou remove o objeto do array osClicadasCheckbox
@@ -868,6 +876,12 @@ sendEmail(): void {
   this.getCliente(Number(this.objetoOs[0].codcli))
     .then(() => {
       console.log("Este é o cliente que foi buscado:", this.objetocliente[0]);
+
+      if (!this.objetocliente[0].email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.objetocliente[0].email)) {
+        alert("Email inválido");
+        return;
+      }
+      
 
       const serviceID = 'gmailMessage';
       const templateID = 'template_y3eoqda';
