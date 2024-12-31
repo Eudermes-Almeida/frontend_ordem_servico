@@ -860,6 +860,8 @@ enviarMensagemWhatsapp() {
 //////////////////ENVIAR EMAIL////////////////////////////
 sendEmail(): void {
 
+  this.chamaGerarPdf = false;
+
   console.log("Este é o codcli retirado da OS:", this.objetoOs[0].codcli);
   this.chamaGerarPdf = false;
 
@@ -874,8 +876,10 @@ sendEmail(): void {
       const emailParams = {
         to_email: this.objetocliente[0].email, // Substitua pelo destinatário real
         subject: 'Seu orçamento já está disponível em nossa plataforma digital',
-        message:  "Olá, Você já pode acessar o link: https://app.somonitores.tec.br/ e analisar seu orçamento. Para sua segurança será pedido o seu código de cliente: " + this.objetocliente[0].id + " e cpf ou cnpj. Muito obrigado."
-        
+        nome: this.objetocliente[0].contato,
+        empresa: this.objetocliente[0].nomefantasia,
+        codcli: this.objetocliente[0].id
+
       };
 
       emailjs
@@ -883,16 +887,18 @@ sendEmail(): void {
         .then(
           (response: EmailJSResponseStatus) => {
             console.log('SUCCESS!', response.status, response.text);
+            alert(" Email enviado com sucesso !!!!")
           },
           (error) => {
             console.error('FAILED...', error);
+            alert(" Ops!  Erro ao enviar email.")
           }
         );
     })
     .catch((error) => {
       console.error("Erro ao buscar cliente:", error);
     });
-
+    this.processarOSSelecionadas();
 }
 
 
