@@ -19,6 +19,7 @@
     "@angular/platform-browser-dynamic": "^17.3.0",
     "@angular/router": "^17.3.0",
     "@angular/service-worker": "^17.3.0",
+    "@emailjs/browser": "^4.4.1",
     "@popperjs/core": "^2.11.8",
     "angularx-qrcode": "^16.0.0",
     "bootstrap": "^5.3.3",

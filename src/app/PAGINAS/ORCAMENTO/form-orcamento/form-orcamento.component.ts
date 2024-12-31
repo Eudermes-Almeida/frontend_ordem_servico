@@ -13,6 +13,10 @@ import jsPDF from 'jspdf';
 import html2pdf from 'html2pdf.js';
 import { firstValueFrom } from 'rxjs';
 import { Router } from '@angular/router';
+//import emailjs, { type EmailJSResponseStatus } from '@emailjs/browser';
+import emailjs, { EmailJSResponseStatus } from '@emailjs/browser';
+
+
 
 @Component({
   selector: 'app-form-orcamento',
@@ -808,7 +812,6 @@ onButtonClick() {
 }
 
 ///ENVIA MENSAGEM AVISANDO QUE O ORÇAMENTO ESTÁ PRONTO///////////
-
 enviarMensagemWhatsapp() {
   console.log("Este é o codcli retirado da OS:", this.objetoOs[0].codcli);
   this.chamaGerarPdf = false;
@@ -854,6 +857,43 @@ enviarMensagemWhatsapp() {
     this.processarOSSelecionadas();
 }
 
+//////////////////ENVIAR EMAIL////////////////////////////
+sendEmail(): void {
+
+  console.log("Este é o codcli retirado da OS:", this.objetoOs[0].codcli);
+  this.chamaGerarPdf = false;
+
+  this.getCliente(Number(this.objetoOs[0].codcli))
+    .then(() => {
+      console.log("Este é o cliente que foi buscado:", this.objetocliente[0]);
+
+      const serviceID = 'gmailMessage';
+      const templateID = 'template_y3eoqda';
+      const publicKey = 'qhKp3iNc8-qA-s6qo';
+
+      const emailParams = {
+        to_email: this.objetocliente[0].email, // Substitua pelo destinatário real
+        subject: 'Seu orçamento já está disponível em nossa plataforma digital',
+        message:  "Olá, Você já pode acessar o link: https://app.somonitores.tec.br/ e analisar seu orçamento. Para sua segurança será pedido o seu código de cliente: " + this.objetocliente[0].id + " e cpf ou cnpj. Muito obrigado."
+        
+      };
+
+      emailjs
+        .send(serviceID, templateID, emailParams, publicKey)
+        .then(
+          (response: EmailJSResponseStatus) => {
+            console.log('SUCCESS!', response.status, response.text);
+          },
+          (error) => {
+            console.error('FAILED...', error);
+          }
+        );
+    })
+    .catch((error) => {
+      console.error("Erro ao buscar cliente:", error);
+    });
+
+}
 
 
 }
