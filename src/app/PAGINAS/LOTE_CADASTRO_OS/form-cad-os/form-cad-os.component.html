@@ -133,7 +133,7 @@
         </thead>
         <tbody>
             <tr *ngFor="let cli of objetocliente">
-              <td>{{ cli.id }}</td>
+              <td style="color: red;"><strong>{{ cli.id }}</strong></td>
               <td>{{ cli.nomefantasia }}</td>
               <td>{{ cli.razaosocial }}</td>
               <td>{{ cli.fonefixo }}</td>
@@ -1759,6 +1759,12 @@ Campo Serial é obrigatório.
   <div class="assinatura">
     <div class="assinatura-cliente">ASSINATURA REPRESENTANTE CLIENTE:</div>
     <div class="assinatura-monitores">ASSINATURA REPRESENTANTE SÓ MONITORES & NOBREAKS:</div>
+  </div>
+
+  <!-------------------------------QR CODE--------------------------->
+  <div style="text-align: center; margin-top: 50px;">
+    <h2 style="color: red;">Escaneie o QR Code para pesquisar seus orçamentos</h2>
+    <img *ngIf="qrCodeUrl" [src]="qrCodeUrl" alt="QR Code">
   </div>
 
   <!--------------------------ETIQUETA PARA LABORATÓRIO --------------------------------------->

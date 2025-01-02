@@ -845,7 +845,7 @@ enviarMensagemWhatsapp() {
         }
 
         // Gera a URL do WhatsApp
-        const mensagem = "Olá, Você já pode acessar o link: https://app.somonitores.tec.br/ e analisar seu orçamento. Para sua segurança será pedido o seu código de cliente: " + this.objetocliente[0].id + " e cpf ou cnpj.";
+        const mensagem = "Olá, SEU ORÇAMENTO JÁ ESTÁ PRONTO!!! Agora basta acessar o link: https://app.somonitores.tec.br/ e analisar seu orçamento. Para sua segurança será pedido o seu código de cliente: " + this.objetocliente[0].id + " e cpf ou cnpj.";
         const urlWhatsApp = `https://wa.me/55${this.numeroWhatsapp}?text=${encodeURIComponent(mensagem)}`;
         console.log("URL WhatsApp:", urlWhatsApp);
 
@@ -883,9 +883,15 @@ sendEmail(): void {
       }
       
 
-      const serviceID = 'gmailMessage';
-      const templateID = 'template_y3eoqda';
-      const publicKey = 'qhKp3iNc8-qA-s6qo';
+      const serviceID = 'gmailSoMonitores';
+      const templateID = 'template_w6hkln5';
+      const publicKey = 'COjlB01R1SWurPQER';
+
+      // const serviceID = 'gmailMessage';
+      // const templateID = 'template_y3eoqda';
+      // const publicKey = 'qhKp3iNc8-qA-s6qo';
+
+
 
       const emailParams = {
         to_email: this.objetocliente[0].email, // Substitua pelo destinatário real

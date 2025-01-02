@@ -1502,6 +1502,11 @@ async buscaUltimaOsAsync(): Promise<void> {
             rzsocial: cliente.razaosocial,
         });
 
+        console.log("Este é o cpf do cliente " + cliente.cpfcnpj)
+        if(!cliente.cpfcnpj || cliente.cpfcnpj.length < 11){
+          alert(" Atenção!!! Cliente sem CPF ou CNPJ cadastrados")
+        }
+
     setTimeout(() => {  // aguarda 1 segundo para fechar a tabela
       this.exibirTabela = false;
       this.cdr.detectChanges(); // Força a atualização da visualização imediatamente
