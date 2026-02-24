@@ -203,7 +203,7 @@
         <input type="text" formControlName="inscestadual" id="inscestadual" name="inscestadual">
       </div>
       <div>
-        <button style="margin-top: 20px;" class="btn btn-primary" (click)="buscanovocliente()">CADASTRAR CLIENTE</button>
+        <button style="margin-top: 20px;" class="btn btn-primary" (click)="buscanovocliente()"  [disabled]="!desabilitaBtnCadastrarCliente">CADASTRAR CLIENTE</button>
       </div>
     </div>
     

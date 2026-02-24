@@ -36,6 +36,7 @@ export class FormcadclienteComponent implements OnInit {
 
   ////////////////////////CONTROLE DE RENDERIZAÇÃO///////////////////////
   exibirAlertClienteSalvo: boolean = false
+  desabilitaBtnCadastrarCliente: boolean = true
 
   constructor(
     private router: Router, // Parâmetro obrigatório primeiro
@@ -160,6 +161,7 @@ export class FormcadclienteComponent implements OnInit {
      ///VALIDA FORMULÁRIO////////////
 let hasInvalidFields = false;
 
+
  Object.keys(this.formulario.controls).forEach((campo) => {
  const controle = this.formulario.get(campo);
  // Verifique apenas os controles com o validador 'required'
@@ -204,6 +206,7 @@ this.exibirAlertValidacao = true;
         console.log('Cliente cadastrado com sucesso:', response);
         this.exibirAlertClienteSalvo = true;
         console.log('Valor de response.id:', response.id);
+        this.desabilitaBtnCadastrarCliente = false
 
         const id = parseInt(response.id, 10); // Use parseInt para converter a string em número
         if (isNaN(id)) {
