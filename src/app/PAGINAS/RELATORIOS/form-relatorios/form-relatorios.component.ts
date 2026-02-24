@@ -58,7 +58,7 @@ buscaEescreveDatas(){
      "faturamentoManutencaoNobreakAcima3kva", "vendaNobreakNovo", "vendaNobreakSemiNovo", "nobreakInviavel", "nobreakOrcamentoNaoAprovado",
     "nobreakGarantiaLoja", "nobreakGarantiaFabrica", "vendaBateriaAvulsa", "vendaSucataBateria", "faturamentoMonitor", "faturamentoManutencaoMonitor",
   "vendaMonitorSemiNovo", "monitorInviavel", "monitorOrcamentoNaoAprovado", "monitorGarantiaLoja", "faturamentoOutroEquipamento", "entradaEquipamento", 
-"orcamentoNoPeriodo", "tecnicoEudermes", "tecnicoVinicius", "tecnicoLeonardo", "tecnicoRafael"];
+"orcamentoNoPeriodo", "tecnicoEudermes", "tecnicoVinicius", "tecnicoLeonardo", "tecnicoRafael", "tecnicoGabriel"];
 
 status: string[] = ["aberta", "passarOrcamento", "aguardandoAprovacao", "aprovadas", "baixadas", "garantiaLojaAindaNoLaboratorio", 
   "garantiaFabricaAindaNoLaboratorio", "emAnalise", "osImpressaMasNaoFechada"]
@@ -92,6 +92,7 @@ arrayTecnicoEudermes: any[] = [];
 arrayTecnicoVinicius: any[] = [];
 arrayTecnicoLeonardo: any[] = [];
 arrayTecnicoRafael: any[] = [];
+arrayTecnicoGabriel: any[] = [];
 arrayAprovadasOuReprovadasRemotamente: any[]=[];
 
 /// array de status:
@@ -368,6 +369,9 @@ buscaRelatorios(dataInicio: string, dataFim: string, busca: string): void {
           break;
         case "tecnicoRafael":
           this.arrayTecnicoRafael = data;
+          break;
+          case "tecnicoGabriel":
+          this.arrayTecnicoGabriel = data;
           break;
         default:
           console.warn(`Relatório ${busca} não reconhecido.`);

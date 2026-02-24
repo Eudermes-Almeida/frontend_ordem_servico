@@ -21,6 +21,7 @@ export class OrdemservicoService {
 
   // quando mudar de servidor, basta alterar este endereço///////////////////
   urlServidor: string = 'http://localhost:8085/'
+  //urlServidor: string = 'http://192.168.15.14:8085/'
 
   // URL ULTIMO CLIENTE CADASTRADO
   url:string = this.urlServidor+'cliente/ultimocliente';

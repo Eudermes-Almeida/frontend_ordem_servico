@@ -583,10 +583,7 @@ processarOSSelecionadas() {
 
 }
 
-  //como fazer o somatorio do somaTotaliq ficar triplicada
-
-  
-
+ 
   // FAZ O SOMATÓRIO DE TODOS OS TOTALIQ DAS ORDENS DE SERVIÇO:
   this.somaTotaliq = this.osClicadasCheckbox
   .map(item => parseFloat(item.totaliq) || 0) // Converte para número
@@ -609,15 +606,15 @@ processarOSSelecionadas() {
   console.log('Soma de total descontos:', this.somaDesconto);
 
 
-  
 
   // Segundo forEach para processar os dados de OS
 this.osClicadasCheckbox.forEach((osItem: any) => {
   const id = osItem.os; // Captura o ID da OS
   console.log("Este é o id capturado: " + id);
-
+  console.log(" este é o objeto os que será passado como parametro para gerarobjetoos " , osItem)
   // Gera um objeto os local
   const objetoOs = this.geraObjetoOs(osItem); // Gera um novo objeto para cada iteração
+  console.log("Este é o objeto após chamar gerarObjeto", JSON.stringify(objetoOs, null, 2));
 
   this.atualizarOS(id, objetoOs); // Passa o objeto gerado para o método atualizarOS
 });
@@ -680,11 +677,14 @@ geraObjetoOs(osItem: any): any {
 
   const dataHojeFormatada = `${ano}-${mes}-${dia}T${hora}:${minutos}:${segundos}.${milissegundos}`;
 
-  // Retorna o objeto os gerado
+  let statusAtualizado = osItem.status;
 
-
-if(osItem.status=='PASSAR ORÇ'){
-  console.log(" entrou no if de mudar status para aguardando aprov " + this.os.status )
+  if (osItem.status === 'PASSAR ORÇ') {
+    console.log("Entrou no if de mudar status para 'AGUARDANDO APROV': " + osItem.status);
+    statusAtualizado = "AGUARDANDO APROV";
+  } else {
+    console.log("Como o status não era 'PASSAR ORÇ', ele não foi atualizado.");
+  }
 
   return {
     atendente: String(osItem.atendente || ""),
@@ -723,7 +723,7 @@ if(osItem.status=='PASSAR ORÇ'){
     qtoutrositens: String(osItem.qtoutrositens || 0),
     rzsocial: String(osItem.rzsocial || ""),
     serial: String(osItem.serial || ""),
-    status: String("AGUARDANDO APROV"),
+    status: String(statusAtualizado),
     tarefa1: String(osItem.tarefa1 || ""),
     tarefa2: String(osItem.tarefa2 || ""),
     tarefa3: String(osItem.tarefa3 || ""),
@@ -747,7 +747,7 @@ if(osItem.status=='PASSAR ORÇ'){
     venda: String(osItem.venda || ""),
   };
 }
-}
+
 
 
 

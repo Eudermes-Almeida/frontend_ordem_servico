@@ -117,41 +117,6 @@ input[disabled], select[disabled] {
     font-size: 8px !important;
 }
 
-@media print {
-    body, html {
-        margin: 0;
-        padding: 0;
-    }
-
-    #pdf-content {
-        margin: 0;
-        padding: 0;
-    }
-
-    .quebra-pagina {
-        display: block;
-        height: 1px; /* Altura mínima para renderizar o elemento */
-        margin: 0;
-        padding: 0;
-        page-break-before: always !important; /* Força a quebra antes */
-      }
-
-    p {
-        margin: 0;
-        padding: 0;
-    }
-}
-
-
-    .centralizado-formulario {
-        margin: 0;
-        padding: 0;
-        border: none;
-    }
-    .conteudo {
-        max-height: 100vh;  /* A altura máxima será igual à altura da página */
-        overflow: hidden;
-    }
 
 
 

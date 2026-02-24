@@ -9,9 +9,7 @@ import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import jsPDF from 'jspdf';
-//import * as html2pdf from 'html2pdf.js';
 import html2pdf from 'html2pdf.js';
-
 
 
 
@@ -666,7 +664,7 @@ gerarPDF = () => {
 
   // Opções de configuração
   const options = {
-      margin: [2, 2, 2, 2], // Margens do PDF (em mm)
+      margin: [0, 0, 0, 0], // Margens do PDF (em mm)
       filename: 'documento.pdf', // Nome do arquivo gerado
       html2canvas: {
           scale: 4, // Aumenta a qualidade do PDF
