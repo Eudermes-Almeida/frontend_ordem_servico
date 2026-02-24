@@ -484,15 +484,17 @@
                   <button 
                 type="button" 
                 class="btn btn-dark" 
-                (click)="memorizaRelatorio(arrayTecnicoLeonardo, 'ORDENS SERVIÇOS FECHADAS PELO TÉCNICO LEONARDO' , 'INTERVALO')">
+                (click)="memorizaRelatorio(arrayTecnicoGabriel, 'ORDENS SERVIÇOS FECHADAS PELO TÉCNICO GABRIEL' , 'INTERVALO')">
                 <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
               </button>
               </a></td>
-                <td>Leonardo-Fechamento OS</td>
-                <td class="valor">{{ arrayTecnicoLeonardo[0]?.somatoriaDTO.somatotaliq | number:'1.2-2' }}</td>
-                <td class="qt">{{arrayTecnicoLeonardo[0]?.somatoriaDTO.qtOs}}</td>
-                <td class="percentual">{{ (arrayTecnicoLeonardo[0]?.somatoriaDTO?.somatotaliq / arrayFaturamentoTotal[0]?.somatoriaDTO?.somatotaliq * 100) | number: '1.0-0' }}%</td>
+                <td>Gabriel-Fechamento OS</td>
+                <td class="valor">{{ arrayTecnicoGabriel[0]?.somatoriaDTO.somatotaliq | number:'1.2-2' }}</td>
+                <td class="qt">{{arrayTecnicoGabriel[0]?.somatoriaDTO.qtOs}}</td>
+                <td class="percentual">{{ (arrayTecnicoGabriel[0]?.somatoriaDTO?.somatotaliq / arrayFaturamentoTotal[0]?.somatoriaDTO?.somatotaliq * 100) | number: '1.0-0' }}%</td>
               </tr>
+
+              
               <tr>
                 <td><a>
                   <button 

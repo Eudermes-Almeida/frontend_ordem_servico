@@ -170,7 +170,6 @@ async selecionaRelatorios() {
   ////Se existir Alguma OS reprovada ou Aprovada Remotamente, irá ficar piscando o nome do relatório
   //console.log(" Esta é a quantidade de os Aprovadas ou Reprovadas: " , this.arrayAprovadasOuReprovadasRemotamente[0]?.somatoriaDTO.qtOs )
  
-
 }
 
 
@@ -194,6 +193,7 @@ async SelecionaRelatoriosStatus(): Promise<void> {
 memorizaRelatorio(array: any, variavelEnviada: string, controle: string): void {
   this.servico.setData(array);
   this.variavelEnviada = variavelEnviada;
+  
 
   if(controle==="INTERVALO"){ // se for atributo com intervalo
   // Navegação programática para a rota com os parâmetros
