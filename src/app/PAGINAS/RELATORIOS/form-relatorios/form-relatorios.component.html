@@ -574,6 +574,25 @@
                 <td class="qt"> </td>
                 
               </tr>
+
+
+               <tr>
+                <td><a>
+                  <button 
+                type="button" 
+                class="btn btn-dark" 
+                (click)="memorizaRelatorio(arrayStatusNaoAprovadas, 'ORDENS SERVIÇOS NAO APROVADAS' , 'STATUS')">
+                <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+              </button>
+              </a></td>
+                <td [ngStyle]="{'color': currentColorNaoAprovadas}">
+                OS NÃO Aprovadas
+              </td>
+                <td class="valor">{{arrayStatusNaoAprovadas[0]?.somatoriaDTO.somatotaliq | number:'1.2-2' }}</td>
+                <td class="qt">{{arrayStatusNaoAprovadas[0]?.somatoriaDTO.qtOs}}</td>
+                <td class="qt"> </td>
+                
+              </tr>
               <tr>
                 <td><a>
                   <button 

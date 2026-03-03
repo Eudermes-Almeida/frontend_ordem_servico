@@ -51,6 +51,7 @@ export class FORMRELATORIOSComponent {
   isLoading: boolean = false;
   currentColor: string = 'white';
   currentColorAprovadas: string = 'white';
+  currentColorNaoAprovadas: string = 'white';
   private intervalId: any;
 
 
@@ -61,7 +62,7 @@ export class FORMRELATORIOSComponent {
     "vendaMonitorSemiNovo", "monitorInviavel", "monitorOrcamentoNaoAprovado", "monitorGarantiaLoja", "faturamentoOutroEquipamento", "entradaEquipamento",
     "orcamentoNoPeriodo", "tecnicoEudermes", "tecnicoVinicius", "tecnicoLeonardo", "tecnicoRafael", "tecnicoGabriel"];
 
-  status: string[] = ["aberta", "pronta", "passarOrcamento", "aguardandoAprovacao", "aprovadas", "baixadas", "garantiaLojaAindaNoLaboratorio",
+  status: string[] = ["aberta", "pronta", "passarOrcamento", "aguardandoAprovacao", "aprovadas", "naoAprovadas", "baixadas", "garantiaLojaAindaNoLaboratorio",
     "garantiaFabricaAindaNoLaboratorio", "emAnalise", "osImpressaMasNaoFechada"]
 
   // Variáveis para armazenar os resultados
@@ -103,6 +104,7 @@ export class FORMRELATORIOSComponent {
   arrayStatusPassarOrcamento: any[] = [];
   arrayStatusAguardandoAprovacao: any[] = [];
   arrayStatusAprovadas: any[] = [];
+  arrayStatusNaoAprovadas: any[] = [];
   arrayStatusBaixadas: any[] = [];
   arrayStatusGarantiaLojaAindaNoLaboratorio: any[] = [];
   arrayStatusGarantiaFabricaAindaNoLaboratorio: any[] = [];
@@ -110,6 +112,10 @@ export class FORMRELATORIOSComponent {
   arrayStatusOsImpressaMasNaoFechada: any[] = [];
 
   ///////////CONTROLE DE RENDERIZAÇÃO/////////
+
+  intervalGeral: any;
+  intervalAprovadas: any;
+  intervalNaoAprovadas: any;
 
 
 
@@ -180,6 +186,7 @@ export class FORMRELATORIOSComponent {
     try {
       for (const status of this.status) {
         await this.buscaRelatoriosStatus(status); // Aguarda a execução
+        console.log("Este é o status lido no array de status ", status)
         await this.delay(100); // Aguarda 500ms antes da próxima iteração
       }
     } catch (error) {
@@ -242,9 +249,17 @@ export class FORMRELATORIOSComponent {
             break;
           case "aprovadas":
             this.arrayStatusAprovadas = data;
+            console.log(" este é o array de APROVADAS DENTRO DO SWIT CASE", this.arrayStatusAprovadas)
             if (this.arrayStatusAprovadas[0]?.somatoriaDTO.qtOs > 0) {
-          this.startBlinkingAprovadas();
-        }
+              this.startBlinkingAprovadas();
+            }
+            break;
+          case "naoAprovadas":
+            this.arrayStatusNaoAprovadas = data;
+            console.log(" este é o array de não aprovadas", this.arrayStatusNaoAprovadas)
+            if (this.arrayStatusNaoAprovadas[0]?.somatoriaDTO.qtOs > 0) {
+              this.startBlinkingNaoAprovadas();
+            }
             break;
           case "baixadas":
             this.arrayStatusBaixadas = data;
@@ -468,23 +483,34 @@ export class FORMRELATORIOSComponent {
 
   //////FAZ O ELEMENTO RELATORIO OS APROVADA OU REPROVADA REMOTAMENTE PISCAR:
 
+  
   startBlinking() {
     // Evita múltiplos intervalos ao clicar repetidamente
-    if (this.intervalId) {
+    if (this.intervalGeral) {
       return;
     }
-    this.intervalId = setInterval(() => {
+    this.intervalGeral = setInterval(() => {
       this.currentColor = this.currentColor === 'white' ? 'orange' : 'white';
     }, 1000);
   }
 
   startBlinkingAprovadas() {
     // Evita múltiplos intervalos ao clicar repetidamente
-    if (this.intervalId) {
+    if (this.intervalAprovadas) {
       return;
     }
-    this.intervalId = setInterval(() => {
-      this.currentColorAprovadas = this.currentColorAprovadas === 'white' ? 'orange' : 'white';
+    this.intervalAprovadas = setInterval(() => {
+      this.currentColorAprovadas = this.currentColorAprovadas === 'white' ? 'green' : 'white';
+    }, 1000);
+  }
+
+  startBlinkingNaoAprovadas() {
+    // Evita múltiplos intervalos ao clicar repetidamente
+    if (this.intervalNaoAprovadas) {
+      return;
+    }
+    this.intervalNaoAprovadas = setInterval(() => {
+      this.currentColorNaoAprovadas = this.currentColorNaoAprovadas === 'white' ? 'red' : 'white';
     }, 1000);
   }
 
@@ -494,12 +520,15 @@ export class FORMRELATORIOSComponent {
       this.intervalId = null;
       this.currentColor = 'white'; // Opcional, para resetar a cor
       this.currentColorAprovadas = 'white'; // Opcional, para resetar a cor
+      this.currentColorNaoAprovadas = 'white'
     }
   }
 
   ngOnDestroy() {
     this.stopBlinking();
   }
+
+
 
 }
 
