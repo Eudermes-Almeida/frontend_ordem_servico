@@ -40,6 +40,16 @@ export class FORMCADOSComponent{
   equipamentoSelecionado8: string = "";
   equipamentoSelecionado9: string = "";
   equipamentoSelecionado10: string = "";
+  equipamentoSelecionado11: string = "";
+  equipamentoSelecionado12: string = "";
+  equipamentoSelecionado13: string = "";
+  equipamentoSelecionado14: string = "";
+  equipamentoSelecionado15: string = "";
+  equipamentoSelecionado16: string = "";
+  equipamentoSelecionado17: string = "";
+  equipamentoSelecionado18: string = "";
+  equipamentoSelecionado19: string = "";
+  equipamentoSelecionado20: string = "";
   equipamentosPosicaoZero: any = { id: 100, parametro: 'EQUIPAMENTO', valor: '' }; // para não iniciar com um nome de cidade e sim "cidades"
 
   marcasNobreaks: ParametrosCombobox[] = [];
@@ -54,6 +64,16 @@ export class FORMCADOSComponent{
   marcaSelecionada8: string = "";
   marcaSelecionada9: string = "";
   marcaSelecionada10: string = "";
+  marcaSelecionada11: string = "";
+  marcaSelecionada12: string = "";
+  marcaSelecionada13: string = "";
+  marcaSelecionada14: string = "";
+  marcaSelecionada15: string = "";
+  marcaSelecionada16: string = "";
+  marcaSelecionada17: string = "";
+  marcaSelecionada18: string = "";
+  marcaSelecionada19: string = "";
+  marcaSelecionada20: string = "";
   marcaNobreakPosicaoZero: any = { id: 100, parametro: 'MARCANOBREAK', valor: '' }; // para não iniciar com um nome de cidade e sim "cidades"
 
   modelosNobreaks: ParametrosCombobox[] = [];
@@ -68,6 +88,16 @@ export class FORMCADOSComponent{
   modeloSelecionada8: string = "";
   modeloSelecionada9: string = "";
   modeloSelecionada10: string = "";
+  modeloSelecionada11: string = "";
+  modeloSelecionada12: string = "";
+  modeloSelecionada13: string = "";
+  modeloSelecionada14: string = "";
+  modeloSelecionada15: string = "";
+  modeloSelecionada16: string = "";
+  modeloSelecionada17: string = "";
+  modeloSelecionada18: string = "";
+  modeloSelecionada19: string = "";
+  modeloSelecionada20: string = "";
   modeloNobreakPosicaoZero: any = { id: 100, parametro: 'MODELONOBREAK', valor: '' }; // para não iniciar com um nome de cidade e sim "cidades"
 
   garantiaSelecionada: string = "NÃO";
@@ -81,6 +111,16 @@ export class FORMCADOSComponent{
   garantiaSelecionada8: string = "NÃO";
   garantiaSelecionada9: string = "NÃO";
   garantiaSelecionada10: string = "NÃO";
+  garantiaSelecionada11: string = "NÃO";
+  garantiaSelecionada12: string = "NÃO";
+  garantiaSelecionada13: string = "NÃO";
+  garantiaSelecionada14: string = "NÃO";
+  garantiaSelecionada15: string = "NÃO";
+  garantiaSelecionada16: string = "NÃO";
+  garantiaSelecionada17: string = "NÃO";
+  garantiaSelecionada18: string = "NÃO";
+  garantiaSelecionada19: string = "NÃO";
+  garantiaSelecionada20: string = "NÃO";
 
   os1: string = "";
   os2: string = "";
@@ -92,6 +132,16 @@ export class FORMCADOSComponent{
   os8: string = "";
   os9: string = "";
   os10: string = "";
+  os11: string = "";
+  os12: string = "";
+  os13: string = "";
+  os14: string = "";
+  os15: string = "";
+  os16: string = "";
+  os17: string = "";
+  os18: string = "";
+  os19: string = "";
+  os20: string = "";
 
   serial1: string = "";
   serial2: string = "";
@@ -103,6 +153,16 @@ export class FORMCADOSComponent{
   serial8: string = "";
   serial9: string = "";
   serial10: string = "";
+  serial11: string = "";
+  serial12: string = "";
+  serial13: string = "";
+  serial14: string = "";
+  serial15: string = "";
+  serial16: string = "";
+  serial17: string = "";
+  serial18: string = "";
+  serial19: string = "";
+  serial20: string = "";
 
   patrimonio1: string = "";
   patrimonio2: string = "";
@@ -114,6 +174,16 @@ export class FORMCADOSComponent{
   patrimonio8: string = "";
   patrimonio9: string = "";
   patrimonio10: string = "";
+  patrimonio11: string = "";
+  patrimonio12: string = "";
+  patrimonio13: string = "";
+  patrimonio14: string = "";
+  patrimonio15: string = "";
+  patrimonio16: string = "";
+  patrimonio17: string = "";
+  patrimonio18: string = "";
+  patrimonio19: string = "";
+  patrimonio20: string = "";
 
 
   topologiasNobreaks: ParametrosCombobox[] = [];
@@ -227,6 +297,16 @@ export class FORMCADOSComponent{
   exibirEntrada8: boolean = false;
   exibirEntrada9: boolean = false;
   exibirEntrada10: boolean = false;
+  exibirEntrada11: boolean = false;
+  exibirEntrada12: boolean = false;
+  exibirEntrada13: boolean = false;
+  exibirEntrada14: boolean = false;
+  exibirEntrada15: boolean = false;
+  exibirEntrada16: boolean = false;
+  exibirEntrada17: boolean = false;
+  exibirEntrada18: boolean = false;
+  exibirEntrada19: boolean = false;
+  exibirEntrada20: boolean = false;
 
   exibirListaMarcas1: boolean = true;
   exibirSoUmaMarca1: boolean = false;
@@ -257,6 +337,36 @@ export class FORMCADOSComponent{
 
   exibirListaMarcas10: boolean = true;
   exibirSoUmaMarca10: boolean = false;
+
+  exibirListaMarcas11: boolean = true;
+  exibirSoUmaMarca11: boolean = false;
+
+  exibirListaMarcas12: boolean = true;
+  exibirSoUmaMarca12: boolean = false;
+
+  exibirListaMarcas13: boolean = true;
+  exibirSoUmaMarca13: boolean = false;
+
+  exibirListaMarcas14: boolean = true;
+  exibirSoUmaMarca14: boolean = false;
+
+  exibirListaMarcas15: boolean = true;
+  exibirSoUmaMarca15: boolean = false;
+
+  exibirListaMarcas16: boolean = true;
+  exibirSoUmaMarca16: boolean = false;
+
+  exibirListaMarcas17: boolean = true;
+  exibirSoUmaMarca17: boolean = false;
+
+  exibirListaMarcas18: boolean = true;
+  exibirSoUmaMarca18: boolean = false;
+
+  exibirListaMarcas19: boolean = true;
+  exibirSoUmaMarca19: boolean = false;
+
+  exibirListaMarcas20: boolean = true;
+  exibirSoUmaMarca20: boolean = false;
 
 
   exibirListaModelo1: boolean = true;
@@ -289,6 +399,36 @@ export class FORMCADOSComponent{
   exibirListaModelo10: boolean = true;
   exibirSoUmModelo10: boolean = false;
 
+  exibirListaModelo11: boolean = true;
+  exibirSoUmModelo11: boolean = false;
+
+  exibirListaModelo12: boolean = true;
+  exibirSoUmModelo12: boolean = false;
+
+  exibirListaModelo13: boolean = true;
+  exibirSoUmModelo13: boolean = false;
+
+  exibirListaModelo14: boolean = true;
+  exibirSoUmModelo14: boolean = false;
+
+  exibirListaModelo15: boolean = true;
+  exibirSoUmModelo15: boolean = false;
+
+  exibirListaModelo16: boolean = true;
+  exibirSoUmModelo16: boolean = false;
+
+  exibirListaModelo17: boolean = true;
+  exibirSoUmModelo17: boolean = false;
+
+  exibirListaModelo18: boolean = true;
+  exibirSoUmModelo18: boolean = false;
+
+  exibirListaModelo19: boolean = true;
+  exibirSoUmModelo19: boolean = false;
+
+  exibirListaModelo20: boolean = true;
+  exibirSoUmModelo20: boolean = false;
+
   exibirOs1: boolean = false;
   exibirOs2: boolean = false;
   exibirOs3: boolean = false;
@@ -299,6 +439,16 @@ export class FORMCADOSComponent{
   exibirOs8: boolean = false;
   exibirOs9: boolean = false;
   exibirOs10: boolean = false;
+  exibirOs11: boolean = false;
+  exibirOs12: boolean = false;
+  exibirOs13: boolean = false;
+  exibirOs14: boolean = false;
+  exibirOs15: boolean = false;
+  exibirOs16: boolean = false;
+  exibirOs17: boolean = false;
+  exibirOs18: boolean = false;
+  exibirOs19: boolean = false;
+  exibirOs20: boolean = false;
 
 
 
@@ -323,6 +473,16 @@ export class FORMCADOSComponent{
     os8:new FormControl(''),
     os9:new FormControl(''),
     os10:new FormControl(''),
+    os11:new FormControl(''),
+    os12:new FormControl(''),
+    os13:new FormControl(''),
+    os14:new FormControl(''),
+    os15:new FormControl(''),
+    os16:new FormControl(''),
+    os17:new FormControl(''),
+    os18:new FormControl(''),
+    os19:new FormControl(''),
+    os20:new FormControl(''),
     fantasia:new FormControl(''),
     rzsocial:new FormControl(''),
     codcli:new FormControl('', Validators.required),
@@ -337,6 +497,16 @@ export class FORMCADOSComponent{
     equipamento8:new FormControl(''),
     equipamento9:new FormControl(''),
     equipamento10:new FormControl(''),
+    equipamento11:new FormControl(''),
+    equipamento12:new FormControl(''),
+    equipamento13:new FormControl(''),
+    equipamento14:new FormControl(''),
+    equipamento15:new FormControl(''),
+    equipamento16:new FormControl(''),
+    equipamento17:new FormControl(''),
+    equipamento18:new FormControl(''),
+    equipamento19:new FormControl(''),
+    equipamento20:new FormControl(''),
     marca1:new FormControl(''),
     marca2:new FormControl(''),
     marca3:new FormControl(''),
@@ -347,6 +517,16 @@ export class FORMCADOSComponent{
     marca8:new FormControl(''),
     marca9:new FormControl(''),
     marca10:new FormControl(''),
+    marca11:new FormControl(''),
+    marca12:new FormControl(''),
+    marca13:new FormControl(''),
+    marca14:new FormControl(''),
+    marca15:new FormControl(''),
+    marca16:new FormControl(''),
+    marca17:new FormControl(''),
+    marca18:new FormControl(''),
+    marca19:new FormControl(''),
+    marca20:new FormControl(''),
     modelo1:new FormControl(''),
     modelo2:new FormControl(''),
     modelo3:new FormControl(''),
@@ -357,6 +537,16 @@ export class FORMCADOSComponent{
     modelo8:new FormControl(''),
     modelo9:new FormControl(''),
     modelo10:new FormControl(''),
+    modelo11:new FormControl(''),
+    modelo12:new FormControl(''),
+    modelo13:new FormControl(''),
+    modelo14:new FormControl(''),
+    modelo15:new FormControl(''),
+    modelo16:new FormControl(''),
+    modelo17:new FormControl(''),
+    modelo18:new FormControl(''),
+    modelo19:new FormControl(''),
+    modelo20:new FormControl(''),
     serial1:new FormControl(''),
     serial2:new FormControl(''),
     serial3:new FormControl(''),
@@ -367,6 +557,16 @@ export class FORMCADOSComponent{
     serial8:new FormControl(''),
     serial9:new FormControl(''),
     serial10:new FormControl(''),
+    serial11:new FormControl(''),
+    serial12:new FormControl(''),
+    serial13:new FormControl(''),
+    serial14:new FormControl(''),
+    serial15:new FormControl(''),
+    serial16:new FormControl(''),
+    serial17:new FormControl(''),
+    serial18:new FormControl(''),
+    serial19:new FormControl(''),
+    serial20:new FormControl(''),
     patrimonio1:new FormControl(''),
     patrimonio2:new FormControl(''),
     patrimonio3:new FormControl(''),
@@ -377,6 +577,16 @@ export class FORMCADOSComponent{
     patrimonio8:new FormControl(''),
     patrimonio9:new FormControl(''),
     patrimonio10:new FormControl(''),
+    patrimonio11:new FormControl(''),
+    patrimonio12:new FormControl(''),
+    patrimonio13:new FormControl(''),
+    patrimonio14:new FormControl(''),
+    patrimonio15:new FormControl(''),
+    patrimonio16:new FormControl(''),
+    patrimonio17:new FormControl(''),
+    patrimonio18:new FormControl(''),
+    patrimonio19:new FormControl(''),
+    patrimonio20:new FormControl(''),
     garantia1:new FormControl('NÃO'),
     garantia2:new FormControl('NÃO'),
     garantia3:new FormControl('NÃO'),
@@ -387,6 +597,16 @@ export class FORMCADOSComponent{
     garantia8:new FormControl('NÃO'),
     garantia9:new FormControl('NÃO'),
     garantia10:new FormControl('NÃO'),
+    garantia11:new FormControl('NÃO'),
+    garantia12:new FormControl('NÃO'),
+    garantia13:new FormControl('NÃO'),
+    garantia14:new FormControl('NÃO'),
+    garantia15:new FormControl('NÃO'),
+    garantia16:new FormControl('NÃO'),
+    garantia17:new FormControl('NÃO'),
+    garantia18:new FormControl('NÃO'),
+    garantia19:new FormControl('NÃO'),
+    garantia20:new FormControl('NÃO'),
      });
 
      constructor(
@@ -475,6 +695,77 @@ onEquipamentoChange10(event: Event): void {
   console.log(this.equipamentoSelecionado);
   this.carregaMarcas();
 }
+
+onEquipamentoChange11(event: Event): void {
+  this.equipamentoSelecionado11 = (event.target as HTMLSelectElement).value;
+  this.equipamentoSelecionado = this.equipamentoSelecionado11;
+  console.log(this.equipamentoSelecionado);
+  this.carregaMarcas();
+}
+
+onEquipamentoChange12(event: Event): void {
+  this.equipamentoSelecionado12 = (event.target as HTMLSelectElement).value;
+  this.equipamentoSelecionado = this.equipamentoSelecionado12;
+  console.log(this.equipamentoSelecionado);
+  this.carregaMarcas();
+}
+
+onEquipamentoChange13(event: Event): void {
+  this.equipamentoSelecionado13 = (event.target as HTMLSelectElement).value;
+  this.equipamentoSelecionado = this.equipamentoSelecionado13;
+  console.log(this.equipamentoSelecionado);
+  this.carregaMarcas();
+}
+
+onEquipamentoChange14(event: Event): void {
+  this.equipamentoSelecionado14 = (event.target as HTMLSelectElement).value;
+  this.equipamentoSelecionado = this.equipamentoSelecionado14;
+  console.log(this.equipamentoSelecionado);
+  this.carregaMarcas();
+}
+
+onEquipamentoChange15(event: Event): void {
+  this.equipamentoSelecionado15 = (event.target as HTMLSelectElement).value;
+  this.equipamentoSelecionado = this.equipamentoSelecionado15;
+  console.log(this.equipamentoSelecionado);
+  this.carregaMarcas();
+}
+
+onEquipamentoChange16(event: Event): void {
+  this.equipamentoSelecionado16 = (event.target as HTMLSelectElement).value;
+  this.equipamentoSelecionado = this.equipamentoSelecionado16;
+  console.log(this.equipamentoSelecionado);
+  this.carregaMarcas();
+}
+
+onEquipamentoChange17(event: Event): void {
+  this.equipamentoSelecionado17 = (event.target as HTMLSelectElement).value;
+  this.equipamentoSelecionado = this.equipamentoSelecionado17;
+  console.log(this.equipamentoSelecionado);
+  this.carregaMarcas();
+}
+
+onEquipamentoChange18(event: Event): void {
+  this.equipamentoSelecionado18 = (event.target as HTMLSelectElement).value;
+  this.equipamentoSelecionado = this.equipamentoSelecionado18;
+  console.log(this.equipamentoSelecionado);
+  this.carregaMarcas();
+}
+
+onEquipamentoChange19(event: Event): void {
+  this.equipamentoSelecionado19 = (event.target as HTMLSelectElement).value;
+  this.equipamentoSelecionado = this.equipamentoSelecionado19;
+  console.log(this.equipamentoSelecionado);
+  this.carregaMarcas();
+}
+
+onEquipamentoChange20(event: Event): void {
+  this.equipamentoSelecionado20 = (event.target as HTMLSelectElement).value;
+  this.equipamentoSelecionado = this.equipamentoSelecionado20;
+  console.log(this.equipamentoSelecionado);
+  this.carregaMarcas();
+}
+
 
 
 carregaMarcas(){
@@ -651,6 +942,137 @@ onModeloChange10(): void {
   }, 100);
 }
 
+onModeloChange11(): void {
+  setTimeout(() => {
+    const selectElement = document.getElementById("modelo10") as HTMLSelectElement;
+    const newValue = selectElement.value;
+    if (newValue !== this.modeloSelecionada11) {
+      this.modeloSelecionada11 = newValue;
+      this.modeloSelecionada = newValue;
+      this.exibirListaModelo11 = false; // Oculta a lista de marcas
+      this.exibirSoUmModelo11 = true;   // Exibe o input com a marca selecionada
+    }
+  }, 100);
+}
+
+onModeloChange12(): void {
+  setTimeout(() => {
+    const selectElement = document.getElementById("modelo10") as HTMLSelectElement;
+    const newValue = selectElement.value;
+    if (newValue !== this.modeloSelecionada12) {
+      this.modeloSelecionada12 = newValue;
+      this.modeloSelecionada = newValue;
+      this.exibirListaModelo12 = false; // Oculta a lista de marcas
+      this.exibirSoUmModelo12 = true;   // Exibe o input com a marca selecionada
+    }
+  }, 100);
+}
+
+onModeloChange13(): void {
+  setTimeout(() => {
+    const selectElement = document.getElementById("modelo10") as HTMLSelectElement;
+    const newValue = selectElement.value;
+    if (newValue !== this.modeloSelecionada13) {
+      this.modeloSelecionada13 = newValue;
+      this.modeloSelecionada = newValue;
+      this.exibirListaModelo13 = false; // Oculta a lista de marcas
+      this.exibirSoUmModelo13 = true;   // Exibe o input com a marca selecionada
+    }
+  }, 100);
+}
+
+onModeloChange14(): void {
+  setTimeout(() => {
+    const selectElement = document.getElementById("modelo10") as HTMLSelectElement;
+    const newValue = selectElement.value;
+    if (newValue !== this.modeloSelecionada14) {
+      this.modeloSelecionada14 = newValue;
+      this.modeloSelecionada = newValue;
+      this.exibirListaModelo14 = false; // Oculta a lista de marcas
+      this.exibirSoUmModelo14 = true;   // Exibe o input com a marca selecionada
+    }
+  }, 100);
+}
+
+onModeloChange15(): void {
+  setTimeout(() => {
+    const selectElement = document.getElementById("modelo10") as HTMLSelectElement;
+    const newValue = selectElement.value;
+    if (newValue !== this.modeloSelecionada15) {
+      this.modeloSelecionada15 = newValue;
+      this.modeloSelecionada = newValue;
+      this.exibirListaModelo15 = false; // Oculta a lista de marcas
+      this.exibirSoUmModelo15 = true;   // Exibe o input com a marca selecionada
+    }
+  }, 100);
+}
+
+onModeloChange16(): void {
+  setTimeout(() => {
+    const selectElement = document.getElementById("modelo10") as HTMLSelectElement;
+    const newValue = selectElement.value;
+    if (newValue !== this.modeloSelecionada16) {
+      this.modeloSelecionada16 = newValue;
+      this.modeloSelecionada = newValue;
+      this.exibirListaModelo16 = false; // Oculta a lista de marcas
+      this.exibirSoUmModelo16 = true;   // Exibe o input com a marca selecionada
+    }
+  }, 100);
+}
+
+onModeloChange17(): void {
+  setTimeout(() => {
+    const selectElement = document.getElementById("modelo10") as HTMLSelectElement;
+    const newValue = selectElement.value;
+    if (newValue !== this.modeloSelecionada17) {
+      this.modeloSelecionada17 = newValue;
+      this.modeloSelecionada = newValue;
+      this.exibirListaModelo17 = false; // Oculta a lista de marcas
+      this.exibirSoUmModelo17 = true;   // Exibe o input com a marca selecionada
+    }
+  }, 100);
+}
+
+onModeloChange18(): void {
+  setTimeout(() => {
+    const selectElement = document.getElementById("modelo10") as HTMLSelectElement;
+    const newValue = selectElement.value;
+    if (newValue !== this.modeloSelecionada18) {
+      this.modeloSelecionada18 = newValue;
+      this.modeloSelecionada = newValue;
+      this.exibirListaModelo18 = false; // Oculta a lista de marcas
+      this.exibirSoUmModelo18 = true;   // Exibe o input com a marca selecionada
+    }
+  }, 100);
+}
+
+onModeloChange19(): void {
+  setTimeout(() => {
+    const selectElement = document.getElementById("modelo10") as HTMLSelectElement;
+    const newValue = selectElement.value;
+    if (newValue !== this.modeloSelecionada19) {
+      this.modeloSelecionada19 = newValue;
+      this.modeloSelecionada = newValue;
+      this.exibirListaModelo19 = false; // Oculta a lista de marcas
+      this.exibirSoUmModelo19 = true;   // Exibe o input com a marca selecionada
+    }
+  }, 100);
+}
+
+onModeloChange20(): void {
+  setTimeout(() => {
+    const selectElement = document.getElementById("modelo10") as HTMLSelectElement;
+    const newValue = selectElement.value;
+    if (newValue !== this.modeloSelecionada20) {
+      this.modeloSelecionada20 = newValue;
+      this.modeloSelecionada = newValue;
+      this.exibirListaModelo20 = false; // Oculta a lista de marcas
+      this.exibirSoUmModelo20 = true;   // Exibe o input com a marca selecionada
+    }
+  }, 100);
+}
+
+
 carregaModelos(){
   ///////////////CARREGA OS MODELOS DO SELECT MODELO///////////////////
   if(this.equipamentoSelecionado=="NOBREAK"){
@@ -826,6 +1248,138 @@ onMarcaChange10(): void {
   }, 100);
 }
 
+onMarcaChange11(): void {
+  setTimeout(() => {
+    const selectElement = document.getElementById("marca11") as HTMLSelectElement;
+    const newValue = selectElement.value;
+    if (newValue !== this.marcaSelecionada11) {
+      this.marcaSelecionada11 = newValue;
+      this.marcaSelecionada = newValue;
+      this.exibirListaMarcas11 = false; // Oculta a lista de marcas
+      this.exibirSoUmaMarca11 = true;   // Exibe o input com a marca selecionada
+    }
+  }, 100);
+}
+
+onMarcaChange12(): void {
+  setTimeout(() => {
+    const selectElement = document.getElementById("marca12") as HTMLSelectElement;
+    const newValue = selectElement.value;
+    if (newValue !== this.marcaSelecionada12) {
+      this.marcaSelecionada12 = newValue;
+      this.marcaSelecionada = newValue;
+      this.exibirListaMarcas12 = false; // Oculta a lista de marcas
+      this.exibirSoUmaMarca12 = true;   // Exibe o input com a marca selecionada
+    }
+  }, 100);
+}
+
+onMarcaChange13(): void {
+  setTimeout(() => {
+    const selectElement = document.getElementById("marca13") as HTMLSelectElement;
+    const newValue = selectElement.value;
+    if (newValue !== this.marcaSelecionada13) {
+      this.marcaSelecionada13 = newValue;
+      this.marcaSelecionada = newValue;
+      this.exibirListaMarcas13 = false; // Oculta a lista de marcas
+      this.exibirSoUmaMarca13 = true;   // Exibe o input com a marca selecionada
+    }
+  }, 100);
+}
+
+onMarcaChange14(): void {
+  setTimeout(() => {
+    const selectElement = document.getElementById("marca14") as HTMLSelectElement;
+    const newValue = selectElement.value;
+    if (newValue !== this.marcaSelecionada14) {
+      this.marcaSelecionada14 = newValue;
+      this.marcaSelecionada = newValue;
+      this.exibirListaMarcas14 = false; // Oculta a lista de marcas
+      this.exibirSoUmaMarca14 = true;   // Exibe o input com a marca selecionada
+    }
+  }, 100);
+}
+
+onMarcaChange15(): void {
+  setTimeout(() => {
+    const selectElement = document.getElementById("marca15") as HTMLSelectElement;
+    const newValue = selectElement.value;
+    if (newValue !== this.marcaSelecionada15) {
+      this.marcaSelecionada15 = newValue;
+      this.marcaSelecionada = newValue;
+      this.exibirListaMarcas15 = false; // Oculta a lista de marcas
+      this.exibirSoUmaMarca15 = true;   // Exibe o input com a marca selecionada
+    }
+  }, 100);
+}
+
+onMarcaChange16(): void {
+  setTimeout(() => {
+    const selectElement = document.getElementById("marca16") as HTMLSelectElement;
+    const newValue = selectElement.value;
+    if (newValue !== this.marcaSelecionada16) {
+      this.marcaSelecionada16 = newValue;
+      this.marcaSelecionada = newValue;
+      this.exibirListaMarcas16 = false; // Oculta a lista de marcas
+      this.exibirSoUmaMarca16 = true;   // Exibe o input com a marca selecionada
+    }
+  }, 100);
+}
+
+onMarcaChange17(): void {
+  setTimeout(() => {
+    const selectElement = document.getElementById("marca17") as HTMLSelectElement;
+    const newValue = selectElement.value;
+    if (newValue !== this.marcaSelecionada17) {
+      this.marcaSelecionada17 = newValue;
+      this.marcaSelecionada = newValue;
+      this.exibirListaMarcas17 = false; // Oculta a lista de marcas
+      this.exibirSoUmaMarca17 = true;   // Exibe o input com a marca selecionada
+    }
+  }, 100);
+}
+
+onMarcaChange18(): void {
+  setTimeout(() => {
+    const selectElement = document.getElementById("marca18") as HTMLSelectElement;
+    const newValue = selectElement.value;
+    if (newValue !== this.marcaSelecionada18) {
+      this.marcaSelecionada18 = newValue;
+      this.marcaSelecionada = newValue;
+      this.exibirListaMarcas18 = false; // Oculta a lista de marcas
+      this.exibirSoUmaMarca18 = true;   // Exibe o input com a marca selecionada
+    }
+  }, 100);
+}
+
+onMarcaChange19(): void {
+  setTimeout(() => {
+    const selectElement = document.getElementById("marca19") as HTMLSelectElement;
+    const newValue = selectElement.value;
+    if (newValue !== this.marcaSelecionada19) {
+      this.marcaSelecionada19 = newValue;
+      this.marcaSelecionada = newValue;
+      this.exibirListaMarcas19 = false; // Oculta a lista de marcas
+      this.exibirSoUmaMarca19 = true;   // Exibe o input com a marca selecionada
+    }
+  }, 100);
+}
+
+onMarcaChange20(): void {
+  setTimeout(() => {
+    const selectElement = document.getElementById("marca20") as HTMLSelectElement;
+    const newValue = selectElement.value;
+    if (newValue !== this.marcaSelecionada20) {
+      this.marcaSelecionada20 = newValue;
+      this.marcaSelecionada = newValue;
+      this.exibirListaMarcas20 = false; // Oculta a lista de marcas
+      this.exibirSoUmaMarca20 = true;   // Exibe o input com a marca selecionada
+    }
+  }, 100);
+}
+
+
+
 // ESCUTA O SELECT TOPOLOGIA
 onTopologiaChange(event: Event): void {
   this.topologiaSelecionada = (event.target as HTMLSelectElement).value;
@@ -996,6 +1550,65 @@ onGarantiaChange10(event: Event): void {
   console.log(this.garantiaSelecionada); 
 }
 
+onGarantiaChange11(event: Event): void {
+  this.garantiaSelecionada11 = (event.target as HTMLSelectElement).value;
+  this.garantiaSelecionada = this.garantiaSelecionada11;
+  console.log(this.garantiaSelecionada); 
+}
+
+onGarantiaChange12(event: Event): void {
+  this.garantiaSelecionada12 = (event.target as HTMLSelectElement).value;
+  this.garantiaSelecionada = this.garantiaSelecionada12;
+  console.log(this.garantiaSelecionada); 
+}
+
+onGarantiaChange13(event: Event): void {
+  this.garantiaSelecionada13 = (event.target as HTMLSelectElement).value;
+  this.garantiaSelecionada = this.garantiaSelecionada13;
+  console.log(this.garantiaSelecionada); 
+}
+
+onGarantiaChange14(event: Event): void {
+  this.garantiaSelecionada14 = (event.target as HTMLSelectElement).value;
+  this.garantiaSelecionada = this.garantiaSelecionada14;
+  console.log(this.garantiaSelecionada); 
+}
+
+onGarantiaChange15(event: Event): void {
+  this.garantiaSelecionada15 = (event.target as HTMLSelectElement).value;
+  this.garantiaSelecionada = this.garantiaSelecionada15;
+  console.log(this.garantiaSelecionada); 
+}
+
+onGarantiaChange16(event: Event): void {
+  this.garantiaSelecionada16 = (event.target as HTMLSelectElement).value;
+  this.garantiaSelecionada = this.garantiaSelecionada16;
+  console.log(this.garantiaSelecionada); 
+}
+
+onGarantiaChange17(event: Event): void {
+  this.garantiaSelecionada17 = (event.target as HTMLSelectElement).value;
+  this.garantiaSelecionada = this.garantiaSelecionada17;
+  console.log(this.garantiaSelecionada); 
+}
+
+onGarantiaChange18(event: Event): void {
+  this.garantiaSelecionada18 = (event.target as HTMLSelectElement).value;
+  this.garantiaSelecionada = this.garantiaSelecionada18;
+  console.log(this.garantiaSelecionada); 
+}
+
+onGarantiaChange19(event: Event): void {
+  this.garantiaSelecionada19 = (event.target as HTMLSelectElement).value;
+  this.garantiaSelecionada = this.garantiaSelecionada19;
+  console.log(this.garantiaSelecionada); 
+}
+
+onGarantiaChange20(event: Event): void {
+  this.garantiaSelecionada20 = (event.target as HTMLSelectElement).value;
+  this.garantiaSelecionada = this.garantiaSelecionada20;
+  console.log(this.garantiaSelecionada); 
+}
 
   // CONFIGURA AS FUNÇÕES QUE SERÃO EXECUTADAS NA INICIALIZAÇÃO DA PÁGINA
   ngOnInit(): void {
@@ -1701,6 +2314,45 @@ adicionarEquipamento(){
        this.exibirEntrada10 = true;
      break;
       
+     case 11:
+       this.exibirEntrada11 = true;
+     break;
+
+     case 12:
+       this.exibirEntrada12 = true;
+     break;
+
+     case 13:
+       this.exibirEntrada13 = true;
+     break;
+
+     case 14:
+       this.exibirEntrada14 = true;
+     break;
+
+     case 15:
+       this.exibirEntrada15 = true;
+     break;
+
+     case 16:
+       this.exibirEntrada16 = true;
+     break;
+
+     case 17:
+       this.exibirEntrada17 = true;
+     break;
+
+     case 18:
+       this.exibirEntrada18 = true;
+     break;
+
+     case 19:
+       this.exibirEntrada19 = true;
+     break;
+
+     case 20:
+       this.exibirEntrada20 = true;
+     break;
        default:
         alert(" Você ultrapassou o limite máximo de Entrada de equipamentos:    (10 equipamentos), salve este e abre um novo lote de ordem de serviço ")
       break;

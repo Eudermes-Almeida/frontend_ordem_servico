@@ -569,9 +569,9 @@
                 <td [ngStyle]="{'color': currentColorAprovadas}">
                 OS Aprovadas
               </td>
-                <td class="valor">{{ arrayStatusAprovadas[0]?.somatoriaDTO.somatotaliq | number:'1.2-2' }}</td>
-                <td class="qt">{{arrayStatusAprovadas[0]?.somatoriaDTO.qtOs}}</td>
-                <td class="qt"> </td>
+                <td class="valor" [ngStyle]="{'color': currentColorAprovadas}">{{ arrayStatusAprovadas[0]?.somatoriaDTO.somatotaliq | number:'1.2-2' }}</td>
+                <td class="qt" [ngStyle]="{'color': currentColorAprovadas}">{{arrayStatusAprovadas[0]?.somatoriaDTO.qtOs}}</td>
+                <td class="qt" [ngStyle]="{'color': currentColorAprovadas}"> </td>
                 
               </tr>
 
@@ -588,9 +588,9 @@
                 <td [ngStyle]="{'color': currentColorNaoAprovadas}">
                 OS NÃO Aprovadas
               </td>
-                <td class="valor">{{arrayStatusNaoAprovadas[0]?.somatoriaDTO.somatotaliq | number:'1.2-2' }}</td>
-                <td class="qt">{{arrayStatusNaoAprovadas[0]?.somatoriaDTO.qtOs}}</td>
-                <td class="qt"> </td>
+                <td class="valor" [ngStyle]="{'color': currentColorNaoAprovadas}">{{arrayStatusNaoAprovadas[0]?.somatoriaDTO.somatotaliq | number:'1.2-2' }}</td>
+                <td class="qt" [ngStyle]="{'color': currentColorNaoAprovadas}">{{arrayStatusNaoAprovadas[0]?.somatoriaDTO.qtOs}}</td>
+                <td class="qt" [ngStyle]="{'color': currentColorNaoAprovadas}"> </td>
                 
               </tr>
               <tr>
@@ -636,9 +636,9 @@
                 OS Aprovadas ou Reprovadas Remotamente
               </td>
               
-                <td class="valor">{{ arrayAprovadasOuReprovadasRemotamente[0]?.somatoriaDTO.somatotaliq | number:'1.2-2' }}</td>
-                <td class="qt">{{arrayAprovadasOuReprovadasRemotamente[0]?.somatoriaDTO.qtOs}}</td>
-                <td class="qt"> </td>
+                <td class="valor" [ngStyle]="{'color': currentColor}">{{ arrayAprovadasOuReprovadasRemotamente[0]?.somatoriaDTO.somatotaliq | number:'1.2-2' }}</td>
+                <td class="qt" [ngStyle]="{'color': currentColor}">{{arrayAprovadasOuReprovadasRemotamente[0]?.somatoriaDTO.qtOs}}</td>
+                <td class="qt" [ngStyle]="{'color': currentColor}"> </td>
                 
               </tr>
               <tr>
