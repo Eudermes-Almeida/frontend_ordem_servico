@@ -254,11 +254,22 @@
 <!--------------------------------------------------------------------------------------->
 
 <div class="btn-salvar-ordem-servico">
+  
 <p style="color: white;" *ngIf="exibirNumeroNovaOs" >Ordens de Serviço geradas em lote com sucesso</p>
 <a routerLink="/home" routerLinkActive="active"><button type="button" class="btn btn-primary" *ngIf="exibirBotaoSair">SAIR</button></a>
-<button class="btn btn-primary" (click)="enviarOs()" *ngIf="exibirBotaoSalvar">Salvar Ordem Serviço</button>
 
-</div>  
+<div *ngIf="!spinnerSalvandoOs" >
+<button class="btn btn-primary" (click)="enviarOs()" *ngIf="exibirBotaoSalvar">Salvar Ordem Serviço</button>
+</div>
+
+<div *ngIf="spinnerSalvandoOs" >
+<div class="spinner-border text-primary"></div>
+<div class="spinner-grow"></div> 
+</div>
+
+
+</div> 
+
 
 </div>
 

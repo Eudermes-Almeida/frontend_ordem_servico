@@ -24,6 +24,8 @@ import QRCode from 'qrcode';
 })
 export class FORMCADOSComponent{
 
+  spinnerSalvandoOs: boolean = false;
+
   cidades: ParametrosCombobox[] = [];
   cidadeSelecionada: string = "";
   cidadesPosicaoZero: any = { id: 100, parametro: 'SEGMENTO', valor: 'CIDADES' }; // para não iniciar com um nome de cidade e sim "cidades"
@@ -2746,6 +2748,8 @@ async buscaUltimaOsAsync(): Promise<void> {
 
 
 async enviarOs(): Promise<void> {
+
+  this.spinnerSalvandoOs = true;
     // Verificar se o método já está sendo executado
     if (this.lock) {
         console.warn('O método enviarOs já está em execução.');
@@ -2879,8 +2883,8 @@ async enviarOs(): Promise<void> {
         this.exibirBotaoSalvar = false;
         this.exibirNumeroNovaOs = true;
         this.exibirBotaoImprimir = true;
-
     }
+    this.spinnerSalvandoOs = false;
 }
 
 
@@ -3012,7 +3016,8 @@ case 30:
 break;
 
        default:
-        alert(" Você ultrapassou o limite máximo de Entrada de equipamentos:    (30 equipamentos), salve este e abre um novo lote de ordem de serviço ")
+      alert(" Você ultrapassou o limite máximo de Entrada de equipamentos:    (30 equipamentos), salve este e abre um novo lote de ordem de serviço ")
+      this.exibirEntrada30 = true;
       break;
      }
       
