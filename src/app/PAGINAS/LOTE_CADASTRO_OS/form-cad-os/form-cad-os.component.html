@@ -351,129 +351,37 @@
     </table>
 
     <table class="info-table">
-    <!-- Outras linhas -->
+  <thead>
     <tr class="info-table">
-        <th>Nº</th>
-        <th>O.S.</th>
-        <th>EQUIPAMENTO</th>
-        <th>MARCA</th>
-        <th>MODELO</th>
-        <th>SERIAL</th>
-        <th>PATRIMONIO</th>
-        <th>GARANTIA</th>
+      <th>Nº</th>
+      <th>O.S.</th>
+      <th>EQUIPAMENTO</th>
+      <th>MARCA</th>
+      <th>MODELO</th>
+      <th>SERIAL</th>
+      <th>PATRIMONIO</th>
+      <th>GARANTIA</th>
     </tr>
-    <tr *ngIf="exibirOs1" class="info-table">
-        <td>1</td>
-        <td>{{os1}}</td>
-        <td>{{equipamentoSelecionado1}}</td>
-        <td>{{marcaSelecionada1}}</td>
-        <td>{{modeloSelecionada1}}</td>
-        <td>{{serial1}}</td>
-        <td>{{patrimonio1}}</td>
-        <td>{{garantiaSelecionada1}}</td>
-    </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]">
+      
+      <!-- Acessa dinamicamente 'exibirOs1', 'exibirOs2', etc -->
+      <tr *ngIf="$any(this)['exibirOs' + i]" class="info-table">
+        <td>{{ i }}</td>
+        <td>{{ $any(this)['os' + i] }}</td>
+        <td>{{ $any(this)['equipamentoSelecionado' + i] }}</td>
+        <td>{{ $any(this)['marcaSelecionada' + i] }}</td>
+        <td>{{ $any(this)['modeloSelecionada' + i] }}</td>
+        <td>{{ $any(this)['serial' + i] }}</td>
+        <td>{{ $any(this)['patrimonio' + i] }}</td>
+        <td>{{ $any(this)['garantiaSelecionada' + i] }}</td>
+      </tr>
 
-    <tr *ngIf="exibirOs2">
-      <td>2</td>
-      <td>{{os2}}</td>
-      <td>{{equipamentoSelecionado2}}</td>
-      <td>{{marcaSelecionada2}}</td>
-      <td>{{modeloSelecionada2}}</td>
-      <td>{{serial2}}</td>
-      <td>{{patrimonio2}}</td>
-      <td>{{garantiaSelecionada2}}</td>
-  </tr>
-
-  <tr *ngIf="exibirOs3">
-    <td>3</td>
-    <td>{{os3}}</td>
-    <td>{{equipamentoSelecionado3}}</td>
-    <td>{{marcaSelecionada3}}</td>
-    <td>{{modeloSelecionada3}}</td>
-    <td>{{serial3}}</td>
-    <td>{{patrimonio3}}</td>
-    <td>{{garantiaSelecionada3}}</td>
-</tr>
-
-<tr *ngIf="exibirOs4">
-  <td>4</td>
-  <td>{{os4}}</td>
-  <td>{{equipamentoSelecionado4}}</td>
-  <td>{{marcaSelecionada4}}</td>
-  <td>{{modeloSelecionada4}}</td>
-  <td>{{serial4}}</td>
-  <td>{{patrimonio4}}</td>
-  <td>{{garantiaSelecionada4}}</td>
-</tr>
-
-<tr *ngIf="exibirOs5">
-  <td>5</td>
-  <td>{{os5}}</td>
-  <td>{{equipamentoSelecionado5}}</td>
-  <td>{{marcaSelecionada5}}</td>
-  <td>{{modeloSelecionada5}}</td>
-  <td>{{serial5}}</td>
-  <td>{{patrimonio5}}</td>
-  <td>{{garantiaSelecionada5}}</td>
-</tr>
-
-<tr *ngIf="exibirOs6">
-  <td>6</td>
-  <td>{{os6}}</td>
-  <td>{{equipamentoSelecionado6}}</td>
-  <td>{{marcaSelecionada6}}</td>
-  <td>{{modeloSelecionada6}}</td>
-  <td>{{serial6}}</td>
-  <td>{{patrimonio6}}</td>
-  <td>{{garantiaSelecionada6}}</td>
-</tr>
-
-<tr *ngIf="exibirOs7">
-  <td>7</td>
-  <td>{{os7}}</td>
-  <td>{{equipamentoSelecionado7}}</td>
-  <td>{{marcaSelecionada7}}</td>
-  <td>{{modeloSelecionada7}}</td>
-  <td>{{serial7}}</td>
-  <td>{{patrimonio7}}</td>
-  <td>{{garantiaSelecionada7}}</td>
-</tr>
-
-<tr *ngIf="exibirOs8">
-  <td>8</td>
-  <td>{{os8}}</td>
-  <td>{{equipamentoSelecionado8}}</td>
-  <td>{{marcaSelecionada8}}</td>
-  <td>{{modeloSelecionada8}}</td>
-  <td>{{serial8}}</td>
-  <td>{{patrimonio8}}</td>
-  <td>{{garantiaSelecionada8}}</td>
-</tr>
-
-<tr *ngIf="exibirOs9">
-  <td>9</td>
-  <td>{{os9}}</td>
-  <td>{{equipamentoSelecionado9}}</td>
-  <td>{{marcaSelecionada9}}</td>
-  <td>{{modeloSelecionada9}}</td>
-  <td>{{serial9}}</td>
-  <td>{{patrimonio9}}</td>
-  <td>{{garantiaSelecionada9}}</td>
-</tr>
-
-<tr *ngIf="exibirOs10">
-  <td>10</td>
-  <td>{{os10}}</td>
-  <td>{{equipamentoSelecionado10}}</td>
-  <td>{{marcaSelecionada10}}</td>
-  <td>{{modeloSelecionada10}}</td>
-  <td>{{serial10}}</td>
-  <td>{{patrimonio10}}</td>
-  <td>{{garantiaSelecionada10}}</td>
-</tr>
-    
-    
+    </ng-container>
+  </tbody>
 </table>
+
 
  <!--------------------------GARANTIAS --------------------------------------->
  <div class="garantias">
