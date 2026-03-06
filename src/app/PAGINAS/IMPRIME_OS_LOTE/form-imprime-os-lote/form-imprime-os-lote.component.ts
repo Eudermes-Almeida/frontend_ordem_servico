@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import jsPDF from 'jspdf';
 import html2pdf from 'html2pdf.js';
+import { concatMap, from, toArray } from 'rxjs';
 
 
 
@@ -526,37 +527,27 @@ onOspeloSerialKey(event: KeyboardEvent): void {
 //////ATUALIZA ORDEM DE SERVIÇO - MUDA STATUS E DATA PARA "FECHADA" //////////////////////////////
 
 processarOSSelecionadas() {
-  // Configuração de data de fechamento
-  const dataHoje = new Date();
-  const ano = dataHoje.getFullYear();
-  const mes = String(dataHoje.getMonth() + 1).padStart(2, '0');
-  const dia = String(dataHoje.getDate()).padStart(2, '0');
-  const hora = String(dataHoje.getHours()).padStart(2, '0');
-  const minutos = String(dataHoje.getMinutes()).padStart(2, '0');
-  const segundos = String(dataHoje.getSeconds()).padStart(2, '0');
-  const milissegundos = String(dataHoje.getMilliseconds()).padStart(3, '0');
-  
-  const dataHojeFormatada = `${ano}-${mes}-${dia}T${hora}:${minutos}:${segundos}.${milissegundos}`;
+  from(this.osClicadasCheckbox).pipe(
+    concatMap(osItem => {
+      // 1. Geramos os dados para a API
+      const dadosFormatados = this.geraObjetoOs(osItem);
 
-  // Primeiro forEach para alterar o status e fechamento
-  this.osClicadasCheckbox.forEach((osItem: any) => {
-    // Substitui os valores de status e fechamento antes de processar cada item
-    osItem.status = String("FECHADA");
-    osItem.fechamento = String(dataHojeFormatada);
+      // 2. ATUALIZAÇÃO PARA A TELA:
+      // Modificamos o item original para o Angular refletir no HTML/PDF imediatamente
+      osItem.status = "FECHADA";
+      osItem.fechamento = dadosFormatados.fechamento; 
+
+      return this.servico.atualizarOrdemServico(osItem.os, dadosFormatados);
+    }),
+    toArray()
+  ).subscribe({
+    next: (resultados) => {
+      console.log(`${resultados.length} ordens atualizadas com sucesso!`);
+      // O PDF agora verá os dados atualizados no HTML
+      this.gerarPDF();
+    },
+    error: (err) => console.error("Erro no lote:", err)
   });
-
-  // Segundo forEach para processar os dados de OS
-  this.osClicadasCheckbox.forEach((osItem: any) => {
-    const id = osItem.os; // Captura o ID da OS
-    console.log("Este é o id capturado: " + id);
-
-    // Preenche os dados do objeto OS com os valores do osItem
-    this.geraObjetoOs(osItem); // Passa o item para preencher o objeto os
-
-    this.atualizarOS(id, osItem); // Chama o método atualizarOS para cada ID
-  });
-
-  this.gerarPDF();
 }
 
 
@@ -579,7 +570,7 @@ atualizarOS(id: number, osItem: any) {
 }
 
 geraObjetoOs(osItem: any) {
-  // CONFIGURA DATA DE FECHAMENTO
+  // Reutilize sua lógica de data que você sabe que funciona
   const dataHoje = new Date();
   const ano = dataHoje.getFullYear();
   const mes = String(dataHoje.getMonth() + 1).padStart(2, '0');
@@ -588,74 +579,27 @@ geraObjetoOs(osItem: any) {
   const minutos = String(dataHoje.getMinutes()).padStart(2, '0');
   const segundos = String(dataHoje.getSeconds()).padStart(2, '0');
   const milissegundos = String(dataHoje.getMilliseconds()).padStart(3, '0');
-
+  
+  // Voltando ao seu formato original (sem o Z no final)
   const dataHojeFormatada = `${ano}-${mes}-${dia}T${hora}:${minutos}:${segundos}.${milissegundos}`;
 
-  // Preenche o objeto `os` com os dados de osItem
-  this.os = {
-    ...this.os,
+  // Monte o objeto explicitamente (Como você fez na segunda mensagem)
+  // Isso garante que NENHUM campo nulo ou inesperado vá para a API
+  const objetoParaRetorno = {
+      ...osItem, // Base
       atendente: String(osItem.atendente || ""),
-      baterias: String(osItem.baterias || ""),
-      codcli: String(osItem.codcli || 0),
-      cor: String(osItem.cor || ""),
-      data: String(osItem.data || ""),
-      dataretro: String(osItem.dataretro || ""),
-      defeito1: String(osItem.defeito1 || ""),
-      defeito2: String(osItem.defeito2 || ""),
-      defeito3: String(osItem.defeito3 || ""),
-      desconto: String(osItem.desconto || ""),
-      equipamento: String(osItem.equipamento || ""),
+      codcli: Number(osItem.codcli || 0),
       fantasia: String(osItem.fantasia || ""),
-      fechamento: String(dataHojeFormatada),
-      garantia: String(osItem.garantia || ""),
-      hora: String(osItem.hora || ""),
-      jaimp: String(osItem.jaimp || ""),
-      marca: String(osItem.marca || ""),
-      material2: String(osItem.material2 || ""),
-      material3: String(osItem.material3 || ""),
-      modelo: String(osItem.modelo || ""),
-      modelofake: String(osItem.modelofake || ""),
-      obs1: String(osItem.obs1 || ""),
-      obs2: String(osItem.obs2 || ""),
-      obs3: String(osItem.obs3 || ""),
-      os: Number(osItem.os || 0), // ID da OS (presumo que seja um número)
-      osoriginal: String(osItem.osoriginal || ""),
-      outrositens: String(osItem.outrositens || ""),
-      patrimonio: String(osItem.patrimonio || ""),
-      prioridade: String(osItem.prioridade || ""),
-      qt1: String(osItem.qt1 || 0),
-      qt2: String(osItem.qt2 || 0),
-      qt3: String(osItem.qt3 || 0),
-      qtdeslocamento: String(osItem.qtdeslocamento || 0),
-      qtoutrositens: String(osItem.qtoutrositens || 0),
-      rzsocial: String(osItem.rzsocial || ""),
-      serial: String(osItem.serial || ""),
-      status: String("FECHADA"),
-      tarefa1: String(osItem.tarefa1 || ""),
-      tarefa2: String(osItem.tarefa2 || ""),
-      tarefa3: String(osItem.tarefa3 || ""),
-      tecnico: String(osItem.tecnico || ""),
-      top10: Number(osItem.top10 || 0),
-      topologia: String(osItem.topologia || ""),
-      totalbruto: String(osItem.totalbruto || "0.00"),
-      totaliq: String(osItem.totaliq || "0.00"),
-      valorassistencia: String(osItem.valorassistencia || "0.00"),
-      valordesconto: String(osItem.valordesconto || "0.00"),
-      valortotal1: String(osItem.valortotal1 || "0.00"),
-      valortotal2: String(osItem.valortotal2 || "0.00"),
-      valortotal3: String(osItem.valortotal3 || "0.00"),
-      valortotaldeslocamento: String(osItem.valortotaldeslocamento || "0.00"),
-      valortotaloutrositens: String(osItem.valortotaloutrositens || "0.00"),
-      valorunit1: String(osItem.valorunit1 || "0.00"),
-      valorunit2: String(osItem.valorunit2 || "0.00"),
-      valorunit3: String(osItem.valorunit3 || "0.00"),
-      valorunitariodeslocamento: String(osItem.valorunitariodeslocamento || "0.00"),
-      valorunitoutrositens: String(osItem.valorunitoutrositens || "0.00"),
-      venda: String(osItem.venda || ""),
+      fechamento: dataHojeFormatada,
+      status: "FECHADA",
+      os: Number(osItem.os || 0),
+      // Adicione aqui apenas os campos que o seu DTO no Java exige
   };
 
-  console.log("Objeto 'os' gerado:", JSON.stringify(this.os, null, 2));
+  this.os = objetoParaRetorno; 
+  return objetoParaRetorno; 
 }
+
 
 
 ////////////////////////////////////GERAR PDF//////////////////////////////////////////
