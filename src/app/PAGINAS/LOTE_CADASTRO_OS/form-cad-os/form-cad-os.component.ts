@@ -2891,7 +2891,7 @@ async enviarOs(): Promise<void> {
 
 adicionarEquipamento(){
   this.contadorEquipamento += 1;
-  console.log(this.contadorEquipamento);
+  console.log("ESTE É O CONTADOR DE EQUIPAMENTOS **********************************", this.contadorEquipamento);
 
     switch (this.contadorEquipamento) {
        
