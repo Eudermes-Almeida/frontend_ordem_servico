@@ -413,21 +413,19 @@
   
 
   <!--------------------------ETIQUETAS PARA LABORATÓRIO --------------------------------------->
-<ng-container *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]">
-  
-  <div class="etiqueta" *ngIf="$any(this)['exibirOs' + i]">
-    <p>ORDEM DE SERVIÇO</p>
+<div class="container-etiquetas">
+  <ng-container *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]">
     
-    <!-- Acessa os1, os2, os3... -->
-    <h1 style="font-size: 120px; color: red;">{{ $any(this)['os' + i] }}</h1>
-    
-    <!-- Dados fixos do objeto 'os' -->
-    <p>{{ os.fantasia.length > 25 ? (os.fantasia | slice:0:25) + '...' : os.fantasia }}</p>
-    <p>{{ os.rzsocial.length > 25 ? (os.rzsocial | slice:0:25) + '...' : os.rzsocial }}</p>
-    <p>{{ os.data | date:'dd-MM-yyyy' }}</p>
-  </div>
+    <div class="etiqueta" *ngIf="$any(this)['exibirOs' + i]">
+      <p>ORDEM DE SERVIÇO</p>
+      <h1 style="font-size: 100px; color: red; margin: 10px 0;">{{ $any(this)['os' + i] }}</h1>
+      <p>{{ os.fantasia.length > 25 ? (os.fantasia | slice:0:25) + '...' : os.fantasia }}</p>
+      <p>{{ os.rzsocial.length > 25 ? (os.rzsocial | slice:0:25) + '...' : os.rzsocial }}</p>
+      <p>{{ os.data | date:'dd-MM-yyyy' }}</p>
+    </div>
 
-</ng-container>
+  </ng-container>
+</div>
 
 
 </div>
