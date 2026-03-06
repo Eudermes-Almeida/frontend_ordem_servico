@@ -253,22 +253,35 @@
 <!--------------------------------------------------------------------------------------->
 <!--------------------------------------------------------------------------------------->
 
-<div class="btn-salvar-ordem-servico">
+<div class="btn-salvar-ordem-servico d-flex flex-column align-items-end">
   
-<p style="color: white;" *ngIf="exibirNumeroNovaOs" >Ordens de Serviço geradas em lote com sucesso</p>
-<a routerLink="/home" routerLinkActive="active"><button type="button" class="btn btn-primary" *ngIf="exibirBotaoSair">SAIR</button></a>
+  <!-- Mensagem de Sucesso -->
+  <p class="text-white mb-2" *ngIf="exibirNumeroNovaOs">
+    Ordens de Serviço geradas em lote com sucesso
+  </p>
 
-<div *ngIf="!spinnerSalvandoOs" >
-<button class="btn btn-primary" (click)="enviarOs()" *ngIf="exibirBotaoSalvar">Salvar Ordem Serviço</button>
+  <!-- Container de Ação (Alinhado à direita) -->
+  <div class="action-wrapper d-flex align-items-center justify-content-end">
+    
+    <!-- 1. Botão Sair -->
+    <a routerLink="/home" *ngIf="exibirBotaoSair" class="ms-auto">
+      <button type="button" class="btn btn-primary">SAIR</button>
+    </a>
+
+    <!-- 2. Botão Salvar -->
+    <button class="btn btn-primary" (click)="enviarOs()" *ngIf="exibirBotaoSalvar && !spinnerSalvandoOs">
+      Salvar Ordem Serviço
+    </button>
+
+    <!-- 3. Spinner (Ocupando o mesmo espaço do botão) -->
+    <div *ngIf="spinnerSalvandoOs" class="spinner-container d-flex align-items-center">
+      <div class="spinner-border text-primary" role="status"></div>
+      <div class="spinner-grow text-primary ms-2" role="status"></div>
+    </div>
+
+  </div>
 </div>
 
-<div *ngIf="spinnerSalvandoOs" >
-<div class="spinner-border text-primary"></div>
-<div class="spinner-grow"></div> 
-</div>
-
-
-</div> 
 
 
 </div>

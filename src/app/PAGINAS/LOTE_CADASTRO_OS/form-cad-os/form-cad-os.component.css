@@ -1,4 +1,26 @@
 /* Estilos do Formulário Centralizado */
+.btn-salvar-ordem-servico {
+  width: 100%; /* Garante que o container use a largura total para alinhar à direita */
+  padding-right: 15px; /* Espaçamento da borda da tela */
+}
+
+.action-wrapper {
+  min-height: 45px; /* Altura aproximada de um botão do Bootstrap */
+  display: flex;
+  align-items: center;
+}
+
+/* Opcional: Se quiser que o spinner tenha a mesma largura visual que o botão 
+   para evitar que outros elementos ao lado se movam */
+.spinner-container {
+  min-width: 160px; /* Ajuste para a largura aproximada do seu botão 'Salvar' */
+  justify-content: flex-end;
+}
+
+a {
+  text-decoration: none;
+}
+
 .centralizado-formulario {
     background-color: #1a1a1a;
     padding: 10px; /* Aumentei o padding para dar um espaço melhor */
