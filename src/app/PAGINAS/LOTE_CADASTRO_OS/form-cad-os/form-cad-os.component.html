@@ -412,86 +412,23 @@
 
   
 
-  <!--------------------------ETIQUETA PARA LABORATÓRIO --------------------------------------->
-  <div class="etiqueta" *ngIf="exibirOs1">
+  <!--------------------------ETIQUETAS PARA LABORATÓRIO --------------------------------------->
+<ng-container *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]">
+  
+  <div class="etiqueta" *ngIf="$any(this)['exibirOs' + i]">
     <p>ORDEM DE SERVIÇO</p>
-    <h1 style="font-size: 120px; color: red;">{{os1}}</h1>
+    
+    <!-- Acessa os1, os2, os3... -->
+    <h1 style="font-size: 120px; color: red;">{{ $any(this)['os' + i] }}</h1>
+    
+    <!-- Dados fixos do objeto 'os' -->
     <p>{{ os.fantasia.length > 25 ? (os.fantasia | slice:0:25) + '...' : os.fantasia }}</p>
     <p>{{ os.rzsocial.length > 25 ? (os.rzsocial | slice:0:25) + '...' : os.rzsocial }}</p>
     <p>{{ os.data | date:'dd-MM-yyyy' }}</p>
-</div>
-  
-<div class="etiqueta" *ngIf="exibirOs2">
-  <p>ORDEM DE SERVIÇO</p>
-  <h1 style="font-size: 120px; color: red;">{{os2}}</h1>
-  <p>{{ os.fantasia.length > 25 ? (os.fantasia | slice:0:25) + '...' : os.fantasia }}</p>
-  <p>{{ os.rzsocial.length > 25 ? (os.rzsocial | slice:0:25) + '...' : os.rzsocial }}</p>
-  <p>{{ os.data | date:'dd-MM-yyyy' }}</p>
-</div>
+  </div>
 
-<div class="etiqueta" *ngIf="exibirOs3">
-  <p>ORDEM DE SERVIÇO</p>
-  <h1 style="font-size: 120px; color: red;">{{os3}}</h1>
-  <p>{{ os.fantasia.length > 25 ? (os.fantasia | slice:0:25) + '...' : os.fantasia }}</p>
-  <p>{{ os.rzsocial.length > 25 ? (os.rzsocial | slice:0:25) + '...' : os.rzsocial }}</p>
-  <p>{{ os.data | date:'dd-MM-yyyy' }}</p>
-</div>
+</ng-container>
 
-<div class="etiqueta" *ngIf="exibirOs4">
-  <p>ORDEM DE SERVIÇO</p>
-  <h1 style="font-size: 120px; color: red;">{{os4}}</h1>
-  <p>{{ os.fantasia.length > 25 ? (os.fantasia | slice:0:25) + '...' : os.fantasia }}</p>
-  <p>{{ os.rzsocial.length > 25 ? (os.rzsocial | slice:0:25) + '...' : os.rzsocial }}</p>
-  <p>{{ os.data | date:'dd-MM-yyyy' }}</p>
-</div>
-
-<div class="etiqueta" *ngIf="exibirOs5">
-  <p>ORDEM DE SERVIÇO</p>
-  <h1 style="font-size: 120px; color: red;">{{os5}}</h1>
-  <p>{{ os.fantasia.length > 25 ? (os.fantasia | slice:0:25) + '...' : os.fantasia }}</p>
-  <p>{{ os.rzsocial.length > 25 ? (os.rzsocial | slice:0:25) + '...' : os.rzsocial }}</p>
-  <p>{{ os.data | date:'dd-MM-yyyy' }}</p>
-</div>
-
-<div class="etiqueta" *ngIf="exibirOs6">
-  <p>ORDEM DE SERVIÇO</p>
-  <h1 style="font-size: 120px; color: red;">{{os6}}</h1>
-  <p>{{ os.fantasia.length > 25 ? (os.fantasia | slice:0:25) + '...' : os.fantasia }}</p>
-  <p>{{ os.rzsocial.length > 25 ? (os.rzsocial | slice:0:25) + '...' : os.rzsocial }}</p>
-  <p>{{ os.data | date:'dd-MM-yyyy' }}</p>
-</div>
-
-<div class="etiqueta" *ngIf="exibirOs7">
-  <p>ORDEM DE SERVIÇO</p>
-  <h1 style="font-size: 120px; color: red;">{{os7}}</h1>
-  <p>{{ os.fantasia.length > 25 ? (os.fantasia | slice:0:25) + '...' : os.fantasia }}</p>
-  <p>{{ os.rzsocial.length > 25 ? (os.rzsocial | slice:0:25) + '...' : os.rzsocial }}</p>
-  <p>{{ os.data | date:'dd-MM-yyyy' }}</p>
-</div>
-
-<div class="etiqueta" *ngIf="exibirOs8">
-  <p>ORDEM DE SERVIÇO</p>
-  <h1 style="font-size: 120px; color: red;">{{os8}}</h1>
-  <p>{{ os.fantasia.length > 25 ? (os.fantasia | slice:0:25) + '...' : os.fantasia }}</p>
-  <p>{{ os.rzsocial.length > 25 ? (os.rzsocial | slice:0:25) + '...' : os.rzsocial }}</p>
-  <p>{{ os.data | date:'dd-MM-yyyy' }}</p>
-</div>
-
-<div class="etiqueta" *ngIf="exibirOs9">
-  <p>ORDEM DE SERVIÇO</p>
-  <h1 style="font-size: 120px; color: red;">{{os9}}</h1>
-  <p>{{ os.fantasia.length > 25 ? (os.fantasia | slice:0:25) + '...' : os.fantasia }}</p>
-  <p>{{ os.rzsocial.length > 25 ? (os.rzsocial | slice:0:25) + '...' : os.rzsocial }}</p>
-  <p>{{ os.data | date:'dd-MM-yyyy' }}</p>
-</div>
-
-<div class="etiqueta" *ngIf="exibirOs10">
-  <p>ORDEM DE SERVIÇO</p>
-  <h1 style="font-size: 120px; color: red;">{{os10}}</h1>
-  <p>{{ os.fantasia.length > 25 ? (os.fantasia | slice:0:25) + '...' : os.fantasia }}</p>
-  <p>{{ os.rzsocial.length > 25 ? (os.rzsocial | slice:0:25) + '...' : os.rzsocial }}</p>
-  <p>{{ os.data | date:'dd-MM-yyyy' }}</p>
-</div>
 
 </div>
 </div>
