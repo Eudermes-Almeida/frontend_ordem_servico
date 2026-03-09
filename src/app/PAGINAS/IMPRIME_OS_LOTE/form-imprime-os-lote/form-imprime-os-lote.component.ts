@@ -50,7 +50,7 @@ export class FORMIMPRIMEOSLOTEComponent {
   exibirBotaoSair: boolean = false;
   exibirSerial: boolean = false
   escondeTabela: boolean = true;
-  spinnerLoading: boolean = false
+  
 
   // CONFIGURA FORMULÁRIO
   formulario = new FormGroup({
@@ -536,11 +536,7 @@ onOspeloSerialKey(event: KeyboardEvent): void {
 //////ATUALIZA ORDEM DE SERVIÇO - MUDA STATUS E DATA PARA "FECHADA" //////////////////////////////
 
 processarOSSelecionadas() {
-<<<<<<< HEAD
   this.spinnerLoading = true
-=======
-  this.spinnerLoading = true;
->>>>>>> 2155acc (botao limpar, spinner, ajuste template)
   from(this.osClicadasCheckbox).pipe(
     mergeMap(osItem => { // Dispara as 10 requisições em paralelo
       const dadosFormatados = this.geraObjetoOs(osItem);
@@ -693,16 +689,8 @@ gerarPDF = () => {
     this.spinnerLoading = false;
 }
 
-limpar() {
 
-  console.log(" o botão limpar foi clicado")
-  this.router.navigate(['/home']).then(() => {
-    this.router.navigate(['os/lote/imprime']);
-  });
-  this.spinnerLoading = false
-}
 
-<<<<<<< HEAD
 limpar(event?: MouseEvent) {
   if (event) {
     event.preventDefault();
@@ -714,6 +702,4 @@ limpar(event?: MouseEvent) {
   });
 }
 
-=======
->>>>>>> 2155acc (botao limpar, spinner, ajuste template)
 }
