@@ -524,10 +524,9 @@ onOspeloSerialKey(event: KeyboardEvent): void {
     console.log('Objeto completo atualizado:', this.objetoOs[index]);
     console.log('Array de ordens de serviço selecionadas:', this.osClicadasCheckbox);
     console.log("quantidade de os selecionadas: " + this.osClicadasCheckbox.length )
-    // if(this.osClicadasCheckbox.length>10){
-    //   alert("Você ultrapassou o limite máximo (10) de ordens de serviço selecionadas para impressão")
-    // }
-    //this.exibirBotaoImprimir = true;
+    if(this.osClicadasCheckbox.length>30){
+      alert("Você ultrapassou o limite máximo (30) de ordens de serviço selecionadas para impressão")
+    }
   }
 
   
@@ -612,7 +611,7 @@ gerarPDF = () => {
       margin: [0, 0, 0, 0], // Margens do PDF (em mm)
       filename: 'documento.pdf', // Nome do arquivo gerado
       html2canvas: {
-          scale: 1.5, // Aumenta a qualidade do PDF
+          scale: 1, // Aumenta a qualidade do PDF
           letterRendering: true,
       },
       jsPDF: {
