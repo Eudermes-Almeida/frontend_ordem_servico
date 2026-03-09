@@ -41,6 +41,7 @@ export class FORMIMPRIMEOSLOTEComponent {
   ultimaOs: number = 0;
   novaOs: number = 0;
   osClicadasCheckbox: any[] = [];
+  spinnerLoading: boolean = false;
 
   ///////////CONTROLE DE RENDERIZAÇÃO/////////
   exibirTabela: boolean = false;
@@ -534,6 +535,7 @@ onOspeloSerialKey(event: KeyboardEvent): void {
 //////ATUALIZA ORDEM DE SERVIÇO - MUDA STATUS E DATA PARA "FECHADA" //////////////////////////////
 
 processarOSSelecionadas() {
+  this.spinnerLoading = true
   from(this.osClicadasCheckbox).pipe(
     mergeMap(osItem => { // Dispara as 10 requisições em paralelo
       const dadosFormatados = this.geraObjetoOs(osItem);
@@ -639,17 +641,18 @@ gerarPDF = () => {
   .catch((error: any) => {
       console.error('Erro ao gerar o PDF:', error);
   });
+  this.spinnerLoading = false
 }
 
-// limpar(event?: MouseEvent) {
-//   if (event) {
-//     event.preventDefault();
-//     event.stopPropagation();
-//   }
+limpar(event?: MouseEvent) {
+  if (event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
   
-//   this.router.navigate(['/home']).then(() => {
-//     this.router.navigate(['os/lote/imprime']);
-//   });
-// }
+  this.router.navigate(['/home']).then(() => {
+    this.router.navigate(['os/lote/imprime']);
+  });
+}
 
 }

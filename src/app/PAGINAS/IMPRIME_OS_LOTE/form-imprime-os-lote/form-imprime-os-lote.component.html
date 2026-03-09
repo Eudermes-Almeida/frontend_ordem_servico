@@ -174,10 +174,20 @@
           class="form-control">
       </div>
 
+
+      <div *ngIf="spinnerLoading">
+        <p style="color: orange; margin: 10px;">processando...</p>
+      <div class="spinner-border text-primary"></div>
+      <div class="spinner-grow"></div>
+      </div>
+      
       <div class="btn-primary-custom"> 
         <button type="button" (click)="processarOSSelecionadas()">Imprimir</button>
-       
         </div> 
+         
+        
+
+
   </div>
 </div>
 
@@ -237,7 +247,10 @@
 
 </form>
 
+<div style="width: 120px; margin-left: auto; margin-right: 30px;" class="btn-primary-custom"> 
+    <button type="button" (click)="limpar()">Limpar</button>
 </div>
+
 
 
 <!-----------------------------IMPRIMIR ORDEM SERVIÇO--PRIMEIRA-------------------->
