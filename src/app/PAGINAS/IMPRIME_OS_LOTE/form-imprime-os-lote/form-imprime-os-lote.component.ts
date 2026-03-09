@@ -8,11 +8,9 @@ import { OrdemservicoService } from '../../../servico/ordemservico.service';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import jsPDF from 'jspdf';
 import html2pdf from 'html2pdf.js';
-import { concatMap, from, toArray } from 'rxjs';
+import { from, toArray } from 'rxjs';
 import { mergeMap } from 'rxjs'; // Troque o concatMap por mergeMap
-import html2canvas from 'html2canvas';
 import { NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -151,17 +149,6 @@ export class FORMIMPRIMEOSLOTEComponent {
     });
   }
 
-  // ///////ATIVA FULL SCREEN////
-  // ativarFullscreen(): void {
-  //   const elem = document.documentElement;
-  //   if (elem.requestFullscreen) {
-  //     elem.requestFullscreen();
-  //   } else if ((elem as any).webkitRequestFullscreen) { /* Safari */
-  //     (elem as any).webkitRequestFullscreen();
-  //   } else if ((elem as any).msRequestFullscreen) { /* IE11 */
-  //     (elem as any).msRequestFullscreen();
-  //   }
-  // }
 
   // Buscar clientes por Razao Social
   buscarClientesPorRazaoSocial(): void {
@@ -603,46 +590,6 @@ geraObjetoOs(osItem: any) {
   return objetoParaRetorno; 
 }
 
-
-
-////////////////////////////////////GERAR PDF//////////////////////////////////////////
-// gerarPDF = () => {
-//   this.escondeTabela = false;
-//   const element = document.getElementById('pdf-content'); // Seleciona o conteúdo
-//   // Opções de configuração
-//   const options = {
-//       margin: [0, 0, 0, 0], // Margens do PDF (em mm)
-//       filename: 'documento.pdf', // Nome do arquivo gerado
-//       html2canvas: {
-//           scale: 1, // Aumenta a qualidade do PDF
-//           letterRendering: true,
-//       },
-//       jsPDF: {
-//           unit: 'mm',
-//           format: 'a4',
-//           orientation: 'portrait',
-//       },
-//       pagebreak: {
-//           mode: ['css', 'legacy'], // Respeita as regras CSS de quebra
-//           after: '.quebra-pagina', // Força a quebra após os elementos com essa classe
-//       },
-//   };
-
-//   html2pdf()
-//   .set(options)
-//   .from(element)
-//   .toPdf()
-//   .get('pdf')
-//   .then((pdf: any) => {
-//       const pdfBlob = pdf.output('blob');
-//       const pdfUrl = URL.createObjectURL(pdfBlob);
-//       window.open(pdfUrl);
-//       setTimeout(() => URL.revokeObjectURL(pdfUrl), 50);
-//   })
-//   .catch((error: any) => {
-//       console.error('Erro ao gerar o PDF:', error);
-//   });
-// }
 gerarPDF = () => {
   this.escondeTabela = false;
   const element = document.getElementById('pdf-content');
