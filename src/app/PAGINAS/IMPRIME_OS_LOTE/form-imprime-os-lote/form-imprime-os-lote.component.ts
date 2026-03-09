@@ -50,6 +50,7 @@ export class FORMIMPRIMEOSLOTEComponent {
   exibirBotaoSair: boolean = false;
   exibirSerial: boolean = false
   escondeTabela: boolean = true;
+  spinnerLoading: boolean = false
 
   // CONFIGURA FORMULÁRIO
   formulario = new FormGroup({
@@ -535,7 +536,11 @@ onOspeloSerialKey(event: KeyboardEvent): void {
 //////ATUALIZA ORDEM DE SERVIÇO - MUDA STATUS E DATA PARA "FECHADA" //////////////////////////////
 
 processarOSSelecionadas() {
+<<<<<<< HEAD
   this.spinnerLoading = true
+=======
+  this.spinnerLoading = true;
+>>>>>>> 2155acc (botao limpar, spinner, ajuste template)
   from(this.osClicadasCheckbox).pipe(
     mergeMap(osItem => { // Dispara as 10 requisições em paralelo
       const dadosFormatados = this.geraObjetoOs(osItem);
@@ -605,45 +610,99 @@ geraObjetoOs(osItem: any) {
 
 
 ////////////////////////////////////GERAR PDF//////////////////////////////////////////
+// gerarPDF = () => {
+//   this.escondeTabela = false;
+//   const element = document.getElementById('pdf-content'); // Seleciona o conteúdo
+//   // Opções de configuração
+//   const options = {
+//       margin: [0, 0, 0, 0], // Margens do PDF (em mm)
+//       filename: 'documento.pdf', // Nome do arquivo gerado
+//       html2canvas: {
+//           scale: 1, // Aumenta a qualidade do PDF
+//           letterRendering: true,
+//       },
+//       jsPDF: {
+//           unit: 'mm',
+//           format: 'a4',
+//           orientation: 'portrait',
+//       },
+//       pagebreak: {
+//           mode: ['css', 'legacy'], // Respeita as regras CSS de quebra
+//           after: '.quebra-pagina', // Força a quebra após os elementos com essa classe
+//       },
+//   };
+
+//   html2pdf()
+//   .set(options)
+//   .from(element)
+//   .toPdf()
+//   .get('pdf')
+//   .then((pdf: any) => {
+//       const pdfBlob = pdf.output('blob');
+//       const pdfUrl = URL.createObjectURL(pdfBlob);
+//       window.open(pdfUrl);
+//       setTimeout(() => URL.revokeObjectURL(pdfUrl), 50);
+//   })
+//   .catch((error: any) => {
+//       console.error('Erro ao gerar o PDF:', error);
+//   });
+// }
 gerarPDF = () => {
   this.escondeTabela = false;
-  const element = document.getElementById('pdf-content'); // Seleciona o conteúdo
-  // Opções de configuração
+  const element = document.getElementById('pdf-content');
+
   const options = {
-      margin: [0, 0, 0, 0], // Margens do PDF (em mm)
-      filename: 'documento.pdf', // Nome do arquivo gerado
-      html2canvas: {
-          scale: 1, // Aumenta a qualidade do PDF
-          letterRendering: true,
-      },
-      jsPDF: {
-          unit: 'mm',
-          format: 'a4',
-          orientation: 'portrait',
-      },
-      pagebreak: {
-          mode: ['css', 'legacy'], // Respeita as regras CSS de quebra
-          after: '.quebra-pagina', // Força a quebra após os elementos com essa classe
-      },
+    margin: 0, // Margem zero para controle total via CSS
+    filename: 'documento.pdf',
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: {
+      scale: 0.9, // Aumentado para 2 para melhor nitidez em textos pequenos
+      letterRendering: true,
+      useCORS: true,
+      scrollY: 0, // Garante que a captura comece do topo do elemento
+      windowWidth: element?.scrollWidth // Estabiliza a largura da captura
+    },
+    jsPDF: {
+      unit: 'mm',
+      format: 'a4',
+      orientation: 'portrait',
+      compress: true
+    },
+    pagebreak: {
+      // avoid-all impede que elementos internos sejam cortados ao meio
+      mode: ['css', 'legacy'], 
+      //after: '.quebra-pagina',
+    },
   };
 
   html2pdf()
-  .set(options)
-  .from(element)
-  .toPdf()
-  .get('pdf')
-  .then((pdf: any) => {
+    .set(options)
+    .from(element)
+    .toPdf()
+    .get('pdf')
+    .then((pdf: any) => {
       const pdfBlob = pdf.output('blob');
       const pdfUrl = URL.createObjectURL(pdfBlob);
       window.open(pdfUrl);
-      setTimeout(() => URL.revokeObjectURL(pdfUrl), 50);
-  })
-  .catch((error: any) => {
+      setTimeout(() => URL.revokeObjectURL(pdfUrl), 100);
+    })
+    .catch((error: any) => {
       console.error('Erro ao gerar o PDF:', error);
+    });
+
+    this.spinnerLoading = false;
+}
+
+limpar() {
+
+  console.log(" o botão limpar foi clicado")
+  this.router.navigate(['/home']).then(() => {
+    this.router.navigate(['os/lote/imprime']);
   });
   this.spinnerLoading = false
 }
 
+<<<<<<< HEAD
 limpar(event?: MouseEvent) {
   if (event) {
     event.preventDefault();
@@ -655,4 +714,6 @@ limpar(event?: MouseEvent) {
   });
 }
 
+=======
+>>>>>>> 2155acc (botao limpar, spinner, ajuste template)
 }

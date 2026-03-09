@@ -175,12 +175,20 @@
       </div>
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2155acc (botao limpar, spinner, ajuste template)
       <div *ngIf="spinnerLoading">
         <p style="color: orange; margin: 10px;">processando...</p>
       <div class="spinner-border text-primary"></div>
       <div class="spinner-grow"></div>
       </div>
+<<<<<<< HEAD
       
+=======
+
+>>>>>>> 2155acc (botao limpar, spinner, ajuste template)
       <div class="btn-primary-custom"> 
         <button type="button" (click)="processarOSSelecionadas()">Imprimir</button>
         </div> 
@@ -246,6 +254,10 @@
 
 
 </form>
+<div style="width: 120px; margin-left: auto; margin-right: 30px;" class="btn-primary-custom"> 
+    <button type="button" (click)="limpar()">Limpar</button>
+</div>
+
 
 <div style="width: 120px; margin-left: auto; margin-right: 30px;" class="btn-primary-custom"> 
     <button type="button" (click)="limpar()">Limpar</button>
@@ -257,7 +269,7 @@
 
 <!--------------------------CABEÇALHO --------------------------------------->
 <div id="pdf-content">
-<div  class="container" *ngFor="let os of osClicadasCheckbox; let last = last" >
+<div  class="container quebra-pagina" *ngFor="let os of osClicadasCheckbox; let last = last" >
   <div class="header">
     <h1>COMPROVANTE DE FECHAMENTO ORDEM DE SERVIÇO</h1>
     <div class="header-content">
@@ -439,8 +451,8 @@
 
   <!--------------------------ASSINATURA --------------------------------------->
   <div class="assinatura">
-    <div class="assinatura-cliente">ASSINATURA REPRESENTANTE CLIENTE:</div>
-    <div class="assinatura-monitores">ASSINATURA REPRESENTANTE SÓ MONITORES & NOBREAKS:</div>
+    <div class="assinatura-cliente">ASSINATURA CLIENTE:</div>
+    <div class="assinatura-monitores">ASSINATURA SÓ MONITORES & NOBREAKS:</div>
   </div>
 
 
@@ -628,8 +640,8 @@
 
   <!--------------------------ASSINATURA --------------------------------------->
   <div class="assinatura">
-    <div class="assinatura-cliente">ASSINATURA REPRESENTANTE CLIENTE:</div>
-    <div class="assinatura-monitores">ASSINATURA REPRESENTANTE SÓ MONITORES & NOBREAKS:</div>
+    <div class="assinatura-cliente">ASSINATURA CLIENTE:</div>
+    <div class="assinatura-monitores">ASSINATURA SÓ MONITORES & NOBREAKS:</div>
   </div>
 
 <div class="quebra-pagina"></div> <!-- Elemento para forçar quebra de página -->

@@ -1,4 +1,26 @@
 /* Estilos do Formulário Centralizado */
+
+#pdf-content {
+  margin: 0;
+  padding: 0;
+  line-height: 0; /* Remove espaços fantasmas entre blocos inline-block */
+}
+
+#pdf-content > .quebra-pagina {
+  line-height: normal; /* Restaura o texto normal dentro da página */
+}
+.quebra-pagina {
+  display: block;
+  width: 210mm;
+  height: 295mm; /* Reduzi 2mm para dar folga ao motor do PDF */
+  overflow: hidden;
+  page-break-after: always; /* Força a quebra pelo CSS */
+  box-sizing: border-box;
+  margin: 0;
+  padding: 10mm;
+}
+
+
 .centralizado-formulario {
     background-color: #1a1a1a;
     padding: 10px; /* Aumentei o padding para dar um espaço melhor */
@@ -19,11 +41,11 @@
 
 .totaliq{
 
-    font-size: 30px !important;
+    font-size: 15px !important;
 }
 
 .valores_somatorio_final .totaliq {
-    font-size: 30px !important;
+    font-size: 15px !important;
     font-weight: bold; /* Se você também quiser garantir que o texto fique em negrito */
 }
 
@@ -152,7 +174,7 @@ input[disabled], select[disabled] {
 }
 
 .header h1 {
-    font-size: 20px;
+    font-size: 15px;
     font-weight: bold;
     margin: 0px;
 }
@@ -175,7 +197,7 @@ input[disabled], select[disabled] {
 }
 
 .header-text h2 {
-    font-size: 15px;
+    font-size: 12px;
     font-weight: bold;
     margin: 0;
 }
@@ -204,14 +226,14 @@ table {
 }
 
 table th {
-    font-size: 18px; /* Tamanho da fonte do cabeçalho */
+    font-size: 15px; /* Tamanho da fonte do cabeçalho */
     padding: 2px;    /* Reduz o espaçamento do cabeçalho */
     text-align: left;
     line-height: 1.2; /* Ajusta o espaçamento entre as linhas do cabeçalho */
 }
 
 table td {
-    font-size: 16px; /* Tamanho da fonte para as células de dados */
+    font-size: 15px; /* Tamanho da fonte para as células de dados */
     padding: 2px;    /* Reduz o espaçamento nas células */
     line-height: 1.2; /* Ajusta o espaçamento entre as linhas do conteúdo */
 }
@@ -273,17 +295,17 @@ table th:nth-child(7), table td:nth-child(7) {
     justify-content: space-between;
     margin-top: 35px;
     margin-bottom: 2px;
-    font-size: 15px;
+    font-size: 12px;
 }
 
 .somatorio_final{
-    font-size: 30px;
+    font-size: 20px;
     color: blue;
     font-weight: bold;
 }
 
 .valores_somatorio_final{
-    font-size: 30px;
+    font-size: 20px;
     color: red;
     font-weight: bold;
 
@@ -294,7 +316,7 @@ table th:nth-child(7), table td:nth-child(7) {
 }
 
 .totaliq{
-font-size: 30px !important;
+font-size: 20px !important;
 }
 
 .assinatura-cliente,
