@@ -11,6 +11,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import jsPDF from 'jspdf';
 import html2pdf from 'html2pdf.js';
 import { concatMap, from, toArray } from 'rxjs';
+import { mergeMap } from 'rxjs'; // Troque o concatMap por mergeMap
+import html2canvas from 'html2canvas';
+import { NgZone } from '@angular/core';
+import { Router } from '@angular/router';
 
 
 
@@ -22,6 +26,7 @@ import { concatMap, from, toArray } from 'rxjs';
   styleUrl: './form-imprime-os-lote.component.css'
 })
 export class FORMIMPRIMEOSLOTEComponent {
+  
   @ViewChild('numOsInput') numOsInput!: ElementRef;
   cidades: ParametrosCombobox[] = [];
   cidadeSelecionada: string = "";
@@ -43,6 +48,7 @@ export class FORMIMPRIMEOSLOTEComponent {
   exibirBotaoSalvar: boolean = false;
   exibirBotaoSair: boolean = false;
   exibirSerial: boolean = false
+  escondeTabela: boolean = true;
 
   // CONFIGURA FORMULÁRIO
   formulario = new FormGroup({
@@ -110,7 +116,9 @@ export class FORMIMPRIMEOSLOTEComponent {
      constructor(
       private parametrosService: ParametrosService, 
       private servico: OrdemservicoService,
-      private cdr: ChangeDetectorRef
+      private cdr: ChangeDetectorRef,
+      private zone: NgZone,
+       private router: Router,
   ) {}
 
 
@@ -516,9 +524,9 @@ onOspeloSerialKey(event: KeyboardEvent): void {
     console.log('Objeto completo atualizado:', this.objetoOs[index]);
     console.log('Array de ordens de serviço selecionadas:', this.osClicadasCheckbox);
     console.log("quantidade de os selecionadas: " + this.osClicadasCheckbox.length )
-    if(this.osClicadasCheckbox.length>10){
-      alert("Você ultrapassou o limite máximo (10) de ordens de serviço selecionadas para impressão")
-    }
+    // if(this.osClicadasCheckbox.length>10){
+    //   alert("Você ultrapassou o limite máximo (10) de ordens de serviço selecionadas para impressão")
+    // }
     //this.exibirBotaoImprimir = true;
   }
 
@@ -528,25 +536,18 @@ onOspeloSerialKey(event: KeyboardEvent): void {
 
 processarOSSelecionadas() {
   from(this.osClicadasCheckbox).pipe(
-    concatMap(osItem => {
-      // 1. Geramos os dados para a API
+    mergeMap(osItem => { // Dispara as 10 requisições em paralelo
       const dadosFormatados = this.geraObjetoOs(osItem);
-
-      // 2. ATUALIZAÇÃO PARA A TELA:
-      // Modificamos o item original para o Angular refletir no HTML/PDF imediatamente
       osItem.status = "FECHADA";
       osItem.fechamento = dadosFormatados.fechamento; 
-
       return this.servico.atualizarOrdemServico(osItem.os, dadosFormatados);
     }),
     toArray()
   ).subscribe({
-    next: (resultados) => {
-      console.log(`${resultados.length} ordens atualizadas com sucesso!`);
-      // O PDF agora verá os dados atualizados no HTML
-      this.gerarPDF();
-    },
-    error: (err) => console.error("Erro no lote:", err)
+    next: () => {
+      // Pequeno delay para o Angular terminar de renderizar o HTML novo
+      setTimeout(() => this.gerarPDF(), 50);
+    }
   });
 }
 
@@ -604,14 +605,14 @@ geraObjetoOs(osItem: any) {
 
 ////////////////////////////////////GERAR PDF//////////////////////////////////////////
 gerarPDF = () => {
+  this.escondeTabela = false;
   const element = document.getElementById('pdf-content'); // Seleciona o conteúdo
-
   // Opções de configuração
   const options = {
       margin: [0, 0, 0, 0], // Margens do PDF (em mm)
       filename: 'documento.pdf', // Nome do arquivo gerado
       html2canvas: {
-          scale: 4, // Aumenta a qualidade do PDF
+          scale: 1.5, // Aumenta a qualidade do PDF
           letterRendering: true,
       },
       jsPDF: {
@@ -634,11 +635,22 @@ gerarPDF = () => {
       const pdfBlob = pdf.output('blob');
       const pdfUrl = URL.createObjectURL(pdfBlob);
       window.open(pdfUrl);
-      setTimeout(() => URL.revokeObjectURL(pdfUrl), 100);
+      setTimeout(() => URL.revokeObjectURL(pdfUrl), 50);
   })
   .catch((error: any) => {
       console.error('Erro ao gerar o PDF:', error);
   });
 }
+
+// limpar(event?: MouseEvent) {
+//   if (event) {
+//     event.preventDefault();
+//     event.stopPropagation();
+//   }
+  
+//   this.router.navigate(['/home']).then(() => {
+//     this.router.navigate(['os/lote/imprime']);
+//   });
+// }
 
 }
