@@ -6,11 +6,12 @@
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 
-    <div class="alert alert-warning alert-dismissible fade show" role="alert" *ngIf="exibirAlertValidacao">
-      Existem campos obrigatórios do formulário que não foram preenchidos!
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-
+    <div class="alert alert-warning alert-dismissible fade show" 
+     role="alert" 
+     *ngIf="exibirAlertValidacao && formulario.invalid">
+  Existem campos obrigatórios do formulário que não foram preenchidos!
+  <button type="button" class="btn-close" (click)="exibirAlertValidacao = false" aria-label="Close"></button>
+</div>
 
     <div class="form-row">
       <button style="margin: 15px;" class="btn btn-primary" (click)="limpar()">Limpar</button>

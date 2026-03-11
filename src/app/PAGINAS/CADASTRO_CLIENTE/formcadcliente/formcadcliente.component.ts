@@ -49,8 +49,18 @@ export class FormcadclienteComponent implements OnInit {
     if (this.parametrosService) {
       this.buscarCidades();
       this.buscarSegmentos();
+      this.controleRenderizacaoAlertInvalidacaoFormulario();
       //this.ativarFullscreen();
     }
+  }
+
+  controleRenderizacaoAlertInvalidacaoFormulario(){
+    this.formulario.statusChanges.subscribe(status => {
+    if (status === 'VALID') {
+      this.exibirAlertValidacao = false;
+    }
+  });
+
   }
 
   // ///ATIVAR FULL SCREEN:
@@ -148,6 +158,7 @@ export class FormcadclienteComponent implements OnInit {
         this.novocliente = retorno + 1;
         console.log("Este é o novo cliente " + this.novocliente);
         this.escreveconsole();
+        
       },
       error: (err) => {
         console.error('Erro ao buscar o último cliente:', err);
@@ -207,6 +218,7 @@ this.exibirAlertValidacao = true;
         this.exibirAlertClienteSalvo = true;
         console.log('Valor de response.id:', response.id);
         this.desabilitaBtnCadastrarCliente = false
+        
 
         const id = parseInt(response.id, 10); // Use parseInt para converter a string em número
         if (isNaN(id)) {
