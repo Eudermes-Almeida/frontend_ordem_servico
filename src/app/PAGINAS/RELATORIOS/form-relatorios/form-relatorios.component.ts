@@ -53,6 +53,7 @@ export class FORMRELATORIOSComponent {
   currentColorAprovadas: string = 'white';
   currentColorNaoAprovadas: string = 'white';
   private intervalId: any;
+  spinnerLoading: boolean = false
 
 
 
@@ -162,7 +163,7 @@ export class FORMRELATORIOSComponent {
       return;
     }
 
-    this.isLoading = true;
+    this. spinnerLoading = true;
 
     // Uso do for...of para permitir o uso de await
     for (const busca of this.relatorios) {
@@ -177,6 +178,8 @@ export class FORMRELATORIOSComponent {
 
     ////Se existir Alguma OS reprovada ou Aprovada Remotamente, irá ficar piscando o nome do relatório
     //console.log(" Esta é a quantidade de os Aprovadas ou Reprovadas: " , this.arrayAprovadasOuReprovadasRemotamente[0]?.somatoriaDTO.qtOs )
+
+    //this. spinnerLoading = false;
 
   }
 
@@ -269,6 +272,7 @@ export class FORMRELATORIOSComponent {
             break;
           case "garantiaFabricaAindaNoLaboratorio":
             this.arrayStatusGarantiaFabricaAindaNoLaboratorio = data;
+             this. spinnerLoading = false;
             break;
           case "emAnalise":
             this.arrayStatusEmAnalise = data;
@@ -410,6 +414,7 @@ export class FORMRELATORIOSComponent {
       }
     );
 
+    
   }
 
   // Método chamado ao perder o foco do input Data Inicial
