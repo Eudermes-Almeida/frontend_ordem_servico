@@ -103,6 +103,8 @@
                   Campo atendente é obrigatório.
                 </div>
               </div>
+
+              <div *ngIf="contadorEquipamento < 30">
               <div class="botao_adicionar">
               <label>Adicionar</label>
               <label>Equipamento:</label>
@@ -110,10 +112,13 @@
                 <i class="bi bi-plus-circle-fill" style="font-size: 30px; color: green;"></i>
             </button>
             </div>
+            </div>
 
             <button (click)="onButtonClick()" type="button" style="margin-top: 20px; margin-left: 5px;" class="btn btn-primary">Limpar</button>
         </div>
       </div>
+
+      <p style="color: orange;">Quantidade Equipamentos {{contadorEquipamento}}</p>
     
 
     <!-- Adicionando uma margem superior para separar o formulário da tabela -->

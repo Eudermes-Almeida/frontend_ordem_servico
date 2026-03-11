@@ -24,8 +24,13 @@ import QRCode from 'qrcode';
 })
 export class FORMCADOSComponent{
 
+  nobreak: boolean =false;
+  monitor: boolean=false;
+  bateria: boolean=false;
+  estabilizador: boolean=false;
+  acessorios: boolean = false;
+  contadorEquipamento: number = 0;
   spinnerSalvandoOs: boolean = false;
-
   cidades: ParametrosCombobox[] = [];
   cidadeSelecionada: string = "";
   cidadesPosicaoZero: any = { id: 100, parametro: 'SEGMENTO', valor: 'CIDADES' }; // para não iniciar com um nome de cidade e sim "cidades"
@@ -605,16 +610,6 @@ export class FORMCADOSComponent{
   exibirOs29: boolean = false;
   exibirOs30: boolean = false;
 
-
-
-  nobreak: boolean =false;
-  monitor: boolean=false;
-  bateria: boolean=false;
-  estabilizador: boolean=false;
-  acessorios: boolean = false;
-  contadorEquipamento: number = 0;
-
-  
 
   // CONFIGURA FORMULÁRIO
   formulario = new FormGroup({
@@ -3013,11 +3008,12 @@ break;
 
 case 30:
   this.exibirEntrada30 = true;
+  alert(" Você atingiu o limite máximo de Entrada de equipamentos:    (30 equipamentos), salve este e abre um novo lote de ordem de serviço ")
+      
 break;
 
        default:
-      alert(" Você ultrapassou o limite máximo de Entrada de equipamentos:    (30 equipamentos), salve este e abre um novo lote de ordem de serviço ")
-      this.exibirEntrada30 = true;
+      console.log(" Valor acima de 30 equipamentos")
       break;
      }
       
