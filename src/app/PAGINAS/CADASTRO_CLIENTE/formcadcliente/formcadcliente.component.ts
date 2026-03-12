@@ -32,6 +32,7 @@ export class FormcadclienteComponent implements OnInit {
   resultadoCep: string = "";
   naoExisteEsteCliente: boolean = true
   clienteSalvo: boolean = false;
+  validacaoFormulario: boolean = false;
 
 
   exibirAlertValidacao: boolean = false;
@@ -61,7 +62,8 @@ export class FormcadclienteComponent implements OnInit {
     this.formulario.statusChanges.subscribe(status => {
     if (status === 'VALID') {
       this.exibirAlertValidacao = false;
-    }
+      this.validacaoFormulario = true;
+    }else(this.clienteSalvo = false)
   });
   }
 
@@ -155,7 +157,11 @@ export class FormcadclienteComponent implements OnInit {
         this.novocliente = retorno + 1;
         console.log("Este é o novo cliente " + this.novocliente);
         this.escreveconsole();
-        this.clienteSalvo = true;
+        
+        this.controleRenderizacaoAlertInvalidacaoFormulario()
+
+        if(this.validacaoFormulario){this.clienteSalvo = true}
+        
         
       },
       error: (err) => {
