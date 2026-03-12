@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { ParametrosService } from '../../../servico/parametros.service';
 import { ParametrosCombobox } from '../../../modelo/ParametrosCombobox';
 import { Router } from '@angular/router';
+import { lastValueFrom } from 'rxjs';
 
 
 @Component({
@@ -29,6 +30,8 @@ export class FormcadclienteComponent implements OnInit {
 
   cep: string = "";
   resultadoCep: string = "";
+  naoExisteEsteCliente: boolean = true
+  clienteSalvo: boolean = false;
 
 
   exibirAlertValidacao: boolean = false;
@@ -62,18 +65,7 @@ export class FormcadclienteComponent implements OnInit {
   });
   }
 
-  // ///ATIVAR FULL SCREEN:
-  // ativarFullscreen(): void {
-  //   const elem = document.documentElement;
-  //   if (elem.requestFullscreen) {
-  //     elem.requestFullscreen();
-  //   } else if ((elem as any).webkitRequestFullscreen) { /* Safari */
-  //     (elem as any).webkitRequestFullscreen();
-  //   } else if ((elem as any).msRequestFullscreen) { /* IE11 */
-  //     (elem as any).msRequestFullscreen();
-  //   }
-  // }
-  
+ 
 
   buscarCidades(): void {
     this.parametrosService?.getCidades().subscribe(
@@ -151,12 +143,19 @@ export class FormcadclienteComponent implements OnInit {
     }
   }
 
-  buscanovocliente(): void {
+  async  buscanovocliente(): Promise<void> {
+   await this.ConfereSeEsteClienteJaEstaNoBanco()
+    if(this.naoExisteEsteCliente){
+      alert("Existe um cliente já cadastrado com o NOME EXATAMENTE IGUAL a este, não é permitido cadastrar mais de um cliente com o mesmo nome")
+      return
+    }
+
     this.servico?.ultimocliente().subscribe({
       next: (retorno: number) => {
         this.novocliente = retorno + 1;
         console.log("Este é o novo cliente " + this.novocliente);
         this.escreveconsole();
+        this.clienteSalvo = true;
         
       },
       error: (err) => {
@@ -165,6 +164,27 @@ export class FormcadclienteComponent implements OnInit {
       }
     });
   }
+
+  
+/////confere se já existe o cliente que será cadastrado no banco de dados:
+async ConfereSeEsteClienteJaEstaNoBanco(): Promise<void> {
+
+    const nomefantasia = this.formulario.get('nomefantasia')?.value;
+
+    if (nomefantasia && nomefantasia.length >= 4) {
+    try {
+      // Tenta buscar o cliente
+      await lastValueFrom(this.servico.getClientesPorNomeFantasia(nomefantasia));
+      // Se encontrou (Sucesso/200), marcamos que JÁ EXISTE
+      this.naoExisteEsteCliente = true;
+    } catch (erro) {
+      // Se deu erro (ex: 404), significa que NÃO EXISTE, então pode cadastrar
+      this.naoExisteEsteCliente = false;
+    }
+  }
+  }
+
+
 
   escreveconsole() {
 
@@ -227,7 +247,7 @@ this.exibirAlertValidacao = true;
         }
       }
     });
-
+    
   }
 
   limpar() {

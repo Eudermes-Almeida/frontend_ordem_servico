@@ -203,9 +203,28 @@
         <label for="inscestadual">Inscrição Estadual:</label>
         <input type="text" formControlName="inscestadual" id="inscestadual" name="inscestadual">
       </div>
-      <div>
-        <button style="margin-top: 20px;" class="btn btn-primary" (click)="buscanovocliente()"  [disabled]="!desabilitaBtnCadastrarCliente">CADASTRAR CLIENTE</button>
-      </div>
+      <div [title]="!desabilitaBtnCadastrarCliente ? 'Preencha todos os campos corretamente' : ''">
+ <div style="display: inline-block; margin-top: 20px;"
+     [title]="clienteSalvo ? 'Você já cadastrou este cliente' : (!desabilitaBtnCadastrarCliente ? 'Preencha todos os campos corretamente' : 'Clique para cadastrar o cliente')">
+  
+  <div style="display: inline-block; margin-top: 20px;" 
+     data-bs-toggle="tooltip" 
+     data-bs-placement="top" 
+     [attr.data-bs-original-title]="clienteSalvo ? 'Você já cadastrou este cliente' : (!desabilitaBtnCadastrarCliente ? 'Preencha todos os campos corretamente' : 'Clique para cadastrar o cliente')"
+     [title]="clienteSalvo ? 'Você já cadastrou este cliente' : (!desabilitaBtnCadastrarCliente ? 'Preencha todos os campos corretamente' : 'Clique para cadastrar o cliente')">
+  
+  <button 
+    class="btn btn-primary" 
+    (click)="buscanovocliente()"  
+    [disabled]="!desabilitaBtnCadastrarCliente || clienteSalvo">
+    CADASTRAR CLIENTE
+  </button>
+</div>
+
+
+</div>
+
+</div>
     </div>
     
   </form>
