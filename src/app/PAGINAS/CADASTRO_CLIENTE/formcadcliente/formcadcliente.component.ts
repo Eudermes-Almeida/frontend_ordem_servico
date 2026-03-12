@@ -33,6 +33,7 @@ export class FormcadclienteComponent implements OnInit {
   naoExisteEsteCliente: boolean = true
   clienteSalvo: boolean = false;
   validacaoFormulario: boolean = false;
+  codCliClienteJaCadastrado: string = "";
 
 
   exibirAlertValidacao: boolean = false;
@@ -148,7 +149,7 @@ export class FormcadclienteComponent implements OnInit {
   async  buscanovocliente(): Promise<void> {
    await this.ConfereSeEsteClienteJaEstaNoBanco()
     if(this.naoExisteEsteCliente){
-      alert("Existe um cliente já cadastrado com o NOME EXATAMENTE IGUAL a este, não é permitido cadastrar mais de um cliente com o mesmo nome")
+      alert(`Este cliente JÁ EXISTE com o código: ${this.codCliClienteJaCadastrado }, não é permitido cadastrar dois clientes com o mesmo nome.`)
       return
     }
 
@@ -177,12 +178,14 @@ async ConfereSeEsteClienteJaEstaNoBanco(): Promise<void> {
 
     const nomefantasia = this.formulario.get('nomefantasia')?.value;
 
-    if (nomefantasia && nomefantasia.length >= 4) {
+    if (nomefantasia) {
     try {
       // Tenta buscar o cliente
       await lastValueFrom(this.servico.getClientesPorNomeFantasia(nomefantasia));
+      
       // Se encontrou (Sucesso/200), marcamos que JÁ EXISTE
       this.naoExisteEsteCliente = true;
+     await this.buscarClientesPorNomeFantasia();
     } catch (erro) {
       // Se deu erro (ex: 404), significa que NÃO EXISTE, então pode cadastrar
       this.naoExisteEsteCliente = false;
@@ -190,7 +193,24 @@ async ConfereSeEsteClienteJaEstaNoBanco(): Promise<void> {
   }
   }
 
+  ////Este metodo é usado para pegar o id do cliente duplicado e escrever no alert
+  async buscarClientesPorNomeFantasia(): Promise<void> {
+  const nomefantasia = this.formulario.get('nomefantasia')?.value;
 
+  if (nomefantasia && nomefantasia.length >= 4) {
+    try {
+      // O 'await' aqui garante que o código só passe para a próxima linha quando os dados chegarem
+      const dados = await lastValueFrom(this.servico.getClientesPorNomeFantasia(nomefantasia));
+      
+      this.objetocliente = dados;
+      this.codCliClienteJaCadastrado = dados[0].id;
+      
+      console.log("ID atribuído com sucesso:", this.codCliClienteJaCadastrado);
+    } catch (erro) {
+      console.error('Erro ao buscar clientes:', erro);
+    }
+  }
+}
 
   escreveconsole() {
 
