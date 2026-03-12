@@ -388,10 +388,10 @@ onCodCliInput(event: Event): void {
       },
       (error) => {
         if (error.status === 404) {
-          alert(`Não há ordem de serviços cadastrados na cidade ${codcli}.`);
+          alert(`Não há ordem de serviços para este código: ${codcli}.`);
         } else {
-          console.error('Erro ao buscar clientes por cidade:', error);
-          alert(`Erro ao buscar clientes na cidade ${codcli}.`);
+          console.error('Erro ao buscar clientes:', error);
+          alert(`Erro ao buscar cliente com este código:  ${codcli}.`);
         }
       }
     );

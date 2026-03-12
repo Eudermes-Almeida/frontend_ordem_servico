@@ -62,6 +62,7 @@ export class FORMORCAMENTOComponent {
   exibirSeparador: boolean = true;
   primeiraVezFor: boolean = true;
   exibirBotoesGerarPdfEnviarEmailEnviarWhats: boolean = false;
+  spinnerLoading: boolean = false;
   
 
   // CONFIGURA FORMULÁRIO
@@ -414,10 +415,10 @@ onCodCliInput(event: Event): void {
       },
       (error) => {
         if (error.status === 404) {
-          alert(`Não há ordem de serviços cadastrados na cidade ${codcli}.`);
+          alert(`Não há ordem de serviços cadastrado com este código ${codcli}.`);
         } else {
-          console.error('Erro ao buscar clientes por cidade:', error);
-          alert(`Erro ao buscar clientes na cidade ${codcli}.`);
+          console.error('Erro ao buscar clientes', error);
+          alert(`Erro ao buscar clientes com o código ${codcli}.`);
         }
       }
     );
@@ -559,6 +560,9 @@ onOspeloSerialKey(event: KeyboardEvent): void {
 //////ATUALIZA ORDEM DE SERVIÇO - MUDA STATUS E DATA PARA "FECHADA" //////////////////////////////
 
 processarOSSelecionadas() {
+
+  this.spinnerLoading = true;
+  this.exibirTabela2 = false;
   // Configuração de data de fechamento
   const dataHoje = new Date();
   const ano = dataHoje.getFullYear();
@@ -621,7 +625,8 @@ this.osClicadasCheckbox.forEach((osItem: any) => {
 
 if(this.chamaGerarPdf){
 this.gerarPDF();
-}else{this.chamaGerarPdf = true;}
+}else{this.chamaGerarPdf = true;
+}
 
 }
 
@@ -754,6 +759,8 @@ geraObjetoOs(osItem: any): any {
 ////////////////////////////////////GERAR PDF//////////////////////////////////////////
 gerarPDF = () => {
 
+  
+
   setTimeout(() => {
   const element = document.getElementById('pdf-content'); // Seleciona o conteúdo
 
@@ -767,7 +774,7 @@ gerarPDF = () => {
       margin: [2, 2, 2, 2], // Margens do PDF (em mm)
       filename: 'documento.pdf', // Nome do arquivo gerado
       html2canvas: {
-          scale: 4, // Aumenta a qualidade do PDF
+          scale: 2, // Aumenta a qualidade do PDF
           letterRendering: true,
       },
       jsPDF: {
@@ -781,6 +788,7 @@ gerarPDF = () => {
       },
   };
 
+this.spinnerLoading = false
   html2pdf()
   .set(options)
   .from(element)
@@ -791,6 +799,7 @@ gerarPDF = () => {
       const pdfUrl = URL.createObjectURL(pdfBlob);
       window.open(pdfUrl);
       setTimeout(() => URL.revokeObjectURL(pdfUrl), 100);
+      
   })
   .catch((error: any) => {
       console.error('Erro ao gerar o PDF:', error);
