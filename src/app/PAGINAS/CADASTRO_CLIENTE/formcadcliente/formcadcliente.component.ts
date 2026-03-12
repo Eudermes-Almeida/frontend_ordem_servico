@@ -60,7 +60,6 @@ export class FormcadclienteComponent implements OnInit {
       this.exibirAlertValidacao = false;
     }
   });
-
   }
 
   // ///ATIVAR FULL SCREEN:

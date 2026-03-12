@@ -24,6 +24,73 @@ import QRCode from 'qrcode';
 })
 export class FORMCADASTROOSComponent {
 
+   // CONFIGURA AS FUNÇÕES QUE SERÃO EXECUTADAS NA INICIALIZAÇÃO DA PÁGINA
+  ngOnInit(): void {
+
+    this.configuraFormulário()
+
+    if (this.parametrosService) {
+      this.buscarCidades();
+      this.buscarEquipamentos();
+      this.buscarCor();
+      this.buscarDefeitosCliente();
+      this.buscarAtendente();
+      this.buscaUltimaOs();
+     // this.ativarFullscreen();
+      this.buscarMarcasNobreaks();
+      this.buscarMarcasMonitores();
+      this.buscarMarcasBateria();
+      this.buscarMarcasEstabilizador();
+      this.buscarMarcasAcessorio();
+      this.buscarModelosNobreaks();
+      this.buscarModelosMonitores();
+      this.buscarModelosBateria();
+      this.buscarModelosEstabilizador();
+      this.buscarModelosAcessorio();
+      this.buscarTopologiaNobreaks();
+      this.buscarTopologiaMonitores();
+      this.buscarTopologiaBateria();
+
+    }
+
+   
+    QRCode.toDataURL(this.urlQrcod, { width: 300 })  // Define o tamanho para 300x300
+  .then((url) => {
+    this.qrCodeUrl = url;
+  })
+  .catch((err) => {
+    console.error('Erro ao gerar QR Code', err);
+  });
+
+
+
+    // Escutar mudanças no campo de nomefantasia
+    this.formulario.get('fantasia')?.valueChanges.subscribe((value: string) => {
+      if (value && value.length >= 4) {
+        this.buscarClientesPorNomeFantasia(); // Dispara a busca quando atingir 4 ou mais caracteres
+      }
+    });
+
+    // Escutar mudanças no campo de razaosocial
+    this.formulario.get('rzsocial')?.valueChanges.subscribe((value: string) => {
+      if (value && value.length >= 4) {
+        this.buscarClientesPorRazaoSocial(); // Dispara a busca quando atingir 4 ou mais caracteres
+      }
+    });
+    this.controleRenderizacaoAlertInvalidacaoFormulario()
+  }
+
+ controleRenderizacaoAlertInvalidacaoFormulario() {
+  
+  this.formulario.statusChanges.subscribe((status) => {
+    if (status === 'VALID') {
+      this.exibirAlertValidacao = false;
+      console.log("O formulário agora está VÁLIDO");
+    }
+  });
+}
+
+
   
   cidades: ParametrosCombobox[] = [];
   cidadeSelecionada: string = "";
@@ -149,11 +216,13 @@ export class FORMCADASTROOSComponent {
   bateria: boolean=false;
   estabilizador: boolean=false;
   acessorios: boolean = false;
+  formulario!: FormGroup; 
 
   
 
+  configuraFormulário(){
   // CONFIGURA FORMULÁRIO
-  formulario = new FormGroup({
+  this.formulario = new FormGroup({
     os:new FormControl(''),
     data:new FormControl(''),
     hora:new FormControl(''),
@@ -214,6 +283,7 @@ export class FORMCADASTROOSComponent {
     top10:new FormControl(''),
     dataretro:new FormControl(''),
      });
+}
 
      constructor(
       private router: Router,
@@ -448,57 +518,7 @@ onGarantiaChange(event: Event): void {
   console.log(this.garantiaSelecionada); 
 }
 
-  // CONFIGURA AS FUNÇÕES QUE SERÃO EXECUTADAS NA INICIALIZAÇÃO DA PÁGINA
-  ngOnInit(): void {
-    if (this.parametrosService) {
-      this.buscarCidades();
-      this.buscarEquipamentos();
-      this.buscarCor();
-      this.buscarDefeitosCliente();
-      this.buscarAtendente();
-      this.buscaUltimaOs();
-     // this.ativarFullscreen();
-      this.buscarMarcasNobreaks();
-      this.buscarMarcasMonitores();
-      this.buscarMarcasBateria();
-      this.buscarMarcasEstabilizador();
-      this.buscarMarcasAcessorio();
-      this.buscarModelosNobreaks();
-      this.buscarModelosMonitores();
-      this.buscarModelosBateria();
-      this.buscarModelosEstabilizador();
-      this.buscarModelosAcessorio();
-      this.buscarTopologiaNobreaks();
-      this.buscarTopologiaMonitores();
-      this.buscarTopologiaBateria();
-
-    }
-
-   
-    QRCode.toDataURL(this.urlQrcod, { width: 300 })  // Define o tamanho para 300x300
-  .then((url) => {
-    this.qrCodeUrl = url;
-  })
-  .catch((err) => {
-    console.error('Erro ao gerar QR Code', err);
-  });
-
-
-
-    // Escutar mudanças no campo de nomefantasia
-    this.formulario.get('fantasia')?.valueChanges.subscribe((value: string) => {
-      if (value && value.length >= 4) {
-        this.buscarClientesPorNomeFantasia(); // Dispara a busca quando atingir 4 ou mais caracteres
-      }
-    });
-
-    // Escutar mudanças no campo de razaosocial
-    this.formulario.get('rzsocial')?.valueChanges.subscribe((value: string) => {
-      if (value && value.length >= 4) {
-        this.buscarClientesPorRazaoSocial(); // Dispara a busca quando atingir 4 ou mais caracteres
-      }
-    });
-  }
+ 
 
   
 
