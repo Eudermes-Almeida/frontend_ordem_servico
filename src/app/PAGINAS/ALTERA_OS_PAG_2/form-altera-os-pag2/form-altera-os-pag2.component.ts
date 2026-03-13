@@ -544,28 +544,59 @@ atualizarValorTotalBruto() {
 }
 // SUBTRAI:  TOTAL BRUTO - VALOR DESCONTO $ = TOTAL LIQUIDO:
 onDescontovalor() {
-  this.subtraiDescontoDeTotalBruto();
+  const valorBruto = parseFloat(this.formulario.get('totalbruto')?.value) || 0;
+  const valorDesconto = parseFloat(this.formulario.get('valordesconto')?.value) || 0;
+
+  if (valorBruto > 0) {
+    const totalLiquido = valorBruto - valorDesconto;
+    const percentual = (valorDesconto / valorBruto) * 100;
+
+    this.formulario.patchValue({
+      totaliq: totalLiquido.toFixed(2),
+      desconto: percentual.toFixed(2) // Atualiza o campo %
+    }, { emitEvent: false });
+  }
+}
+
+onDescontoPercentual() {
+  const valorBruto = parseFloat(this.formulario.get('totalbruto')?.value) || 0;
+  const percentual = parseFloat(this.formulario.get('desconto')?.value) || 0;
+
+  if (valorBruto > 0) {
+    const valorDesconto = valorBruto * (percentual / 100);
+    const totalLiquido = valorBruto - valorDesconto;
+
+    this.formulario.patchValue({
+      totaliq: totalLiquido.toFixed(2),
+      valordesconto: valorDesconto.toFixed(2) // Atualiza o campo $
+    }, { emitEvent: false });
+  }
 }
 
 subtraiDescontoDeTotalBruto() {
   const valor_totalBruto = parseFloat(this.formulario.get('totalbruto')?.value) || 0;
   const valor_desconto = parseFloat(this.formulario.get('valordesconto')?.value) || 0;
-  const total_liquido = (valor_totalBruto - valor_desconto).toFixed(2); // Calcula o total líquido e formata para duas casas decimais
+  
+  // 1. Calcula o total líquido
+  const total_liquido = (valor_totalBruto - valor_desconto).toFixed(2);
 
-  this.formulario.get('totaliq')?.setValue(total_liquido);
-  this.formulario.get('totaliq')?.setValue(total_liquido, { emitEvent: true });
-  this.formulario.get('desconto')?.setValue("0");  // zera o desconto percentual
+  // 2. Calcula o percentual que esse valor representa sobre o bruto
+  let percentual = 0;
+  if (valor_totalBruto > 0) {
+    percentual = (valor_desconto / valor_totalBruto) * 100;
+  }
+
+  // 3. Atualiza os campos usando patchValue (evita erro de tipo 'never')
+  this.formulario.patchValue({
+    totaliq: total_liquido,
+    desconto: percentual.toFixed(2) // Atualiza o campo % automaticamente
+  }, { emitEvent: false }); 
 }
 
-// USA O VALOR % PARA CALCULAR O VALOR DO DESCONTO $, E RENDERIZA TOTAL LIQUIDO.
-// Calcula o desconto percentual e atualiza o total líquido
-onDescontoPercentual() {
-  this.calculaDescontoPercentual();
-}
 
 calculaDescontoPercentual() {
   const valor_totalBruto = parseFloat(this.formulario.get('totalbruto')?.value) || 0;
-  const percentual_desconto = (parseFloat(this.formulario.get('desconto')?.value) * 0.01) || 0;
+  let percentual_desconto = (parseFloat(this.formulario.get('desconto')?.value) * 0.01) || 0;
   
   // Calcula o valor do desconto e converte para número após o toFixed
   const valor_desconto = parseFloat((valor_totalBruto * percentual_desconto).toFixed(2));
@@ -576,8 +607,28 @@ calculaDescontoPercentual() {
   // Define o valor de `totaliq` com o total líquido formatado para duas casas decimais
   this.formulario.get('totaliq')?.setValue(total_liquido);
   this.formulario.get('valordesconto')?.setValue("0");  // zera o desconto de valor
-
+  this.formulario.get('valordesconto')?.setValue(valor_desconto.toFixed(2));
 }
+
+calculaPercentualPeloValorDesconto(){
+
+   const valor_totalBruto = parseFloat(this.formulario.get('totalbruto')?.value) || 0;
+  let percentual_desconto = (parseFloat(this.formulario.get('desconto')?.value) * 0.01) || 0;
+  
+  // Calcula o valor do desconto e converte para número após o toFixed
+  const valor_desconto = parseFloat((valor_totalBruto * percentual_desconto).toFixed(2));
+  
+  // Subtrai o desconto do valor bruto para obter o total líquido
+  const total_liquido = (valor_totalBruto - valor_desconto).toFixed(2);
+if (valor_totalBruto > 0) {
+  const percentual = (valor_desconto / valor_totalBruto) * 100;
+  console.log(" valor bruto maior que zero")
+  // Acesso direto via objeto 'controls'
+  this.formulario.controls['desconto'].setValue(percentual.toFixed(2));
+} else {
+  this.formulario.controls['desconto'].setValue("0.00");
+}
+  }
 
 
 
