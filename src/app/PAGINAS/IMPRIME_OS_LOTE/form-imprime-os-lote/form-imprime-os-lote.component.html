@@ -226,7 +226,7 @@
               <td>{{ os.totaliq}}</td>
               <td>{{ os.fechamento | date: 'dd/MM/yyyy' }}</td>
               <td>
-                <div>
+                <div *ngIf="osClicadasCheckbox.length < 31">
                   <input
                       class="form-check-input"
                       type="checkbox"

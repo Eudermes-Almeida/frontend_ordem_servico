@@ -514,7 +514,7 @@ onOspeloSerialKey(event: KeyboardEvent): void {
     console.log('Array de ordens de serviço selecionadas:', this.osClicadasCheckbox);
     console.log("quantidade de os selecionadas: " + this.osClicadasCheckbox.length )
     if(this.osClicadasCheckbox.length>30){
-      alert("Você ultrapassou o limite máximo (30) de ordens de serviço selecionadas para impressão")
+      alert("Você ultrapassou o limite máximo (30) de ordens de serviço selecionadas para impressão. Click em imprimir estas ordens de serviço e depois selecione mais, se for necessário.")
     }
   }
 
