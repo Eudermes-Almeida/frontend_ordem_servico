@@ -1,9 +1,9 @@
-
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 <div class="d-flex justify-content-center flex-column"> <!-- Adicione flex-column para empilhar os elementos -->
-  <form [formGroup]="formulario" (keydown.enter)="$event.preventDefault()" class="centralizado-formulario" (ngSubmit)="enviarOs()">
-    
-    
+  <form [formGroup]="formulario" (keydown.enter)="$event.preventDefault()" class="centralizado-formulario"
+    (ngSubmit)="enviarOs()">
+
+
 
 
     <div class="alert alert-warning alert-dismissible fade show" role="alert" *ngIf="exibirAlertValidacao">
@@ -15,554 +15,556 @@
       Ordem de Serviço Cadastrastrada com sucesso!!
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-    
+
     <!--<p class="text-secondary" style="text-align: center; font-size: larger;">Escolha o Cliente:</p>-->
-        <div class="borda_azul">
-          <h2 class="texto_buscaCliente">BUSCA CLIENTE:</h2>
-        <div class="form-row align-items-center">
-            <div class="form-group col-3">
-                <div class="d-flex align-items-center">
-                    <label for="id">CodCli:</label>
-                    <span class="espaco"></span> <!-- Espaço de 10 caracteres -->
+    <div class="borda_azul">
+      <h2 class="texto_buscaCliente">BUSCA CLIENTE:</h2>
+      <div class="form-row align-items-center">
+        <div class="form-group col-3">
+          <div class="d-flex align-items-center">
+            <label for="id">CodCli:</label>
+            <span class="espaco"></span> <!-- Espaço de 10 caracteres -->
 
-                    <input 
-    type="checkbox" 
-    id="checkbox" 
-    name="checkbox" 
-    class="checkbox"
-    style="font-size: 5;" 
-    (click)="buscaUltimocliente(codigoClienteInput)"
-    >
-                    
-                    <label for="buscarUltimoCliente">Last Client</label>
-                </div>
-                
-                <input 
-    type="text" 
-    id="codcli" 
-    #codigoClienteInput  
-    (input)="onClienteInput($event)" 
-    (keydown)="onClienteKey($event)"
-    formControlName="codcli" 
-    maxlength="10" 
-    class="form-control"
-    formControlName="codcli">
-    <div *ngIf="formulario.get('codcli')?.invalid && formulario.get('codcli')?.touched" class="text-danger">
-      Campo Código Cliente é obrigatório.
-    </div>
+            <input type="checkbox" id="checkbox" name="checkbox" class="checkbox" style="font-size: 5;"
+              (click)="buscaUltimocliente(codigoClienteInput)">
+
+            <label for="buscarUltimoCliente">Last Client</label>
+          </div>
+
+          <input type="text" id="codcli" #codigoClienteInput (input)="onClienteInput($event)"
+            (keydown)="onClienteKey($event)" formControlName="codcli" maxlength="10" class="form-control"
+            formControlName="codcli">
+          <div *ngIf="formulario.get('codcli')?.invalid && formulario.get('codcli')?.touched" class="text-danger">
+            Campo Código Cliente é obrigatório.
+          </div>
+
+        </div>
+
+       <!-- Campo Fantasia -->
+<div class="form-group col-3">
+  <label for="nomefantasia">Nome Fantasia:</label>
+  <input type="text" 
+         formControlName="fantasia" 
+         id="nomefantasia" 
+         class="form-control"
+         [ngClass]="{'is-invalid': formulario.get('fantasia')?.invalid && formulario.get('fantasia')?.touched}">
+  
+  <!-- Removi a dependência do 'touched' apenas para teste, ou use markAllAsTouched no TS -->
+  <div *ngIf="formulario.get('fantasia')?.hasError('required') && formulario.get('fantasia')?.touched" class="text-danger">
+    Nome Fantasia do Cliente é obrigatório.
+  </div>
+</div>
+
+<!-- Campo Razão Social -->
+<div class="form-group col-3">
+  <label for="razaosocial">Razao Social:</label>
+  <input type="text" 
+         formControlName="rzsocial" 
+         id="razaosocial" 
+         class="form-control"
+         [ngClass]="{'is-invalid': formulario.get('rzsocial')?.invalid && formulario.get('rzsocial')?.touched}">
     
-            </div>
+  <div *ngIf="formulario.get('rzsocial')?.hasError('required') && formulario.get('rzsocial')?.touched" class="text-danger">
+    Razão Social do Cliente é obrigatório.
+  </div>
+</div>
 
-            <div class="form-group col-3">
-                <label for="nomefantasia">Nome Fantasia:</label>
-                <input 
-                  type="text" 
-                  formControlName="fantasia" 
-                  id="nomefantasia" 
-                  name="nomefantasia" 
-                  required 
-                  class="form-control"
-                  placeholder="Digite o nome fantasia"
-                >
-              </div>
-              
-            
-              <div class="form-group col-3">
-                <label for="razaosocial">Razao Social:</label>
-                <input 
-                  type="text" 
-                  formControlName="rzsocial" 
-                  id="razaosocial" 
-                  name="razaosocial" 
-                  required 
-                  class="form-control"
-                  placeholder="Digite a Razao Social"
-                >
-              </div>
 
-              <div class="form-group col-3">
-                <label for="cidade">Cidade:</label>
-                <select id="cidades" name="cidades" (change)="onCityChange($event)" class="form-control">
-                  <option *ngFor="let city of cidades" [value]="city.valor">{{ city.valor }}</option>
-                </select>
-              </div>
 
-              <div class="form-group col-3">
-                <label for="atendente">Atendente:</label>
-                <select
-                  id="atendente"
-                  name="atendente"
-                  formControlName="atendente"
-                  class="form-control"
-                  (change)="onAtendenteChange($event)"
-                  [ngClass]="{'is-invalid': formulario.get('atendente')?.invalid && formulario.get('atendente')?.touched}"
-                >
-                  <option *ngFor="let atendente of atendentes" [value]="atendente.valor">{{ atendente.valor }}</option>
-                </select>
-                <div *ngIf="formulario.get('atendente')?.invalid && formulario.get('atendente')?.touched" class="text-danger">
-                  Campo atendente é obrigatório.
-                </div>
-              </div>
+        <div class="form-group col-3">
+          <label for="cidade">Cidade:</label>
+          <select id="cidades" name="cidades" (change)="onCityChange($event)" class="form-control">
+            <option *ngFor="let city of cidades" [value]="city.valor">{{ city.valor }}</option>
+          </select>
+        </div>
 
-              <div *ngIf="contadorEquipamento < 30">
-              <div class="botao_adicionar">
-              <label>Adicionar</label>
-              <label>Equipamento:</label>
-              <button type="button" class="btn btn-dark" (click)="adicionarEquipamento()">
-                <i class="bi bi-plus-circle-fill" style="font-size: 30px; color: green;"></i>
+        <div class="form-group col-3">
+          <label for="atendente">Atendente:</label>
+          <select id="atendente" name="atendente" formControlName="atendente" class="form-control"
+            (change)="onAtendenteChange($event)"
+            [ngClass]="{'is-invalid': formulario.get('atendente')?.invalid && formulario.get('atendente')?.touched}">
+            <option *ngFor="let atendente of atendentes" [value]="atendente.valor">{{ atendente.valor }}</option>
+          </select>
+          <div *ngIf="formulario.get('atendente')?.invalid && formulario.get('atendente')?.touched" class="text-danger">
+            Campo atendente é obrigatório.
+          </div>
+        </div>
+
+        <div *ngIf="contadorEquipamento < 30">
+          <div class="botao_adicionar">
+            <label>Adicionar</label>
+            <label>Equipamento:</label>
+            <button type="button" class="btn btn-dark" (click)="adicionarEquipamento()">
+              <i class="bi bi-plus-circle-fill" style="font-size: 30px; color: green;"></i>
             </button>
-            </div>
-            </div>
+          </div>
+        </div>
 
-            <button (click)="onButtonClick()" type="button" style="margin-top: 20px; margin-left: 5px;" class="btn btn-primary">Limpar</button>
+        <button (click)="onButtonClick()" type="button" style="margin-top: 20px; margin-left: 5px;"
+          class="btn btn-primary">Limpar</button>
+      </div>
+    </div>
+
+    <p style="color: orange;">Quantidade Equipamentos {{contadorEquipamento}}</p>
+
+
+    <!-- Adicionando uma margem superior para separar o formulário da tabela -->
+    <div class="mt-3 tabela-scroll" style="max-height: 300px; overflow-y: auto;">
+      <!-- Define a altura máxima e ativa a rolagem -->
+      <p class="text-secondary" *ngIf="exibirTabela">Quantidade de clientes selecionados: {{objetocliente.length}} </p>
+      <table class="table table-dark table-hover tabela1" *ngIf="exibirTabela">
+        <thead>
+          <tr>
+            <th>Codigo</th>
+            <th>Nome Fantasia</th>
+            <th>Razão Social</th>
+            <th>Fone</th>
+            <th>Celular</th>
+            <th>Contato</th>
+            <th>Selecione</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let cli of objetocliente">
+            <td style="color: red;"><strong>{{ cli.id }}</strong></td>
+            <td>{{ cli.nomefantasia }}</td>
+            <td>{{ cli.razaosocial }}</td>
+            <td>{{ cli.fonefixo }}</td>
+            <td>{{ cli.celular2 }}</td>
+            <td>{{ cli.contato }}</td>
+            <td>
+              <a>
+                <button type="button" class="btn btn-dark" (click)="escreveDadosClienteNosInputs(cli)">
+                  <i class="bi bi-check-circle" style="color: #25D366;  font-size: 20px;"></i>
+                </button>
+              </a>
+            </td>
+
+          </tr>
+        </tbody>
+      </table>
+
+      <!----------------ORDEM DE SERVIÇO--------------------------------------------------->
+
+      <div *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]">
+
+        <!-- O $any(this) permite acessar as variáveis dinâmicas do seu TS (ex: exibirEntrada + 11) -->
+        <div class="form-row align-items-center" *ngIf="$any(this)['exibirEntrada' + i]">
+
+          <h2 style="color: white;">{{ i }}º</h2>
+
+          <!-- Ordem de Serviço -->
+          <div class="form-group col-3">
+            <label [for]="'os' + i">Ordem Serviço:</label>
+            <input type="text" [formControlName]="'os' + i" [id]="'os' + i" class="form-control" readonly>
+          </div>
+
+          <!-- Equipamento -->
+          <div class="form-group col-3">
+            <label [for]="'equipamento' + i">Equipamento:</label>
+            <select [id]="'equipamento' + i" class="form-control" [formControlName]="'equipamento' + i"
+              (change)="$any(this)['onEquipamentoChange' + i]($event)"
+              [ngClass]="{'is-invalid': formulario.get('equipamento' + i)?.invalid && formulario.get('equipamento' + i)?.touched}">
+              <option *ngFor="let city of equipamentos" [value]="city.valor">{{ city.valor }}</option>
+            </select>
+            <div *ngIf="formulario.get('equipamento' + i)?.invalid && formulario.get('equipamento' + i)?.touched"
+              class="text-danger">
+              Campo Equipamento é obrigatório.
+            </div>
+          </div>
+
+          <!-- Marca -->
+          <div class="form-group col-3">
+            <label [for]="'marca' + i">Marca:</label>
+            <select *ngIf="$any(this)['exibirListaMarcas' + i]" [id]="'marca' + i" class="form-control"
+              [formControlName]="'marca' + i" (blur)="$any(this)['onMarcaChange' + i]()"
+              [ngClass]="{'is-invalid': formulario.get('marca' + i)?.invalid && formulario.get('marca' + i)?.touched}">
+              <option *ngFor="let option of getMarcaOptions()" [value]="option.valor">{{ option.valor }}</option>
+            </select>
+
+            <input *ngIf="$any(this)['exibirSoUmaMarca' + i]" type="text" class="form-control"
+              [value]="$any(this)['marcaSelecionada' + i]" />
+
+            <div *ngIf="formulario.get('marca' + i)?.invalid && formulario.get('marca' + i)?.touched"
+              class="text-danger">
+              Campo Marca é obrigatório.
+            </div>
+          </div>
+
+          <!-- Modelo -->
+          <div class="form-group col-3">
+            <label [for]="'modelo' + i">Modelo:</label>
+            <select *ngIf="$any(this)['exibirListaModelo' + i]" [id]="'modelo' + i" class="form-control"
+              [formControlName]="'modelo' + i" (blur)="$any(this)['onModeloChange' + i]()"
+              [ngClass]="{'is-invalid': formulario.get('modelo' + i)?.invalid && formulario.get('modelo' + i)?.touched}">
+              <option *ngFor="let option of getModeloOptions()" [value]="option.valor">{{ option.valor }}</option>
+            </select>
+
+            <input *ngIf="$any(this)['exibirSoUmModelo' + i]" type="text" class="form-control"
+              [value]="$any(this)['modeloSelecionada' + i]" />
+
+            <div *ngIf="formulario.get('modelo' + i)?.invalid && formulario.get('modelo' + i)?.touched"
+              class="text-danger">
+              Campo Modelo é obrigatório.
+            </div>
+          </div>
+
+          <!-- Serial -->
+          <div class="form-group col-3">
+            <label [for]="'serial' + i">Serial:</label>
+            <input type="text" [id]="'serial' + i" [formControlName]="'serial' + i" class="form-control"
+              [ngClass]="{'is-invalid': formulario.get('serial' + i)?.invalid && formulario.get('serial' + i)?.touched}">
+            <div *ngIf="formulario.get('serial' + i)?.invalid && formulario.get('serial' + i)?.touched"
+              class="text-danger">
+              Campo Serial é obrigatório.
+            </div>
+          </div>
+
+          <!-- Patrimonio -->
+          <div class="form-group col-3">
+            <label [for]="'patrimonio' + i">Patrimonio:</label>
+            <input type="text" [formControlName]="'patrimonio' + i" [id]="'patrimonio' + i" class="form-control"
+              placeholder="Digite o patrimonio">
+          </div>
+
+          <!-- Garantia -->
+          <div class="form-group col-3">
+            <label [for]="'garantia' + i">Garantia:</label>
+            <select [id]="'garantia' + i" class="form-control" [formControlName]="'garantia' + i"
+              (change)="$any(this)['onGarantiaChange' + i]($event)"
+              [ngClass]="{'is-invalid': formulario.get('garantia' + i)?.invalid && formulario.get('garantia' + i)?.touched}">
+              <option>NÃO</option>
+              <option>LOJA</option>
+              <option>FABRICA</option>
+            </select>
+            <div *ngIf="formulario.get('garantia' + i)?.invalid && formulario.get('garantia' + i)?.touched"
+              class="text-danger">
+              Campo Garantia é obrigatório.
+            </div>
+          </div>
+
+        </div>
+        <hr *ngIf="$any(this)['exibirEntrada' + i]" style="border-color: #444; margin: 20px 0;">
+      </div>
+
+
+      <!--------------------------------------------------------------------------------------->
+      <!--------------------------------------------------------------------------------------->
+
+      <div class="btn-salvar-ordem-servico d-flex flex-column align-items-end">
+
+        <!-- Mensagem de Sucesso -->
+        <p class="text-white mb-2" *ngIf="exibirNumeroNovaOs">
+          Ordens de Serviço geradas em lote com sucesso
+        </p>
+
+        <!-- Container de Ação (Alinhado à direita) -->
+        <div class="action-wrapper d-flex align-items-center justify-content-end">
+
+          <!-- 1. Botão Sair -->
+          <a routerLink="/home" *ngIf="exibirBotaoSair" class="ms-auto">
+            <button type="button" class="btn btn-primary">SAIR</button>
+          </a>
+
+          <!-- 2. Botão Salvar -->
+          <button class="btn btn-primary" (click)="enviarOs()" *ngIf="exibirBotaoSalvar && !spinnerSalvandoOs">
+            Salvar Ordem Serviço
+          </button>
+
+          <!-- 3. Spinner (Ocupando o mesmo espaço do botão) -->
+          <div *ngIf="spinnerSalvandoOs" class="spinner-container d-flex align-items-center">
+            <div class="spinner-border text-primary" role="status"></div>
+            <div class="spinner-grow text-primary ms-2" role="status"></div>
+          </div>
+
         </div>
       </div>
 
-      <p style="color: orange;">Quantidade Equipamentos {{contadorEquipamento}}</p>
-    
 
-    <!-- Adicionando uma margem superior para separar o formulário da tabela -->
-<div class="mt-3 tabela-scroll" style="max-height: 300px; overflow-y: auto;"> <!-- Define a altura máxima e ativa a rolagem -->
-  <p class="text-secondary" *ngIf="exibirTabela" >Quantidade de clientes selecionados: {{objetocliente.length}}  </p>  
-  <table class="table table-dark table-hover tabela1" *ngIf="exibirTabela">
-        <thead>
-            <tr>
-                <th>Codigo</th>
-                <th>Nome Fantasia</th>
-                <th>Razão Social</th>
-                <th>Fone</th>
-                <th>Celular</th>
-                <th>Contato</th>
-                <th>Selecione</th>  
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let cli of objetocliente">
-              <td style="color: red;"><strong>{{ cli.id }}</strong></td>
-              <td>{{ cli.nomefantasia }}</td>
-              <td>{{ cli.razaosocial }}</td>
-              <td>{{ cli.fonefixo }}</td>
-              <td>{{ cli.celular2 }}</td>
-              <td>{{ cli.contato }}</td>
-              <td>
-                <a>
-                    <button type="button" class="btn btn-dark" (click)="escreveDadosClienteNosInputs(cli)">
-                        <i class="bi bi-check-circle" style="color: #25D366;  font-size: 20px;"></i>
-                    </button>
-                </a>
-            </td>
-            
-            </tr>
-          </tbody>
-    </table>
 
-    <!----------------PRIMEIRA ORDEM DE SERVIÇO--------------------------------------------------->
-
-   <div *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]">
-
-  <!-- O $any(this) permite acessar as variáveis dinâmicas do seu TS (ex: exibirEntrada + 11) -->
-  <div class="form-row align-items-center" *ngIf="$any(this)['exibirEntrada' + i]">
-
-    <h2 style="color: white;">{{ i }}º</h2>
-
-    <!-- Ordem de Serviço -->
-    <div class="form-group col-3">
-      <label [for]="'os' + i">Ordem Serviço:</label>
-      <input type="text" [formControlName]="'os' + i" [id]="'os' + i" class="form-control" readonly>
     </div>
 
-    <!-- Equipamento -->
-    <div class="form-group col-3">
-      <label [for]="'equipamento' + i">Equipamento:</label>
-      <select [id]="'equipamento' + i" class="form-control" [formControlName]="'equipamento' + i"
-        (change)="$any(this)['onEquipamentoChange' + i]($event)"
-        [ngClass]="{'is-invalid': formulario.get('equipamento' + i)?.invalid && formulario.get('equipamento' + i)?.touched}">
-        <option *ngFor="let city of equipamentos" [value]="city.valor">{{ city.valor }}</option>
-      </select>
-      <div *ngIf="formulario.get('equipamento' + i)?.invalid && formulario.get('equipamento' + i)?.touched" class="text-danger">
-        Campo Equipamento é obrigatório.
-      </div>
-    </div>
+  </form>
+  <button class="btn btn-primary botao_imprimir" (click)="gerarPDF()" *ngIf="exibirBotaoImprimir">Imprimir:</button>
 
-    <!-- Marca -->
-    <div class="form-group col-3">
-      <label [for]="'marca' + i">Marca:</label>
-      <select *ngIf="$any(this)['exibirListaMarcas' + i]" [id]="'marca' + i" class="form-control"
-        [formControlName]="'marca' + i" (blur)="$any(this)['onMarcaChange' + i]()"
-        [ngClass]="{'is-invalid': formulario.get('marca' + i)?.invalid && formulario.get('marca' + i)?.touched}">
-        <option *ngFor="let option of getMarcaOptions()" [value]="option.valor">{{ option.valor }}</option>
-      </select>
+  <!--------------------------COMPROVANTE ENTRADA --------------------------------------->
 
-      <input *ngIf="$any(this)['exibirSoUmaMarca' + i]" type="text" class="form-control"
-        [value]="$any(this)['marcaSelecionada' + i]" />
+  <!--------------------------CABEÇALHO --------------------------------------->
 
-      <div *ngIf="formulario.get('marca' + i)?.invalid && formulario.get('marca' + i)?.touched" class="text-danger">
-        Campo Marca é obrigatório.
-      </div>
-    </div>
-
-    <!-- Modelo -->
-    <div class="form-group col-3">
-      <label [for]="'modelo' + i">Modelo:</label>
-      <select *ngIf="$any(this)['exibirListaModelo' + i]" [id]="'modelo' + i" class="form-control"
-        [formControlName]="'modelo' + i" (blur)="$any(this)['onModeloChange' + i]()"
-        [ngClass]="{'is-invalid': formulario.get('modelo' + i)?.invalid && formulario.get('modelo' + i)?.touched}">
-        <option *ngFor="let option of getModeloOptions()" [value]="option.valor">{{ option.valor }}</option>
-      </select>
-
-      <input *ngIf="$any(this)['exibirSoUmModelo' + i]" type="text" class="form-control"
-        [value]="$any(this)['modeloSelecionada' + i]" />
-
-      <div *ngIf="formulario.get('modelo' + i)?.invalid && formulario.get('modelo' + i)?.touched" class="text-danger">
-        Campo Modelo é obrigatório.
-      </div>
-    </div>
-
-    <!-- Serial -->
-    <div class="form-group col-3">
-      <label [for]="'serial' + i">Serial:</label>
-      <input type="text" [id]="'serial' + i" [formControlName]="'serial' + i" class="form-control"
-        [ngClass]="{'is-invalid': formulario.get('serial' + i)?.invalid && formulario.get('serial' + i)?.touched}">
-      <div *ngIf="formulario.get('serial' + i)?.invalid && formulario.get('serial' + i)?.touched" class="text-danger">
-        Campo Serial é obrigatório.
-      </div>
-    </div>
-
-    <!-- Patrimonio -->
-    <div class="form-group col-3">
-      <label [for]="'patrimonio' + i">Patrimonio:</label>
-      <input type="text" [formControlName]="'patrimonio' + i" [id]="'patrimonio' + i" class="form-control"
-        placeholder="Digite o patrimonio">
-    </div>
-
-    <!-- Garantia -->
-    <div class="form-group col-3">
-      <label [for]="'garantia' + i">Garantia:</label>
-      <select [id]="'garantia' + i" class="form-control" [formControlName]="'garantia' + i"
-        (change)="$any(this)['onGarantiaChange' + i]($event)"
-        [ngClass]="{'is-invalid': formulario.get('garantia' + i)?.invalid && formulario.get('garantia' + i)?.touched}">
-        <option>NÃO</option>
-        <option>LOJA</option>
-        <option>FABRICA</option>
-      </select>
-      <div *ngIf="formulario.get('garantia' + i)?.invalid && formulario.get('garantia' + i)?.touched" class="text-danger">
-        Campo Garantia é obrigatório.
-      </div>
-    </div>
-
-  </div>
-  <hr *ngIf="$any(this)['exibirEntrada' + i]" style="border-color: #444; margin: 20px 0;">
-</div>
-
-
-<!--------------------------------------------------------------------------------------->
-<!--------------------------------------------------------------------------------------->
-
-<div class="btn-salvar-ordem-servico d-flex flex-column align-items-end">
-  
-  <!-- Mensagem de Sucesso -->
-  <p class="text-white mb-2" *ngIf="exibirNumeroNovaOs">
-    Ordens de Serviço geradas em lote com sucesso
-  </p>
-
-  <!-- Container de Ação (Alinhado à direita) -->
-  <div class="action-wrapper d-flex align-items-center justify-content-end">
-    
-    <!-- 1. Botão Sair -->
-    <a routerLink="/home" *ngIf="exibirBotaoSair" class="ms-auto">
-      <button type="button" class="btn btn-primary">SAIR</button>
-    </a>
-
-    <!-- 2. Botão Salvar -->
-    <button class="btn btn-primary" (click)="enviarOs()" *ngIf="exibirBotaoSalvar && !spinnerSalvandoOs">
-      Salvar Ordem Serviço
-    </button>
-
-    <!-- 3. Spinner (Ocupando o mesmo espaço do botão) -->
-    <div *ngIf="spinnerSalvandoOs" class="spinner-container d-flex align-items-center">
-      <div class="spinner-border text-primary" role="status"></div>
-      <div class="spinner-grow text-primary ms-2" role="status"></div>
-    </div>
-
-  </div>
-</div>
-
-
-
-</div>
-
-</form>
-<button class="btn btn-primary botao_imprimir"(click)="gerarPDF()" *ngIf="exibirBotaoImprimir">Imprimir:</button>
-
-<!--------------------------COMPROVANTE ENTRADA --------------------------------------->
-
-<!--------------------------CABEÇALHO --------------------------------------->
-
-<div id="pdf-content" class="container" *ngIf="exibirComprovante">
-  <div class="header">
-    <h1>COMPROVANTE DE ABERTURA DE ORDEM DE SERVIÇO</h1>
-    <div class="header-content">
+  <div id="pdf-content" class="container" *ngIf="exibirComprovante">
+    <div class="header">
+      <h1>COMPROVANTE DE ABERTURA DE ORDEM DE SERVIÇO</h1>
+      <div class="header-content">
         <img src="assets/logo_pt_br.jpg" alt="Logo" class="logo" />
         <div class="header-text">
-            <h2>Só Monitores & Nobreaks</h2>
-            <p>Razão Social: Alessandra Ap Pires Almeida - CNPJ: 13.092.364/0001-90</p>
-            <div class="icone">
+          <h2>Só Monitores & Nobreaks</h2>
+          <p>Razão Social: Alessandra Ap Pires Almeida - CNPJ: 13.092.364/0001-90</p>
+          <div class="icone">
             <p>Rua Joaquim Nabuco 411 - Porto Velho - Divinópolis - <span class="phone-number">37-3212-6708</span></p>
             <i class="bi bi-whatsapp" style="font-size: 30px; padding: 5px; color: #25D366;"></i>
 
           </div>
-          </div>
+        </div>
+      </div>
     </div>
-</div>
 
-<!--------------------------PRIMEIRA LINHA --------------------------------------->
+    <!--------------------------PRIMEIRA LINHA --------------------------------------->
 
-<!-- Primeira tabela -->
-<table class="info-table" >
-  <thead>
-      <tr >
+    <!-- Primeira tabela -->
+    <table class="info-table">
+      <thead>
+        <tr>
           <th>DATA</th>
           <th>HORA</th>
           <th>STATUS</th>
           <th>VENDA</th>
           <th>ATENDENTE</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr class="info-table">
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="info-table">
 
           <td>{{ os.data | date:'dd-MM-yyyy' }}</td>
           <td>{{os.hora}}</td>
           <td>ABERTA</td>
           <td>NÃO</td>
           <td>{{os?.atendente}}</td>
-      </tr>
-  </tbody>
-</table>
+        </tr>
+      </tbody>
+    </table>
 
-<!-- Segunda tabela -->
-<table class="cliente_fantasia_razao">
-    <tr>
+    <!-- Segunda tabela -->
+    <table class="cliente_fantasia_razao">
+      <tr>
         <th>COD CLIENTE</th>
         <th>NOME FANTASIA</th>
         <th>RAZÃO SOCIAL</th>
-    </tr>
-    <tr>
+      </tr>
+      <tr>
         <td>{{os?.codcli}}</td>
         <td>{{os?.fantasia}}</td>
         <td>{{os?.rzsocial}}</td>
-    </tr>
+      </tr>
 
     </table>
 
     <table class="info-table">
-  <thead>
-    <tr class="info-table">
-      <th>Nº</th>
-      <th>O.S.</th>
-      <th>EQUIPAMENTO</th>
-      <th>MARCA</th>
-      <th>MODELO</th>
-      <th>SERIAL</th>
-      <th>PATRIMONIO</th>
-      <th>GARANTIA</th>
-    </tr>
-  </thead>
-  <tbody>
-    <ng-container *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]">
-      
-      <!-- Acessa dinamicamente 'exibirOs1', 'exibirOs2', etc -->
-      <tr *ngIf="$any(this)['exibirOs' + i]" class="info-table">
-        <td>{{ i }}</td>
-        <td>{{ $any(this)['os' + i] }}</td>
-        <td>{{ $any(this)['equipamentoSelecionado' + i] }}</td>
-        <td>{{ $any(this)['marcaSelecionada' + i] }}</td>
-        <td>{{ $any(this)['modeloSelecionada' + i] }}</td>
-        <td>{{ $any(this)['serial' + i] }}</td>
-        <td>{{ $any(this)['patrimonio' + i] }}</td>
-        <td>{{ $any(this)['garantiaSelecionada' + i] }}</td>
-      </tr>
+      <thead>
+        <tr class="info-table">
+          <th>Nº</th>
+          <th>O.S.</th>
+          <th>EQUIPAMENTO</th>
+          <th>MARCA</th>
+          <th>MODELO</th>
+          <th>SERIAL</th>
+          <th>PATRIMONIO</th>
+          <th>GARANTIA</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container
+          *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]">
 
-    </ng-container>
-  </tbody>
-</table>
+          <!-- Acessa dinamicamente 'exibirOs1', 'exibirOs2', etc -->
+          <tr *ngIf="$any(this)['exibirOs' + i]" class="info-table">
+            <td>{{ i }}</td>
+            <td>{{ $any(this)['os' + i] }}</td>
+            <td>{{ $any(this)['equipamentoSelecionado' + i] }}</td>
+            <td>{{ $any(this)['marcaSelecionada' + i] }}</td>
+            <td>{{ $any(this)['modeloSelecionada' + i] }}</td>
+            <td>{{ $any(this)['serial' + i] }}</td>
+            <td>{{ $any(this)['patrimonio' + i] }}</td>
+            <td>{{ $any(this)['garantiaSelecionada' + i] }}</td>
+          </tr>
 
-
- <!--------------------------GARANTIAS --------------------------------------->
- <div class="garantias">
-  <h3 style="text-align: center;"><p style="color: red;">GARANTIAS:</p></h3>
-  <p> MÃO DE OBRA E PEÇAS: 90 DIAS   - VENDA  EQUIPAMENTOS SEMI-NOVOS: 180 DIAS   - VENDA  EQUIPAMENTOS NOVOS: CONFORME FABRICANTE</p>
-  <P>BATERIAS: 180 DIAS     - GARANTIA NÃO COBRE: SOBRE CARGA - SOBRE TENSÃO - DESCARGA ATMOSFÉRICA - MAL USO</P>
-  <P>A GARANTIA É ANALIZADA E EXECUTADA NO LABORATÓRIO  DA  SÓ MONITORES & NOBREAKS, FRETE FOB.</P>
-</div>
+        </ng-container>
+      </tbody>
+    </table>
 
 
-  <!--------------------------OBSERVAÇÕES --------------------------------------->
-  <div class="atencao">
-      <h3 style="text-align: center;"><p style="color: red;">ATENÇÃO!</p></h3>
-      <p>Prezado cliente: Após receber seu orçamento você terá 10 (dez) dias para retirar seu equipamento em nossa loja, ultrapassado este período, <span style="color: red;">SERÁ COBRADA TAXA DE PERMANÊNCIA DIÁRIA DE 10,00 (dez reais) (por cada equipamento)</span></p>
-  </div>
+    <!--------------------------GARANTIAS --------------------------------------->
+    <div class="garantias">
+      <h3 style="text-align: center;">
+        <p style="color: red;">GARANTIAS:</p>
+      </h3>
+      <p> MÃO DE OBRA E PEÇAS: 90 DIAS - VENDA EQUIPAMENTOS SEMI-NOVOS: 180 DIAS - VENDA EQUIPAMENTOS NOVOS: CONFORME
+        FABRICANTE</p>
+      <P>BATERIAS: 180 DIAS - GARANTIA NÃO COBRE: SOBRE CARGA - SOBRE TENSÃO - DESCARGA ATMOSFÉRICA - MAL USO</P>
+      <P>A GARANTIA É ANALIZADA E EXECUTADA NO LABORATÓRIO DA SÓ MONITORES & NOBREAKS, FRETE FOB.</P>
+    </div>
 
-  <!--------------------------ASSINATURA --------------------------------------->
-  <div class="assinatura">
-    <div class="assinatura-cliente">ASSINATURA REPRESENTANTE CLIENTE:</div>
-    <div class="assinatura-monitores">ASSINATURA REPRESENTANTE SÓ MONITORES & NOBREAKS:</div>
-  </div>
 
-   <!-- mais de 20-->
+    <!--------------------------OBSERVAÇÕES --------------------------------------->
+    <div class="atencao">
+      <h3 style="text-align: center;">
+        <p style="color: red;">ATENÇÃO!</p>
+      </h3>
+      <p>Prezado cliente: Após receber seu orçamento você terá 10 (dez) dias para retirar seu equipamento em nossa loja,
+        ultrapassado este período, <span style="color: red;">SERÁ COBRADA TAXA DE PERMANÊNCIA DIÁRIA DE 10,00 (dez
+          reais) (por cada equipamento)</span></p>
+    </div>
+
+    <!--------------------------ASSINATURA --------------------------------------->
+    <div class="assinatura">
+      <div class="assinatura-cliente">ASSINATURA REPRESENTANTE CLIENTE:</div>
+      <div class="assinatura-monitores">ASSINATURA REPRESENTANTE SÓ MONITORES & NOBREAKS:</div>
+    </div>
+
+    <!-- mais de 20-->
     <div *ngIf="contadorEquipamento > 20">
-    <p>.</p>
-    <p>.</p>
-    <p>.</p>
-    <p>.</p>
-    <p>.</p>
-    <p>.</p>
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
     </div>
 
-  <!-------------------------------QR CODE--------------------------->
-  <div style="text-align: center; margin-top: 50px;">
-    <h2 style="color: red;">Escaneie o QR Code para pesquisar seus orçamentos</h2>
-    <img *ngIf="qrCodeUrl" [src]="qrCodeUrl" alt="QR Code">
-  </div>
+    <!-------------------------------QR CODE--------------------------->
+    <div style="text-align: center; margin-top: 50px;">
+      <h2 style="color: red;">Escaneie o QR Code para pesquisar seus orçamentos</h2>
+      <img *ngIf="qrCodeUrl" [src]="qrCodeUrl" alt="QR Code">
+    </div>
 
-  <!--Até 2-->
+    <!--Até 2-->
 
-  <!-- de 3 a 10-->
-  <div *ngIf="contadorEquipamento >= 3 && contadorEquipamento <= 10">
-  <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  </div>
-  <!---------------->
+    <!-- de 3 a 10-->
+    <div *ngIf="contadorEquipamento >= 3 && contadorEquipamento <= 10">
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+    </div>
+    <!---------------->
 
-  <!-- de 11 a 12-->
-   <div *ngIf="contadorEquipamento >= 11 && contadorEquipamento <= 12">
-   <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  </div>
-  
-  <!--------------->
+    <!-- de 11 a 12-->
+    <div *ngIf="contadorEquipamento >= 11 && contadorEquipamento <= 12">
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+    </div>
 
-  <!--de 13 a 14-->
-   <div *ngIf="contadorEquipamento >= 13 && contadorEquipamento <= 14">
-  <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  </div>
-  <!-------------->
+    <!--------------->
 
-  <!--de 15 a 16-->
-   <div *ngIf="contadorEquipamento >= 15 && contadorEquipamento <= 16">
-   <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  </div>
- 
-  <!--de 17 a 18-->
-   <div *ngIf="contadorEquipamento >= 17 && contadorEquipamento <= 18">
-  <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  </div>
-  <!----->
+    <!--de 13 a 14-->
+    <div *ngIf="contadorEquipamento >= 13 && contadorEquipamento <= 14">
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+    </div>
+    <!-------------->
 
-  <!--de 19 a 20-->
-   <div *ngIf="contadorEquipamento >= 19 && contadorEquipamento <= 20">
-  <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  </div>
-  <!--------->
-  <!-- de 21 a 22-->
+    <!--de 15 a 16-->
+    <div *ngIf="contadorEquipamento >= 15 && contadorEquipamento <= 16">
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+    </div>
+
+    <!--de 17 a 18-->
+    <div *ngIf="contadorEquipamento >= 17 && contadorEquipamento <= 18">
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+    </div>
+    <!----->
+
+    <!--de 19 a 20-->
+    <div *ngIf="contadorEquipamento >= 19 && contadorEquipamento <= 20">
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+    </div>
+    <!--------->
+    <!-- de 21 a 22-->
     <div *ngIf="contadorEquipamento >= 21 && contadorEquipamento <= 22">
-   <p>.</p>
-  <p>.</p>
-  </div>
-  <!-------->
+      <p>.</p>
+      <p>.</p>
+    </div>
+    <!-------->
 
-  <!--de 23 a 24-->
-  <div *ngIf="contadorEquipamento >= 23 && contadorEquipamento <= 24">
-  <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  </div>
-  <!------------>
-  <!-- de 25 a 26-->
-  <div *ngIf="contadorEquipamento >= 25 && contadorEquipamento <= 26">
-   <p>.</p>
-  <p>.</p>
-  <p>.</p>
-  </div>
-  <!------------>
-  <!-- de 27 a 28-->
-   <div *ngIf="contadorEquipamento >= 27 && contadorEquipamento <= 28">
-  <p>.</p>
-  </div>
-  <!-------------->
+    <!--de 23 a 24-->
+    <div *ngIf="contadorEquipamento >= 23 && contadorEquipamento <= 24">
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+    </div>
+    <!------------>
+    <!-- de 25 a 26-->
+    <div *ngIf="contadorEquipamento >= 25 && contadorEquipamento <= 26">
+      <p>.</p>
+      <p>.</p>
+      <p>.</p>
+    </div>
+    <!------------>
+    <!-- de 27 a 28-->
+    <div *ngIf="contadorEquipamento >= 27 && contadorEquipamento <= 28">
+      <p>.</p>
+    </div>
+    <!-------------->
 
-  <!-- de 29 a 30-->
+    <!-- de 29 a 30-->
 
 
-  <!--------------------------ETIQUETAS PARA LABORATÓRIO --------------------------------------->
-<div class="container-etiquetas">
-  <ng-container *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]">
-    
-    <div class="etiqueta" *ngIf="$any(this)['exibirOs' + i]">
-      <p>ORDEM DE SERVIÇO</p>
-      <h1 style="font-size: 100px; color: red; margin: 10px 0;">{{ $any(this)['os' + i] }}</h1>
-      <p>{{ os.fantasia.length > 25 ? (os.fantasia | slice:0:25) + '...' : os.fantasia }}</p>
-      <p>{{ os.rzsocial.length > 25 ? (os.rzsocial | slice:0:25) + '...' : os.rzsocial }}</p>
-      <p>{{ os.data | date:'dd-MM-yyyy' }}</p>
+    <!--------------------------ETIQUETAS PARA LABORATÓRIO --------------------------------------->
+    <div class="container-etiquetas">
+      <ng-container
+        *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]">
+
+        <div class="etiqueta" *ngIf="$any(this)['exibirOs' + i]">
+          <p>ORDEM DE SERVIÇO</p>
+          <h1 style="font-size: 100px; color: red; margin: 10px 0;">{{ $any(this)['os' + i] }}</h1>
+          <p>{{ os.fantasia.length > 25 ? (os.fantasia | slice:0:25) + '...' : os.fantasia }}</p>
+          <p>{{ os.rzsocial.length > 25 ? (os.rzsocial | slice:0:25) + '...' : os.rzsocial }}</p>
+          <p>{{ os.data | date:'dd-MM-yyyy' }}</p>
+        </div>
+
+      </ng-container>
     </div>
 
-  </ng-container>
-</div>
 
-
-</div>
+  </div>
 </div>

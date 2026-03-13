@@ -24,6 +24,7 @@ import QRCode from 'qrcode';
 })
 export class FORMCADOSComponent{
 
+  validacaoFormularioFalhou: boolean = false;
   nobreak: boolean =false;
   monitor: boolean=false;
   bateria: boolean=false;
@@ -643,8 +644,8 @@ export class FORMCADOSComponent{
     os28:new FormControl(''),
     os29:new FormControl(''),
     os30:new FormControl(''),
-    fantasia:new FormControl(''),
-    rzsocial:new FormControl(''),
+    fantasia:new FormControl('', Validators.required),
+    rzsocial:new FormControl('', Validators.required),
     codcli:new FormControl('', Validators.required),
     atendente:new FormControl('', Validators.required),
     equipamento1:new FormControl(''),
@@ -2741,8 +2742,25 @@ async buscaUltimaOsAsync(): Promise<void> {
 
   }
 
+  controleValidacaoFormulario() {
+  if (this.validarFormularioDinamico()) {
+    console.log("Formulário pronto para salvar!", this.formulario.value);
+    // Chame seu serviço de salvamento aqui
+  } else {
+    alert("Existem campos obrigatórios não preenchidos nas linhas exibidas.");
+    this.validacaoFormularioFalhou = true;
+  }
+}
+
+
 
 async enviarOs(): Promise<void> {
+
+  this. controleValidacaoFormulario();
+    if(this.validacaoFormularioFalhou){
+      this.validacaoFormularioFalhou = false;
+      this.spinnerSalvandoOs = false;
+      return}
 
   this.spinnerSalvandoOs = true;
     // Verificar se o método já está sendo executado
@@ -2753,6 +2771,8 @@ async enviarOs(): Promise<void> {
 
     // Ativar o bloqueio para impedir chamadas simultâneas
     this.lock = true;
+
+    
 
     try {
         // Buscar a última OS antes de começar o loop
@@ -3091,6 +3111,51 @@ onButtonClick() {
   this.isClickEvent = true; // Define a flag quando o botão é clicado
   this.limpar(); // Chama a função
 }
+
+validarFormularioDinamico(): boolean {
+  let formValido = true;
+
+  // Percorre as 30 possíveis linhas
+  for (let i = 1; i <= 30; i++) {
+    // Só valida se a linha estiver sendo exibida no momento
+    if (this[`exibirEntrada${i}` as keyof this]) {
+      
+      // Lista de campos que você quer que sejam obrigatórios
+      const camposObrigatorios = [
+        `equipamento${i}`, 
+        `marca${i}`, 
+        `modelo${i}`, 
+        `serial${i}`, 
+        `garantia${i}`
+      ];
+
+      camposObrigatorios.forEach(nomeCampo => {
+        const controle = this.formulario.get(nomeCampo);
+        
+        if (controle) {
+          // Se o campo estiver vazio, marca como inválido
+          if (!controle.value || controle.value === '') {
+            controle.setErrors({ required: true });
+            controle.markAsTouched(); // Faz o erro aparecer no HTML (text-danger)
+            formValido = false;
+          } else {
+            controle.setErrors(null);
+          }
+        }
+      });
+    }
+  }
+
+  // Valida também os campos fixos globais
+  if (this.formulario.get('codcli')?.invalid || this.formulario.get('atendente')?.invalid) {
+    this.formulario.get('codcli')?.markAsTouched();
+    this.formulario.get('atendente')?.markAsTouched();
+    formValido = false;
+  }
+
+  return formValido;
+}
+
 
 
 
