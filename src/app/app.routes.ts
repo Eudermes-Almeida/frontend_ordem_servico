@@ -16,6 +16,7 @@ import { PAGDETALHESComponent } from './PAGINAS/RELATORIOS_DETALHES/pag-detalhes
 import { PAGPARAMETROSComponent } from './PAGINAS/PARAMETROS/pag-parametros/pag-parametros.component';
 import { PAGLOGINEXTERNOComponent } from './PAGINAS/LOGIN_EXTERNO/pag-login-externo/pag-login-externo.component';
 import { PAGLOGINLISTAComponent } from './PAGINAS/LOGIN_LISTA/pag-login-lista/pag-login-lista.component';
+import { PaginaAnaliseFaturamentoComponent } from './PAGINAS/ANALISE_FATURAMENTO/pag-analise-faturamento/pagina-analise-faturamento.component';
 
 export const routes: Routes = [ 
     {path: '', component: HomeComponent},
@@ -32,6 +33,7 @@ export const routes: Routes = [
     { path: 'os/lote/imprime', component: PAGIMPRIMEOSLOTEComponent },
     { path: 'os/orcamento', component: PAGORCAMENTOComponent },
     { path: 'os/relatorio', component: PAGRELATORIOSComponent },
+    {path: 'os/relatorio/faturamento', component: PaginaAnaliseFaturamentoComponent},
     { path: 'os/relatorio/detalhes/:variavelEnviada/:dataInicio/:dataFim',component: PAGDETALHESComponent},
     { path: 'parametros',component: PAGPARAMETROSComponent},
     { path: 'login',component: PAGLOGINEXTERNOComponent},
