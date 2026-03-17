@@ -83,5 +83,11 @@ input, select {
         margin-bottom: 10px; /* Adiciona espaço inferior em telas pequenas */
     }
 
+    .coluna-laranja {
+  color: orange;
+  font-weight: bold; /* Opcional: para destacar mais no fundo escuro */
+}
+
+
 
 }
