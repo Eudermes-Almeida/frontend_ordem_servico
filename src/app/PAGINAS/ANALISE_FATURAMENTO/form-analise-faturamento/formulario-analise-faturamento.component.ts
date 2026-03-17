@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { OrdemservicoService } from '../../../servico/ordemservico.service';
+import { SomatorioOs } from '../../../modelo/SomatorioOs';
 
 
 @Component({
@@ -11,6 +13,11 @@ import { CommonModule } from '@angular/common';
 })
 export class FormularioAnaliseFaturamentoComponent {
 
+  constructor(
+        private servico: OrdemservicoService,
+  
+    ) {}
+
   meses: string[] = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro", "total","média mensal", "média OS"];
   mediaFaturamento: number[] = [55.956, 57.859, 53.694, 61.685, 43.253, 51.747, 59.802, 53.909, 48.544, 74.920, 66.593, 59.003, 686.970, 57.247, 358];
   ano2021: number[] = [45.263, 47.496, 55.264, 34.300, 38.566, 54.531, 55.912, 28.343, 44.365, 98.289, 50.336, 111.978, 664.643, 55.386, 375];
@@ -18,9 +25,43 @@ export class FormularioAnaliseFaturamentoComponent {
   ano2023: number[] = [55.682, 59.216, 61.577, 51.530, 52.849, 82.528, 72.223, 45.191, 35.707, 74.695, 105.647, 32.396, 729.241, 60.770, 369];
   ano2024: number[] = [60.110, 43.848, 42.610, 76.326, 26.357, 44.528, 70.983, 45.800, 46.551, 86.961, 42.645, 48.975, 635.694, 52.974, 333 ];
   ano2025: number[] = [77.402, 55.511, 33.995, 88.367, 52.593, 29.600, 45.783, 47.199, 43.841, 59.211, 72.279, 33.905, 639.686, 53.307, 328];
+  ano2026: number[] = [];
+  ano2027: number[] = [];
+  ano2028: number[] = [];
+
+  dataInicial: string ="01012026";
+  dataFinal: string = "31012026";
+  somatoriaOS: SomatorioOs;
 
 
+  buscaSomatoriaFaturamentoEntreDatas(){
 
+    console.log("chamou a somatoria")
+
+    this.servico.buscaSomatorioFaturamento(this.dataInicial, this.dataFinal).subscribe(
+
+        (data: SomatorioOs) => {
+          this.somatoriaOS = data; 
+          console.log('Valor do fechamento do periodo + quantidade de OS fechadas', this.somatoriaOS);
+          console.log (" Este foi o total fechado no período ", this.somatoriaOS.somatotaliq)
+          console.log (" Quantidade os fechadas no periodo ", this.somatoriaOS.qtOs)
+          
+        },
+        (error) => {
+          if (error.status === 404) {
+            
+            console.error("Este é o erro ", error)
+          } else {
+            console.error('Erro ao buscar clientes por cidade:', error);
+
+          }
+        }
+      );
+
+
+  }
+
+  
 
 }
 

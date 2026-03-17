@@ -178,9 +178,11 @@ buscaOsPorStatusRemoto(): Observable<any> {
   return this.http.get<any>(url);
 }
 
-
-
-
+/////usado na pagina analise de faturamento
+buscaSomatorioFaturamento(dataInicio: string, dataFim: string): Observable<any> {
+  const url = `${this.urlServidor}relatorio/somatoriaFaturamento?dataInicio=${dataInicio}&dataFim=${dataFim}`;
+  return this.http.get<any>(url);
+}
 
 /////Retorna a relação que será passada para a consulta de orçamento on line:
 getAprovacaoOnline(status: string, codcli: number): Observable<any> {
