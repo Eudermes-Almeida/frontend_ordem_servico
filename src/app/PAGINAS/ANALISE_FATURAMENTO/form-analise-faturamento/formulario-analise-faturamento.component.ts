@@ -78,44 +78,51 @@ buscaSomatoriaFaturamentoEntreDatas2025() {
   console.log("Iniciando busca de todos os meses de 2025...");
 
   this.ano2025 = [];
+  // Array auxiliar para armazenar as quantidades de cada mês
+  const quantidadesMensais: number[] = [];
 
   this.datas2025.forEach((periodo, index) => {
     this.servico.buscaSomatorioFaturamento(periodo.dataInicial, periodo.dataFinal).subscribe({
       next: (data: SomatorioOs) => {
+        // Armazena o valor financeiro e a quantidade nos respectivos índices
         this.ano2025[index] = data.somatotaliq;
-        
-        // Verifica se recebemos as 12 respostas (de 0 a 11)
-        const respostasRecebidas = this.ano2025.filter(valor => valor !== undefined).length;
+        quantidadesMensais[index] = data.qtOs;
+
+        const respostasRecebidas = this.ano2025.filter(v => v !== undefined).length;
 
         if (respostasRecebidas === 12) {
-          // 1. Pega apenas os valores dos meses (índices 0 a 11)
           const valoresMeses = this.ano2025.slice(0, 12);
 
-          // 2. Calcula o Total Anual
+          // 1. Total Anual (Índice 12)
           const totalAnual = valoresMeses.reduce((acc, curr) => acc + (curr || 0), 0);
           this.ano2025[12] = totalAnual;
 
-          // 3. Calcula a Média (apenas meses com valor > 0)
+          // 2. Média Mensal (Índice 13)
           const mesesComFaturamento = valoresMeses.filter(valor => valor > 0);
-          const quantidadeMesesValidos = mesesComFaturamento.length;
-
-          // Evita divisão por zero caso nenhum mês tenha faturamento
-          const mediaAnual = quantidadeMesesValidos > 0 
-            ? totalAnual / quantidadeMesesValidos 
+          this.ano2025[13] = mesesComFaturamento.length > 0 
+            ? totalAnual / mesesComFaturamento.length 
             : 0;
 
-          this.ano2025[13] = mediaAnual;
+          // 3. Média por Equipamento (Índice 14)
+          // Soma todas as quantidades de OS do ano
+          const totalEquipamentosAnual = quantidadesMensais.reduce((acc, curr) => acc + (curr || 0), 0);
+          
+          this.ano2025[14] = totalEquipamentosAnual > 0 
+            ? totalAnual / totalEquipamentosAnual 
+            : 0;
 
-          console.log(`Total: ${totalAnual} | Meses com valor: ${quantidadeMesesValidos} | Média: ${mediaAnual}`);
+          console.log(`Total Anual: ${totalAnual} | Equipamentos: ${totalEquipamentosAnual} | Média/Eq: ${this.ano2025[14]}`);
         }
       },
       error: (error) => {
         console.error(`Erro no mês ${index + 1}:`, error);
         this.ano2025[index] = 0;
+        quantidadesMensais[index] = 0;
       }
     });
   });
 }
+
 
 
 
