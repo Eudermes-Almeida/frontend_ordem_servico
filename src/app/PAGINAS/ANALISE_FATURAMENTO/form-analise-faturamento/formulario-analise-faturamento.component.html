@@ -1,37 +1,39 @@
-<p style="color: white;">formulario-analise-faturamento works!</p>
 
-<button (click)="buscaSomatoriaFaturamentoEntreDatas2025()">buscar somatorio</button>
 
 <div class="tabela-scroll">
 <table border="1" class="table table-dark table-hover">
   <thead>
     <tr>
-      <th>Mês</th>
-      <th>Média (últimos 5 anos)</th>
-      <th>2021</th>
-      <th>2022</th>
-      <th>2023</th>
-      <th>2024</th>
-      <th>2025</th>
-      <th>2026</th>
-      <th>2027</th>
-      <th>2028</th>
+      <th style="color: yellow;">Mês</th>
+      <th style="color: yellow;">Média (últimos 5 anos)</th>
+      <th style="color: yellow;">2021</th>
+      <th style="color: yellow;">2022</th>
+      <th style="color: yellow;">2023</th>
+      <th style="color: yellow;">2024</th>
+      <th style="color: yellow;">2025</th>
+      <th style="color: yellow;">2026</th>
+      <th style="color: yellow;">2027</th>
+      <th style="color: yellow;">2028</th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let mes of meses; let i = index">
-      <td>{{ mes | titlecase }}</td>
-      <td style="color: orange;">{{ mediaFaturamento[i] | number:'1.3-3' }}</td>
-      <td>{{ ano2021[i] | number:'1.3-3' }}</td>
-      <td>{{ ano2022[i] | number:'1.3-3' }}</td>
-      <td>{{ ano2023[i] | number:'1.3-3' }}</td>
-      <td>{{ ano2024[i] | number:'1.3-3' }}</td>
-      <td>{{ ano2025[i] | number:'1.3-3' }}</td>
-      <td>{{ ano2026[i] | number:'1.3-3' }}</td>
-      <td>{{ ano2027[i] | number:'1.3-3' }}</td>
-      <td>{{ ano2028[i] | number:'1.3-3' }}</td>
-    </tr>
-  </tbody>
+  <tr *ngFor="let mes of meses; let i = index">
+    <td>{{ mes | titlecase }}</td>
+    <!-- Média (Laranja) -->
+    <td style="color: orange;">{{ formatarParaTela(mediaFaturamento[i]) }}</td>
+    
+    <!-- Anos -->
+    <td>{{ formatarParaTela(ano2021[i]) }}</td>
+    <td>{{ formatarParaTela(ano2022[i]) }}</td>
+    <td>{{ formatarParaTela(ano2023[i]) }}</td>
+    <td>{{ formatarParaTela(ano2024[i]) }}</td>
+    <td>{{ formatarParaTela(ano2025[i]) }}</td>
+    <td>{{ formatarParaTela(ano2026[i]) }}</td>
+    <td>{{ formatarParaTela(ano2027[i]) }}</td>
+    <td>{{ formatarParaTela(ano2028[i]) }}</td>
+  </tr>
+</tbody>
+
 </table>
 </div>
 

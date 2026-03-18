@@ -20,7 +20,7 @@
 
 
 .tabela-scroll {
-    max-height: 300px; /* Ajuste a altura conforme necessário */
+    max-height: 600px; /* Ajuste a altura conforme necessário */
     overflow-y: auto;
     overflow-x: hidden; /* Oculta rolagem horizontal se não for necessária */
 }
