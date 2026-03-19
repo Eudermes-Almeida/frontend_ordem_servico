@@ -3,6 +3,20 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OrdemservicoService } from '../../../servico/ordemservico.service';
 import { SomatorioOs } from '../../../modelo/SomatorioOs';
+import {
+  Chart,
+  LineController,
+  LineElement,
+  PointElement,
+  LinearScale,
+  Title,
+  CategoryScale,
+  Tooltip,
+  Legend, // <--- Adicionado aqui
+  BarController,
+  BarElement
+} from 'chart.js';
+import { ViewChild, ElementRef } from '@angular/core';
 
 
 @Component({
@@ -14,10 +28,12 @@ import { SomatorioOs } from '../../../modelo/SomatorioOs';
 })
 export class FormularioAnaliseFaturamentoComponent {
 
+  @ViewChild('grafico1') elemento!: ElementRef<HTMLCanvasElement>;
+
   ngOnInit(): void {
     this.buscaSomatoriaFaturamentoEntreDatas2025();
     this.calculandoMeta();
-    }
+  }
 
 
   constructor(
@@ -28,7 +44,7 @@ export class FormularioAnaliseFaturamentoComponent {
   meses: string[] = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro", "total", "média mensal", "média OS"];
   mediaFaturamento: number[] = [55956, 57859, 53694, 61685, 43253, 51747, 59802, 53909, 48544, 74920, 66593, 59003, 686970, 57247, 358];
   meta: number[] = []
-  ano2021: number[] = [45263, 47496, 55264, 34300, 38566, 54531, 55912, 28343, 44365, 98289, 50336, 111978, 664643, 55386, 375];
+  ano2021: number[] = [45263, 47496, 55264, 34300, 38566, 54531, 55912, 28343, 44365, 98289, 50336, 60000];
   ano2022: number[] = [41324, 83226, 75028, 57903, 45902, 47551, 54111, 103016, 72256, 55444, 62061, 67765, 765587, 63798, 389];
   ano2023: number[] = [55682, 59216, 61577, 51530, 52849, 82528, 72223, 45191, 35707, 74695, 105647, 32396, 729241, 60770, 369];
   ano2024: number[] = [60110, 43848, 42610, 76326, 26357, 44528, 70983, 45800, 46551, 86961, 42645, 48975, 635694, 52974, 333];
@@ -302,57 +318,87 @@ export class FormularioAnaliseFaturamentoComponent {
   }
 
   // Esta função transforma o número em texto formatado para a tela
-formatarParaTela(valor: any): string {
-  if (valor === undefined || valor === null || isNaN(valor)) return '-';
+  formatarParaTela(valor: any): string {
+    if (valor === undefined || valor === null || isNaN(valor)) return '-';
+
+    // Usamos 'de-DE' para forçar o ponto como separador de milhar
+    // minimumFractionDigits: 0 remove as casas decimais
+    return Number(valor).toLocaleString('de-DE', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    });
+  }
+
+  calculandoMeta() {
+    this.meta = this.mediaFaturamento.map(valor => valor * this.fatorMeta)
+
+  }
+
+  aumentarFator() {
+    this.fatorMeta = this.fatorMeta + 0.01
+    this.calculandoMeta();
+  }
+
+  diminuirFator() {
+    this.fatorMeta = this.fatorMeta - 0.01
+    this.calculandoMeta();
+  }
+
+
+  ////////////////////////////////////////////////////////////////////////
+  //////////////////////GRÁFICOS////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+  graficoInstance1: Chart | null = null;
+
+grafico() {
+  // Criar labels automáticos (ou use um array de meses se preferir)
+  const labelsX = this.ano2021.map((_, index) => `Ponto ${index + 1}`);
+
+  Chart.register(LineController, LineElement, PointElement, LinearScale, Title, CategoryScale, Tooltip, Legend);
+
+  if (this.graficoInstance1) {
+    this.graficoInstance1.destroy();
+  }
+
+  const canvas = this.elemento.nativeElement as HTMLCanvasElement;
   
-  // Usamos 'de-DE' para forçar o ponto como separador de milhar
-  // minimumFractionDigits: 0 remove as casas decimais
-  return Number(valor).toLocaleString('de-DE', { 
-    minimumFractionDigits: 0, 
-    maximumFractionDigits: 0 
+  this.graficoInstance1 = new Chart(canvas, {
+    type: 'line',
+    data: {
+      labels: this.meses, // Agora os labels batem com a quantidade de dados
+      datasets: [
+        {
+          label: 'Faturamento 2021',
+          data: this.ano2021, // O seu array de números entra aqui!
+          borderColor: '#f3efe9',
+          backgroundColor: '#f7f4f0',
+          fill: false,
+          tension: 0.1 // Deixa a linha levemente curvada
+        }
+      ]
+    },
+    options: {
+      responsive: true, // Recomendo deixar true para teste inicial
+      maintainAspectRatio: false,
+      plugins: {
+        title: {
+          display: true,
+          text: "Análise de Faturamento",
+          color: '#f1f5f8'
+        }
+      }
+    }
   });
 }
 
-calculandoMeta(){
-this.meta = this.mediaFaturamento.map(valor => valor * this.fatorMeta)
-
-}
-
-aumentarFator(){
-this.fatorMeta = this.fatorMeta + 0.01
-this.calculandoMeta();
-}
-
-diminuirFator(){
-  this.fatorMeta = this.fatorMeta - 0.01
-  this.calculandoMeta();
-}
+ngAfterViewInit() {
+    // Um pequeno delay garante que o DOM está 100% pronto
+    setTimeout(() => {
+      this.grafico();
+    }, 500);
+  }
 
 
-
-
-
-
-  // buscaSomatoriaFaturamentoEntreDatas() {
-
-  //   const inicio = "01042025";
-  //   const fim = "30042025";
-
-
-  //   this.servico.buscaSomatorioFaturamento(inicio, fim).subscribe({
-  //     next: (data: SomatorioOs) => {
-  //       // Armazena o valor no índice correto para manter a ordem dos meses
-  //       const somatoria = data.somatotaliq;
-  //       const equipamentos = data.qtOs;
-
-  //       console.log("Esta é a somatória do mes ", somatoria);
-  //       console.log("Esta é a quantidade de equipamentos ", equipamentos);
-  //     },
-  //     error: (error) => {
-  //       console.error(error);
-
-  //     }
-  //   });
 
 }
 

@@ -44,3 +44,18 @@
 </table>
 </div>
 
+<!-- O segredo está em definir o tamanho no PAI do canvas -->
+<div class="container-grafico">
+  <canvas #grafico1></canvas>
+</div>
+
+<style>
+  .container-grafico {
+    width: 25%;         /* Apenas 25% da largura da página */
+    height: 800px;      /* Altura fixa para o eixo Y respirar */
+    min-width: 600px;   /* Evita que fique pequeno demais em telas menores */
+    margin-top: 20px;
+    position: relative; /* Necessário para o modo responsive: true */
+  }
+</style>
+
