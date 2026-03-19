@@ -16,6 +16,7 @@ export class FormularioAnaliseFaturamentoComponent {
 
   ngOnInit(): void {
     this.buscaSomatoriaFaturamentoEntreDatas2025();
+    this.calculandoMeta();
     }
 
 
@@ -26,6 +27,7 @@ export class FormularioAnaliseFaturamentoComponent {
 
   meses: string[] = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro", "total", "média mensal", "média OS"];
   mediaFaturamento: number[] = [55956, 57859, 53694, 61685, 43253, 51747, 59802, 53909, 48544, 74920, 66593, 59003, 686970, 57247, 358];
+  meta: number[] = []
   ano2021: number[] = [45263, 47496, 55264, 34300, 38566, 54531, 55912, 28343, 44365, 98289, 50336, 111978, 664643, 55386, 375];
   ano2022: number[] = [41324, 83226, 75028, 57903, 45902, 47551, 54111, 103016, 72256, 55444, 62061, 67765, 765587, 63798, 389];
   ano2023: number[] = [55682, 59216, 61577, 51530, 52849, 82528, 72223, 45191, 35707, 74695, 105647, 32396, 729241, 60770, 369];
@@ -37,6 +39,7 @@ export class FormularioAnaliseFaturamentoComponent {
 
 
   somatoriaOS: SomatorioOs;
+  fatorMeta: number = 1
 
   datas2025: DatasAnaliseFaturamento[] = [
     { dataInicial: "01012025", dataFinal: "31012025" }, // Janeiro
@@ -309,6 +312,23 @@ formatarParaTela(valor: any): string {
     maximumFractionDigits: 0 
   });
 }
+
+calculandoMeta(){
+this.meta = this.mediaFaturamento.map(valor => valor * this.fatorMeta)
+
+}
+
+aumentarFator(){
+this.fatorMeta = this.fatorMeta + 0.01
+this.calculandoMeta();
+}
+
+diminuirFator(){
+  this.fatorMeta = this.fatorMeta - 0.01
+  this.calculandoMeta();
+}
+
+
 
 
 

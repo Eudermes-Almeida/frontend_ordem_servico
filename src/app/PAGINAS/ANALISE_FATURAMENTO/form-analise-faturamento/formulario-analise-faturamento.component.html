@@ -1,4 +1,9 @@
-
+<div style="display: flex; align-items: center; gap: 15px;">
+  <h1 style="color: yellow; margin: 0; font-size: 1.5rem;">Fator Meta</h1>
+  <button class="btn btn-outline-warning" (click)="aumentarFator()">+</button>
+  <button class="btn btn-outline-danger" (click)="diminuirFator()">-</button>
+</div>
+<h1 style="color: yellow;">{{fatorMeta | number: '1.2-2'}} <span>%</span></h1>
 
 <div class="tabela-scroll">
 <table border="1" class="table table-dark table-hover">
@@ -6,6 +11,7 @@
     <tr>
       <th style="color: yellow;">Mês</th>
       <th style="color: yellow;">Média (últimos 5 anos)</th>
+      <th style="color: yellow;">Meta Mês Atual</th>
       <th style="color: yellow;">2021</th>
       <th style="color: yellow;">2022</th>
       <th style="color: yellow;">2023</th>
@@ -21,6 +27,7 @@
     <td>{{ mes | titlecase }}</td>
     <!-- Média (Laranja) -->
     <td style="color: orange;">{{ formatarParaTela(mediaFaturamento[i]) }}</td>
+    <td style="color: orange;">{{ formatarParaTela(meta[i]) }}</td>
     
     <!-- Anos -->
     <td>{{ formatarParaTela(ano2021[i]) }}</td>
