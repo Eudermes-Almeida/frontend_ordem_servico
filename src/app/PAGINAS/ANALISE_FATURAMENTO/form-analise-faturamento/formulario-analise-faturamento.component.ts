@@ -42,7 +42,7 @@ export class FormularioAnaliseFaturamentoComponent {
   ) { }
 
   meses: string[] = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro", "total", "média mensal", "média OS"];
-  mediaFaturamento: number[] = [55956, 57859, 53694, 61685, 43253, 51747, 59802, 53909, 48544, 74920, 66593, 59003, 686970, 57247, 358];
+  mediaFaturamento: number[] = [55956, 57859, 53694, 61685, 43253, 51747, 59802, 53909, 48544, 74920, 66593, 59003];
   meta: number[] = []
   ano2021: number[] = [45263, 47496, 55264, 34300, 38566, 54531, 55912, 28343, 44365, 98289, 50336, 60000];
   ano2022: number[] = [41324, 83226, 75028, 57903, 45902, 47551, 54111, 103016, 72256, 55444, 62061, 67765, 765587, 63798, 389];
@@ -56,6 +56,7 @@ export class FormularioAnaliseFaturamentoComponent {
 
   somatoriaOS: SomatorioOs;
   fatorMeta: number = 1
+  modoAnalitico: boolean = true
 
   datas2025: DatasAnaliseFaturamento[] = [
     { dataInicial: "01012025", dataFinal: "31012025" }, // Janeiro
@@ -337,11 +338,13 @@ export class FormularioAnaliseFaturamentoComponent {
   aumentarFator() {
     this.fatorMeta = this.fatorMeta + 0.01
     this.calculandoMeta();
+    this.funcModoGrafico()
   }
 
   diminuirFator() {
     this.fatorMeta = this.fatorMeta - 0.01
     this.calculandoMeta();
+    this.funcModoGrafico();
   }
 
 
@@ -362,33 +365,90 @@ grafico() {
 
   const canvas = this.elemento.nativeElement as HTMLCanvasElement;
   
-  this.graficoInstance1 = new Chart(canvas, {
-    type: 'line',
-    data: {
-      labels: this.meses, // Agora os labels batem com a quantidade de dados
-      datasets: [
-        {
-          label: 'Faturamento 2021',
-          data: this.ano2021, // O seu array de números entra aqui!
-          borderColor: '#f3efe9',
-          backgroundColor: '#f7f4f0',
-          fill: false,
-          tension: 0.1 // Deixa a linha levemente curvada
+ this.graficoInstance1 = new Chart(canvas, {
+  type: 'line',
+  data: {
+    labels: this.meses,
+    datasets: [{
+      label: 'Faturamento 2021',
+      data: this.ano2021,
+      borderColor: '#f39810',
+      backgroundColor: '#df850f',
+      fill: false,
+      tension: 0.1,
+      // --- AJUSTE DOS PONTOS ---
+      pointRadius: 8,           // Tamanho do ponto parado
+      pointHoverRadius: 12,      // Tamanho do ponto quando o mouse passa em cima
+      pointBackgroundColor: '#f39810', // Cor interna do ponto
+      pointBorderWidth: 2        // Espessura da borda do ponto
+      // -------------------------
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      tooltip: {
+        enabled: true,
+        backgroundColor: 'rgba(0, 0, 0, 0.9)',
+        titleColor: '#fff',
+        titleFont: {
+          size: 20,
+          weight: 'bold'
+        },
+        bodyColor: '#f39810',
+        bodyFont: {
+          size: 20
+        },
+        padding: 15,
+        cornerRadius: 8,
+        displayColors: false,
+        callbacks: {
+          label: function(context) {
+            let label = context.dataset.label || '';
+            if (label) { label += ': '; }
+            if (context.parsed.y !== null) {
+              label += new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(context.parsed.y);
+            }
+            return label;
+          }
         }
-      ]
+      },
+      title: {
+        display: true,
+        text: "Análise de Faturamento",
+        color: '#f1f5f8',
+        font: { size: 25 }
+      },
+      legend: {
+        labels: {
+          color: '#f1f5f8',
+          font: { size: 20 }
+        }
+      }
     },
-    options: {
-      responsive: true, // Recomendo deixar true para teste inicial
-      maintainAspectRatio: false,
-      plugins: {
-        title: {
+    scales: {
+      x: {
+        grid: { display: false },
+        ticks: {
+          color: '#f1f5f8',
+          font: { size: 14 }
+        }
+      },
+      y: {
+        grid: {
           display: true,
-          text: "Análise de Faturamento",
-          color: '#f1f5f8'
+          color: 'rgba(241, 245, 248, 0.2)',
+          lineWidth: 1
+        },
+        ticks: {
+          color: '#f1f5f8',
+          font: { size: 20 }
         }
       }
     }
-  });
+  }
+});
 }
 
 ngAfterViewInit() {
@@ -398,6 +458,18 @@ ngAfterViewInit() {
     }, 500);
   }
 
+  funcModoAnalitico(){
+this.modoAnalitico = true;
+  }
+
+  funcModoGrafico() {
+  this.modoAnalitico = false;
+  
+  // O setTimeout de 0 ou 50ms é o segredo para o *ngIf terminar de renderizar
+  setTimeout(() => {
+    this.grafico(); // Chama a função que cria o Chart.js
+  }, 50);
+}
 
 
 }

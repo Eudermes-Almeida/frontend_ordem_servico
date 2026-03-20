@@ -5,7 +5,18 @@
 </div>
 <h1 style="color: yellow;">{{fatorMeta | number: '1.2-2'}} <span>%</span></h1>
 
-<div class="tabela-scroll">
+<div class="btn-group mb-3" role="group" aria-label="Seleção de Visualização">
+  <!-- Botão 1: Analítica (Ativo por padrão) -->
+  <input type="radio" class="btn-check" name="btnview" id="btnAnalitica" autocomplete="off" checked (click)="funcModoAnalitico()">
+  <label class="btn btn-outline-warning" for="btnAnalitica">Analítica</label>
+
+  <!-- Botão 2: Gráfico -->
+  <input type="radio" class="btn-check" name="btnview" id="btnGrafico" autocomplete="off" (click)="funcModoGrafico()">
+  <label class="btn btn-outline-warning" for="btnGrafico">Gráfico</label>
+</div>
+
+
+<div *ngIf="modoAnalitico" class="tabela-scroll">
 <table border="1" class="table table-dark table-hover">
   <thead>
     <tr>
@@ -45,13 +56,13 @@
 </div>
 
 <!-- O segredo está em definir o tamanho no PAI do canvas -->
-<div class="container-grafico">
+<div *ngIf="!modoAnalitico" class="container-grafico">
   <canvas #grafico1></canvas>
 </div>
 
 <style>
   .container-grafico {
-    width: 25%;         /* Apenas 25% da largura da página */
+    width: 80%;         /* Apenas 25% da largura da página */
     height: 800px;      /* Altura fixa para o eixo Y respirar */
     min-width: 600px;   /* Evita que fique pequeno demais em telas menores */
     margin-top: 20px;
