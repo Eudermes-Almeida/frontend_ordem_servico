@@ -432,7 +432,7 @@ grafico() {
         grid: { display: false },
         ticks: {
           color: '#f1f5f8',
-          font: { size: 14 }
+          font: { size: 20 }
         }
       },
       y: {

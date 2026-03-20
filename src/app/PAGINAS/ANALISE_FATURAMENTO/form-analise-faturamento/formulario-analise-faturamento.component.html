@@ -1,19 +1,27 @@
-<div style="display: flex; align-items: center; gap: 15px;">
-  <h1 style="color: yellow; margin: 0; font-size: 1.5rem;">Fator Meta</h1>
+<div class="d-flex align-items-center w-100" style="gap: 15px;">
+  <!-- Bloco da Esquerda -->
+  <p style="color: yellow; margin: 0; font-size: 1.5rem;">Fator Meta</p>
   <button class="btn btn-outline-warning" (click)="aumentarFator()">+</button>
   <button class="btn btn-outline-danger" (click)="diminuirFator()">-</button>
-</div>
-<h1 style="color: yellow;">{{fatorMeta | number: '1.2-2'}} <span>%</span></h1>
+  <p style="color: yellow; margin: 0; font-size: 40px;">
+  {{fatorMeta | number: '1.2-2'}} <span>%</span>
+</p>
 
-<div class="btn-group mb-3" role="group" aria-label="Seleção de Visualização">
-  <!-- Botão 1: Analítica (Ativo por padrão) -->
-  <input type="radio" class="btn-check" name="btnview" id="btnAnalitica" autocomplete="off" checked (click)="funcModoAnalitico()">
-  <label class="btn btn-outline-warning" for="btnAnalitica">Analítica</label>
 
-  <!-- Botão 2: Gráfico -->
-  <input type="radio" class="btn-check" name="btnview" id="btnGrafico" autocomplete="off" (click)="funcModoGrafico()">
-  <label class="btn btn-outline-warning" for="btnGrafico">Gráfico</label>
+  <!-- Espaçador Flex que empurra o próximo item para o fim -->
+  <div class="flex-grow-1"></div>
+
+  <!-- Bloco da Direita -->
+  <div class="btn-group mb-0 me-3" role="group" aria-label="Seleção de Visualização" style="margin-right: 20px;">
+    <input type="radio" class="btn-check" name="btnview" id="btnAnalitica" autocomplete="off" checked (click)="funcModoAnalitico()">
+    <label class="btn btn-outline-warning" for="btnAnalitica">Analítico</label>
+
+    <input type="radio" class="btn-check" name="btnview" id="btnGrafico" autocomplete="off" (click)="funcModoGrafico()">
+    <label class="btn btn-outline-warning" for="btnGrafico">Gráfico</label>
 </div>
+
+</div>
+
 
 
 <div *ngIf="modoAnalitico" class="tabela-scroll">
@@ -63,7 +71,7 @@
 <style>
   .container-grafico {
     width: 80%;         /* Apenas 25% da largura da página */
-    height: 800px;      /* Altura fixa para o eixo Y respirar */
+    height: 600px;      /* Altura fixa para o eixo Y respirar */
     min-width: 600px;   /* Evita que fique pequeno demais em telas menores */
     margin-top: 20px;
     position: relative; /* Necessário para o modo responsive: true */
