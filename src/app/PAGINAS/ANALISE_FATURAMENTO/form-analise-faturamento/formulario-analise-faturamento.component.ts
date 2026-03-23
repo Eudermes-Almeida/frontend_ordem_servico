@@ -43,9 +43,9 @@ export class FormularioAnaliseFaturamentoComponent {
 
   meses: string[] = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro", "total", "média mensal", "média OS"];
   mesesGrafico: string[] = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
-  mediaFaturamento: number[] = [55956, 57859, 53694, 61685, 43253, 51747, 59802, 53909, 48544, 74920, 66593, 59003];
+  mediaFaturamento: number[] = [55956, 57859, 53694, 61685, 43253, 51747, 59802, 53909, 48544, 74920, 66593, 59003, 686208, 57184, 360 ];
   meta: number[] = []
-  ano2021: number[] = [45263, 47496, 55264, 34300, 38566, 54531, 55912, 28343, 44365, 98289, 50336, 60000];
+  ano2021: number[] = [45263, 47496, 55264, 34300, 38566, 54531, 55912, 28343, 44365, 98289, 50336, 111978, 664643, 55386, 375];
   ano2022: number[] = [41324, 83226, 75028, 57903, 45902, 47551, 54111, 103016, 72256, 55444, 62061, 67765, 765587, 63798, 389];
   ano2023: number[] = [55682, 59216, 61577, 51530, 52849, 82528, 72223, 45191, 35707, 74695, 105647, 32396, 729241, 60770, 369];
   ano2024: number[] = [60110, 43848, 42610, 76326, 26357, 44528, 70983, 45800, 46551, 86961, 42645, 48975, 635694, 52974, 333];
@@ -53,6 +53,16 @@ export class FormularioAnaliseFaturamentoComponent {
   ano2025: number[] = [];
   ano2027: number[] = [];
   ano2028: number[] = [];
+
+  metaGrafico: number [] = [];
+  ano2021Grafico: number[] = [];
+  ano2022Grafico: number[] = [];
+  ano2023Grafico: number[] = [];
+  ano2024Grafico: number[] = [];
+  ano2026Grafico: number[] = [];
+  ano2025Grafico: number[] = [];
+  ano2027Grafico: number[] = [];
+  ano2028Grafico: number[] = [];
 
 
   somatoriaOS: SomatorioOs;
@@ -119,6 +129,15 @@ export class FormularioAnaliseFaturamentoComponent {
     { dataInicial: "01112028", dataFinal: "30112028" }, // Novembro
     { dataInicial: "01122028", dataFinal: "31122028" }  // Dezembro
   ];
+
+  criandoArraysGraficos() {
+  this.ano2021Grafico = this.ano2021.slice(0, 12);
+  this.ano2022Grafico = this.ano2022.slice(0, 12);
+  this.ano2023Grafico = this.ano2023.slice(0, 12);
+  this.ano2024Grafico = this.ano2024.slice(0, 12);
+  this.metaGrafico = this.meta.slice(0, 12);
+}
+
 
   buscaSomatoriaFaturamentoEntreDatas2025() {
     console.log("Iniciando busca de todos os meses de 2025...");
@@ -339,13 +358,19 @@ export class FormularioAnaliseFaturamentoComponent {
   aumentarFator() {
     this.fatorMeta = this.fatorMeta + 0.01
     this.calculandoMeta();
-    this.funcModoGrafico()
+    if(!this.modoAnalitico){
+      this.criandoArraysGraficos();
+      this.funcModoGrafico();}
   }
 
   diminuirFator() {
     this.fatorMeta = this.fatorMeta - 0.01
     this.calculandoMeta();
-    this.funcModoGrafico();
+
+    if(!this.modoAnalitico){
+      this.criandoArraysGraficos();
+      this.funcModoGrafico();}
+    
   }
 
 
@@ -354,10 +379,9 @@ export class FormularioAnaliseFaturamentoComponent {
   //////////////////////////////////////////////////////////////////////////////
   graficoInstance1: Chart | null = null;
 
-grafico() {
-  // Criar labels automáticos (ou use um array de meses se preferir)
-  const labelsX = this.ano2021.map((_, index) => `Ponto ${index + 1}`);
 
+
+grafico() {
   Chart.register(LineController, LineElement, PointElement, LinearScale, Title, CategoryScale, Tooltip, Legend);
 
   if (this.graficoInstance1) {
@@ -366,95 +390,96 @@ grafico() {
 
   const canvas = this.elemento.nativeElement as HTMLCanvasElement;
   
- this.graficoInstance1 = new Chart(canvas, {
-  type: 'line',
-  data: {
-    labels: this.mesesGrafico,
-    datasets: [{
-      label: 'Meta',
-      data: this.meta,
-      borderColor: '#f39810',
-      backgroundColor: '#df850f',
-      fill: false,
-      tension: 0.1,
-      // --- AJUSTE DOS PONTOS ---
-      pointRadius: 8,           // Tamanho do ponto parado
-      pointHoverRadius: 12,      // Tamanho do ponto quando o mouse passa em cima
-      pointBackgroundColor: '#f39810', // Cor interna do ponto
-      pointBorderWidth: 2        // Espessura da borda do ponto
-      // -------------------------
-    }]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      tooltip: {
-        enabled: true,
-        backgroundColor: 'rgba(0, 0, 0, 0.9)',
-        titleColor: '#fff',
-        titleFont: {
-          size: 20,
-          weight: 'bold'
+  this.graficoInstance1 = new Chart(canvas, {
+    type: 'line',
+    data: {
+      labels: this.mesesGrafico,
+      datasets: [
+
+        {
+          label: '2021',
+          data: this.ano2021Grafico,
+          borderColor: '#f39810', // Laranja
+          backgroundColor: '#df850f',
+          fill: false,
+          tension: 0.1,
+          pointRadius: 8,
+          pointHoverRadius: 12,
+          pointBackgroundColor: '#f39810',
+          pointBorderWidth: 2
         },
-        bodyColor: '#f39810',
-        bodyFont: {
-          size: 20
-        },
-        padding: 15,
-        cornerRadius: 8,
-        displayColors: false,
-        callbacks: {
-          label: function(context) {
-            let label = context.dataset.label || '';
-            if (label) { label += ': '; }
-            if (context.parsed.y !== null) {
-              label += new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(context.parsed.y);
+        {
+          label: 'Meta',
+          data: this.metaGrafico, // SEGUNDO ARRAY AQUI
+          borderColor: '#28a745', // Verde
+          backgroundColor: '#28a745',
+          fill: false,
+          tension: 0.1,
+          pointRadius: 8,
+          pointHoverRadius: 12,
+          pointBackgroundColor: '#28a745',
+          pointBorderWidth: 2
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        tooltip: {
+          enabled: true,
+          backgroundColor: 'rgba(0, 0, 0, 0.9)',
+          titleColor: '#fff',
+          titleFont: { size: 20, weight: 'bold' },
+          // Removi a cor fixa do bodyColor para ele herdar a cor do dataset
+          bodyFont: { size: 20 },
+          padding: 15,
+          cornerRadius: 8,
+          displayColors: true, // Ativei para você ver qual cor pertence a qual dado no tooltip
+          callbacks: {
+            label: function(context) {
+              let label = context.dataset.label || '';
+              if (label) { label += ': '; }
+              if (context.parsed.y !== null) {
+                label += new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(context.parsed.y);
+              }
+              return label;
             }
-            return label;
+          }
+        },
+        title: {
+          display: true,
+          text: "Análise de Faturamento vs Meta",
+          color: '#f1f5f8',
+          font: { size: 25 }
+        },
+        legend: {
+          display: true, // Garante que a legenda apareça para diferenciar as linhas
+          labels: {
+            color: '#f1f5f8',
+            font: { size: 20 }
           }
         }
       },
-      title: {
-        display: true,
-        text: "Análise de Faturamento",
-        color: '#f1f5f8',
-        font: { size: 25 }
-      },
-      legend: {
-        labels: {
-          color: '#f1f5f8',
-          font: { size: 20 }
-        }
-      }
-    },
-    scales: {
-      x: {
-        grid: { display: false },
-        ticks: {
-          color: '#f1f5f8',
-          font: { size: 20 }
-        }
-      },
-      y: {
-        grid: {
-          display: true,
-          color: 'rgba(241, 245, 248, 0.2)',
-          lineWidth: 1
+      scales: {
+        x: {
+          grid: { display: false },
+          ticks: { color: '#f1f5f8', font: { size: 20 } }
         },
-        ticks: {
-          color: '#f1f5f8',
-          font: { size: 20 }
+        y: {
+          grid: { display: true, color: 'rgba(241, 245, 248, 0.2)', lineWidth: 1 },
+          ticks: { color: '#f1f5f8', font: { size: 20 } }
         }
       }
     }
-  }
-});
+  });
 }
+
 
 ngAfterViewInit() {
     // Um pequeno delay garante que o DOM está 100% pronto
     setTimeout(() => {
+      this. criandoArraysGraficos();
       this.grafico();
     }, 500);
   }
