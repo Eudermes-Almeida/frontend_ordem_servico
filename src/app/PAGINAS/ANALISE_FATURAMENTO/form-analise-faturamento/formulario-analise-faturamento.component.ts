@@ -42,6 +42,7 @@ export class FormularioAnaliseFaturamentoComponent {
   ) { }
 
   meses: string[] = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro", "total", "média mensal", "média OS"];
+  mesesGrafico: string[] = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
   mediaFaturamento: number[] = [55956, 57859, 53694, 61685, 43253, 51747, 59802, 53909, 48544, 74920, 66593, 59003];
   meta: number[] = []
   ano2021: number[] = [45263, 47496, 55264, 34300, 38566, 54531, 55912, 28343, 44365, 98289, 50336, 60000];
@@ -368,10 +369,10 @@ grafico() {
  this.graficoInstance1 = new Chart(canvas, {
   type: 'line',
   data: {
-    labels: this.meses,
+    labels: this.mesesGrafico,
     datasets: [{
-      label: 'Faturamento 2021',
-      data: this.ano2021,
+      label: 'Meta',
+      data: this.meta,
       borderColor: '#f39810',
       backgroundColor: '#df850f',
       fill: false,
