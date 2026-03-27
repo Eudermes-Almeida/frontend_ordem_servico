@@ -135,7 +135,12 @@ export class FormularioAnaliseFaturamentoComponent {
   this.ano2022Grafico = this.ano2022.slice(0, 12);
   this.ano2023Grafico = this.ano2023.slice(0, 12);
   this.ano2024Grafico = this.ano2024.slice(0, 12);
+  this.ano2025Grafico = this.ano2025.slice(0, 12);
+  this.ano2026Grafico = this.ano2026.slice(0, 12);
+  this.ano2027Grafico = this.ano2027.slice(0, 12);
+  this.ano2028Grafico = this.ano2028.slice(0, 12);
   this.metaGrafico = this.meta.slice(0, 12);
+  console.log(" esta criando array graficos")
 }
 
 
@@ -175,7 +180,7 @@ export class FormularioAnaliseFaturamentoComponent {
             this.ano2025[14] = totalEquipamentosAnual > 0
               ? totalAnual / totalEquipamentosAnual
               : 0;
-
+            console.log(" Este é o valor de ano205 no final do metodo ", this.ano2025)
             console.log(`Total Anual: ${totalAnual} | Equipamentos: ${totalEquipamentosAnual} | Média/Eq: ${this.ano2025[14]}`);
           }
         },
@@ -382,6 +387,11 @@ export class FormularioAnaliseFaturamentoComponent {
 
 
 grafico() {
+
+  console.log(" array 2025 dentro do grafico ", this.ano2025);
+  this.criandoArraysGraficos();
+  console.log(" array 2025 dentro do grafico******************************************************************* ", this.ano2025Grafico);
+
   Chart.register(LineController, LineElement, PointElement, LinearScale, Title, CategoryScale, Tooltip, Legend);
 
   if (this.graficoInstance1) {
@@ -397,6 +407,18 @@ grafico() {
       datasets: [
 
         {
+          label: 'Meta',
+          data: this.metaGrafico, // SEGUNDO ARRAY AQUI
+          borderColor: '#28a745', // Verde
+          backgroundColor: '#28a745',
+          fill: false,
+          tension: 0.1,
+          pointRadius: 8,
+          pointHoverRadius: 12,
+          pointBackgroundColor: '#28a745',
+          pointBorderWidth: 2
+        },
+         {
           label: '2021',
           data: this.ano2021Grafico,
           borderColor: '#f39810', // Laranja
@@ -409,17 +431,90 @@ grafico() {
           pointBorderWidth: 2
         },
         {
-          label: 'Meta',
-          data: this.metaGrafico, // SEGUNDO ARRAY AQUI
-          borderColor: '#28a745', // Verde
-          backgroundColor: '#28a745',
+          label: '2022',
+          data: this.ano2022Grafico,
+          borderColor: '#e010f3', // Laranja
+          backgroundColor: '#e010f3',
           fill: false,
           tension: 0.1,
           pointRadius: 8,
           pointHoverRadius: 12,
-          pointBackgroundColor: '#28a745',
+          pointBackgroundColor: '#e010f3',
           pointBorderWidth: 2
-        }
+        },
+         {
+          label: '2023',
+          data: this.ano2023Grafico,
+          borderColor: '#0df8f8', // Laranja
+          backgroundColor: '#0df8f8',
+          fill: false,
+          tension: 0.1,
+          pointRadius: 8,
+          pointHoverRadius: 12,
+          pointBackgroundColor: '#0df8f8',
+          pointBorderWidth: 2
+        },
+        {
+          label: '2024',
+          data: this.ano2024Grafico,
+          borderColor: '#eff30c', // Laranja
+          backgroundColor: '#eff30c',
+          fill: false,
+          tension: 0.1,
+          pointRadius: 8,
+          pointHoverRadius: 12,
+          pointBackgroundColor: '#eff30c',
+          pointBorderWidth: 2
+        },
+         {
+          label: '2025',
+          data: this.ano2025Grafico,
+          borderColor: '#f30c0c', // Laranja
+          backgroundColor: '#f30c0c',
+          fill: false,
+          tension: 0.1,
+          pointRadius: 8,
+          pointHoverRadius: 12,
+          pointBackgroundColor: '#f30c0c',
+          pointBorderWidth: 2
+        },
+        {
+          label: '2026',
+          data: this.ano2026Grafico,
+          borderColor: '#0cf332', // Laranja
+          backgroundColor: '#0cf332',
+          fill: false,
+          tension: 0.1,
+          pointRadius: 8,
+          pointHoverRadius: 12,
+          pointBackgroundColor: '#0cf332',
+          pointBorderWidth: 2
+        },
+        {
+          label: '2027',
+          data: this.ano2027Grafico,
+          borderColor: '#360cf3', // Laranja
+          backgroundColor: '#360cf3',
+          fill: false,
+          tension: 0.1,
+          pointRadius: 8,
+          pointHoverRadius: 12,
+          pointBackgroundColor: '#360cf3',
+          pointBorderWidth: 2
+        },
+        {
+          label: '2028',
+          data: this.ano2027Grafico,
+          borderColor: '#f34d0c', // Laranja
+          backgroundColor: '#f34d0c',
+          fill: false,
+          tension: 0.1,
+          pointRadius: 8,
+          pointHoverRadius: 12,
+          pointBackgroundColor: '#f34d0c',
+          pointBorderWidth: 2
+        },
+        
       ]
     },
     options: {
@@ -479,9 +574,11 @@ grafico() {
 ngAfterViewInit() {
     // Um pequeno delay garante que o DOM está 100% pronto
     setTimeout(() => {
+      console.log(" este é o array 2025 " , this.ano2025)
+      console.log(" este é o array 2025Grafico " , this.ano2025Grafico)
       this. criandoArraysGraficos();
       this.grafico();
-    }, 500);
+    }, 1000);
   }
 
   funcModoAnalitico(){

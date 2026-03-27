@@ -13,6 +13,8 @@ import { from, toArray } from 'rxjs';
 import { mergeMap } from 'rxjs'; // Troque o concatMap por mergeMap
 import { NgZone } from '@angular/core';
 import { Router } from '@angular/router';
+import { of } from 'rxjs'; // Importe o 'of'
+import { catchError, finalize } from 'rxjs/operators';
 
 
 
@@ -523,19 +525,40 @@ onOspeloSerialKey(event: KeyboardEvent): void {
 //////ATUALIZA ORDEM DE SERVIÇO - MUDA STATUS E DATA PARA "FECHADA" //////////////////////////////
 
 processarOSSelecionadas() {
-  this.spinnerLoading = true
+
+  
+  console.log('Iniciando processamento de:', this.osClicadasCheckbox.length);
+  this.spinnerLoading = true;
+
   from(this.osClicadasCheckbox).pipe(
-    mergeMap(osItem => { // Dispara as 10 requisições em paralelo
+    mergeMap(osItem => {
       const dadosFormatados = this.geraObjetoOs(osItem);
-      osItem.status = "FECHADA";
-      osItem.fechamento = dadosFormatados.fechamento; 
-      return this.servico.atualizarOrdemServico(osItem.os, dadosFormatados);
-    }),
-    toArray()
+      
+      // O segredo está em tratar o erro AQUI DENTRO
+      return this.servico.atualizarOrdemServico(osItem.os, dadosFormatados).pipe(
+        catchError(error => {
+          console.error(`Erro na OS ${osItem.os}:`, error);
+          return of(null); // Retorna nulo mas NÃO mata o fluxo das outras 29
+        })
+      );
+    }, 2), // Reduzi para 2 para dar mais estabilidade ao seu banco local
+    toArray(), // Aguarda as 30 respostas (ou nulos)
+    finalize(() => {
+      // O finalize é disparado APENAS quando o fluxo fecha de vez
+      console.log('Fluxo RxJS finalizado totalmente.');
+      
+    })
   ).subscribe({
-    next: () => {
-      // Pequeno delay para o Angular terminar de renderizar o HTML novo
-      setTimeout(() => this.gerarPDF(), 50);
+    next: (resultados) => {
+      const processadosComSucesso = resultados.filter(r => r !== null).length;
+      console.log(`Sucesso em ${processadosComSucesso} de ${resultados.length}`);
+      
+      // Só gera o PDF quando o array de resultados estiver cheio
+      if (processadosComSucesso > 0) {
+        console.log(" Está dentro do processsados com sucesso ", this.osClicadasCheckbox.length)
+    
+        setTimeout(() => this.gerarPDF(), 200);
+      }
     }
   });
 }
@@ -591,6 +614,7 @@ geraObjetoOs(osItem: any) {
 }
 
 gerarPDF = () => {
+
   this.escondeTabela = false;
   const element = document.getElementById('pdf-content');
 
@@ -634,9 +658,8 @@ gerarPDF = () => {
     });
 
     this.spinnerLoading = false;
+
 }
-
-
 
 limpar(event?: MouseEvent) {
   if (event) {
