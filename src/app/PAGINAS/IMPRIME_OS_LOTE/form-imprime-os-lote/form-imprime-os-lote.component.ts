@@ -334,11 +334,13 @@ onNumOsKey(event: KeyboardEvent): void {
 
   // Busca ORDEM SERVIÇO por id
   getOsPorId(id: number): void {
+    this.spinnerLoading = true;
     this.servico.getOsPorId(id).subscribe(
       (data: Os) => {
         this.objetoOs = [data]; // Coloca o cliente dentro de um array
         console.log('O.S. obtida:', this.objetoOs);
         this.exibirTabela2 = true;
+        this.spinnerLoading = false;
       },
       (error) => {
         if (error.status === 404) {
@@ -375,11 +377,13 @@ onCodCliInput(event: Event): void {
 
   // Busca ORDENS DE SERVIÇO PELO CODIGO DO CLIENTE
   getOsPorCodCli(codcli: number): void {
+    this.spinnerLoading = true;
     this.servico.getOsPorCodCli(codcli).subscribe(
       (data: Os[]) => { // Espera um array de os
         this.objetoOs = data; // Armazena todos os clientes retornados
         console.log('Os obtidas:', this.objetoOs);
         this.exibirTabela2 = true;
+         this.spinnerLoading = false;
       },
       (error) => {
         if (error.status === 404) {
@@ -408,11 +412,13 @@ onCodCliInput(event: Event): void {
   
   // Busca ORDENS DE SERVIÇO PELA DATA DE ENTRADA
   getOsPorDataEntrada(dataEntrada: string): void {
+    this.spinnerLoading = true;
     this.servico.getOsPorDadaEntrada(dataEntrada).subscribe(
       (data: Os[]) => { // Espera um array de os
         this.objetoOs = data; // Armazena todos os clientes retornados
         console.log('Os obtidas por data de entrada:', this.objetoOs);
         this.exibirTabela2 = true;
+        this.spinnerLoading = false;
       },
       (error) => {
         if (error.status === 404) {
@@ -438,11 +444,13 @@ onUltimasOsKey(event: KeyboardEvent): void {
 
   // Busca ORDENS DE SERVIÇO PELA DATA DE ENTRADA
   buscaUltimasOrdensServico(limite: number): void {
+    this.spinnerLoading = true;
     this.servico.getUltimasOrdensServicos(limite).subscribe(
       (data: Os[]) => { // Espera um array de os
         this.objetoOs = data; // Armazena todos os clientes retornados
         console.log('Ultimas os delimitadas:', this.objetoOs);
         this.exibirTabela2 = true;
+        this.spinnerLoading = false;
       },
       (error) => {
         if (error.status === 404) {
@@ -471,6 +479,7 @@ onOspeloSerialKey(event: KeyboardEvent): void {
   // Busca ORDENS DE SERVIÇO PELA DATA DE ENTRADA
   buscaOsPeloSerial(serial: string): void {
 
+    this.spinnerLoading = true;
     console.log(`serial dentro do metodo ${serial}`)
 
     this.servico.getOsPeloSerial(serial).subscribe(
@@ -480,6 +489,7 @@ onOspeloSerialKey(event: KeyboardEvent): void {
         console.log('Busca Os pelo serial', this.objetoOs);
         this.exibirSerial = true
         this.exibirTabela2 = true;
+        this.spinnerLoading = false;
       },
       (error) => {
         if (error.status === 404) {
