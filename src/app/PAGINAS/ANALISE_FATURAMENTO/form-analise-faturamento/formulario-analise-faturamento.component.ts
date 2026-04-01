@@ -409,19 +409,19 @@ grafico() {
         {
           label: 'Meta',
           data: this.metaGrafico, // SEGUNDO ARRAY AQUI
-          borderColor: '#28a745', // Verde
-          backgroundColor: '#28a745',
+          borderColor: '#ffffff', 
+          backgroundColor: '#ffffff',
           fill: false,
           tension: 0.1,
           pointRadius: 8,
           pointHoverRadius: 12,
-          pointBackgroundColor: '#28a745',
+          pointBackgroundColor: '#ffffff',
           pointBorderWidth: 2
         },
          {
           label: '2021',
           data: this.ano2021Grafico,
-          borderColor: '#f39810', // Laranja
+          borderColor: '#f39810',
           backgroundColor: '#df850f',
           fill: false,
           tension: 0.1,
@@ -433,7 +433,7 @@ grafico() {
         {
           label: '2022',
           data: this.ano2022Grafico,
-          borderColor: '#e010f3', // Laranja
+          borderColor: '#e010f3', 
           backgroundColor: '#e010f3',
           fill: false,
           tension: 0.1,
@@ -445,7 +445,7 @@ grafico() {
          {
           label: '2023',
           data: this.ano2023Grafico,
-          borderColor: '#0df8f8', // Laranja
+          borderColor: '#0df8f8', 
           backgroundColor: '#0df8f8',
           fill: false,
           tension: 0.1,
@@ -457,7 +457,7 @@ grafico() {
         {
           label: '2024',
           data: this.ano2024Grafico,
-          borderColor: '#eff30c', // Laranja
+          borderColor: '#eff30c', 
           backgroundColor: '#eff30c',
           fill: false,
           tension: 0.1,
@@ -469,7 +469,7 @@ grafico() {
          {
           label: '2025',
           data: this.ano2025Grafico,
-          borderColor: '#f30c0c', // Laranja
+          borderColor: '#f30c0c', 
           backgroundColor: '#f30c0c',
           fill: false,
           tension: 0.1,
@@ -481,7 +481,7 @@ grafico() {
         {
           label: '2026',
           data: this.ano2026Grafico,
-          borderColor: '#0cf332', // Laranja
+          borderColor: '#0cf332',
           backgroundColor: '#0cf332',
           fill: false,
           tension: 0.1,
@@ -493,7 +493,7 @@ grafico() {
         {
           label: '2027',
           data: this.ano2027Grafico,
-          borderColor: '#360cf3', // Laranja
+          borderColor: '#360cf3', 
           backgroundColor: '#360cf3',
           fill: false,
           tension: 0.1,
@@ -505,7 +505,7 @@ grafico() {
         {
           label: '2028',
           data: this.ano2027Grafico,
-          borderColor: '#f34d0c', // Laranja
+          borderColor: '#f34d0c', 
           backgroundColor: '#f34d0c',
           fill: false,
           tension: 0.1,
