@@ -38,6 +38,7 @@ export class FORMCONSULTAOSComponent {
   exibirBotaoSalvar: boolean = false;
   exibirBotaoSair: boolean = false;
   exibirSerial: boolean = false
+  spinnerLoading: boolean = false;
 
   // CONFIGURA FORMULÁRIO
   formulario = new FormGroup({
@@ -372,11 +373,13 @@ onCodCliInput(event: Event): void {
 
   // Busca ORDENS DE SERVIÇO PELO CODIGO DO CLIENTE
   getOsPorCodCli(codcli: number): void {
+    this.spinnerLoading = true;
     this.servico.getOsPorCodCli(codcli).subscribe(
       (data: Os[]) => { // Espera um array de os
         this.objetoOs = data; // Armazena todos os clientes retornados
         console.log('Os obtidas:', this.objetoOs);
         this.exibirTabela2 = true;
+        this.spinnerLoading = false;
       },
       (error) => {
         if (error.status === 404) {
