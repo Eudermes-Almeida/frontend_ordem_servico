@@ -12,5 +12,5 @@ import { RouterOutlet } from '@angular/router';
   styleUrls: ['./app.component.css'] // Correção aplicada
 })
 export class AppComponent {
-  title = 'api';
+  title = 'So Monitores & Nobreaks';
 }
