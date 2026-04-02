@@ -662,6 +662,15 @@ atualizarOS() {
     }
 
   this.geraObjetoOs();
+
+  ////testa se é venda de bateria  e se tarefa1 é venda de bateria
+
+  if(this.os.equipamento === 'BATERIA' && this.os.tarefa1 !== 'VENDA BATERIA'  && this.os.valorassistencia === "0.00"){
+    alert(" Você está vendendo bateria e não setou Tarefa 1 como venda Bateria")
+    return
+  }
+
+
   this.exibeMensagemErroValidacao = false;
   console.log(" obejeto que será enviado para service" + this.os)
   console.log("este é o objeto que será enviao para o service: ", JSON.stringify(this.os, null, 2));
