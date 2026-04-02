@@ -3156,6 +3156,19 @@ validarFormularioDinamico(): boolean {
   return formValido;
 }
 
+temCamposObrigatoriosInvalidos(): boolean {
+  let obrigatorioInvalido = false;
+
+  Object.keys(this.formulario.controls).forEach((campo) => {
+    const controle = this.formulario.get(campo);
+    // Se o campo tem o validador 'required' e está inválido
+    if (controle?.hasValidator(Validators.required) && controle.invalid) {
+      obrigatorioInvalido = true;
+    }
+  });
+
+  return obrigatorioInvalido;
+}
 
 
 

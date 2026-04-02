@@ -666,7 +666,7 @@ atualizarOS() {
   ////testa se é venda de bateria  e se tarefa1 é venda de bateria
 
   if(this.os.equipamento === 'BATERIA' && this.os.tarefa1 !== 'VENDA BATERIA'  && this.os.valorassistencia === "0.00"){
-    alert(" Você está vendendo bateria e não setou Tarefa 1 como venda Bateria")
+    alert(" Você está vendendo bateria avulsa e não setou Tarefa 1 como venda Bateria!")
     return
   }
 

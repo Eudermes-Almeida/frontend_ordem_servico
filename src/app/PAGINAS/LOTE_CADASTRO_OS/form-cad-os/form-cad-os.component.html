@@ -6,10 +6,10 @@
 
 
 
-    <div class="alert alert-warning alert-dismissible fade show" role="alert" *ngIf="exibirAlertValidacao">
-      Existem campos obrigatórios do formulário que não foram preenchidos!
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
+
+
+    
+
 
     <div class="alert alert-success alert-dismissible fade show" role="alert" *ngIf="textoOscadastradaSucesso">
       Ordem de Serviço Cadastrastrada com sucesso!!
@@ -40,34 +40,30 @@
 
         </div>
 
-       <!-- Campo Fantasia -->
-<div class="form-group col-3">
-  <label for="nomefantasia">Nome Fantasia:</label>
-  <input type="text" 
-         formControlName="fantasia" 
-         id="nomefantasia" 
-         class="form-control"
-         [ngClass]="{'is-invalid': formulario.get('fantasia')?.invalid && formulario.get('fantasia')?.touched}">
-  
-  <!-- Removi a dependência do 'touched' apenas para teste, ou use markAllAsTouched no TS -->
-  <div *ngIf="formulario.get('fantasia')?.hasError('required') && formulario.get('fantasia')?.touched" class="text-danger">
-    Nome Fantasia do Cliente é obrigatório.
-  </div>
-</div>
+        <!-- Campo Fantasia -->
+        <div class="form-group col-3">
+          <label for="nomefantasia">Nome Fantasia:</label>
+          <input type="text" formControlName="fantasia" id="nomefantasia" class="form-control"
+            [ngClass]="{'is-invalid': formulario.get('fantasia')?.invalid && formulario.get('fantasia')?.touched}">
 
-<!-- Campo Razão Social -->
-<div class="form-group col-3">
-  <label for="razaosocial">Razao Social:</label>
-  <input type="text" 
-         formControlName="rzsocial" 
-         id="razaosocial" 
-         class="form-control"
-         [ngClass]="{'is-invalid': formulario.get('rzsocial')?.invalid && formulario.get('rzsocial')?.touched}">
-    
-  <div *ngIf="formulario.get('rzsocial')?.hasError('required') && formulario.get('rzsocial')?.touched" class="text-danger">
-    Razão Social do Cliente é obrigatório.
-  </div>
-</div>
+          <!-- Removi a dependência do 'touched' apenas para teste, ou use markAllAsTouched no TS -->
+          <div *ngIf="formulario.get('fantasia')?.hasError('required') && formulario.get('fantasia')?.touched"
+            class="text-danger">
+            Nome Fantasia do Cliente é obrigatório.
+          </div>
+        </div>
+
+        <!-- Campo Razão Social -->
+        <div class="form-group col-3">
+          <label for="razaosocial">Razao Social:</label>
+          <input type="text" formControlName="rzsocial" id="razaosocial" class="form-control"
+            [ngClass]="{'is-invalid': formulario.get('rzsocial')?.invalid && formulario.get('rzsocial')?.touched}">
+
+          <div *ngIf="formulario.get('rzsocial')?.hasError('required') && formulario.get('rzsocial')?.touched"
+            class="text-danger">
+            Razão Social do Cliente é obrigatório.
+          </div>
+        </div>
 
 
 

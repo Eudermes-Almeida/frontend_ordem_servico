@@ -1067,32 +1067,34 @@ const dataFormatada = `${ano}-${mes}-${dia}T${horas}:${minutos}:${segundos}`;
   }
 
   enviarOs(): void {
-    // Valida apenas campos obrigatórios
-    let hasInvalidFields = false;
-
-    Object.keys(this.formulario.controls).forEach((campo) => {
-        const controle = this.formulario.get(campo);
-        // Verifique apenas os controles com o validador 'required'
-        if (controle?.hasValidator(Validators.required) && controle.invalid) {
-            controle.markAsTouched();
-            hasInvalidFields = true;
-        }
-    });
+    // 1. Verifica se existem campos obrigatórios inválidos usando a nova função
+    const hasInvalidFields = this.temCamposObrigatoriosInvalidos();
 
     if (hasInvalidFields) {
-      this.exibirAlertValidacao = true;
-        return; // Interrompe a execução se houver campos obrigatórios inválidos
+        this.exibirAlertValidacao = true;
+        
+        // Marca todos os campos como 'touched' para que o CSS de erro apareça nos inputs
+        Object.keys(this.formulario.controls).forEach(campo => {
+            const controle = this.formulario.get(campo);
+            if (controle?.hasValidator(Validators.required) && controle.invalid) {
+                controle.markAsTouched();
+            }
+        });
+        
+        return; // Interrompe a execução
     }
 
+    // 2. Se chegou aqui, os campos obrigatórios estão preenchidos
+    this.exibirAlertValidacao = false; // Garante que o alert suma ao salvar
     this.geraObjetoOs();
     this.exibirBotaoSalvar = false;
     this.exibirBotaoImprimir = true;
 
-    // Chama o serviço para cadastrar a OS somente se os campos obrigatórios forem válidos
+    // 3. Chama o serviço para cadastrar a OS
     this.servico.cadastrarOs(this.os).subscribe({
         next: (response) => {
             console.log('Ordem de Serviço cadastrada com sucesso:', response);
-            this.textoOscadastradaSucesso = true
+            this.textoOscadastradaSucesso = true;
         },
         error: (error) => {
             console.error('Erro ao cadastrar Ordem de Serviço:', error);
@@ -1209,5 +1211,28 @@ escreveNosImputsParaImprimirQualquerOs(objetoOs: any): void {
       });
 
       this.exibirBotaoImprimir = true;
+}
+
+temCamposObrigatoriosInvalidos(): boolean {
+  let obrigatorioInvalido = false;
+
+  // Percorre apenas os controles do formulário
+  Object.keys(this.formulario.controls).forEach((campo) => {
+    const controle = this.formulario.get(campo);
+    
+    // Verifica se o campo é obrigatório (Validators.required) e se está inválido
+    if (controle?.hasValidator(Validators.required) && controle.invalid) {
+      obrigatorioInvalido = true;
+    }
+  });
+
+  // SE NÃO HOUVER CAMPOS INVÁLIDOS:
+  // Resetamos a variável para que o alert não volte a aparecer 
+  // sozinho se o usuário apagar algo depois.
+  if (!obrigatorioInvalido) {
+    this.exibirAlertValidacao = false;
+  }
+
+  return obrigatorioInvalido;
 }
 }
