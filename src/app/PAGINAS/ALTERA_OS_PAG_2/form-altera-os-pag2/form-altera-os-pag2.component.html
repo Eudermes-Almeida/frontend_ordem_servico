@@ -5,11 +5,13 @@
   
   
         <!--<p class="text-secondary" style="text-align: center; font-size: larger;">Escolha o Cliente:</p>-->
-        <div class="alert alert-warning alert-dismissible fade show" role="alert" *ngIf="exibirAlertOsSalva">
+        <div class="alert alert-success alert-dismissible fade show" role="alert" *ngIf="exibirAlertOsSalva">
           A ordem de serviço <strong>{{os.os}}</strong> foi salva com sucesso!
           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-        <div class="alert alert-warning alert-dismissible fade show" role="alert" *ngIf="exibirAlertErroValidacao">
+
+
+        <div class="alert alert-warning alert-dismissible fade show" role="alert" *ngIf="formulario.invalid">
           Existe algum campo obrigatório sem preenchimento.
           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
