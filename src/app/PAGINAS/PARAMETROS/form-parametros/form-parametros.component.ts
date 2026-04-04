@@ -66,9 +66,9 @@ onIdKey(event: Event): void {
   const input = inputElement.value;
 
   // Verifica se o input tem 3 caracteres ou se o evento foi gerado pelo Tab
-  if (input.length === 3 || (event instanceof KeyboardEvent && event.key === 'Tab')) {
+ // if (input.length === 3 || (event instanceof KeyboardEvent && event.key === 'Tab')) {
     this.id = parseInt(input, 10); // Converte o valor para número
-  }
+ // }
 }
 
 // Escuta o input INSERIR PARAMETRO
