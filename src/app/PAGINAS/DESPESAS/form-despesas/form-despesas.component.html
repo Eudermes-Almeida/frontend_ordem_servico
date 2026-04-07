@@ -34,5 +34,29 @@
   <button type="button" class="btn btn-primary" (click)="cadastrarDespesasAvulsas()">
     Cadastrar Despesas Avulsas
   </button>
-
 </div>
+
+<!--TABELA DADOS DO INICIO MES-->
+
+<table class="table table-dark table-hover" *ngIf="dadosInicioMes">
+        <thead>
+          <tr>
+            <th>Código</th>
+            <th>Descrição</th>
+            <th>Categoria</th>
+            <th>Vencimento</th>
+            <th>Valor</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let dados of dadosInicioMes">
+            <td>{{ dados.id }}</td>
+            <td>{{ dados.descricao }}</td>
+            <td>{{ dados.categoria }}</td>
+            <td>{{ dados.vencimento }}</td>
+            <td>{{ dados.valor }}</td>
+            <td>{{ dados.status }}</td>
+          </tr>
+        </tbody>
+      </table>
