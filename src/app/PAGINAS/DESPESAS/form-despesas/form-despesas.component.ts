@@ -32,8 +32,11 @@ export class FormDespesasComponent {
 
   dataInicial: string = "";
   dataFinal: string = "";
+  dataInicialIntervalo: string;
+  dataFinalIntervalo: string
   dataVencimento: string = "";
   dadosInicioMes: Despesa[] = [];
+  dadosEntreIntervalo: Despesa[] = [];
   categoriaSelecionada: string = "";
   statusSelecionado: string = "";
   formularioDespesaAvulsa!: FormGroup;
@@ -102,6 +105,7 @@ cadastrarDespesasAvulsas(){
     const ano = date.year;
     
     this.dataInicial = `${dia}/${mes}/${ano}`;
+    this.dataInicialIntervalo = `${ano}-${mes}-${dia}`; 
     console.log('Data salva como string:', this.dataInicial);
   }
 
@@ -112,6 +116,7 @@ cadastrarDespesasAvulsas(){
     const ano = date.year;
     
     this.dataFinal = `${dia}/${mes}/${ano}`;
+    this.dataFinalIntervalo = `${ano}-${mes}-${dia}`; 
     console.log('Data salva como string:', this.dataFinal);
   }
 
@@ -188,6 +193,19 @@ const listaParaSalvar: Despesa[] = this.dadosInicioMes.map((item: Despesa): Desp
       alert("Erro ao salvar despesas: " + (error.error || "Erro desconhecido"));
     }
   });
+}
+
+consultarDespesasNoPeriodo(){
+this.despesaService?.buscaDespesasEntreDatas(this.dataInicialIntervalo, this.dataFinalIntervalo).subscribe(
+    (dados: Despesa[]) => {
+      
+      // 2. Mapear os dados alterando apenas o vencimento
+      this.dadosEntreIntervalo = dados
+
+      console.log("Dados com datas atualizadas: ", this.dadosEntreIntervalo);
+    }
+  );
+
 }
 
 }

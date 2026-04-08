@@ -17,8 +17,10 @@ export class DespesaService {
   urlInicioMes: string = this.urlServidor + 'despesa/iniciomes'
 
   ////URL PARA SALVAR TODOS OS DADOS INCIO MES DE UMA SÓ VEZ:
-
   urlSalvarTodoInicioMes: string = this.urlServidor + 'despesa/lote'
+
+  ////URL PARA BUSCAR DESPESAS ENTRE UM INTERVALO DE DATAS/////
+  urlBuscaDespesasEntreDatas: string = this.urlServidor + 'vencimento-intervalo?inicio=2000-01-01&fim=2026-04-30'
 
 
   //////BUSCA OS PARÂMETROS DO INICIO DO MES:
@@ -34,6 +36,16 @@ export class DespesaService {
     responseType: 'text' 
   });
 }
+
+/////BUSCA DESPESAS EM UM INTERVALO DE DATAS:
+buscaDespesasEntreDatas(dataInicio: string, dataFim: string): Observable<any> {
+  // CORRETO: Sem aspas internas e usando ${} para a variável do servidor
+  const url = `${this.urlServidor}despesa/vencimento-intervalo?inicio=${dataInicio}&fim=${dataFim}`;
+  
+  console.log("URL Final:", url);
+  return this.http.get<any>(url);
+}
+
 
 
 
