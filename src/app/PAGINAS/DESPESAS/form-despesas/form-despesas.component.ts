@@ -3,9 +3,10 @@ import { DespesaService } from './../../../servico/despesa.service';
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ReactiveFormsModule, FormsModule} from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { CommonModule, UpperCasePipe } from '@angular/common';
 import { NgbDatepickerModule, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { Despesa } from '../../../modelo/Despesa';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 
 
@@ -18,16 +19,71 @@ import { Despesa } from '../../../modelo/Despesa';
 })
 export class FormDespesasComponent {
 
+  ngOnInit() {
+    this.configuraFormulário();
+  }
+
   constructor(private despesaService: DespesaService){}
 
   // ADICIONE ESTA LINHA AQUI:
   model: NgbDateStruct | undefined; 
   model2: NgbDateStruct | undefined; 
+  model3: NgbDateStruct | undefined; 
 
   dataInicial: string = "";
   dataFinal: string = "";
-  dadosInicioMes: any[] = [];
-  categoriaSelecionada: string = ""
+  dataVencimento: string = "";
+  dadosInicioMes: Despesa[] = [];
+  categoriaSelecionada: string = "";
+  statusSelecionado: string = "";
+  formularioDespesaAvulsa!: FormGroup;
+  novaDespesa: Despesa = null; 
+
+configuraFormulário(){
+this.formularioDespesaAvulsa = new FormGroup({
+    descricao:new FormControl('', Validators.required),
+    categoria:new FormControl('', Validators.required),
+    vencimento:new FormControl('', Validators.required),
+    valor:new FormControl('', Validators.required),
+    status:new FormControl('', Validators.required)
+     });
+}
+
+
+adicionaNovaDespesa() {
+  // 1. Validação básica
+  if (this.formularioDespesaAvulsa.invalid) {
+    alert("Por favor, preencha todos os campos.");
+    return;
+  }
+
+  // 2. Tratamento da Data (Objeto -> String YYYY-MM-DD)
+  const dt = this.formularioDespesaAvulsa.value.vencimento;
+  const dataFormatada = `${dt.year}-${dt.month.toString().padStart(2, '0')}-${dt.day.toString().padStart(2, '0')}`;
+
+  // 3. Criação do objeto respeitando o modelo Despesa
+  this.novaDespesa = {
+    descricao: this.formularioDespesaAvulsa.value.descricao?.toUpperCase(),
+    categoria: this.formularioDespesaAvulsa.value.categoria,
+    vencimento: dataFormatada, // Agora como string
+    valor: this.formularioDespesaAvulsa.value.valor,
+    status: this.formularioDespesaAvulsa.value.status,
+    iniciomes: "NAO"
+  };
+
+  // 4. Adiciona ao array (usando push)
+  this.dadosInicioMes.push(this.novaDespesa);
+
+  console.log("Item adicionado à lista. Total de itens:", this.dadosInicioMes.length);
+
+  // 5. Opcional: Limpar o formulário após adicionar
+  this.formularioDespesaAvulsa.reset({
+    categoria: '',
+    status: 'A PAGAR'
+  });
+}
+
+
  
 iniciarMes(){
   console.log(" Inicia Mes")
@@ -58,6 +114,17 @@ cadastrarDespesasAvulsas(){
     this.dataFinal = `${dia}/${mes}/${ano}`;
     console.log('Data salva como string:', this.dataFinal);
   }
+
+  onDateVencimento(date: NgbDateStruct) {
+    // Formato Brasileiro: DD/MM/AAAA
+    const dia = date.day.toString().padStart(2, '0');
+    const mes = date.month.toString().padStart(2, '0');
+    const ano = date.year;
+    
+    this.dataVencimento = `${dia}/${mes}/${ano}`;
+    console.log('Data salva como string:', this.dataVencimento);
+  }
+
 
   buscarInicioMes(): void {
   this.despesaService?.getInicioMes().subscribe(
@@ -97,14 +164,15 @@ enviaIncioMesCompleto() {
 
   
   // 3. TRATAMENTO DOS DADOS ANTES DE ENVIAR
-  // Usamos o .map para criar uma nova lista baseada na original
-  const listaParaSalvar = this.dadosInicioMes.map(item => {
-    return {
-      ...item,           // Copia todas as propriedades originais
-      id: undefined,     // Remove o ID (ou define como undefined para o banco ignorar)
-      iniciomes: "NAO"   // Altera o parâmetro para "NAO"
-    };
-  });
+  // Forçando o tipo Despesa no retorno do map
+const listaParaSalvar: Despesa[] = this.dadosInicioMes.map((item: Despesa): Despesa => {
+  return {
+    ...item,
+    id: undefined,   // Agora o TS aceita pois o modelo Despesa permite undefined
+    iniciomes: "NAO"
+  };
+});
+
 
   // 4. Chamada ao service enviando a lista tratada
   this.despesaService.salvarDespesasEmLote(listaParaSalvar).subscribe({
@@ -122,12 +190,6 @@ enviaIncioMesCompleto() {
   });
 }
 
-
-// ESCUTA O SELECT VENDA
-onCategoria(event: Event): void {
-  this.categoriaSelecionada = (event.target as HTMLSelectElement).value;
-  console.log(this.categoriaSelecionada); 
-}
 }
 
 

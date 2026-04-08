@@ -29,9 +29,12 @@ export class DespesaService {
   ////PERSISTE TODOS OS DADOS INICIO MES, DE UMA SÓ VEZ:
   // Altere a URL para o caminho correto do seu recurso de despesas
 
-  salvarDespesasEmLote(listaDespesas: Despesa[]): Observable<any> {
-    return this.http.post<any>(this.urlSalvarTodoInicioMes, listaDespesas);
-  }
+  salvarDespesasEmLote(listaDespesas: Despesa[]): Observable<string> {
+  return this.http.post(this.urlSalvarTodoInicioMes, listaDespesas, { 
+    responseType: 'text' 
+  });
+}
+
 
 
 

@@ -1,5 +1,5 @@
 export class Despesa{
-    id?: number
+    id?: number | undefined;
     descricao: string;
     categoria: string;
     vencimento: string;
