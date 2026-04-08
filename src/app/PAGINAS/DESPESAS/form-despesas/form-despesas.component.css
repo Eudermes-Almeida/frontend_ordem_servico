@@ -115,3 +115,11 @@
         margin-left: 0;
     }
 }
+
+.form-container-orange {
+  border: 2px solid orange; /* Define a borda laranja */
+  border-radius: 10px;      /* Arredonda os cantos */
+  padding: 20px;            /* Espaço interno para o conteúdo não colar na borda */
+  margin: 20px;         /* Espaço externo superior */
+  background-color: rgba(255, 165, 0, 0.05); /* Opcional: um fundo laranja bem clarinho */
+}

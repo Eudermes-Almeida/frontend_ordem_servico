@@ -27,6 +27,7 @@ export class FormDespesasComponent {
   dataInicial: string = "";
   dataFinal: string = "";
   dadosInicioMes: any[] = [];
+  categoriaSelecionada: string = ""
  
 iniciarMes(){
   console.log(" Inicia Mes")
@@ -122,6 +123,11 @@ enviaIncioMesCompleto() {
 }
 
 
+// ESCUTA O SELECT VENDA
+onCategoria(event: Event): void {
+  this.categoriaSelecionada = (event.target as HTMLSelectElement).value;
+  console.log(this.categoriaSelecionada); 
+}
 }
 
 

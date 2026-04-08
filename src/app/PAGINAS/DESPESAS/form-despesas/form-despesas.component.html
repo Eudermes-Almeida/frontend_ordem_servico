@@ -10,7 +10,8 @@
   <div class="d-flex gap-2">
     <div class="input-group" style="max-width: 250px;">
       <span class="input-group-text">Início</span>
-      <input class="form-control" placeholder="aaaa-mm-dd" name="dp" [(ngModel)]="model" ngbDatepicker #d1="ngbDatepicker" (dateSelect)="onDateInicial($event)" />
+      <input class="form-control" placeholder="aaaa-mm-dd" name="dp" [(ngModel)]="model" ngbDatepicker
+        #d1="ngbDatepicker" (dateSelect)="onDateInicial($event)" />
       <button class="btn btn-outline-primary" (click)="d1.toggle()" type="button">
         <i class="bi bi-calendar3"></i>
       </button>
@@ -18,13 +19,14 @@
 
     <div class="input-group" style="max-width: 250px;">
       <span class="input-group-text">Fim</span>
-      <input class="form-control" placeholder="aaaa-mm-dd" name="dp2" [(ngModel)]="model2" ngbDatepicker #d2="ngbDatepicker" (dateSelect)="onDateFinal($event)" />
+      <input class="form-control" placeholder="aaaa-mm-dd" name="dp2" [(ngModel)]="model2" ngbDatepicker
+        #d2="ngbDatepicker" (dateSelect)="onDateFinal($event)" />
       <button class="btn btn-outline-primary" (click)="d2.toggle()" type="button">
         <i class="bi bi-calendar3"></i>
       </button>
     </div>
   </div>
-  
+
   <!-- Botão 1 -->
   <button type="button" class="btn btn-primary" (click)="buscarInicioMes()">
     Iniciar Mês
@@ -35,45 +37,113 @@
     Cadastrar Despesas Avulsas
   </button>
 
-   <!-- Botão 2 -->
+  <!-- Botão 2 -->
   <button type="button" class="btn btn-primary" (click)="enviaIncioMesCompleto()">
     Salvar
   </button>
 </div>
 
-<!--TABELA DADOS DO INICIO MES-->
+<!--------------------------FORMULÁRIO CADASTRAR DESPESA AVULSA--------------------------->
+<form class="form-container-orange">
+  <!-- Título -->
+  <div class="text-center mb-4">
+    <h3 style="color: orange; margin-bottom: 0;">DESPESA AVULSA:</h3>
+  </div>
 
-<div *ngIf="dadosInicioMes">
-<table class="table table-dark table-hover align-middle">
-  <thead>
-    <tr>
-      <th>Código</th>
-      <th>Descrição</th>
-      <th>Categoria</th>
-      <th>Vencimento</th>
-      <th style="width: 150px;">Valor</th> <!-- Definir largura ajuda no layout -->
-      <th>Status</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let dados of dadosInicioMes">
-      <td>{{ dados.id }}</td>
-      <td>{{ dados.descricao }}</td>
-      <td>{{ dados.categoria }}</td>
-      <td>{{ dados.vencimento | date: 'dd/MM/yyyy' }}</td>
-      
-      <!-- Input para edição do valor -->
-      <td>
-        <input 
-          type="text" 
-          class="form-control form-control-sm text-end" 
-          [(ngModel)]="dados.valor"
-          placeholder="0,00"
-        />
-      </td>
+  <!-- Container Principal -->
+  <div class="d-flex align-items-end justify-content-center gap-2 flex-wrap">
+    
+    <!-- DESCRIÇÃO -->
+    <div class="d-flex flex-column" style="flex: 2; min-width: 200px;">
+      <label class="form-label fw-bold small text-light">Descrição</label>
+      <input type="text" class="form-control" placeholder="Ex: Internet" />
+    </div>
 
-      <td>{{ dados.status }}</td>
-    </tr>
-  </tbody>
-</table>
+    <!-- CATEGORIA -->
+    <div class="d-flex flex-column" style="flex: 1; min-width: 150px;">
+      <label class="form-label fw-bold small text-light">Categoria</label>
+      <select class="form-select" id="categoria" name="categoria">
+        <option value="" disabled selected>Selecione...</option>
+        <option>ADMINISTRATIVA</option>
+        <option>ALUGUEL</option>
+        <option>BANCÁRIA</option>
+        <option>CASA</option>
+        <option>IGREJA</option>
+        <option>IMPOSTO</option>
+        <option>INSUMOS</option>
+        <option>SALÁRIO</option>
+        <option>VEÍCULO</option>
+      </select>
+    </div>
+
+    <!-- VENCIMENTO -->
+    <div class="d-flex flex-column">
+      <label class="form-label fw-bold small text-light">Vencimento</label>
+      <div class="input-group" style="width: 200px;">
+        <input class="form-control" placeholder="aaaa-mm-dd" name="dp" [(ngModel)]="model" ngbDatepicker #d1="ngbDatepicker" />
+        <button class="btn btn-outline-primary" (click)="d1.toggle()" type="button">
+          <i class="bi bi-calendar3"></i>
+        </button>
       </div>
+    </div>
+
+    <!-- VALOR -->
+    <div class="d-flex flex-column" style="width: 130px;">
+      <label class="form-label fw-bold small text-light">Valor</label>
+      <input type="text" class="form-control text-end" placeholder="0,00" />
+    </div>
+
+    <!-- STATUS -->
+    <div class="d-flex flex-column" style="width: 150px;">
+      <label class="form-label fw-bold small text-light">Status</label>
+      <select class="form-select" id="status" name="status">
+        <option>A PAGAR</option>
+        <option>PAGO</option>
+      </select>
+    </div>
+
+    <!-- BOTÃO ADICIONAR -->
+    <div class="d-flex flex-column">
+      <label class="form-label">&nbsp;</label> <!-- Label vazio para alinhar o botão -->
+      <button type="button" class="btn btn-success px-4">
+        <i class="bi bi-plus-lg"></i> Salvar
+      </button>
+    </div>
+
+  </div>
+</form>
+
+
+
+<!---------------------------TABELA DADOS DO INICIO MES--------------------->
+
+<div class="form-container-orange" *ngIf="dadosInicioMes">
+  <table class="table table-dark table-hover align-middle">
+    <thead>
+      <tr>
+        <th>Código</th>
+        <th>Descrição</th>
+        <th>Categoria</th>
+        <th>Vencimento</th>
+        <th style="width: 150px;">Valor</th> <!-- Definir largura ajuda no layout -->
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let dados of dadosInicioMes">
+        <td>{{ dados.id }}</td>
+        <td>{{ dados.descricao }}</td>
+        <td>{{ dados.categoria }}</td>
+        <td>{{ dados.vencimento | date: 'dd/MM/yyyy' }}</td>
+
+        <!-- Input para edição do valor -->
+        <td>
+          <input type="text" class="form-control form-control-sm text-end" [(ngModel)]="dados.valor"
+            placeholder="0,00" />
+        </td>
+
+        <td>{{ dados.status }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
