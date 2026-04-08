@@ -59,13 +59,69 @@ cadastrarDespesasAvulsas(){
   }
 
   buscarInicioMes(): void {
-      this.despesaService?.getInicioMes().subscribe(
-        (dados: Despesa[]) => {
-          this.dadosInicioMes = dados;
-          console.log(" Estes são os dados do inicio mês ", this.dadosInicioMes)
-  },   
-      );
+  this.despesaService?.getInicioMes().subscribe(
+    (dados: Despesa[]) => {
+      
+      // 1. Extrair mês e ano da string 'dataInicial' (formato DD/MM/YYYY)
+      const partesData = this.dataInicial.split('/');
+      const mesSelecionado = partesData[1]; // MM
+      const anoSelecionado = partesData[2]; // YYYY
+
+      // 2. Mapear os dados alterando apenas o vencimento
+      this.dadosInicioMes = dados.map(item => {
+        // O vencimento original vem como "YYYY-MM-DD"
+        // Extraímos apenas o dia (os últimos 2 caracteres)
+        const diaOriginal = item.vencimento.split('-')[2];
+
+        // Montamos a nova data mantendo o padrão que o Angular DatePipe entende (YYYY-MM-DD)
+        const novoVencimento = `${anoSelecionado}-${mesSelecionado}-${diaOriginal}`;
+
+        return {
+          ...item,
+          vencimento: novoVencimento
+        };
+      });
+
+      console.log("Dados com datas atualizadas: ", this.dadosInicioMes);
     }
+  );
+}
+
+enviaIncioMesCompleto() {
+  // 1. Validação de lista vazia
+  if (!this.dadosInicioMes || this.dadosInicioMes.length === 0) {
+    alert("Não há dados para salvar.");
+    return;
+  }
+
+  
+  // 3. TRATAMENTO DOS DADOS ANTES DE ENVIAR
+  // Usamos o .map para criar uma nova lista baseada na original
+  const listaParaSalvar = this.dadosInicioMes.map(item => {
+    return {
+      ...item,           // Copia todas as propriedades originais
+      id: undefined,     // Remove o ID (ou define como undefined para o banco ignorar)
+      iniciomes: "NAO"   // Altera o parâmetro para "NAO"
+    };
+  });
+
+  // 4. Chamada ao service enviando a lista tratada
+  this.despesaService.salvarDespesasEmLote(listaParaSalvar).subscribe({
+    next: (response) => {
+      console.log('Lote salvo com sucesso:', response);
+      alert("Todas as despesas foram registradas com sucesso!");
+      
+      // Opcional: Limpar a variável após o sucesso
+      this.dadosInicioMes = []; 
+    },
+    error: (error) => {
+      console.error('Erro ao salvar lote:', error);
+      alert("Erro ao salvar despesas: " + (error.error || "Erro desconhecido"));
+    }
+  });
+}
+
+
 }
 
 
