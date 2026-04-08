@@ -38,25 +38,37 @@
 
 <!--TABELA DADOS DO INICIO MES-->
 
-<table class="table table-dark table-hover" *ngIf="dadosInicioMes">
-        <thead>
-          <tr>
-            <th>Código</th>
-            <th>Descrição</th>
-            <th>Categoria</th>
-            <th>Vencimento</th>
-            <th>Valor</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let dados of dadosInicioMes">
-            <td>{{ dados.id }}</td>
-            <td>{{ dados.descricao }}</td>
-            <td>{{ dados.categoria }}</td>
-            <td>{{ dados.vencimento }}</td>
-            <td>{{ dados.valor }}</td>
-            <td>{{ dados.status }}</td>
-          </tr>
-        </tbody>
-      </table>
+<div *ngIf="dadosInicioMes">
+<table class="table table-dark table-hover align-middle">
+  <thead>
+    <tr>
+      <th>Código</th>
+      <th>Descrição</th>
+      <th>Categoria</th>
+      <th>Vencimento</th>
+      <th style="width: 150px;">Valor</th> <!-- Definir largura ajuda no layout -->
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let dados of dadosInicioMes">
+      <td>{{ dados.id }}</td>
+      <td>{{ dados.descricao }}</td>
+      <td>{{ dados.categoria }}</td>
+      <td>{{ dados.vencimento | date: 'dd/MM/yyyy' }}</td>
+      
+      <!-- Input para edição do valor -->
+      <td>
+        <input 
+          type="text" 
+          class="form-control form-control-sm text-end" 
+          [(ngModel)]="dados.valor"
+          placeholder="0,00"
+        />
+      </td>
+
+      <td>{{ dados.status }}</td>
+    </tr>
+  </tbody>
+</table>
+      </div>
