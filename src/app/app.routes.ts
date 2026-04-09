@@ -18,6 +18,7 @@ import { PAGLOGINEXTERNOComponent } from './PAGINAS/LOGIN_EXTERNO/pag-login-exte
 import { PAGLOGINLISTAComponent } from './PAGINAS/LOGIN_LISTA/pag-login-lista/pag-login-lista.component';
 import { PaginaAnaliseFaturamentoComponent } from './PAGINAS/ANALISE_FATURAMENTO/pag-analise-faturamento/pagina-analise-faturamento.component';
 import { PagDespesasComponent } from './PAGINAS/DESPESAS/pag-despesas/pag-despesas.component';
+import { PagConsultaDespesaComponent } from './PAGINAS/DESPESAS/pag-consulta-despesa/pag-consulta-despesa.component';
 
 
 export const routes: Routes = [ 
@@ -41,4 +42,5 @@ export const routes: Routes = [
     { path: 'login',component: PAGLOGINEXTERNOComponent},
     { path: 'login/lista/:codcli',component: PAGLOGINLISTAComponent},
     { path: 'despesa/cadastro',component: PagDespesasComponent},
+    { path: 'despesa/consulta',component: PagConsultaDespesaComponent},
 ];
