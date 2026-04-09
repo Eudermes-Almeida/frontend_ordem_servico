@@ -69,6 +69,15 @@
     <h3 style="color: orange; margin-bottom: 0;">DESPESA AVULSA:</h3>
   </div>
 
+   
+  <!-- botão 3 -->
+<div *ngIf="exibirBtnSalvar" class="d-flex justify-content-end">
+  <button type="button" class="btn btn-primary" (click)="enviaIncioMesCompleto()">
+    salvar todas avulsas
+  </button>
+</div>
+
+
   <!-- Container Principal -->
   <div class="d-flex align-items-end justify-content-center gap-2 flex-wrap">
     
@@ -86,6 +95,7 @@
         <option>ADMINISTRATIVA</option>
         <option>ALUGUEL</option>
         <option>BANCÁRIA</option>
+        <option>BATERIA</option>
         <option>CASA</option>
         <option>IGREJA</option>
         <option>IMPOSTO</option>
@@ -133,7 +143,7 @@
     <div class="d-flex flex-column">
       <label class="form-label">&nbsp;</label> <!-- Label vazio para alinhar o botão -->
       <button type="button" class="btn btn-success px-4" (click)="adicionaNovaDespesa()">
-        <i class="bi bi-plus-lg"></i> Salvar
+        <i class="bi bi-plus-lg"></i> Adicionar
       </button>
     </div>
 
@@ -146,7 +156,7 @@
 
 <div class="form-container-orange" *ngIf="exibirTabelaDespesas">
   <div class="text-center mb-4">
-  <h3 style="color: orange; margin-bottom: 0;">CADASTRAR DESPESAS RECORRENTES:</h3>
+  <h3 style="color: orange; margin-bottom: 0;">CADASTRAR DESPESAS:</h3>
 </div>
 
   <table class="table table-dark table-hover align-middle">

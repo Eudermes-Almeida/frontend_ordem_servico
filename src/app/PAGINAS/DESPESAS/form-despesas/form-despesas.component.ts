@@ -71,6 +71,8 @@ adicionaNovaDespesa() {
     return;
   }
 
+  this.exibirTabelaDespesas = true;
+
   // 2. Tratamento da Data (Objeto -> String YYYY-MM-DD)
   const dt = this.formularioDespesaAvulsa.value.vencimento;
   const dataFormatada = `${dt.year}-${dt.month.toString().padStart(2, '0')}-${dt.day.toString().padStart(2, '0')}`;
@@ -199,10 +201,10 @@ const listaParaSalvar: Despesa[] = this.dadosInicioMes.map((item: Despesa): Desp
   this.despesaService.salvarDespesasEmLote(listaParaSalvar).subscribe({
     next: (response) => {
       console.log('Lote salvo com sucesso:', response);
-      alert("Todas as despesas recorrentes foram cadastradas com sucesso.");
+      alert("Todas as despesas  foram cadastradas com sucesso.");
       this.exibirBtnCadastrarDespesasAvulsas = true;
       // Opcional: Limpar a variável após o sucesso
-      //this.dadosInicioMes = []; 
+      this.dadosInicioMes = []; 
     },
     error: (error) => {
       console.error('Erro ao salvar lote:', error);
@@ -228,6 +230,9 @@ consultarDespesasNoPeriodo() {
         this.dadosEntreIntervalo = dados;
         this.dadosInicioMes = dados;
         console.log("Busca realizada com sucesso:", this.dadosEntreIntervalo);
+        this.exibirFormDespesaAvulsa = true;
+        this.exibirBtnSalvar = true;
+        this.dadosInicioMes = [];
       }
     },
     error: (err) => {
