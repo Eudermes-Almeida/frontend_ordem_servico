@@ -28,9 +28,11 @@
   </div>
 
   <!-- Botão 4 -->
+   <div *ngIf="exibirBtnConsultar">
   <button type="button" class="btn btn-primary" (click)="consultarDespesasNoPeriodo()">
     Consultar
   </button>
+  </div>
 
   <!-- Botão 1 -->
    <div *ngIf="exibirBtnIniciarMes">
@@ -143,6 +145,10 @@
 <!---------------------------TABELA DADOS DO INICIO MES--------------------->
 
 <div class="form-container-orange" *ngIf="exibirTabelaDespesas">
+  <div class="text-center mb-4">
+  <h3 style="color: orange; margin-bottom: 0;">CADASTRAR DESPESAS RECORRENTES:</h3>
+</div>
+
   <table class="table table-dark table-hover align-middle">
     <thead>
       <tr>

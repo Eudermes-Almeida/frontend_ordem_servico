@@ -46,10 +46,12 @@ export class FormDespesasComponent {
   ////CONTROLE DE RENDERIZAÇÃO:
 
   exibirBtnSalvar: boolean = false;
+  exibirBtnConsultar: boolean = true;
   exibirBtnCadastrarDespesasAvulsas: boolean = false;
   exibirBtnIniciarMes: boolean = false;
   exibirFormDespesaAvulsa: boolean = false;
   exibirTabelaDespesas: boolean = false;
+ 
 
 configuraFormulário(){
 this.formularioDespesaAvulsa = new FormGroup({
@@ -102,7 +104,9 @@ iniciarMes(){
 }
 
 cadastrarDespesasAvulsas(){
-  console.log("cadastrar despesas avulsas")
+  this.exibirFormDespesaAvulsa = true;
+  this.exibirTabelaDespesas = false;
+  this.dadosInicioMes = [];
 }
 
 
@@ -145,6 +149,8 @@ cadastrarDespesasAvulsas(){
     (dados: Despesa[]) => {
       
       this.exibirTabelaDespesas = true;
+      this.exibirBtnConsultar = false;
+      this.exibirBtnSalvar = true;
       // 1. Extrair mês e ano da string 'dataInicial' (formato DD/MM/YYYY)
       const partesData = this.dataInicial.split('/');
       const mesSelecionado = partesData[1]; // MM
@@ -193,10 +199,10 @@ const listaParaSalvar: Despesa[] = this.dadosInicioMes.map((item: Despesa): Desp
   this.despesaService.salvarDespesasEmLote(listaParaSalvar).subscribe({
     next: (response) => {
       console.log('Lote salvo com sucesso:', response);
-      alert("Todas as despesas foram registradas com sucesso!");
-      
+      alert("Todas as despesas recorrentes foram cadastradas com sucesso.");
+      this.exibirBtnCadastrarDespesasAvulsas = true;
       // Opcional: Limpar a variável após o sucesso
-      this.dadosInicioMes = []; 
+      //this.dadosInicioMes = []; 
     },
     error: (error) => {
       console.error('Erro ao salvar lote:', error);
@@ -233,7 +239,7 @@ consultarDespesasNoPeriodo() {
       if (err.status === 0) {
         mensagemErro = "Não foi possível conectar ao servidor. Verifique sua conexão.";
       } else if (err.status === 404) {
-        mensagemErro = "Endpoint não encontrado no servidor.";
+        mensagemErro = "Para este mês, primeiro você terá de cadastrar as despesas recorrentes do mês.";
         this.buscarInicioMes(); ///se ao consultar intervalo de datas, vier vazio, vai inciiar rotina de inicio de mes
       }
       
