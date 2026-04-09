@@ -118,6 +118,12 @@ cadastrarDespesasAvulsas(){
     const dia = date.day.toString().padStart(2, '0');
     const mes = date.month.toString().padStart(2, '0');
     const ano = date.year;
+
+    console.log(" Este é dia ", dia)
+
+    if(dia != "01"){
+      alert(" Este não é o primeiro dia do mês")
+      return}
     
     this.dataInicial = `${dia}/${mes}/${ano}`;
     this.dataInicialIntervalo = `${ano}-${mes}-${dia}`; 
@@ -130,6 +136,11 @@ cadastrarDespesasAvulsas(){
     const mes = date.month.toString().padStart(2, '0');
     const ano = date.year;
     
+    if(!(dia == "31" || dia == "30" || dia == "29" || dia == "28")){
+      alert("Este não é o últimoo dia do mês")
+      return
+    }
+
     this.dataFinal = `${dia}/${mes}/${ano}`;
     this.dataFinalIntervalo = `${ano}-${mes}-${dia}`; 
     console.log('Data salva como string:', this.dataFinal);
@@ -205,6 +216,7 @@ const listaParaSalvar: Despesa[] = this.dadosInicioMes.map((item: Despesa): Desp
       this.exibirBtnCadastrarDespesasAvulsas = true;
       // Opcional: Limpar a variável após o sucesso
       this.dadosInicioMes = []; 
+      this.exibirTabelaDespesas = false
     },
     error: (error) => {
       console.error('Erro ao salvar lote:', error);
@@ -233,6 +245,7 @@ consultarDespesasNoPeriodo() {
         this.exibirFormDespesaAvulsa = true;
         this.exibirBtnSalvar = true;
         this.dadosInicioMes = [];
+        this.exibirTabelaDespesas = false;
       }
     },
     error: (err) => {
