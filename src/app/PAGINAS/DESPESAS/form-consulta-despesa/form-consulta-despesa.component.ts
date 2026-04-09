@@ -5,6 +5,7 @@ import { Despesa } from '../../../modelo/Despesa';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { ConsultaDespesa } from '../../../modelo/ConsultaDespesa';
 
 @Component({
   selector: 'app-form-consulta-despesa',
@@ -120,7 +121,6 @@ export class FormConsultaDespesaComponent {
         alert(" Este não é o primeiro dia do mês")
         return}
       
-      this.dataInicial = `${dia}/${mes}/${ano}`;
       this.dataInicialIntervalo = `${ano}-${mes}-${dia}`; 
       console.log('Data salva como string:', this.dataInicial);
     }
@@ -136,7 +136,6 @@ export class FormConsultaDespesaComponent {
         return
       }
   
-      this.dataFinal = `${dia}/${mes}/${ano}`;
       this.dataFinalIntervalo = `${ano}-${mes}-${dia}`; 
       console.log('Data salva como string:', this.dataFinal);
     }

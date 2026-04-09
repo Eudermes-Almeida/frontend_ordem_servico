@@ -5,21 +5,24 @@
 </div>
 
 <!-- Container com os controles alinhados abaixo -->
-<div class="d-flex justify-content-center align-items-center gap-3 flex-wrap">
+<div class="d-flex justify-content-center align-items-end gap-3 flex-wrap">
 
-  <!-- Container de Datas -->
-  <div class="d-flex gap-2">
-    <div class="input-group" style="max-width: 350px;">
-      <span class="input-group-text">Primeiro dia do Mês</span>
+  <!-- Início -->
+  <div>
+    <label class="form-label fw-bold small text-light d-block">Início</label>
+    <div class="input-group" style="max-width: 200px;">
       <input class="form-control" placeholder="aaaa-mm-dd" name="dp" [(ngModel)]="model" ngbDatepicker
         #d1="ngbDatepicker" (dateSelect)="onDateInicial($event)" />
       <button class="btn btn-outline-primary" (click)="d1.toggle()" type="button">
         <i class="bi bi-calendar3"></i>
       </button>
     </div>
+  </div>
 
-    <div class="input-group" style="max-width: 350px;">
-      <span class="input-group-text">Último dia do mês</span>
+  <!-- Fim -->
+  <div>
+    <label class="form-label fw-bold small text-light d-block">Fim</label>
+    <div class="input-group" style="max-width: 200px;">
       <input class="form-control" placeholder="aaaa-mm-dd" name="dp2" [(ngModel)]="model2" ngbDatepicker
         #d2="ngbDatepicker" (dateSelect)="onDateFinal($event)" />
       <button class="btn btn-outline-primary" (click)="d2.toggle()" type="button">
@@ -28,38 +31,46 @@
     </div>
   </div>
 
-  <!-- Botão 4 -->
-   <div *ngIf="exibirBtnConsultar">
-  <button type="button" class="btn btn-primary" (click)="consultarDespesasNoPeriodo()">
-    Consultar
-  </button>
+  <!-- CATEGORIA -->
+  <div>
+    <label class="form-label fw-bold small text-light">Categoria</label>
+    <select formControlName="categoria" class="form-select" id="categoria" name="categoria">
+      <option value="" disabled selected>Selecione...</option>
+      <option>TODOS</option>
+      <option>EMPRESA</option>
+      <option>CASA & IGREJA</option>
+      <option>ADMINISTRATIVA</option>
+      <option>ALUGUEL</option>
+      <option>BANCÁRIA</option>
+      <option>BATERIA</option>
+      <option>CASA</option>
+      <option>IGREJA</option>
+      <option>IMPOSTO</option>
+      <option>INSUMOS</option>
+      <option>SALÁRIO</option>
+      <option>VEÍCULO</option>
+    </select>
   </div>
 
-  <!-- Botão 1 -->
-   <div *ngIf="exibirBtnIniciarMes">
-  <button type="button" class="btn btn-primary" (click)="buscarInicioMes()">
-    Iniciar Mês
-  </button>
+  <!-- STATUS -->
+  <div>
+    <label class="form-label fw-bold small text-light">Status</label>
+    <select formControlName="status" class="form-select" id="status" name="status">
+      <option>TODOS</option>
+        <option>A PAGAR</option>
+      <option>PAGO</option>
+    </select>
   </div>
 
-  <!-- Botão 2 -->
-   <div *ngIf="exibirBtnCadastrarDespesasAvulsas">
-  <button type="button" class="btn btn-primary" (click)="cadastrarDespesasAvulsas()">
-    Cadastrar Despesas Avulsas
-  </button>
+  <!-- Botão Consultar -->
+  <div>
+    <button type="button" class="btn btn-primary" (click)="consultarDespesasNoPeriodo()">
+      Consultar
+    </button>
   </div>
-
-  <!-- Botão 3 -->
-   <div *ngIf="exibirBtnSalvar">
-  <button type="button" class="btn btn-primary" (click)="enviaIncioMesCompleto()">
-    Salvar
-  </button>
-  </div>
-
-  
-
 
 </div>
+
 
 <!--------------------------FORMULÁRIO CADASTRAR DESPESA AVULSA--------------------------->
 
