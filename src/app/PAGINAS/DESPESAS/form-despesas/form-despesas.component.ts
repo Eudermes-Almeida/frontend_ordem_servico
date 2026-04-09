@@ -42,6 +42,15 @@ export class FormDespesasComponent {
   formularioDespesaAvulsa!: FormGroup;
   novaDespesa: Despesa = null; 
 
+
+  ////CONTROLE DE RENDERIZAÇÃO:
+
+  exibirBtnSalvar: boolean = false;
+  exibirBtnCadastrarDespesasAvulsas: boolean = false;
+  exibirBtnIniciarMes: boolean = false;
+  exibirFormDespesaAvulsa: boolean = false;
+  exibirTabelaDespesas: boolean = false;
+
 configuraFormulário(){
 this.formularioDespesaAvulsa = new FormGroup({
     descricao:new FormControl('', Validators.required),
@@ -135,6 +144,7 @@ cadastrarDespesasAvulsas(){
   this.despesaService?.getInicioMes().subscribe(
     (dados: Despesa[]) => {
       
+      this.exibirTabelaDespesas = true;
       // 1. Extrair mês e ano da string 'dataInicial' (formato DD/MM/YYYY)
       const partesData = this.dataInicial.split('/');
       const mesSelecionado = partesData[1]; // MM
@@ -195,18 +205,47 @@ const listaParaSalvar: Despesa[] = this.dadosInicioMes.map((item: Despesa): Desp
   });
 }
 
-consultarDespesasNoPeriodo(){
-this.despesaService?.buscaDespesasEntreDatas(this.dataInicialIntervalo, this.dataFinalIntervalo).subscribe(
-    (dados: Despesa[]) => {
+consultarDespesasNoPeriodo() {
+  // 1. Validação prévia
+  if (!this.dataInicialIntervalo || !this.dataFinalIntervalo) {
+    alert("Por favor, selecione as datas de início e fim.");
+    return;
+  }
+
+  this.despesaService?.buscaDespesasEntreDatas(this.dataInicialIntervalo, this.dataFinalIntervalo).subscribe({
+    next: (dados: Despesa[]) => {
+      // 2. Verificação de conteúdo vazio
+      if (!dados || dados.length === 0) {
+        this.dadosEntreIntervalo = [];
+        alert("Nenhuma despesa encontrada para este período.");
+      } else {
+        this.dadosEntreIntervalo = dados;
+        this.dadosInicioMes = dados;
+        console.log("Busca realizada com sucesso:", this.dadosEntreIntervalo);
+      }
+    },
+    error: (err) => {
+      // 3. Tratamento de erro técnico (Servidor fora, erro 400, 500, etc)
+      console.error("Erro ao buscar despesas:", err);
       
-      // 2. Mapear os dados alterando apenas o vencimento
-      this.dadosEntreIntervalo = dados
-
-      console.log("Dados com datas atualizadas: ", this.dadosEntreIntervalo);
+      let mensagemErro = "Ocorreu um erro ao consultar os dados.";
+      
+      if (err.status === 0) {
+        mensagemErro = "Não foi possível conectar ao servidor. Verifique sua conexão.";
+      } else if (err.status === 404) {
+        mensagemErro = "Endpoint não encontrado no servidor.";
+        this.buscarInicioMes(); ///se ao consultar intervalo de datas, vier vazio, vai inciiar rotina de inicio de mes
+      }
+      
+      alert(mensagemErro);
+    },
+    complete: () => {
+      // Executa algo quando a requisição termina (opcional)
+      console.log("Consulta finalizada.");
     }
-  );
-
+  });
 }
+
 
 }
 
