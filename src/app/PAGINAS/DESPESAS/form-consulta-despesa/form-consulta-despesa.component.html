@@ -34,28 +34,28 @@
   <!-- CATEGORIA -->
   <div>
     <label class="form-label fw-bold small text-light">Categoria</label>
-    <select formControlName="categoria" class="form-select" id="categoria" name="categoria">
+    <select formControlName="categoria" (change)="onCategoria($event)" class="form-select" id="categoria" name="categoria">
       <option value="" disabled selected>Selecione...</option>
       <option>TODOS</option>
       <option>EMPRESA</option>
       <option>CASA & IGREJA</option>
       <option>ADMINISTRATIVA</option>
       <option>ALUGUEL</option>
-      <option>BANCÁRIA</option>
+      <option>BANCARIA</option>
       <option>BATERIA</option>
       <option>CASA</option>
       <option>IGREJA</option>
       <option>IMPOSTO</option>
       <option>INSUMOS</option>
-      <option>SALÁRIO</option>
-      <option>VEÍCULO</option>
+      <option>SALARIO</option>
+      <option>VEICULO</option>
     </select>
   </div>
 
   <!-- STATUS -->
   <div>
     <label class="form-label fw-bold small text-light">Status</label>
-    <select formControlName="status" class="form-select" id="status" name="status">
+    <select formControlName="status" (change)="onStatus($event)" class="form-select" id="status" name="status">
       <option>TODOS</option>
         <option>A PAGAR</option>
       <option>PAGO</option>
@@ -64,105 +64,12 @@
 
   <!-- Botão Consultar -->
   <div>
-    <button type="button" class="btn btn-primary" (click)="consultarDespesasNoPeriodo()">
+    <button type="button" class="btn btn-primary" (click)="consultarDespesasComFiltro()">
       Consultar
     </button>
   </div>
 
 </div>
-
-
-<!--------------------------FORMULÁRIO CADASTRAR DESPESA AVULSA--------------------------->
-
-<div *ngIf="exibirFormDespesaAvulsa">
-<form [formGroup]="formularioDespesaAvulsa" class="form-container-orange">
-  <!-- Título -->
-  <div class="text-center mb-4">
-    <h3 style="color: orange; margin-bottom: 0;">DESPESA AVULSA:</h3>
-  </div>
-
-   
-  <!-- botão 3 -->
-<div *ngIf="exibirBtnSalvar" class="d-flex justify-content-end">
-  <button type="button" class="btn btn-primary" (click)="enviaIncioMesCompleto()">
-    salvar todas avulsas
-  </button>
-</div>
-
-
-  <!-- Container Principal -->
-  <div class="d-flex align-items-end justify-content-center gap-2 flex-wrap">
-    
-    <!-- DESCRIÇÃO -->
-    <div class="d-flex flex-column" style="flex: 2; min-width: 200px;">
-      <label class="form-label fw-bold small text-light">Descrição</label>
-      <input formControlName="descricao" type="text" class="form-control" placeholder="Ex: Internet"  />
-    </div>
-
-    <!-- CATEGORIA -->
-    <div class="d-flex flex-column" style="flex: 1; min-width: 150px;">
-      <label class="form-label fw-bold small text-light">Categoria</label>
-      <select formControlName="categoria" class="form-select" id="categoria" name="categoria" >
-        <option value="" disabled selected>Selecione...</option>
-        <option>ADMINISTRATIVA</option>
-        <option>ALUGUEL</option>
-        <option>BANCÁRIA</option>
-        <option>BATERIA</option>
-        <option>CASA</option>
-        <option>IGREJA</option>
-        <option>IMPOSTO</option>
-        <option>INSUMOS</option>
-        <option>SALÁRIO</option>
-        <option>VEÍCULO</option>
-      </select>
-    </div>
-
-   <!-- VENCIMENTO -->
-<div class="d-flex flex-column">
-  <label class="form-label fw-bold small text-light">Vencimento</label>
-  <div class="input-group" style="width: 200px;">
-    <!-- Alterado: name="dp3", #d3="ngbDatepicker" e removido [(ngModel)] -->
-    <input formControlName="vencimento" 
-           class="form-control" 
-           placeholder="aaaa-mm-dd" 
-           name="dp3" 
-           ngbDatepicker 
-           #d3="ngbDatepicker" /> 
-           
-    <!-- Alterado: d3.toggle() -->
-    <button class="btn btn-outline-primary" (click)="d3.toggle()" type="button">
-      <i class="bi bi-calendar3"></i>
-    </button>
-  </div>
-</div>
-
-    <!-- VALOR -->
-    <div class="d-flex flex-column" style="width: 130px;">
-      <label class="form-label fw-bold small text-light">Valor</label>
-      <input formControlName="valor" type="text" class="form-control text-end" placeholder="0,00" />
-    </div>
-
-    <!-- STATUS -->
-    <div class="d-flex flex-column" style="width: 150px;">
-      <label class="form-label fw-bold small text-light">Status</label>
-      <select formControlName="status" class="form-select" id="status" name="status" >
-        <option>A PAGAR</option>
-        <option>PAGO</option>
-      </select>
-    </div>
-
-    <!-- BOTÃO SALVAR -->
-    <div class="d-flex flex-column">
-      <label class="form-label">&nbsp;</label> <!-- Label vazio para alinhar o botão -->
-      <button type="button" class="btn btn-success px-4" (click)="adicionaNovaDespesa()">
-        <i class="bi bi-plus-lg"></i> Adicionar
-      </button>
-    </div>
-
-  </div>
-</form>
-</div>
-
 
 <!---------------------------TABELA DADOS DO INICIO MES--------------------->
 
@@ -183,7 +90,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let dados of dadosInicioMes">
+      <tr *ngFor="let dados of dadosConsultaFiltro">
         <td>{{ dados.id }}</td>
         <td>{{ dados.descricao }}</td>
         <td>{{ dados.categoria }}</td>

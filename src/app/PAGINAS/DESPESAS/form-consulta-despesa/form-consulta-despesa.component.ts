@@ -33,8 +33,9 @@ export class FormConsultaDespesaComponent {
     dataVencimento: string = "";
     dadosInicioMes: Despesa[] = [];
     dadosEntreIntervalo: Despesa[] = [];
-    categoriaSelecionada: string = "";
-    statusSelecionado: string = "";
+    dadosConsultaFiltro: Despesa[] = [];
+    categoriaSelecionada: string = "TODOS";
+    statusSelecionado: string = "TODOS";
     formularioDespesaAvulsa!: FormGroup;
     novaDespesa: Despesa = null; 
   
@@ -117,12 +118,8 @@ export class FormConsultaDespesaComponent {
   
       console.log(" Este é dia ", dia)
   
-      if(dia != "01"){
-        alert(" Este não é o primeiro dia do mês")
-        return}
-      
       this.dataInicialIntervalo = `${ano}-${mes}-${dia}`; 
-      console.log('Data salva como string:', this.dataInicial);
+      console.log('Data salva como string:', this.dataInicialIntervalo);
     }
   
      onDateFinal(date: NgbDateStruct) {
@@ -131,15 +128,22 @@ export class FormConsultaDespesaComponent {
       const mes = date.month.toString().padStart(2, '0');
       const ano = date.year;
       
-      if(!(dia == "31" || dia == "30" || dia == "29" || dia == "28")){
-        alert("Este não é o últimoo dia do mês")
-        return
-      }
-  
       this.dataFinalIntervalo = `${ano}-${mes}-${dia}`; 
-      console.log('Data salva como string:', this.dataFinal);
+      console.log('Data salva como string:', this.dataFinalIntervalo);
     }
-  
+
+    // No seu componente .ts
+
+onCategoria(event: any) {
+  this.categoriaSelecionada = event.target.value;
+  console.log("Categoria selecionada (via evento):", this.categoriaSelecionada);
+}
+
+onStatus(event: any) {
+  this.statusSelecionado = event.target.value;
+  console.log("Categoria selecionada (via evento):", this.statusSelecionado);
+}
+
     onDateVencimento(date: NgbDateStruct) {
       // Formato Brasileiro: DD/MM/AAAA
       const dia = date.day.toString().padStart(2, '0');
@@ -263,6 +267,55 @@ export class FormConsultaDespesaComponent {
       }
     });
   }
+
+  consultarDespesasComFiltro() {
+  // 1. Validação prévia dos campos obrigatórios
+  if (!this.dataInicialIntervalo || !this.dataFinalIntervalo || !this.categoriaSelecionada || !this.statusSelecionado) {
+    alert("Por favor, preencha todos os filtros (Datas, Categoria e Status).");
+    return;
+  }
+
+  this.despesaService?.consultarDespesasFiltro(
+    this.dataInicialIntervalo, 
+    this.dataFinalIntervalo, 
+    this.categoriaSelecionada, 
+    this.statusSelecionado
+  ).subscribe({
+    next: (dados: Despesa[]) => {
+      // 2. Verificação de conteúdo vazio
+      if (!dados || dados.length === 0) {
+        this.dadosConsultaFiltro = [];
+        alert("Nenhuma despesa encontrada com os filtros aplicados.");
+      } else {
+        this.dadosConsultaFiltro = dados;
+        console.log("Busca filtrada realizada com sucesso:", this.dadosEntreIntervalo);
+        
+        // Mantendo a lógica de exibição do seu padrão
+        this.exibirTabelaDespesas = true;
+      }
+    },
+    error: (err) => {
+      // 3. Tratamento de erro técnico
+      console.error("Erro ao buscar despesas filtradas:", err);
+      
+      let mensagemErro = "Ocorreu um erro ao consultar os dados com filtros.";
+      
+      if (err.status === 0) {
+        mensagemErro = "Não foi possível conectar ao servidor. Verifique sua conexão.";
+      } else if (err.status === 404) {
+        mensagemErro = "Nenhum registro encontrado para os critérios selecionados.";
+      }
+      
+      alert(mensagemErro);
+    },
+    complete: () => {
+      console.log("Consulta por filtro finalizada.");
+    }
+  });
+}
+
+
+
   
 
 }
