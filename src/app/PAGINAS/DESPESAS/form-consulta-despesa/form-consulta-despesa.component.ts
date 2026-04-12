@@ -38,6 +38,9 @@ export class FormConsultaDespesaComponent {
     statusSelecionado: string = "TODOS";
     formularioDespesaAvulsa!: FormGroup;
     novaDespesa: Despesa = null; 
+    totalGeral: number = 0;
+    totalApagar: number = 0;
+    totalPago: number = 0;
   
   
     ////CONTROLE DE RENDERIZAÇÃO:
