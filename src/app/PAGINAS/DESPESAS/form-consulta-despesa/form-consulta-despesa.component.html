@@ -34,7 +34,8 @@
   <!-- CATEGORIA -->
   <div>
     <label class="form-label fw-bold small text-light">Categoria</label>
-    <select formControlName="categoria" (change)="onCategoria($event)" class="form-select" id="categoria" name="categoria">
+    <select formControlName="categoria" (change)="onCategoria($event)" class="form-select" id="categoria"
+      name="categoria">
       <option value="" disabled selected>Selecione...</option>
       <option>TODOS</option>
       <option>EMPRESA</option>
@@ -57,7 +58,7 @@
     <label class="form-label fw-bold small text-light">Status</label>
     <select formControlName="status" (change)="onStatus($event)" class="form-select" id="status" name="status">
       <option>TODOS</option>
-        <option>A PAGAR</option>
+      <option>A PAGAR</option>
       <option>PAGO</option>
     </select>
   </div>
@@ -71,13 +72,54 @@
 
 </div>
 
-<!---------------------------TABELA CONSULTA DESPESAS--------------------->
+
 
 <div class="form-container-orange" *ngIf="exibirTabelaDespesas">
   <div class="text-center mb-4">
-  <h3 style="color: orange; margin-bottom: 0;">CONSULTAR DESPESAS DO TIPO: {{categoriaSelecionada}}:</h3>
+    <h3 style="color: orange; margin-bottom: 0;">CONSULTAR DESPESAS DO TIPO: {{categoriaSelecionada}}:</h3>
+  </div>
+
+  <!--------------------------------------TOTALIZADORES-------------------------------------->
+  <!-- w-100 garante que o container ocupe a largura total -->
+<!-- justify-content-around distribui o espaço uniformemente ao redor dos itens -->
+<div class="d-flex justify-content-around flex-wrap w-100">
+  
+  <!-- Grupo 1 -->
+  <div class="d-flex flex-column mb-3">
+    <label class="form-label fw-bold small text-light">Total Geral</label>
+    <input type="text" class="form-control form-control-sm text-end" placeholder="0,00" style="width: 150px;" />
+  </div>
+
+  <!-- Grupo 2 -->
+  <div class="d-flex flex-column mb-3">
+    <label class="form-label fw-bold small text-light">Total A Pagar</label>
+    <input type="text" class="form-control form-control-sm text-end" placeholder="0,00" style="width: 150px;" />
+  </div>
+
+  <!-- Grupo 3 -->
+  <div class="d-flex flex-column mb-3">
+    <label class="form-label fw-bold small text-light">Total Pago</label>
+    <input type="text" class="form-control form-control-sm text-end" placeholder="0,00" style="width: 150px;" />
+  </div>
+
+  <!-- Grupo 4 -->
+  <div class="d-flex flex-column mb-3">
+    <label class="form-label fw-bold small text-light">Total Empresa</label>
+    <input type="text" class="form-control form-control-sm text-end" placeholder="0,00" style="width: 150px;" />
+  </div>
+
+  <!-- Grupo 5 -->
+  <div class="d-flex flex-column mb-3">
+    <label class="form-label fw-bold small text-light">Total Casa</label>
+    <input type="text" class="form-control form-control-sm text-end" placeholder="0,00" style="width: 150px;" />
+  </div>
+
 </div>
 
+
+  <!--------------------------------------TOTALIZADORES-------------------------------------->
+
+  <!---------------------------TABELA CONSULTA DESPESAS--------------------->
   <table class="table table-dark table-hover align-middle">
     <thead>
       <tr>
