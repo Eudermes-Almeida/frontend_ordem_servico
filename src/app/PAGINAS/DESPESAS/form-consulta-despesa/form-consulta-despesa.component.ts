@@ -41,6 +41,11 @@ export class FormConsultaDespesaComponent {
     totalGeral: number = 0;
     totalApagar: number = 0;
     totalPago: number = 0;
+    valorGeral: number = 0;
+    valorTotalApagar: number = 0;
+    valorTotalPago: number = 0;
+    valorTotalEmpresa: number = 0;
+    valorTotalCasa: number = 0;
   
   
     ////CONTROLE DE RENDERIZAÇÃO:
@@ -295,6 +300,11 @@ onStatus(event: any) {
         
         // Mantendo a lógica de exibição do seu padrão
         this.exibirTabelaDespesas = true;
+        this.calcularValorTotal();
+        this.calcularValorApagar();
+        this.calcularValorPago();
+        this.calcularValorEmpresa();
+        this.calcularValorCasa();
       }
     },
     error: (err) => {
@@ -316,6 +326,75 @@ onStatus(event: any) {
     }
   });
 }
+
+calcularValorTotal(): void {
+  this.valorGeral = 0;
+  this.valorGeral = this.dadosConsultaFiltro.reduce((acumulador, item) => {
+    // Converte string para número (substitui vírgula por ponto se necessário)
+    const valorNumerico = parseFloat(item.valor.replace(',', '.'));
+    
+    // Soma apenas se for um número válido, senão soma 0
+    return acumulador + (isNaN(valorNumerico) ? 0 : valorNumerico);
+  }, 0);
+
+  console.log("Este é o valor geral", this.valorGeral)
+}
+
+
+calcularValorApagar(): void {
+  this.valorTotalApagar = this.dadosConsultaFiltro.reduce((acumulador, item) => {
+    // 1. Verifica se o status é exatamente 'A PAGAR'
+    if (item.status === 'A PAGAR') {
+      // 2. Converte a string para número
+      const valorNumerico = parseFloat(item.valor.replace(',', '.'));
+      
+      // 3. Soma apenas se for um número válido
+      return acumulador + (isNaN(valorNumerico) ? 0 : valorNumerico);
+    }
+    
+    // Se o status não for 'A PAGAR', mantém o valor acumulado anterior
+    return acumulador;
+  }, 0);
+
+  console.log("Este é o valor total a pagar:", this.valorTotalApagar);
+}
+
+calcularValorPago(): void {
+  this.valorTotalPago = this.dadosConsultaFiltro.reduce((acumulador, item) => {
+    if (item.status === 'PAGO') {
+      const valorNumerico = parseFloat(item.valor.replace(',', '.'));
+      return acumulador + (isNaN(valorNumerico) ? 0 : valorNumerico);
+    }
+    return acumulador;
+  }, 0);
+  console.log("Este é o valor total pago:", this.valorTotalPago);
+}
+
+calcularValorEmpresa(): void {
+  this.valorTotalEmpresa = this.dadosConsultaFiltro.reduce((acumulador, item) => {
+    if (item.categoria === 'ADMINISTRATIVA' || item.categoria ==='ALUGUEL' || item.categoria === 'BANCARIA' || item.categoria === 'BATERIA' || item.categoria === 'IMPOSTOS' || item.categoria === 'INSUMOS' || item.categoria === 'SALARIO' || item.categoria === 'VEICULO') {
+      const valorNumerico = parseFloat(item.valor.replace(',', '.'));
+      console.log(item.categoria)
+      return acumulador + (isNaN(valorNumerico) ? 0 : valorNumerico);
+    }
+    return acumulador;
+  }, 0);
+  console.log("Este é o valor total Empresa:", this.valorTotalEmpresa);
+}
+
+calcularValorCasa(): void {
+  this.valorTotalCasa = this.dadosConsultaFiltro.reduce((acumulador, item) => {
+    if (item.categoria === 'CASA' || item.categoria ==='IGREJA') {
+      const valorNumerico = parseFloat(item.valor.replace(',', '.'));
+      console.log(item.categoria)
+      return acumulador + (isNaN(valorNumerico) ? 0 : valorNumerico);
+    }
+    return acumulador;
+  }, 0);
+  console.log("Este é o valor total Empresa:", this.valorTotalCasa);
+}
+
+
 
 
 

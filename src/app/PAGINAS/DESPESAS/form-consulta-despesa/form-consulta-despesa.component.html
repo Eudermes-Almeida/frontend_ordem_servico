@@ -86,32 +86,57 @@
   
   <!-- Grupo 1 -->
   <div class="d-flex flex-column mb-3">
-    <label class="form-label fw-bold small text-light">Total Geral</label>
-    <input type="text" class="form-control form-control-sm text-end" placeholder="0,00" style="width: 150px;" />
-  </div>
+  <label class="form-label fw-bold small text-light">Total Geral</label>
+  <input 
+    type="text" 
+    class="form-control form-control-sm text-end" 
+    style="width: 150px;" 
+    [value]="valorGeral | currency:'BRL':'symbol':'1.2-2'" 
+    readonly />
+</div>
+
 
   <!-- Grupo 2 -->
   <div class="d-flex flex-column mb-3">
     <label class="form-label fw-bold small text-light">Total A Pagar</label>
-    <input type="text" class="form-control form-control-sm text-end" placeholder="0,00" style="width: 150px;" />
+    <input type="text" 
+    class="form-control 
+    form-control-sm text-end" 
+    placeholder="0,00" 
+    style="width: 150px;"
+    [value]="valorTotalApagar | currency:'BRL':'symbol':'1.2-2'"  />
   </div>
 
   <!-- Grupo 3 -->
   <div class="d-flex flex-column mb-3">
     <label class="form-label fw-bold small text-light">Total Pago</label>
-    <input type="text" class="form-control form-control-sm text-end" placeholder="0,00" style="width: 150px;" />
+    <input type="text" 
+    class="form-control form-control-sm text-end" 
+    placeholder="0,00" 
+    style="width: 150px;"
+    [value]="valorTotalPago | currency:'BRL':'symbol':'1.2-2'"  />
   </div>
 
   <!-- Grupo 4 -->
   <div class="d-flex flex-column mb-3">
     <label class="form-label fw-bold small text-light">Total Empresa</label>
-    <input type="text" class="form-control form-control-sm text-end" placeholder="0,00" style="width: 150px;" />
+    <input type="text"
+     class="form-control form-control-sm text-end"
+      placeholder="0,00" 
+      style="width: 150px;"
+      [value]="valorTotalEmpresa | currency:'BRL':'symbol':'1.2-2'"  />
+       />
   </div>
 
   <!-- Grupo 5 -->
   <div class="d-flex flex-column mb-3">
     <label class="form-label fw-bold small text-light">Total Casa</label>
-    <input type="text" class="form-control form-control-sm text-end" placeholder="0,00" style="width: 150px;" />
+    <input type="text"
+     class="form-control form-control-sm text-end"
+      placeholder="0,00" 
+      style="width: 150px;"
+       [value]="valorTotalCasa | currency:'BRL':'symbol':'1.2-2'"  />
+       />
   </div>
 
 </div>
@@ -137,13 +162,7 @@
         <td>{{ dados.descricao }}</td>
         <td>{{ dados.categoria }}</td>
         <td>{{ dados.vencimento | date: 'dd/MM/yyyy' }}</td>
-
-        <!-- Input para edição do valor -->
-        <td>
-          <input type="text" class="form-control form-control-sm text-end" [(ngModel)]="dados.valor"
-            placeholder="0,00" />
-        </td>
-
+        <td>{{ dados.valor}}</td>
         <td>{{ dados.status }}</td>
       </tr>
     </tbody>
