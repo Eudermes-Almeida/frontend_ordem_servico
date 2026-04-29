@@ -53,9 +53,10 @@ consultarDespesasFiltro(dataInicio: string, dataFim: string, categoria: string, 
   return this.http.get<any>(url);
 }
 
-
-
-
+atualizarDespesa(id: number, despesa: Despesa): Observable<Despesa> {
+  const url = `${this.urlServidor}despesa/${id}`;
+  return this.http.put<Despesa>(url, despesa);
+}
 
 
 }

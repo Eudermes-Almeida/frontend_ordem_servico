@@ -373,7 +373,7 @@ calcularValorPago(): void {
 
 calcularValorEmpresa(): void {
   this.valorTotalEmpresa = this.dadosConsultaFiltro.reduce((acumulador, item) => {
-    if (item.categoria === 'ADMINISTRATIVA' || item.categoria ==='ALUGUEL' || item.categoria === 'BANCARIA' || item.categoria === 'BATERIA' || item.categoria === 'IMPOSTOS' || item.categoria === 'INSUMOS' || item.categoria === 'SALARIO' || item.categoria === 'VEICULO') {
+    if (item.categoria === 'ADMINISTRATIVA' || item.categoria ==='ALUGUEL' || item.categoria === 'BANCARIA' || item.categoria === 'BATERIA' || item.categoria === 'IMPOSTO' || item.categoria === 'INSUMOS' || item.categoria === 'SALARIO' || item.categoria === 'VEICULO') {
       const valorNumerico = parseFloat(item.valor.replace(',', '.'));
       return acumulador + (isNaN(valorNumerico) ? 0 : valorNumerico);
     }
@@ -415,7 +415,46 @@ alterarDespesa(dados: Despesa) {
   this.exibirFormularioAlterarDespesa = true;
   this.exibirTabelaDespesas = false;
   this.exibirTotalizadores = false;
-  
 }
+
+salvarAlteracaoDespesa() {
+  // 1. Extrair os dados (usando getRawValue caso o ID esteja desabilitado)
+  const formValues = this.formularioDespesaAvulsa.getRawValue();
+
+  // 2. Formatar a data do NgbDatepicker (objeto -> string)
+  const data = formValues.vencimento;
+  const dataFormatada = `${data.year}-${String(data.month).padStart(2, '0')}-${String(data.day).padStart(2, '0')}`;
+
+  // 3. Montar o objeto para a API
+  const despesaAtualizada: Despesa = {
+    id: formValues.ID,
+    descricao: formValues.descricao,
+    categoria: formValues.categoria,
+    vencimento: dataFormatada,
+    valor: formValues.valor,
+    status: formValues.status,
+    iniciomes: "NAO" // Valor fixo conforme seu exemplo
+  };
+
+  // 4. Chamar o Service
+  this.despesaService.atualizarDespesa(despesaAtualizada.id!, despesaAtualizada).subscribe({
+    next: (res) => {
+      console.log("Despesa atualizada com sucesso!", res);
+      alert("Despesa atualizada com sucesso!");
+      
+      // 5. Limpar formulário e atualizar lista (se necessário)
+      this.formularioDespesaAvulsa.reset();
+      this.consultarDespesasComFiltro(); // Método que você usa para recarregar a tabela
+    },
+    error: (err) => {
+      console.error("Erro ao atualizar despesa", err);
+      alert("Erro ao salvar as alterações.");
+    }
+  });
+  this.exibirFormularioAlterarDespesa = false;
+}
+
+
+
 
 }
