@@ -60,6 +60,7 @@ export class FormConsultaDespesaComponent {
   
   configuraFormulário(){
   this.formularioDespesaAvulsa = new FormGroup({
+      ID:new FormControl('', Validators.required),
       descricao:new FormControl('', Validators.required),
       categoria:new FormControl('', Validators.required),
       vencimento:new FormControl('', Validators.required),
@@ -385,4 +386,28 @@ calcularValorCasa(): void {
     return acumulador;
   }, 0);
 }
+
+alterarDespesa(dados: Despesa) {
+  console.log("Estes são os dados da linha", dados);
+
+  // 1. Tratamento da data para o NgbDatepicker (aaaa-mm-dd para objeto)
+  const data = new Date(dados.vencimento);
+  const dataFormatada = {
+    year: data.getFullYear(),
+    month: data.getMonth() + 1, // Jan é 0 no JS, mas 1 no Datepicker
+    day: data.getDate() + 1
+  };
+
+  // 2. Populando o formulário
+  this.formularioDespesaAvulsa.patchValue({
+    ID: dados.id,
+    descricao: dados.descricao,
+    categoria: dados.categoria,
+    status: dados.status,
+    valor: dados.valor,
+    vencimento: dataFormatada // Seta o objeto tratado para o datepicker
+  });
+  
+}
+
 }

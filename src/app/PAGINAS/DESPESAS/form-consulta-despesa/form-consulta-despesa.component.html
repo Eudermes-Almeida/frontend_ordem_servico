@@ -144,6 +144,91 @@
 
   <!--------------------------------------TOTALIZADORES-------------------------------------->
 
+  <!--------------------------FORMULÁRIO CADASTRAR DESPESA AVULSA--------------------------->
+
+<div >
+  <form [formGroup]="formularioDespesaAvulsa" class="form-container-orange">
+    <!-- Título -->
+    <div class="text-center mb-4">
+      <h3 style="color: orange; margin-bottom: 0;">Alterar Dados Despesa:</h3>
+    </div>
+
+    <!-- Container Principal -->
+    <div class="d-flex align-items-end justify-content-center gap-2 flex-wrap">
+
+      <!--ID-->
+      <div class="d-flex flex-column" style="flex: 2; min-width: 200px;">
+        <label class="form-label fw-bold small text-light">ID</label>
+        <input formControlName="ID" type="text" class="form-control" placeholder="Ex: 174" readonly />
+      </div>
+
+      <!-- DESCRIÇÃO -->
+      <div class="d-flex flex-column" style="flex: 2; min-width: 200px;">
+        <label class="form-label fw-bold small text-light">Descrição</label>
+        <input formControlName="descricao" type="text" class="form-control" placeholder="Ex: Internet" />
+      </div>
+
+      <!-- CATEGORIA -->
+      <div class="d-flex flex-column" style="flex: 1; min-width: 150px;">
+        <label class="form-label fw-bold small text-light">Categoria</label>
+        <select formControlName="categoria" class="form-select" id="categoria" name="categoria">
+          <option value="" disabled selected>Selecione...</option>
+          <option>ADMINISTRATIVA</option>
+          <option>ALUGUEL</option>
+          <option>BANCARIA</option>
+          <option>BATERIA</option>
+          <option>CASA</option>
+          <option>IGREJA</option>
+          <option>IMPOSTO</option>
+          <option>INSUMOS</option>
+          <option>SALARIO</option>
+          <option>VEICULO</option>
+        </select>
+      </div>
+
+      <!-- VENCIMENTO -->
+      <div class="d-flex flex-column">
+        <label class="form-label fw-bold small text-light">Vencimento</label>
+        <div class="input-group" style="width: 200px;">
+          <!-- Alterado: name="dp3", #d3="ngbDatepicker" e removido [(ngModel)] -->
+          <input formControlName="vencimento" class="form-control" placeholder="aaaa-mm-dd" name="dp3" ngbDatepicker
+            #d3="ngbDatepicker" />
+
+          <!-- Alterado: d3.toggle() -->
+          <button class="btn btn-outline-primary" (click)="d3.toggle()" type="button">
+            <i class="bi bi-calendar3"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- VALOR -->
+      <div class="d-flex flex-column" style="width: 130px;">
+        <label class="form-label fw-bold small text-light">Valor</label>
+        <input formControlName="valor" type="text" class="form-control text-end" placeholder="0,00" />
+      </div>
+
+      <!-- STATUS -->
+      <div class="d-flex flex-column" style="width: 150px;">
+        <label class="form-label fw-bold small text-light">Status</label>
+        <select formControlName="status" class="form-select" id="status" name="status">
+          <option value="" disabled selected>Selecione...</option>
+          <option>A PAGAR</option>
+          <option>PAGO</option>
+        </select>
+      </div>
+
+      <!-- BOTÃO SALVAR -->
+      <div class="d-flex flex-column">
+        <label class="form-label">&nbsp;</label> <!-- Label vazio para alinhar o botão -->
+        <button type="button" class="btn btn-success px-4" (click)="adicionaNovaDespesa()">
+          <i class="bi bi-pencil-square"></i> Alterar
+        </button>
+      </div>
+
+    </div>
+  </form>
+</div>
+
   <!---------------------------TABELA CONSULTA DESPESAS--------------------->
   <table class="table table-dark table-hover align-middle">
     <thead>
@@ -154,6 +239,7 @@
         <th>Vencimento</th>
         <th style="width: 150px;">Valor</th> <!-- Definir largura ajuda no layout -->
         <th>Status</th>
+        <th>Alterar</th>
       </tr>
     </thead>
     <tbody>
@@ -164,6 +250,13 @@
         <td>{{ dados.vencimento | date: 'dd/MM/yyyy' }}</td>
         <td>{{ dados.valor}}</td>
         <td>{{ dados.status }}</td>
+        <td>
+    <!-- Alterado de (item) para (dados) -->
+    <button type="button" class="btn btn-sm btn-outline-primary" (click)="alterarDespesa(dados)"
+      title="Editar Despesa">
+      <i class="bi bi-pencil-square"></i>
+    </button>
+  </td>
       </tr>
     </tbody>
   </table>
