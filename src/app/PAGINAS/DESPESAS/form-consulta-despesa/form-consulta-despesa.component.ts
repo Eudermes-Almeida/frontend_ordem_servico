@@ -56,6 +56,8 @@ export class FormConsultaDespesaComponent {
     exibirBtnIniciarMes: boolean = false;
     exibirFormDespesaAvulsa: boolean = false;
     exibirTabelaDespesas: boolean = false;
+    exibirFormularioAlterarDespesa: boolean = false
+    exibirTotalizadores: boolean = false;
    
   
   configuraFormulário(){
@@ -253,6 +255,7 @@ onStatus(event: any) {
           this.exibirBtnSalvar = true;
           this.dadosInicioMes = [];
           this.exibirTabelaDespesas = false;
+          this.exibirTotalizadores = true;
         }
       },
       error: (err) => {
@@ -302,6 +305,7 @@ onStatus(event: any) {
         console.log("Busca filtrada realizada com sucesso:", this.dadosEntreIntervalo);
         
         // Mantendo a lógica de exibição do seu padrão
+        this.exibirTotalizadores = true;
         this.exibirTabelaDespesas = true;
         this.calcularValorTotal();
         this.calcularValorApagar();
@@ -407,6 +411,10 @@ alterarDespesa(dados: Despesa) {
     valor: dados.valor,
     vencimento: dataFormatada // Seta o objeto tratado para o datepicker
   });
+
+  this.exibirFormularioAlterarDespesa = true;
+  this.exibirTabelaDespesas = false;
+  this.exibirTotalizadores = false;
   
 }
 
