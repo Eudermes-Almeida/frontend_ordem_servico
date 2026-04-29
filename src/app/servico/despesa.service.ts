@@ -58,5 +58,9 @@ atualizarDespesa(id: number, despesa: Despesa): Observable<Despesa> {
   return this.http.put<Despesa>(url, despesa);
 }
 
+deleteDespesa(id: number): Observable<void> {
+  const url = `${this.urlServidor}despesa/${id}`; // Certifique-se que urlServidor termina com /
+  return this.http.delete<void>(url);
+}
 
 }

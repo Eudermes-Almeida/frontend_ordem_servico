@@ -454,6 +454,41 @@ salvarAlteracaoDespesa() {
   this.exibirFormularioAlterarDespesa = false;
 }
 
+reiniciarPagina(): void {
+    window.location.reload();
+  }
+
+  // Variável global no componente para armazenar o ID selecionado
+idParaDeletar: number | null = null;
+
+// 1. Método chamado pelo botão TRASH na tabela
+prepararParaDeletar(id: number) {
+  this.idParaDeletar = id;
+}
+
+// 2. Método chamado pelo botão "Apagar Despesa" dentro do MODAL
+apagarDespesa() {
+  if (this.idParaDeletar) {
+    this.despesaService.deleteDespesa(this.idParaDeletar).subscribe({
+      next: () => {
+        console.log("Despesa apagada com sucesso");
+        
+        // Fecha o modal via código ou apenas limpa os dados
+        this.idParaDeletar = null;
+        
+        // Atualiza a lista da tabela
+        this.consultarDespesasComFiltro()
+        
+        // Fecha o modal manualmente se necessário ou via data-bs-dismiss no HTML
+        alert("Despesa excluída permanentemente.");
+      },
+      error: (err) => {
+        console.error("Erro ao apagar despesa", err);
+        alert("Não foi possível excluir a despesa.");
+      }
+    });
+  }
+}
 
 
 
