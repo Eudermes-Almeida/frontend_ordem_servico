@@ -48,6 +48,7 @@ buscaDespesasEntreDatas(dataInicio: string, dataFim: string): Observable<any> {
 
 
 consultarDespesasFiltro(dataInicio: string, dataFim: string, categoria: string, status: string): Observable<any> {
+  console.log(" Esta é a categoria no service: ", categoria)
   const url = `${this.urlServidor}despesa/vencimento-intervalo-categoria-status?inicio=${dataInicio}&fim=${dataFim}&categoria=${categoria}&status=${status}`;
   return this.http.get<any>(url);
 }

@@ -283,6 +283,8 @@ onStatus(event: any) {
     return;
   }
 
+  console.log("Esta é a categoria selecionada:  ", this.categoriaSelecionada)
+
   this.despesaService?.consultarDespesasFiltro(
     this.dataInicialIntervalo, 
     this.dataFinalIntervalo, 
@@ -322,7 +324,6 @@ onStatus(event: any) {
       alert(mensagemErro);
     },
     complete: () => {
-      console.log("Consulta por filtro finalizada.");
     }
   });
 }
@@ -336,8 +337,6 @@ calcularValorTotal(): void {
     // Soma apenas se for um número válido, senão soma 0
     return acumulador + (isNaN(valorNumerico) ? 0 : valorNumerico);
   }, 0);
-
-  console.log("Este é o valor geral", this.valorGeral)
 }
 
 
@@ -355,8 +354,6 @@ calcularValorApagar(): void {
     // Se o status não for 'A PAGAR', mantém o valor acumulado anterior
     return acumulador;
   }, 0);
-
-  console.log("Este é o valor total a pagar:", this.valorTotalApagar);
 }
 
 calcularValorPago(): void {
@@ -367,37 +364,25 @@ calcularValorPago(): void {
     }
     return acumulador;
   }, 0);
-  console.log("Este é o valor total pago:", this.valorTotalPago);
 }
 
 calcularValorEmpresa(): void {
   this.valorTotalEmpresa = this.dadosConsultaFiltro.reduce((acumulador, item) => {
     if (item.categoria === 'ADMINISTRATIVA' || item.categoria ==='ALUGUEL' || item.categoria === 'BANCARIA' || item.categoria === 'BATERIA' || item.categoria === 'IMPOSTOS' || item.categoria === 'INSUMOS' || item.categoria === 'SALARIO' || item.categoria === 'VEICULO') {
       const valorNumerico = parseFloat(item.valor.replace(',', '.'));
-      console.log(item.categoria)
       return acumulador + (isNaN(valorNumerico) ? 0 : valorNumerico);
     }
     return acumulador;
   }, 0);
-  console.log("Este é o valor total Empresa:", this.valorTotalEmpresa);
 }
 
 calcularValorCasa(): void {
   this.valorTotalCasa = this.dadosConsultaFiltro.reduce((acumulador, item) => {
     if (item.categoria === 'CASA' || item.categoria ==='IGREJA') {
       const valorNumerico = parseFloat(item.valor.replace(',', '.'));
-      console.log(item.categoria)
       return acumulador + (isNaN(valorNumerico) ? 0 : valorNumerico);
     }
     return acumulador;
   }, 0);
-  console.log("Este é o valor total Empresa:", this.valorTotalCasa);
 }
-
-
-
-
-
-  
-
 }
