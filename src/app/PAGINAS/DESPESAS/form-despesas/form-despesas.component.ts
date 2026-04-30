@@ -270,6 +270,31 @@ consultarDespesasNoPeriodo() {
   });
 }
 
+// Variável global no componente para armazenar o ID selecionado
+idParaDeletar: number | null = null;
+
+// 1. Método chamado pelo botão TRASH na tabela
+prepararParaDeletar(id: number) {
+  this.idParaDeletar = id;
+}
+
+// 2. Método chamado pelo botão "Apagar Despesa" dentro do MODAL
+apagarDespesa() {
+  if (this.idParaDeletar !== null) {
+    // Filtra o array removendo o objeto que possui o ID armazenado
+    this.dadosInicioMes = this.dadosInicioMes.filter(despesa => despesa.id !== this.idParaDeletar);
+
+    // Opcional: Chame seu serviço aqui para deletar no Banco de Dados/Backend
+    // this.despesaService.deletar(this.idParaDeletar).subscribe();
+
+    // Reseta a variável para segurança
+    this.idParaDeletar = null;
+
+    // Se estiver usando Modal do Bootstrap via JS, feche-o aqui
+  }
+}
+
+
 
 }
 
