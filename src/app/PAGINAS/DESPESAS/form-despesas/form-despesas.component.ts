@@ -58,15 +58,17 @@ this.formularioDespesaAvulsa = new FormGroup({
     descricao:new FormControl('', Validators.required),
     categoria:new FormControl('', Validators.required),
     vencimento:new FormControl('', Validators.required),
-    valor:new FormControl('', Validators.required),
-    status:new FormControl('', Validators.required),
-    recorrente:new FormControl('', Validators.required)
+    valor:new FormControl('0.00', Validators.required),
+    status:new FormControl('A PAGAR', Validators.required),
+    recorrente:new FormControl('NAO', Validators.required)
     
      });
 }
 
 
 adicionaNovaDespesa() {
+
+  
   // 1. Validação básica
   if (this.formularioDespesaAvulsa.invalid) {
     alert("Por favor, preencha todos os campos.");
@@ -110,6 +112,7 @@ adicionaNovaDespesa() {
   });
 
   console.log("Este é o array " , this.dadosInicioMes)
+  this.configuraFormulário();
 }
 
 
