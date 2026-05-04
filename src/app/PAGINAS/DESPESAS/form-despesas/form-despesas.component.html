@@ -74,7 +74,7 @@
 
     <!-- botão 3 -->
     <div *ngIf="exibirBtnSalvar && dadosInicioMes.length>0" class="d-flex justify-content-end">
-      <button type="button" class="btn btn-primary" (click)="enviaIncioMesCompleto()">
+      <button type="button" class="btn btn-primary" (click)="enviaDespesasAvulsas()">
         salvar todas avulsas
       </button>
     </div>
@@ -137,6 +137,18 @@
           <option>PAGO</option>
         </select>
       </div>
+
+      <!-- RECORRÊNCIA -->
+      <div class="d-flex flex-column" style="width: 150px;">
+        <label class="form-label fw-bold small text-light">Recorrente</label>
+        <select formControlName="recorrente" class="form-select" id="recorrente" name="recorrente">
+          <option value="" disabled selected>Selecione...</option>
+          <option>SIM</option>
+          <option>NAO</option>
+        </select>
+      </div>
+
+
 
       <!-- BOTÃO SALVAR -->
       <div class="d-flex flex-column">

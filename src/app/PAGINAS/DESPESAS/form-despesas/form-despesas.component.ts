@@ -59,7 +59,9 @@ this.formularioDespesaAvulsa = new FormGroup({
     categoria:new FormControl('', Validators.required),
     vencimento:new FormControl('', Validators.required),
     valor:new FormControl('', Validators.required),
-    status:new FormControl('', Validators.required)
+    status:new FormControl('', Validators.required),
+    recorrente:new FormControl('', Validators.required)
+    
      });
 }
 
@@ -70,13 +72,21 @@ adicionaNovaDespesa() {
     alert("Por favor, preencha todos os campos.");
     return;
   }
-
   this.exibirTabelaDespesas = true;
 
-  // 2. Tratamento da Data (Objeto -> String YYYY-MM-DD)
-  const dt = this.formularioDespesaAvulsa.value.vencimento;
-  const dataFormatada = `${dt.year}-${dt.month.toString().padStart(2, '0')}-${dt.day.toString().padStart(2, '0')}`;
+  let dataFormatada: string;
 
+  //////trata data cobrança recorrente:
+  if(this.formularioDespesaAvulsa.value.recorrente === "SIM"){
+    const dt = this.formularioDespesaAvulsa.value.vencimento;
+     dataFormatada = `2000-01-${dt.day.toString().padStart(2, '0')}`;
+     this.formularioDespesaAvulsa.value.status = "A PAGAR";
+     this.formularioDespesaAvulsa.value.valor = "0.00";
+  }else{
+// 2. Tratamento da Data (Objeto -> String YYYY-MM-DD)
+  const dt = this.formularioDespesaAvulsa.value.vencimento;
+   dataFormatada = `${dt.year}-${dt.month.toString().padStart(2, '0')}-${dt.day.toString().padStart(2, '0')}`;
+  }
   // 3. Criação do objeto respeitando o modelo Despesa
   this.novaDespesa = {
     descricao: this.formularioDespesaAvulsa.value.descricao?.toUpperCase(),
@@ -84,12 +94,13 @@ adicionaNovaDespesa() {
     vencimento: dataFormatada, // Agora como string
     valor: this.formularioDespesaAvulsa.value.valor,
     status: this.formularioDespesaAvulsa.value.status,
-    iniciomes: "NAO"
+    iniciomes:this.formularioDespesaAvulsa.value.recorrente
   };
+
+  console.log("Este é o valor de this.formularioDespesaAvulsa.value.recorrente ", this.formularioDespesaAvulsa.value.recorrente)
 
   // 4. Adiciona ao array (usando push)
   this.dadosInicioMes.push(this.novaDespesa);
-
   console.log("Item adicionado à lista. Total de itens:", this.dadosInicioMes.length);
 
   // 5. Opcional: Limpar o formulário após adicionar
@@ -97,6 +108,8 @@ adicionaNovaDespesa() {
     categoria: '',
     status: 'A PAGAR'
   });
+
+  console.log("Este é o array " , this.dadosInicioMes)
 }
 
 
@@ -195,15 +208,48 @@ enviaIncioMesCompleto() {
     alert("Não há dados para salvar.");
     return;
   }
-
   
   // 3. TRATAMENTO DOS DADOS ANTES DE ENVIAR
   // Forçando o tipo Despesa no retorno do map
 const listaParaSalvar: Despesa[] = this.dadosInicioMes.map((item: Despesa): Despesa => {
   return {
     ...item,
-    id: undefined,   // Agora o TS aceita pois o modelo Despesa permite undefined
-    iniciomes: "NAO"
+    id: undefined,
+    iniciomes: "NAO"   // Agora o TS aceita pois o modelo Despesa permite undefined
+  };
+});
+
+
+  // 4. Chamada ao service enviando a lista tratada
+  this.despesaService.salvarDespesasEmLote(listaParaSalvar).subscribe({
+    next: (response) => {
+      console.log('Lote salvo com sucesso:', response);
+      alert("Todas as despesas  foram cadastradas com sucesso.");
+      this.exibirBtnCadastrarDespesasAvulsas = true;
+      // Opcional: Limpar a variável após o sucesso
+      this.dadosInicioMes = []; 
+      this.exibirTabelaDespesas = false
+    },
+    error: (error) => {
+      console.error('Erro ao salvar lote:', error);
+      alert("Erro ao salvar despesas: " + (error.error || "Erro desconhecido"));
+    }
+  });
+}
+
+enviaDespesasAvulsas() {
+  // 1. Validação de lista vazia
+  if (!this.dadosInicioMes || this.dadosInicioMes.length === 0) {
+    alert("Não há dados para salvar.");
+    return;
+  }
+  
+  // 3. TRATAMENTO DOS DADOS ANTES DE ENVIAR
+  // Forçando o tipo Despesa no retorno do map
+const listaParaSalvar: Despesa[] = this.dadosInicioMes.map((item: Despesa): Despesa => {
+  return {
+    ...item,
+    id: undefined,
   };
 });
 
