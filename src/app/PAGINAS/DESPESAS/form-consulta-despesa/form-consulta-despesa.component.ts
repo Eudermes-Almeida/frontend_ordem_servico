@@ -373,7 +373,7 @@ calcularValorPago(): void {
 
 calcularValorEmpresa(): void {
   this.valorTotalEmpresa = this.dadosConsultaFiltro.reduce((acumulador, item) => {
-    if (item.categoria === 'ADMINISTRATIVA' || item.categoria ==='ALUGUEL' || item.categoria === 'BANCARIA' || item.categoria === 'BATERIA' || item.categoria === 'IMPOSTO' || item.categoria === 'INSUMOS' || item.categoria === 'SALARIO' || item.categoria === 'VEICULO') {
+    if (item.categoria === 'ADMINISTRATIVA' || item.categoria ==='ALUGUEL' || item.categoria === 'BANCARIA' || item.categoria === 'BATERIA' || item.categoria === 'IMPOSTO' || item.categoria === 'INSUMOS' || item.categoria === 'SALARIO' || item.categoria === 'VEICULO' || item.categoria === 'EMPRESTIMO') {
       const valorNumerico = parseFloat(item.valor.replace(',', '.'));
       return acumulador + (isNaN(valorNumerico) ? 0 : valorNumerico);
     }
