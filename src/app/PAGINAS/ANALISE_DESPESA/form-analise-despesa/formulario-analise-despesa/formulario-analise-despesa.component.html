@@ -1,0 +1,84 @@
+
+<div class="d-flex align-items-center w-100" style="gap: 15px;">
+  <!-- Bloco da Esquerda -->
+  <p style="color: yellow; margin: 0; font-size: 1.5rem;">Fator Meta</p>
+  <button class="btn btn-outline-warning" (click)="aumentarFator()">+</button>
+  <button class="btn btn-outline-danger" (click)="diminuirFator()">-</button>
+  <p style="color: yellow; margin: 0; font-size: 40px;">
+  {{fatorMeta | number: '1.2-2'}} <span>%</span>
+</p>
+
+
+
+
+  <!-- Espaçador Flex que empurra o próximo item para o fim -->
+  <div class="flex-grow-1"></div>
+
+  <!-- Bloco da Direita -->
+  <div class="btn-group mb-0 me-3" role="group" aria-label="Seleção de Visualização" style="margin-right: 20px;">
+    <input type="radio" class="btn-check" name="btnview" id="btnAnalitica" autocomplete="off" checked (click)="funcModoAnalitico()">
+    <label class="btn btn-outline-warning" for="btnAnalitica">Analítico</label>
+
+    <input type="radio" class="btn-check" name="btnview" id="btnGrafico" autocomplete="off" (click)="funcModoGrafico()">
+    <label class="btn btn-outline-warning" for="btnGrafico">Gráfico</label>
+</div>
+
+</div>
+
+
+
+<div *ngIf="modoAnalitico" class="tabela-scroll">
+<table border="1" class="table table-dark table-hover">
+  <thead>
+    <tr>
+      <th style="color: yellow;">Mês</th>
+      <th style="color: yellow;">Média (últimos 5 anos)</th>
+      <th style="color: yellow;">Meta Mês Atual</th>
+      <th style="color: yellow;">2021</th>
+      <th style="color: yellow;">2022</th>
+      <th style="color: yellow;">2023</th>
+      <th style="color: yellow;">2024</th>
+      <th style="color: yellow;">2025</th>
+      <th style="color: yellow;">2026</th>
+      <th style="color: yellow;">2027</th>
+      <th style="color: yellow;">2028</th>
+    </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let mes of meses; let i = index">
+    <td>{{ mes | titlecase }}</td>
+    <!-- Média (Laranja) -->
+    <td style="color: orange;">{{ formatarParaTela(mediaFaturamento[i]) }}</td>
+    <td style="color: orange;">{{ formatarParaTela(meta[i]) }}</td>
+    
+    <!-- Anos -->
+    <td>{{ formatarParaTela(ano2021[i]) }}</td>
+    <td>{{ formatarParaTela(ano2022[i]) }}</td>
+    <td>{{ formatarParaTela(ano2023[i]) }}</td>
+    <td>{{ formatarParaTela(ano2024[i]) }}</td>
+    <td>{{ formatarParaTela(ano2025[i]) }}</td>
+    <td>{{ formatarParaTela(ano2026[i]) }}</td>
+    <td>{{ formatarParaTela(ano2027[i]) }}</td>
+    <td>{{ formatarParaTela(ano2028[i]) }}</td>
+  </tr>
+</tbody>
+
+</table>
+</div>
+
+<!-- O segredo está em definir o tamanho no PAI do canvas -->
+<div *ngIf="!modoAnalitico" class="container-grafico">
+  <canvas #grafico1></canvas>
+</div>
+
+<style>
+  .container-grafico {
+    width: 80%;         /* Apenas 25% da largura da página */
+    height: 600px;      /* Altura fixa para o eixo Y respirar */
+    min-width: 600px;   /* Evita que fique pequeno demais em telas menores */
+    margin-top: 20px;
+    position: relative; /* Necessário para o modo responsive: true */
+  }
+</style>
+
+

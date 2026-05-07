@@ -19,7 +19,7 @@ import { PAGLOGINLISTAComponent } from './PAGINAS/LOGIN_LISTA/pag-login-lista/pa
 import { PaginaAnaliseFaturamentoComponent } from './PAGINAS/ANALISE_FATURAMENTO/pag-analise-faturamento/pagina-analise-faturamento.component';
 import { PagDespesasComponent } from './PAGINAS/DESPESAS/pag-despesas/pag-despesas.component';
 import { PagConsultaDespesaComponent } from './PAGINAS/DESPESAS/pag-consulta-despesa/pag-consulta-despesa.component';
-
+import { PaginaAnaliseDespesaComponent } from './PAGINAS/ANALISE_DESPESA/pag-analise-despesa/pagina-analise-despesa/pagina-analise-despesa.component';
 
 export const routes: Routes = [ 
     {path: '', component: HomeComponent},
@@ -37,10 +37,12 @@ export const routes: Routes = [
     { path: 'os/orcamento', component: PAGORCAMENTOComponent },
     { path: 'os/relatorio', component: PAGRELATORIOSComponent },
     {path: 'os/relatorio/faturamento', component: PaginaAnaliseFaturamentoComponent},
+    {path: 'os/relatorio/despesa', component: PaginaAnaliseDespesaComponent},
     { path: 'os/relatorio/detalhes/:variavelEnviada/:dataInicio/:dataFim',component: PAGDETALHESComponent},
     { path: 'parametros',component: PAGPARAMETROSComponent},
     { path: 'login',component: PAGLOGINEXTERNOComponent},
     { path: 'login/lista/:codcli',component: PAGLOGINLISTAComponent},
     { path: 'despesa/cadastro',component: PagDespesasComponent},
     { path: 'despesa/consulta',component: PagConsultaDespesaComponent},
+    
 ];
