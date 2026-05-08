@@ -69,6 +69,8 @@ export class FormularioAnaliseFaturamentoComponent {
   fatorMeta: number = 1
   modoAnalitico: boolean = true
 
+  
+
   datas2025: DatasAnaliseFaturamento[] = [
     { dataInicial: "01012025", dataFinal: "31012025" }, // Janeiro
     { dataInicial: "01022025", dataFinal: "28022025" }, // Fevereiro
@@ -169,9 +171,7 @@ export class FormularioAnaliseFaturamentoComponent {
 
             // 2. Média Mensal (Índice 13)
             const mesesComFaturamento = valoresMeses.filter(valor => valor > 0);
-            this.ano2025[13] = mesesComFaturamento.length > 0
-              ? totalAnual / mesesComFaturamento.length
-              : 0;
+            this.ano2025[13] = mesesComFaturamento.length > 0 ? totalAnual / mesesComFaturamento.length : 0;
 
             // 3. Média por Equipamento (Índice 14)
             // Soma todas as quantidades de OS do ano

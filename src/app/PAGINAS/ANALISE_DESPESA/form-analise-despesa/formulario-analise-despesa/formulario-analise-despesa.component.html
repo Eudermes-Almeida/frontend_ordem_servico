@@ -1,31 +1,24 @@
 
-<div class="d-flex align-items-center w-100" style="gap: 15px;">
-  <!-- Bloco da Esquerda -->
-  <p style="color: yellow; margin: 0; font-size: 1.5rem;">Fator Meta</p>
-  <button class="btn btn-outline-warning" (click)="aumentarFator()">+</button>
-  <button class="btn btn-outline-danger" (click)="diminuirFator()">-</button>
-  <p style="color: yellow; margin: 0; font-size: 40px;">
-  {{fatorMeta | number: '1.2-2'}} <span>%</span>
-</p>
-
-
-
-
-  <!-- Espaçador Flex que empurra o próximo item para o fim -->
-  <div class="flex-grow-1"></div>
-
-  <!-- Bloco da Direita -->
-  <div class="btn-group mb-0 me-3" role="group" aria-label="Seleção de Visualização" style="margin-right: 20px;">
-    <input type="radio" class="btn-check" name="btnview" id="btnAnalitica" autocomplete="off" checked (click)="funcModoAnalitico()">
-    <label class="btn btn-outline-warning" for="btnAnalitica">Analítico</label>
-
-    <input type="radio" class="btn-check" name="btnview" id="btnGrafico" autocomplete="off" (click)="funcModoGrafico()">
-    <label class="btn btn-outline-warning" for="btnGrafico">Gráfico</label>
-</div>
-
-</div>
-
-
+ <div>
+    <label class="form-label fw-bold small text-light">Escolha o ano que será analisado</label>
+    <select  (change)="onAnoSelecionado($event)" class="form-select" id="anoSelecionado"
+      name="categoria" style="width: 200px;">
+      <option value="" disabled selected>Selecione...</option>
+      <option>2022</option>
+      <option>2023</option>
+      <option>2024</option>
+      <option>2025</option>
+      <option>2026</option>
+      <option>2027</option>
+      <option>2028</option>
+      <option>2029</option>
+      <option>2030</option>
+    </select>
+    <p>.</p>
+    <p>.</p>
+    <p>.</p>
+    <p>.</p>
+  </div>
 
 <div *ngIf="modoAnalitico" class="tabela-scroll">
 <table border="1" class="table table-dark table-hover">
@@ -66,19 +59,6 @@
 </table>
 </div>
 
-<!-- O segredo está em definir o tamanho no PAI do canvas -->
-<div *ngIf="!modoAnalitico" class="container-grafico">
-  <canvas #grafico1></canvas>
-</div>
 
-<style>
-  .container-grafico {
-    width: 80%;         /* Apenas 25% da largura da página */
-    height: 600px;      /* Altura fixa para o eixo Y respirar */
-    min-width: 600px;   /* Evita que fique pequeno demais em telas menores */
-    margin-top: 20px;
-    position: relative; /* Necessário para o modo responsive: true */
-  }
-</style>
 
 
