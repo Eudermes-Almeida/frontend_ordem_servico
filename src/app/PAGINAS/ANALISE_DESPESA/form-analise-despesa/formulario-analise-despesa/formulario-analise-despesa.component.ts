@@ -57,51 +57,56 @@ export class FormularioAnaliseDespesaComponent {
   anoSelecionado: string = "";
   datasIniciaisEfinais?: DatasAnaliseFaturamento[];
   dadosConsultaFiltro: Despesa[] = [];
+  totaisMensaisDespesas: number[] = new Array(12).fill(0); 
+
 
   datas2022: DatasAnaliseFaturamento[] = [
-    { dataInicial: "01012022", dataFinal: "31012022" }, // Janeiro
-    { dataInicial: "01022022", dataFinal: "28022022" }, // Fevereiro
-    { dataInicial: "01032022", dataFinal: "31032022" }, // Março
-    { dataInicial: "01042022", dataFinal: "30042022" }, // Abril
-    { dataInicial: "01052022", dataFinal: "31052022" }, // Maio
-    { dataInicial: "01062022", dataFinal: "30062022" }, // Junho
-    { dataInicial: "01072022", dataFinal: "31072022" }, // Julho
-    { dataInicial: "01082022", dataFinal: "31082022" }, // Agosto
-    { dataInicial: "01092022", dataFinal: "30092022" }, // Setembro
-    { dataInicial: "01102022", dataFinal: "31102022" }, // Outubro
-    { dataInicial: "01112022", dataFinal: "30112022" }, // Novembro
-    { dataInicial: "01122022", dataFinal: "31122022" }  // Dezembro
+    { dataInicial: "2022-01-01", dataFinal: "2022-01-31" }, // Janeiro
+    { dataInicial: "2022-02-01", dataFinal: "2022-02-28" }, // Fevereiro
+    { dataInicial: "2022-03-01", dataFinal: "2022-03-31" }, // Março
+    { dataInicial: "2022-04-01", dataFinal: "2022-04-30" }, // Abril
+    { dataInicial: "2022-05-01", dataFinal: "2022-05-31" }, // Maio
+    { dataInicial: "2022-06-01", dataFinal: "2022-06-30" }, // Junho
+    { dataInicial: "2022-07-01", dataFinal: "2022-07-31" }, // Julho
+    { dataInicial: "2022-08-01", dataFinal: "2022-08-31" }, // Agosto
+    { dataInicial: "2022-09-01", dataFinal: "2022-09-30" }, // Setembro
+    { dataInicial: "2022-10-01", dataFinal: "2022-10-31" }, // Outubro
+    { dataInicial: "2022-11-01", dataFinal: "2022-11-30" }, // Novembro
+    { dataInicial: "2022-12-01", dataFinal: "2022-12-31" }  // Dezembro
   ];
+
 
   datas2023: DatasAnaliseFaturamento[] = [
-    { dataInicial: "01012023", dataFinal: "31012023" }, // Janeiro
-    { dataInicial: "01022023", dataFinal: "28022023" }, // Fevereiro
-    { dataInicial: "01032023", dataFinal: "31032023" }, // Março
-    { dataInicial: "01042023", dataFinal: "30042023" }, // Abril
-    { dataInicial: "01052023", dataFinal: "31052023" }, // Maio
-    { dataInicial: "01062023", dataFinal: "30062023" }, // Junho
-    { dataInicial: "01072023", dataFinal: "31072023" }, // Julho
-    { dataInicial: "01082023", dataFinal: "31082023" }, // Agosto
-    { dataInicial: "01092023", dataFinal: "30092023" }, // Setembro
-    { dataInicial: "01102023", dataFinal: "31102023" }, // Outubro
-    { dataInicial: "01112023", dataFinal: "30112023" }, // Novembro
-    { dataInicial: "01122023", dataFinal: "31122023" }  // Dezembro
+    { dataInicial: "2023-01-01", dataFinal: "2023-01-31" }, // Janeiro
+    { dataInicial: "2023-02-01", dataFinal: "2023-02-28" }, // Fevereiro
+    { dataInicial: "2023-03-01", dataFinal: "2023-03-31" }, // Março
+    { dataInicial: "2023-04-01", dataFinal: "2023-04-30" }, // Abril
+    { dataInicial: "2023-05-01", dataFinal: "2023-05-31" }, // Maio
+    { dataInicial: "2023-06-01", dataFinal: "2023-06-30" }, // Junho
+    { dataInicial: "2023-07-01", dataFinal: "2023-07-31" }, // Julho
+    { dataInicial: "2023-08-01", dataFinal: "2023-08-31" }, // Agosto
+    { dataInicial: "2023-09-01", dataFinal: "2023-09-30" }, // Setembro
+    { dataInicial: "2023-10-01", dataFinal: "2023-10-31" }, // Outubro
+    { dataInicial: "2023-11-01", dataFinal: "2023-11-30" }, // Novembro
+    { dataInicial: "2023-12-01", dataFinal: "2023-12-31" }  // Dezembro
   ];
 
+
   datas2024: DatasAnaliseFaturamento[] = [
-    { dataInicial: "01012024", dataFinal: "31012024" }, // Janeiro
-    { dataInicial: "01022024", dataFinal: "29022024" }, // Fevereiro (Bissexto!)
-    { dataInicial: "01032024", dataFinal: "31032024" }, // Março
-    { dataInicial: "01042024", dataFinal: "30042024" }, // Abril
-    { dataInicial: "01052024", dataFinal: "31052024" }, // Maio
-    { dataInicial: "01062024", dataFinal: "30062024" }, // Junho
-    { dataInicial: "01072024", dataFinal: "31072024" }, // Julho
-    { dataInicial: "01082024", dataFinal: "31082024" }, // Agosto
-    { dataInicial: "01092024", dataFinal: "30092024" }, // Setembro
-    { dataInicial: "01102024", dataFinal: "31102024" }, // Outubro
-    { dataInicial: "01112024", dataFinal: "30112024" }, // Novembro
-    { dataInicial: "01122024", dataFinal: "31122024" }  // Dezembro
+    { dataInicial: "2024-01-01", dataFinal: "2024-01-31" }, // Janeiro
+    { dataInicial: "2024-02-01", dataFinal: "2024-02-29" }, // Fevereiro (Bissexto!)
+    { dataInicial: "2024-03-01", dataFinal: "2024-03-31" }, // Março
+    { dataInicial: "2024-04-01", dataFinal: "2024-04-30" }, // Abril
+    { dataInicial: "2024-05-01", dataFinal: "2024-05-31" }, // Maio
+    { dataInicial: "2024-06-01", dataFinal: "2024-06-30" }, // Junho
+    { dataInicial: "2024-07-01", dataFinal: "2024-07-31" }, // Julho
+    { dataInicial: "2024-08-01", dataFinal: "2024-08-31" }, // Agosto
+    { dataInicial: "2024-09-01", dataFinal: "2024-09-30" }, // Setembro
+    { dataInicial: "2024-10-01", dataFinal: "2024-10-31" }, // Outubro
+    { dataInicial: "2024-11-01", dataFinal: "2024-11-30" }, // Novembro
+    { dataInicial: "2024-12-01", dataFinal: "2024-12-31" }  // Dezembro
   ];
+
 
   datas2025: DatasAnaliseFaturamento[] = [
     { dataInicial: "2025-01-01", dataFinal: "2025-01-31" }, // Janeiro
@@ -116,83 +121,87 @@ export class FormularioAnaliseDespesaComponent {
     { dataInicial: "2025-10-01", dataFinal: "2025-10-31" }, // Outubro
     { dataInicial: "2025-11-01", dataFinal: "2025-11-30" }, // Novembro
     { dataInicial: "2025-12-01", dataFinal: "2025-12-31" }  // Dezembro
-];
+  ];
 
 
   datas2026: DatasAnaliseFaturamento[] = [
-    { dataInicial: "01012026", dataFinal: "31012026" }, // Janeiro
-    { dataInicial: "01022026", dataFinal: "28022026" }, // Fevereiro
-    { dataInicial: "01032026", dataFinal: "31032026" }, // Março
-    { dataInicial: "01042026", dataFinal: "30042026" }, // Abril
-    { dataInicial: "01052026", dataFinal: "31052026" }, // Maio
-    { dataInicial: "01062026", dataFinal: "30062026" }, // Junho
-    { dataInicial: "01072026", dataFinal: "31072026" }, // Julho
-    { dataInicial: "01082026", dataFinal: "31082026" }, // Agosto
-    { dataInicial: "01092026", dataFinal: "30092026" }, // Setembro
-    { dataInicial: "01102026", dataFinal: "31102026" }, // Outubro
-    { dataInicial: "01112026", dataFinal: "30112026" }, // Novembro
-    { dataInicial: "01122026", dataFinal: "31122026" }  // Dezembro
+    { dataInicial: "2026-01-01", dataFinal: "2026-01-31" }, // Janeiro
+    { dataInicial: "2026-02-01", dataFinal: "2026-02-28" }, // Fevereiro
+    { dataInicial: "2026-03-01", dataFinal: "2026-03-31" }, // Março
+    { dataInicial: "2026-04-01", dataFinal: "2026-04-30" }, // Abril
+    { dataInicial: "2026-05-01", dataFinal: "2026-05-31" }, // Maio
+    { dataInicial: "2026-06-01", dataFinal: "2026-06-30" }, // Junho
+    { dataInicial: "2026-07-01", dataFinal: "2026-07-31" }, // Julho
+    { dataInicial: "2026-08-01", dataFinal: "2026-08-31" }, // Agosto
+    { dataInicial: "2026-09-01", dataFinal: "2026-09-30" }, // Setembro
+    { dataInicial: "2026-10-01", dataFinal: "2026-10-31" }, // Outubro
+    { dataInicial: "2026-11-01", dataFinal: "2026-11-30" }, // Novembro
+    { dataInicial: "2026-12-01", dataFinal: "2026-12-31" }  // Dezembro
   ];
 
   datas2027: DatasAnaliseFaturamento[] = [
-    { dataInicial: "01012027", dataFinal: "31012027" }, // Janeiro
-    { dataInicial: "01022027", dataFinal: "28022027" }, // Fevereiro
-    { dataInicial: "01032027", dataFinal: "31032027" }, // Março
-    { dataInicial: "01042027", dataFinal: "30042027" }, // Abril
-    { dataInicial: "01052027", dataFinal: "31052027" }, // Maio
-    { dataInicial: "01062027", dataFinal: "30062027" }, // Junho
-    { dataInicial: "01072027", dataFinal: "31072027" }, // Julho
-    { dataInicial: "01082027", dataFinal: "31082027" }, // Agosto
-    { dataInicial: "01092027", dataFinal: "30092027" }, // Setembro
-    { dataInicial: "01102027", dataFinal: "31102027" }, // Outubro
-    { dataInicial: "01112027", dataFinal: "30112027" }, // Novembro
-    { dataInicial: "01122027", dataFinal: "31122027" }  // Dezembro
+    { dataInicial: "2027-01-01", dataFinal: "2027-01-31" }, // Janeiro
+    { dataInicial: "2027-02-01", dataFinal: "2027-02-28" }, // Fevereiro
+    { dataInicial: "2027-03-01", dataFinal: "2027-03-31" }, // Março
+    { dataInicial: "2027-04-01", dataFinal: "2027-04-30" }, // Abril
+    { dataInicial: "2027-05-01", dataFinal: "2027-05-31" }, // Maio
+    { dataInicial: "2027-06-01", dataFinal: "2027-06-30" }, // Junho
+    { dataInicial: "2027-07-01", dataFinal: "2027-07-31" }, // Julho
+    { dataInicial: "2027-08-01", dataFinal: "2027-08-31" }, // Agosto
+    { dataInicial: "2027-09-01", dataFinal: "2027-09-30" }, // Setembro
+    { dataInicial: "2027-10-01", dataFinal: "2027-10-31" }, // Outubro
+    { dataInicial: "2027-11-01", dataFinal: "2027-11-30" }, // Novembro
+    { dataInicial: "2027-12-01", dataFinal: "2027-12-31" }  // Dezembro
   ];
+
 
   datas2028: DatasAnaliseFaturamento[] = [
-    { dataInicial: "01012028", dataFinal: "31012028" }, // Janeiro
-    { dataInicial: "01022028", dataFinal: "29022028" }, // Fevereiro (Ano Bissexto)
-    { dataInicial: "01032028", dataFinal: "31032028" }, // Março
-    { dataInicial: "01042028", dataFinal: "30042028" }, // Abril
-    { dataInicial: "01052028", dataFinal: "31052028" }, // Maio
-    { dataInicial: "01062028", dataFinal: "30062028" }, // Junho
-    { dataInicial: "01072028", dataFinal: "31072028" }, // Julho
-    { dataInicial: "01082028", dataFinal: "31082028" }, // Agosto
-    { dataInicial: "01092028", dataFinal: "30092028" }, // Setembro
-    { dataInicial: "01102028", dataFinal: "31102028" }, // Outubro
-    { dataInicial: "01112028", dataFinal: "30112028" }, // Novembro
-    { dataInicial: "01122028", dataFinal: "31122028" }  // Dezembro
+    { dataInicial: "2028-01-01", dataFinal: "2028-01-31" }, // Janeiro
+    { dataInicial: "2028-02-01", dataFinal: "2028-02-29" }, // Fevereiro (Bissexto!)
+    { dataInicial: "2028-03-01", dataFinal: "2028-03-31" }, // Março
+    { dataInicial: "2028-04-01", dataFinal: "2028-04-30" }, // Abril
+    { dataInicial: "2028-05-01", dataFinal: "2028-05-31" }, // Maio
+    { dataInicial: "2028-06-01", dataFinal: "2028-06-30" }, // Junho
+    { dataInicial: "2028-07-01", dataFinal: "2028-07-31" }, // Julho
+    { dataInicial: "2028-08-01", dataFinal: "2028-08-31" }, // Agosto
+    { dataInicial: "2028-09-01", dataFinal: "2028-09-30" }, // Setembro
+    { dataInicial: "2028-10-01", dataFinal: "2028-10-31" }, // Outubro
+    { dataInicial: "2028-11-01", dataFinal: "2028-11-30" }, // Novembro
+    { dataInicial: "2028-12-01", dataFinal: "2028-12-31" }  // Dezembro
   ];
 
-  datas2029: DatasAnaliseFaturamento[] = [
-    { dataInicial: "01012029", dataFinal: "31012029" }, // Janeiro
-    { dataInicial: "01022029", dataFinal: "28022029" }, // Fevereiro
-    { dataInicial: "01032029", dataFinal: "31032029" }, // Março
-    { dataInicial: "01042029", dataFinal: "30042029" }, // Abril
-    { dataInicial: "01052029", dataFinal: "31052029" }, // Maio
-    { dataInicial: "01062029", dataFinal: "30062029" }, // Junho
-    { dataInicial: "01072029", dataFinal: "31072029" }, // Julho
-    { dataInicial: "01082029", dataFinal: "31082029" }, // Agosto
-    { dataInicial: "01092029", dataFinal: "30092029" }, // Setembro
-    { dataInicial: "01102029", dataFinal: "31102029" }, // Outubro
-    { dataInicial: "01112029", dataFinal: "30112029" }, // Novembro
-    { dataInicial: "01122029", dataFinal: "31122029" }  // Dezembro
-];
 
-datas2030: DatasAnaliseFaturamento[] = [
-    { dataInicial: "01012030", dataFinal: "31012030" }, // Janeiro
-    { dataInicial: "01022030", dataFinal: "28022030" }, // Fevereiro
-    { dataInicial: "01032030", dataFinal: "31032030" }, // Março
-    { dataInicial: "01042030", dataFinal: "30042030" }, // Abril
-    { dataInicial: "01052030", dataFinal: "31052030" }, // Maio
-    { dataInicial: "01062030", dataFinal: "30062030" }, // Junho
-    { dataInicial: "01072030", dataFinal: "31072030" }, // Julho
-    { dataInicial: "01082030", dataFinal: "31082030" }, // Agosto
-    { dataInicial: "01092030", dataFinal: "30092030" }, // Setembro
-    { dataInicial: "01102030", dataFinal: "31102030" }, // Outubro
-    { dataInicial: "01112030", dataFinal: "30112030" }, // Novembro
-    { dataInicial: "01122030", dataFinal: "31122030" }  // Dezembro
-];
+  datas2029: DatasAnaliseFaturamento[] = [
+    { dataInicial: "2029-01-01", dataFinal: "2029-01-31" }, // Janeiro
+    { dataInicial: "2029-02-01", dataFinal: "2029-02-28" }, // Fevereiro
+    { dataInicial: "2029-03-01", dataFinal: "2029-03-31" }, // Março
+    { dataInicial: "2029-04-01", dataFinal: "2029-04-30" }, // Abril
+    { dataInicial: "2029-05-01", dataFinal: "2029-05-31" }, // Maio
+    { dataInicial: "2029-06-01", dataFinal: "2029-06-30" }, // Junho
+    { dataInicial: "2029-07-01", dataFinal: "2029-07-31" }, // Julho
+    { dataInicial: "2029-08-01", dataFinal: "2029-08-31" }, // Agosto
+    { dataInicial: "2029-09-01", dataFinal: "2029-09-30" }, // Setembro
+    { dataInicial: "2029-10-01", dataFinal: "2029-10-31" }, // Outubro
+    { dataInicial: "2029-11-01", dataFinal: "2029-11-30" }, // Novembro
+    { dataInicial: "2029-12-01", dataFinal: "2029-12-31" }  // Dezembro
+  ];
+
+
+  datas2030: DatasAnaliseFaturamento[] = [
+    { dataInicial: "2030-01-01", dataFinal: "2030-01-31" }, // Janeiro
+    { dataInicial: "2030-02-01", dataFinal: "2030-02-28" }, // Fevereiro
+    { dataInicial: "2030-03-01", dataFinal: "2030-03-31" }, // Março
+    { dataInicial: "2030-04-01", dataFinal: "2030-04-30" }, // Abril
+    { dataInicial: "2030-05-01", dataFinal: "2030-05-31" }, // Maio
+    { dataInicial: "2030-06-01", dataFinal: "2030-06-30" }, // Junho
+    { dataInicial: "2030-07-01", dataFinal: "2030-07-31" }, // Julho
+    { dataInicial: "2030-08-01", dataFinal: "2030-08-31" }, // Agosto
+    { dataInicial: "2030-09-01", dataFinal: "2030-09-30" }, // Setembro
+    { dataInicial: "2030-10-01", dataFinal: "2030-10-31" }, // Outubro
+    { dataInicial: "2030-11-01", dataFinal: "2030-11-30" }, // Novembro
+    { dataInicial: "2030-12-01", dataFinal: "2030-12-31" }  // Dezembro
+  ];
+
 
   criandoArraysGraficos() {
     this.ano2021Grafico = this.ano2021.slice(0, 12);
@@ -277,66 +286,84 @@ datas2030: DatasAnaliseFaturamento[] = [
     this.consultarDespesasComFiltro();
   }
 
-
-
   consultarDespesasComFiltro() {
-  // 1. PRIMEIRO: Escolhemos qual lista de datas usar
-  switch (this.anoSelecionado) {
-    case "2022":
-      this.datasIniciaisEfinais = this.datas2022;
-      break;
-    case "2023":
-      this.datasIniciaisEfinais = this.datas2023;
-      break;
-    case "2024":
-      this.datasIniciaisEfinais = this.datas2024;
-      break;
-    case "2025":
-      this.datasIniciaisEfinais = this.datas2025;
-      break;
-    case "2026":
-      this.datasIniciaisEfinais = this.datas2026;
-      break;
-    case "2027":
-      this.datasIniciaisEfinais = this.datas2027;
-      break;
-    case "2028":
-      this.datasIniciaisEfinais = this.datas2028;
-      break;
-    case "2029":
-      this.datasIniciaisEfinais = this.datas2029;
-      break;
-    case "2030":
-      this.datasIniciaisEfinais = this.datas2030;
-      break;
-    default:
-      console.log("erro: ano inválido");
-      return; // Para o código aqui se o ano for errado
-  } // <--- AQUI fecha o switch!
+    // 1. PRIMEIRO: Escolhemos qual lista de datas usar
+    switch (this.anoSelecionado) {
+      case "2022":
+        this.datasIniciaisEfinais = this.datas2022;
+        break;
+      case "2023":
+        this.datasIniciaisEfinais = this.datas2023;
+        break;
+      case "2024":
+        this.datasIniciaisEfinais = this.datas2024;
+        break;
+      case "2025":
+        this.datasIniciaisEfinais = this.datas2025;
+        break;
+      case "2026":
+        this.datasIniciaisEfinais = this.datas2026;
+        break;
+      case "2027":
+        this.datasIniciaisEfinais = this.datas2027;
+        break;
+      case "2028":
+        this.datasIniciaisEfinais = this.datas2028;
+        break;
+      case "2029":
+        this.datasIniciaisEfinais = this.datas2029;
+        break;
+      case "2030":
+        this.datasIniciaisEfinais = this.datas2030;
+        break;
+      default:
+        console.log("erro: ano inválido");
+        return; // Para o código aqui se o ano for errado
+    } // <--- AQUI fecha o switch!
 
-  // 2. AGORA: Com a lista escolhida, fazemos a busca para cada período
-  this.datasIniciaisEfinais.forEach((periodo, index) => {
-    this.despesaService?.consultarDespesasFiltro(
-      periodo.dataInicial,
-      periodo.dataFinal,
-      "EMPRESA",
-      "PAGO"
-    ).subscribe({
-      next: (dados: Despesa[]) => {
-        if (!dados || dados.length === 0) {
-          // Cuidado: se você limpar aqui, o último mês vazio vai apagar os anteriores!
-          console.log(`Mês ${index + 1} sem despesas.`);
-        } else {
-          this.dadosConsultaFiltro = dados; 
-          console.log("Busca realizada:", this.dadosConsultaFiltro);
+    // 2. AGORA: Com a lista escolhida, fazemos a busca para cada período
+    this.datasIniciaisEfinais.forEach((periodo, index) => {
+      this.despesaService?.consultarDespesasFiltro(
+        periodo.dataInicial,
+        periodo.dataFinal,
+        "EMPRESA",
+        "PAGO"
+      ).subscribe({
+        next: (dados: Despesa[]) => {
+          if (!dados || dados.length === 0) {
+            // Cuidado: se você limpar aqui, o último mês vazio vai apagar os anteriores!
+            console.log(`Mês ${index + 1} sem despesas.`);
+          } else {
+            this.dadosConsultaFiltro = dados;
+            console.log("Busca realizada:", this.dadosConsultaFiltro);
+            this.montaArrayTotalDespesasCadaMes(dados, index);
+          }
+        },
+        error: (err) => {
+          console.error("Erro ao buscar:", err);
         }
-      },
-      error: (err) => {
-        console.error("Erro ao buscar:", err);
-      }
+      });
     });
-  }); // <--- AQUI fecha o forEach!
-} // <--- AQUI fecha o método!
+  }
 
+  montaArrayTotalDespesasCadaMes(dados: Despesa[], index: number) {
+  // O reduce é o nosso "contador de moedas" que explicamos antes!
+  const totalDoMes = dados.reduce((soma, despesa) => {
+    // Convertemos o texto "1185.00" para número usando o +
+    const valorNumerico = +despesa.valor || 0;
+    return soma + valorNumerico;
+  }, 0);
+
+  // Guardamos o total na "gaveta" do mês correto
+  this.totaisMensaisDespesas[index] = totalDoMes;
+
+  console.log(`Total do mês ${index + 1}: R$ ${totalDoMes}`);
+  console.log("Array completo de totais:", this.totaisMensaisDespesas);
+}
 
 }
+
+
+  
+
+
