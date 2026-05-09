@@ -18,7 +18,7 @@ export class FormularioAnaliseDespesaComponent {
   @ViewChild('grafico1') elemento!: ElementRef<HTMLCanvasElement>;
 
   ngOnInit(): void {
-    this.buscaSomatoriaFaturamentoEntreDatas2025();
+    //this.buscaSomatoriaFaturamentoEntreDatas2025();
   }
 
   constructor(
@@ -36,7 +36,7 @@ export class FormularioAnaliseDespesaComponent {
   ano2023: number[] = [55682, 59216, 61577, 51530, 52849, 82528, 72223, 45191, 35707, 74695, 105647, 32396, 729241, 60770, 369];
   ano2024: number[] = [60110, 43848, 42610, 76326, 26357, 44528, 70983, 45800, 46551, 86961, 42645, 48975, 635694, 52974, 333];
   ano2026: number[] = [];
-  ano2025: number[] = [];
+  faturamentosAnoSelecionado: number[] = [];
   ano2027: number[] = [];
   ano2028: number[] = [];
 
@@ -208,7 +208,7 @@ export class FormularioAnaliseDespesaComponent {
     this.ano2022Grafico = this.ano2022.slice(0, 12);
     this.ano2023Grafico = this.ano2023.slice(0, 12);
     this.ano2024Grafico = this.ano2024.slice(0, 12);
-    this.ano2025Grafico = this.ano2025.slice(0, 12);
+    this.ano2025Grafico = this.faturamentosAnoSelecionado.slice(0, 12);
     this.ano2026Grafico = this.ano2026.slice(0, 12);
     this.ano2027Grafico = this.ano2027.slice(0, 12);
     this.ano2028Grafico = this.ano2028.slice(0, 12);
@@ -217,55 +217,7 @@ export class FormularioAnaliseDespesaComponent {
   }
 
 
-  buscaSomatoriaFaturamentoEntreDatas2025() {
-    console.log("Iniciando busca de todos os meses de 2025...");
-
-    this.ano2025 = [];
-    // Array auxiliar para armazenar as quantidades de cada mês
-    const quantidadesMensais: number[] = [];
-
-    this.datas2025.forEach((periodo, index) => {
-      this.servico.buscaSomatorioFaturamento(periodo.dataInicial, periodo.dataFinal).subscribe({
-        next: (data: SomatorioOs) => {
-          // Armazena o valor financeiro e a quantidade nos respectivos índices
-          this.ano2025[index] = data.somatotaliq;
-          quantidadesMensais[index] = data.qtOs;
-
-          const respostasRecebidas = this.ano2025.filter(v => v !== undefined).length;
-
-          if (respostasRecebidas === 12) {
-            const valoresMeses = this.ano2025.slice(0, 12);
-
-            // 1. Total Anual (Índice 12)
-            const totalAnual = valoresMeses.reduce((acc, curr) => acc + (curr || 0), 0);
-            this.ano2025[12] = totalAnual;
-
-            // 2. Média Mensal (Índice 13)
-            const mesesComFaturamento = valoresMeses.filter(valor => valor > 0);
-            this.ano2025[13] = mesesComFaturamento.length > 0
-              ? totalAnual / mesesComFaturamento.length
-              : 0;
-
-            // 3. Média por Equipamento (Índice 14)
-            // Soma todas as quantidades de OS do ano
-            const totalEquipamentosAnual = quantidadesMensais.reduce((acc, curr) => acc + (curr || 0), 0);
-
-            this.ano2025[14] = totalEquipamentosAnual > 0
-              ? totalAnual / totalEquipamentosAnual
-              : 0;
-            console.log(" Este é o valor de ano205 no final do metodo ", this.ano2025)
-            console.log(`Total Anual: ${totalAnual} | Equipamentos: ${totalEquipamentosAnual} | Média/Eq: ${this.ano2025[14]}`);
-          }
-        },
-        error: (error) => {
-          console.error(`Erro no mês ${index + 1}:`, error);
-          this.ano2025[index] = 0;
-          quantidadesMensais[index] = 0;
-        }
-      });
-    });
-  }
-
+  
 
 
   // Esta função transforma o número em texto formatado para a tela
@@ -285,6 +237,8 @@ export class FormularioAnaliseDespesaComponent {
     console.log("Ano selecionado (via evento):", this.anoSelecionado);
     this.consultarDespesasComFiltro();
   }
+
+  /////////////////////DESPESAS///////////////////////////////////////
 
   consultarDespesasComFiltro() {
     // 1. PRIMEIRO: Escolhemos qual lista de datas usar
@@ -321,13 +275,16 @@ export class FormularioAnaliseDespesaComponent {
         return; // Para o código aqui se o ano for errado
     } // <--- AQUI fecha o switch!
 
+    ////BUSCA OS FATURAMENTOS DO ANO ESCOLHIDO/////:
+    this.buscaSomatoriaFaturamentoEntreDatas();
+
     // 2. AGORA: Com a lista escolhida, fazemos a busca para cada período
     this.datasIniciaisEfinais.forEach((periodo, index) => {
       this.despesaService?.consultarDespesasFiltro(
         periodo.dataInicial,
         periodo.dataFinal,
         "EMPRESA",
-        "PAGO"
+        "TODOS"
       ).subscribe({
         next: (dados: Despesa[]) => {
           if (!dados || dados.length === 0) {
@@ -337,6 +294,7 @@ export class FormularioAnaliseDespesaComponent {
             this.dadosConsultaFiltro = dados;
             console.log("Busca realizada:", this.dadosConsultaFiltro);
             this.montaArrayTotalDespesasCadaMes(dados, index);
+            
           }
         },
         error: (err) => {
@@ -347,19 +305,76 @@ export class FormularioAnaliseDespesaComponent {
   }
 
   montaArrayTotalDespesasCadaMes(dados: Despesa[], index: number) {
-  // O reduce é o nosso "contador de moedas" que explicamos antes!
   const totalDoMes = dados.reduce((soma, despesa) => {
-    // Convertemos o texto "1185.00" para número usando o +
     const valorNumerico = +despesa.valor || 0;
     return soma + valorNumerico;
   }, 0);
 
-  // Guardamos o total na "gaveta" do mês correto
   this.totaisMensaisDespesas[index] = totalDoMes;
-
   console.log(`Total do mês ${index + 1}: R$ ${totalDoMes}`);
   console.log("Array completo de totais:", this.totaisMensaisDespesas);
 }
+
+///////////////////////////FATURAMENTO/////////////////////////////
+
+buscaSomatoriaFaturamentoEntreDatas() {
+    this.faturamentosAnoSelecionado = [];
+    // Array auxiliar para armazenar as quantidades de cada mês
+    const quantidadesMensais: number[] = [];
+
+    this.datasIniciaisEfinais.forEach((periodo, index) => {
+      
+      // --- MÁGICA DE TRANSFORMAÇÃO AQUI ---
+      // 1. Pegamos "2022-01-01", cortamos no "-", invertemos e grudamos: vira "01012022"
+      const dataIniLimpa = periodo.dataInicial.split('-').reverse().join('');
+      const dataFimLimpa = periodo.dataFinal.split('-').reverse().join('');
+
+      // Enviamos as datas formatadas (sem hífens e na ordem ddMMyyyy)
+      this.servico.buscaSomatorioFaturamento(dataIniLimpa, dataFimLimpa).subscribe({
+        next: (data: SomatorioOs) => {
+          // Armazena o valor financeiro e a quantidade nos respectivos índices
+          this.faturamentosAnoSelecionado[index] = data.somatotaliq;
+          quantidadesMensais[index] = data.qtOs;
+
+          const respostasRecebidas = this.faturamentosAnoSelecionado.filter(v => v !== undefined).length;
+
+          if (respostasRecebidas === 12) {
+            const valoresMeses = this.faturamentosAnoSelecionado.slice(0, 12);
+
+            // 1. Total Anual (Índice 12)
+            const totalAnual = valoresMeses.reduce((acc, curr) => acc + (curr || 0), 0);
+            this.faturamentosAnoSelecionado[12] = totalAnual;
+
+            // 2. Média Mensal (Índice 13)
+            const mesesComFaturamento = valoresMeses.filter(valor => valor > 0);
+            this.faturamentosAnoSelecionado[13] = mesesComFaturamento.length > 0
+              ? totalAnual / mesesComFaturamento.length
+              : 0;
+
+            // 3. Média por Equipamento (Índice 14)
+            const totalEquipamentosAnual = quantidadesMensais.reduce((acc, curr) => acc + (curr || 0), 0);
+
+            this.faturamentosAnoSelecionado[14] = totalEquipamentosAnual > 0
+              ? totalAnual / totalEquipamentosAnual
+              : 0;
+              
+            console.log("Valores finais processados:", this.faturamentosAnoSelecionado);
+            console.log(`Total Anual: ${totalAnual} | Equipamentos: ${totalEquipamentosAnual} | Média/Eq: ${this.faturamentosAnoSelecionado[14]}`);
+          }
+        },
+        error: (error) => {
+          console.error(`Erro no mês ${index + 1}:`, error);
+          this.faturamentosAnoSelecionado[index] = 0;
+          quantidadesMensais[index] = 0;
+        }
+      });
+    });
+  }
+
+
+
+
+
 
 }
 

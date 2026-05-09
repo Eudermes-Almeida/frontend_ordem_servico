@@ -16,8 +16,6 @@
     </select>
     <p>.</p>
     <p>.</p>
-    <p>.</p>
-    <p>.</p>
   </div>
 
 <div *ngIf="modoAnalitico" class="tabela-scroll">
@@ -25,8 +23,8 @@
   <thead>
     <tr>
       <th style="color: yellow;">Mês</th>
-      <th style="color: yellow;">Média (últimos 5 anos)</th>
-      <th style="color: yellow;">Meta Mês Atual</th>
+      <th style="color: yellow;">Faturamento</th>
+      <th style="color: yellow;">Despesas</th>
       <th style="color: yellow;">2021</th>
       <th style="color: yellow;">2022</th>
       <th style="color: yellow;">2023</th>
@@ -41,15 +39,15 @@
   <tr *ngFor="let mes of meses; let i = index">
     <td>{{ mes | titlecase }}</td>
     <!-- Média (Laranja) -->
-    <td style="color: orange;">{{ formatarParaTela(mediaFaturamento[i]) }}</td>
-    <td style="color: orange;">{{ formatarParaTela(meta[i]) }}</td>
+    <td style="color: orange;">{{ formatarParaTela(faturamentosAnoSelecionado[i]) }}</td>
+    <td style="color: orange;">{{ formatarParaTela(totaisMensaisDespesas[i]) }}</td>
     
     <!-- Anos -->
     <td>{{ formatarParaTela(ano2021[i]) }}</td>
     <td>{{ formatarParaTela(ano2022[i]) }}</td>
     <td>{{ formatarParaTela(ano2023[i]) }}</td>
     <td>{{ formatarParaTela(ano2024[i]) }}</td>
-    <td>{{ formatarParaTela(ano2025[i]) }}</td>
+    <td>{{ formatarParaTela(faturamentosAnoSelecionado[i]) }}</td>
     <td>{{ formatarParaTela(ano2026[i]) }}</td>
     <td>{{ formatarParaTela(ano2027[i]) }}</td>
     <td>{{ formatarParaTela(ano2028[i]) }}</td>
@@ -57,6 +55,7 @@
 </tbody>
 
 </table>
+<p>.</p>
 </div>
 
 
