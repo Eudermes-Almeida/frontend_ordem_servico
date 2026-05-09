@@ -57,7 +57,9 @@ export class FormularioAnaliseDespesaComponent {
   anoSelecionado: string = "";
   datasIniciaisEfinais?: DatasAnaliseFaturamento[];
   dadosConsultaFiltro: Despesa[] = [];
-  totaisMensaisDespesas: number[] = new Array(12).fill(0); 
+  totaisMensaisDespesas: number[] = new Array(15).fill(0);
+  totalOrdensServicosAnual: number = 0;
+  saldoBruto: number[] = [];
 
 
   datas2022: DatasAnaliseFaturamento[] = [
@@ -304,15 +306,52 @@ export class FormularioAnaliseDespesaComponent {
     });
   }
 
-  montaArrayTotalDespesasCadaMes(dados: Despesa[], index: number) {
+ montaArrayTotalDespesasCadaMes(dados: Despesa[], index: number) {
+  // 1. Soma o mês atual
   const totalDoMes = dados.reduce((soma, despesa) => {
-    const valorNumerico = +despesa.valor || 0;
-    return soma + valorNumerico;
+    return soma + (+despesa.valor || 0);
   }, 0);
-
   this.totaisMensaisDespesas[index] = totalDoMes;
-  console.log(`Total do mês ${index + 1}: R$ ${totalDoMes}`);
-  console.log("Array completo de totais:", this.totaisMensaisDespesas);
+
+  // 2. Calcula o total anual (Gaveta 12)
+  const totalDespesaAnual = this.totaisMensaisDespesas
+    .slice(0, 12)
+    .reduce((soma, valorMes) => soma + (valorMes || 0), 0);
+  this.totaisMensaisDespesas[12] = totalDespesaAnual;
+
+  // 3. Calcula a média mensal (Gaveta 13)
+  // Primeiro: filtramos apenas os meses que são maiores que zero
+
+  const mesesComDinheiro = this.totaisMensaisDespesas
+    .slice(0, 12)
+    .filter(valor => valor > 0);
+
+  // Segundo: pegamos a quantidade desses meses
+  const quantidadeDeMeses = mesesComDinheiro.length;
+
+  // Terceiro: calculamos a média (só se a quantidade for maior que 0 para não dar erro!)
+  const mediaMensal = quantidadeDeMeses > 0 ? totalDespesaAnual / quantidadeDeMeses : 0;
+  
+  this.totaisMensaisDespesas[13] = mediaMensal;
+
+  // CALCULANDO CUSTO POR ORDEM DE SERVIÇO
+  const custoMedioPorOS = totalDespesaAnual / this.totalOrdensServicosAnual
+  this.totaisMensaisDespesas[14] = custoMedioPorOS;
+  console.log(`**********************Total Equipamentos Ano: R$ ${custoMedioPorOS}`);
+
+  //CALCULANDO SANDO BRUTO:
+
+  // O map vai passar pelo faturamento de cada mês (0 a 11)
+this.saldoBruto = this.faturamentosAnoSelecionado.map((faturamentoMensal, index) => {
+  
+  // Pegamos a despesa do mesmo mês usando o 'index'
+  const despesaMensal = this.totaisMensaisDespesas[index] || 0;
+  
+  // Retornamos a conta: Faturamento - Despesa
+  return faturamentoMensal - despesaMensal;
+});
+
+
 }
 
 ///////////////////////////FATURAMENTO/////////////////////////////
@@ -353,6 +392,8 @@ buscaSomatoriaFaturamentoEntreDatas() {
 
             // 3. Média por Equipamento (Índice 14)
             const totalEquipamentosAnual = quantidadesMensais.reduce((acc, curr) => acc + (curr || 0), 0);
+            this.totalOrdensServicosAnual = totalEquipamentosAnual;
+            console.log("**********************************total equipamentos anual em faturamento ",totalEquipamentosAnual )
 
             this.faturamentosAnoSelecionado[14] = totalEquipamentosAnual > 0
               ? totalAnual / totalEquipamentosAnual
