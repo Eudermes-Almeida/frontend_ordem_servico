@@ -236,7 +236,13 @@
         <td>{{ dados.descricao }}</td>
         <td>{{ dados.categoria }}</td>
         <td>{{ dados.vencimento | date: 'dd/MM/yyyy' }}</td>
-        <td>{{ dados.valor}}</td>
+        <td [style.color]="dados.valor === '0,00' || dados.valor === '0' ? 'red' : 'white'"
+    [style.border]="dados.valor === '0,00' || dados.valor === '0' ? '1px solid red' : 'none'">
+    {{ dados.valor }}
+</td>
+
+
+
         <td>{{ dados.status }}</td>
         <td>
           <!-- Alterado de (item) para (dados) -->
@@ -268,7 +274,7 @@
   aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      
+
       <!-- Cabeçalho -->
       <div class="modal-header bg-dark text-white">
         <h1 class="modal-title fs-5" id="staticBackdropLabel">

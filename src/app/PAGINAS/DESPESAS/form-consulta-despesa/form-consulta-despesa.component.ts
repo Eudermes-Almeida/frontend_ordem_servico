@@ -312,6 +312,7 @@ onStatus(event: any) {
         this.calcularValorPago();
         this.calcularValorEmpresa();
         this.calcularValorCasa();
+        this.alertaSobreValorZerado();
       }
     },
     error: (err) => {
@@ -490,6 +491,12 @@ apagarDespesa() {
   }
 }
 
-
+// No seu arquivo .ts
+alertaSobreValorZerado(): void {
+  const temValorZerado = this.dadosConsultaFiltro.some(dado => dado.valor === "0,00");
+  if (temValorZerado) {
+    alert("Cuidado!!! Existe pelo menos uma despesa com valor zerado!")
+  }
+}
 
 }
