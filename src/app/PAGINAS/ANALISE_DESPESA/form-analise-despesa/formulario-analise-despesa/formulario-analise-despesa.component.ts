@@ -61,6 +61,7 @@ export class FormularioAnaliseDespesaComponent {
   totalOrdensServicosAnual: number = 0;
   lucroBruto: number[] = [];
   arraydespesasCasaEigreja: number[] = [];
+  arraySaldoGeral: number[] = [];
 
 
   datas2022: DatasAnaliseFaturamento[] = [
@@ -351,7 +352,7 @@ export class FormularioAnaliseDespesaComponent {
   this.totaisMensaisDespesas[14] = custoMedioPorOS;
   console.log(`**********************Total Equipamentos Ano: R$ ${custoMedioPorOS}`);
 
-  //CALCULANDO SALDO BRUTO:
+  //CALCULANDO LUCRO BRUTO:
 
   // O map vai passar pelo faturamento de cada mês (0 a 11)
 this.lucroBruto = this.faturamentosAnoSelecionado.map((faturamentoMensal, index) => {
@@ -362,6 +363,8 @@ this.lucroBruto = this.faturamentosAnoSelecionado.map((faturamentoMensal, index)
   // Retornamos a conta: Faturamento - Despesa
   return faturamentoMensal - despesaMensal;
 });
+
+this.saldoGeral();
 
 }
 
@@ -481,11 +484,13 @@ buscaSomatoriaFaturamentoEntreDatas() {
     });
   }
 
-
-
-
-
-
+saldoGeral(){
+  this.arraySaldoGeral = this.lucroBruto.map((lucroMes, index) => {
+    const despesaCasaIgrejaMensal = this.arraydespesasCasaEigreja[index]
+    return lucroMes - despesaCasaIgrejaMensal
+  })
+  console.log (" Este é o array de saldo geral ", this.arraySaldoGeral)
+}
 }
 
 
