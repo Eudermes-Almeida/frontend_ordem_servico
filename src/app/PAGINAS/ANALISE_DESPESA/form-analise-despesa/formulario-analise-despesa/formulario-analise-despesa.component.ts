@@ -60,6 +60,7 @@ export class FormularioAnaliseDespesaComponent {
   totaisMensaisDespesas: number[] = new Array(15).fill(0);
   totalOrdensServicosAnual: number = 0;
   saldoBruto: number[] = [];
+  arraydespesasCasaEigreja: number[] = [];
 
 
   datas2022: DatasAnaliseFaturamento[] = [
@@ -242,6 +243,8 @@ export class FormularioAnaliseDespesaComponent {
 
   /////////////////////DESPESAS///////////////////////////////////////
 
+
+  /////BUSCA DESPESAS DA EMPRESA PARA UM ANO ESCOHIDO////
   consultarDespesasComFiltro() {
     // 1. PRIMEIRO: Escolhemos qual lista de datas usar
     switch (this.anoSelecionado) {
@@ -279,6 +282,7 @@ export class FormularioAnaliseDespesaComponent {
 
     ////BUSCA OS FATURAMENTOS DO ANO ESCOLHIDO/////:
     this.buscaSomatoriaFaturamentoEntreDatas();
+    this.despesasCasaEigreja();
 
     // 2. AGORA: Com a lista escolhida, fazemos a busca para cada período
     this.datasIniciaisEfinais.forEach((periodo, index) => {
@@ -339,7 +343,7 @@ export class FormularioAnaliseDespesaComponent {
   this.totaisMensaisDespesas[14] = custoMedioPorOS;
   console.log(`**********************Total Equipamentos Ano: R$ ${custoMedioPorOS}`);
 
-  //CALCULANDO SANDO BRUTO:
+  //CALCULANDO SALDO BRUTO:
 
   // O map vai passar pelo faturamento de cada mês (0 a 11)
 this.saldoBruto = this.faturamentosAnoSelecionado.map((faturamentoMensal, index) => {
@@ -351,6 +355,63 @@ this.saldoBruto = this.faturamentosAnoSelecionado.map((faturamentoMensal, index)
   return faturamentoMensal - despesaMensal;
 });
 
+}
+
+/////BUSCA DESPESAS DE CASA E IGREJA PARA CADA MES DO ANO ESCOLHIDO
+despesasCasaEigreja(){
+this.datasIniciaisEfinais.forEach((periodo, index) => {
+      this.despesaService?.consultarDespesasFiltro(
+        periodo.dataInicial,
+        periodo.dataFinal,
+        "CASA e IGREJA",
+        "TODOS"
+      ).subscribe({
+        next: (dados: Despesa[]) => {
+          if (!dados || dados.length === 0) {
+            // Cuidado: se você limpar aqui, o último mês vazio vai apagar os anteriores!
+            console.log(`Mês ${index + 1} sem despesas.`);
+          } else {
+            this.dadosConsultaFiltro = dados;
+            console.log("Busca realizada:", this.dadosConsultaFiltro);
+            this.montaArrayDespesasCasaEIgreja(dados, index);
+            
+          }
+        },
+        error: (err) => {
+          console.error("Erro ao buscar:", err);
+        }
+      });
+    });
+
+}
+
+montaArrayDespesasCasaEIgreja(dados: Despesa[], index: number){
+// 1. Soma o mês atual
+  const totalDoMes = dados.reduce((soma, despesa) => {
+    return soma + (+despesa.valor || 0);
+  }, 0);
+  this.arraydespesasCasaEigreja[index] = totalDoMes;
+
+  // 2. Calcula o total anual (Gaveta 12)
+  const totalDespesaAnual = this.arraydespesasCasaEigreja
+    .slice(0, 12)
+    .reduce((soma, valorMes) => soma + (valorMes || 0), 0);
+  this.arraydespesasCasaEigreja[12] = totalDespesaAnual;
+
+  // 3. Calcula a média mensal (Gaveta 13)
+  // Primeiro: filtramos apenas os meses que são maiores que zero
+
+  const mesesComDinheiro = this.arraydespesasCasaEigreja
+    .slice(0, 12)
+    .filter(valor => valor > 0);
+
+  // Segundo: pegamos a quantidade desses meses
+  const quantidadeDeMeses = mesesComDinheiro.length;
+
+  // Terceiro: calculamos a média (só se a quantidade for maior que 0 para não dar erro!)
+  const mediaMensal = quantidadeDeMeses > 0 ? totalDespesaAnual / quantidadeDeMeses : 0;
+  
+  this.arraydespesasCasaEigreja[13] = mediaMensal;
 
 }
 
