@@ -59,7 +59,7 @@ export class FormularioAnaliseDespesaComponent {
   dadosConsultaFiltro: Despesa[] = [];
   totaisMensaisDespesas: number[] = new Array(15).fill(0);
   totalOrdensServicosAnual: number = 0;
-  saldoBruto: number[] = [];
+  lucroBruto: number[] = [];
   arraydespesasCasaEigreja: number[] = [];
 
 
@@ -280,6 +280,14 @@ export class FormularioAnaliseDespesaComponent {
         return; // Para o código aqui se o ano for errado
     } // <--- AQUI fecha o switch!
 
+    ///limpa todos os arrays:
+  this.dadosConsultaFiltro = [];
+  this.totaisMensaisDespesas = [];
+  this.totalOrdensServicosAnual = 0;
+  this.lucroBruto = [];
+  this.arraydespesasCasaEigreja = [];
+
+
     ////BUSCA OS FATURAMENTOS DO ANO ESCOLHIDO/////:
     this.buscaSomatoriaFaturamentoEntreDatas();
     this.despesasCasaEigreja();
@@ -346,7 +354,7 @@ export class FormularioAnaliseDespesaComponent {
   //CALCULANDO SALDO BRUTO:
 
   // O map vai passar pelo faturamento de cada mês (0 a 11)
-this.saldoBruto = this.faturamentosAnoSelecionado.map((faturamentoMensal, index) => {
+this.lucroBruto = this.faturamentosAnoSelecionado.map((faturamentoMensal, index) => {
   
   // Pegamos a despesa do mesmo mês usando o 'index'
   const despesaMensal = this.totaisMensaisDespesas[index] || 0;

@@ -40,10 +40,12 @@
     <td>{{ mes | titlecase }}</td>
     <!-- Média (Laranja) -->
     <td style="color: orange;">{{ formatarParaTela(faturamentosAnoSelecionado[i]) }}</td>
-    <td style="color: orange;">{{ formatarParaTela(totaisMensaisDespesas[i]) }}</td>
+    <td>{{ formatarParaTela(totaisMensaisDespesas[i]) }}</td>
     
     <!-- Anos -->
-    <td>{{ formatarParaTela(saldoBruto[i]) }}</td>
+    <td [ngStyle]="{'color': lucroBruto[i] < 0 ? 'red' : 'white'}">
+  {{ formatarParaTela(lucroBruto[i]) }}
+</td>
     <td>{{ formatarParaTela(arraydespesasCasaEigreja[i]) }}</td>
     <td>{{ formatarParaTela(ano2023[i]) }}</td>
     <td>{{ formatarParaTela(ano2024[i]) }}</td>
