@@ -6,11 +6,12 @@ import { CategoryScale, Chart, Legend, LinearScale, LineController, LineElement,
 import { CommonModule } from '@angular/common';
 import { DespesaService } from '../../../../servico/despesa.service';
 import { Despesa } from '../../../../modelo/Despesa';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-formulario-analise-despesa',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './formulario-analise-despesa.component.html',
   styleUrl: './formulario-analise-despesa.component.css'
 })
@@ -62,6 +63,9 @@ export class FormularioAnaliseDespesaComponent {
   lucroBruto: number[] = [];
   arraydespesasCasaEigreja: number[] = [];
   arraySaldoGeral: number[] = [];
+  senha: string = "";
+  exibirFormulario: boolean = false
+  senhaGravada: String = "17091999"
 
 
   datas2022: DatasAnaliseFaturamento[] = [
@@ -287,6 +291,7 @@ export class FormularioAnaliseDespesaComponent {
   this.totalOrdensServicosAnual = 0;
   this.lucroBruto = [];
   this.arraydespesasCasaEigreja = [];
+  this.arraySaldoGeral = [];
 
 
     ////BUSCA OS FATURAMENTOS DO ANO ESCOLHIDO/////:
@@ -490,6 +495,15 @@ saldoGeral(){
     return lucroMes - despesaCasaIgrejaMensal
   })
   console.log (" Este é o array de saldo geral ", this.arraySaldoGeral)
+}
+testaSenha(){
+  console.log("Esta foi a senha digitada ", this.senha)
+  if(this.senha === this.senhaGravada){
+    this.exibirFormulario = true;
+  }else{
+    alert("Senha inválida!")
+    this.senha = ""
+  }
 }
 }
 

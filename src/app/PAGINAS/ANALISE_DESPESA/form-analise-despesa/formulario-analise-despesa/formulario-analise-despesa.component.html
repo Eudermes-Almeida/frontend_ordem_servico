@@ -1,61 +1,83 @@
+<div *ngIf="!exibirFormulario">
 <p>.</p>
- <div class="d-flex flex-column align-items-center text-center">
-    <h3 style="color: white;">Escolha o ano que será analisado</h3>
-    <select (change)="onAnoSelecionado($event)" class="form-select" id="anoSelecionado"
-      name="categoria" style="width: 200px;">
-      <option style="font-size: 25px;" value="" disabled selected>Selecione...</option>
-      <option style="font-size: 25px;">2022</option>
-      <option style="font-size: 25px;">2023</option>
-      <option style="font-size: 25px;">2024</option>
-      <option style="font-size: 25px;">2025</option>
-      <option style="font-size: 25px;">2026</option>
-      <option style="font-size: 25px;">2027</option>
-      <option style="font-size: 25px;">2028</option>
-      <option style="font-size: 25px;">2029</option>
-      <option style="font-size: 25px;">2030</option>
-    </select>
-    <p>.</p>
-    <p>.</p>
+<p>.</p>
+<p>.</p>
+<div class="d-flex flex-column align-items-center w-100" style="flex: 2; min-width: 200px;">
+  
+  <!-- O label agora também ficará centralizado acima do input -->
+  <label class="form-label fw-bold small text-light">Digite sua Senha</label>
+  
+  <!-- Container horizontal para Input + Botão -->
+  <div class="d-flex gap-2 align-items-center">
+    <input style="width: 200px; height: 38px;"
+      type="password" 
+      class="form-control input-branco" 
+      placeholder="Digite sua senha."
+      [(ngModel)]="senha" />
+        
+    <button style="width: 100px; height: 38px;" type="button" class="btn btn-primary" (click)="testaSenha()">
+      Enviar
+    </button>
+  </div>
+</div>
+</div>
+
+<div *ngIf="exibirFormulario">
+<p>.</p>
+<div class="d-flex flex-column align-items-center text-center">
+  <h3 style="color: white;">Escolha o ano que será analisado</h3>
+  <select (change)="onAnoSelecionado($event)" class="form-select" id="anoSelecionado" name="categoria"
+    style="width: 200px;">
+    <option style="font-size: 25px;" value="" disabled selected>Selecione...</option>
+    <option style="font-size: 25px;">2022</option>
+    <option style="font-size: 25px;">2023</option>
+    <option style="font-size: 25px;">2024</option>
+    <option style="font-size: 25px;">2025</option>
+    <option style="font-size: 25px;">2026</option>
+    <option style="font-size: 25px;">2027</option>
+    <option style="font-size: 25px;">2028</option>
+    <option style="font-size: 25px;">2029</option>
+    <option style="font-size: 25px;">2030</option>
+  </select>
+  <p>.</p>
+  <p>.</p>
 </div>
 
 
 <div>
-<table border="1" class="table table-dark table-hover">
-  <thead>
-    <tr>
-      <th style="color: yellow;">Mês</th>
-      <th style="color: yellow;">Faturamento</th>
-      <th style="color: yellow;">Despesas Empresa</th>
-      <th style="color: yellow;">Lucro Bruto</th>
-      <th style="color: yellow;">Despesas Casa/Igreja</th>
-      <th style="color: yellow;">Saldo Geral</th>
-      
-    </tr>
-  </thead>
-  <tbody>
-  <tr *ngFor="let mes of meses; let i = index">
-    <td>{{ mes | titlecase }}</td>
-    <!-- Média (Laranja) -->
-    <td style="color: orange;">{{ formatarParaTela(faturamentosAnoSelecionado[i]) }}</td>
-    <td>{{ formatarParaTela(totaisMensaisDespesas[i]) }}</td>
-    
-    <!-- Anos -->
-    <td [ngStyle]="{'color': lucroBruto[i] < 0 ? 'red' : 'white'}">
-  {{ formatarParaTela(lucroBruto[i]) }}
-</td>
-    <td>{{ formatarParaTela(arraydespesasCasaEigreja[i]) }}</td>
-    <td [ngStyle]="{'color': lucroBruto[i] < 0 ? 'red' : 'white'}">
-  {{ formatarParaTela(arraySaldoGeral[i]) }}
-</td>
-    
-  </tr>
-</tbody>
+  <table border="1" class="table table-dark table-hover">
+    <thead>
+      <tr>
+        <th style="color: yellow;">Mês</th>
+        <th style="color: yellow;">Faturamento</th>
+        <th style="color: yellow;">Despesas Empresa</th>
+        <th style="color: yellow;">Lucro Bruto</th>
+        <th style="color: yellow;">Despesas Casa/Igreja</th>
+        <th style="color: yellow;">Saldo Geral</th>
 
-</table>
-<p>.</p>
-<p>.</p>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let mes of meses; let i = index">
+        <td>{{ mes | titlecase }}</td>
+        <!-- Média (Laranja) -->
+        <td style="color: orange;">{{ formatarParaTela(faturamentosAnoSelecionado[i]) }}</td>
+        <td>{{ formatarParaTela(totaisMensaisDespesas[i]) }}</td>
+
+        <!-- Anos -->
+        <td [ngStyle]="{'color': lucroBruto[i] < 0 ? 'red' : 'white'}">
+          {{ formatarParaTela(lucroBruto[i]) }}
+        </td>
+        <td>{{ formatarParaTela(arraydespesasCasaEigreja[i]) }}</td>
+        <td [ngStyle]="{'color': lucroBruto[i] < 0 ? 'red' : 'white'}">
+          {{ formatarParaTela(arraySaldoGeral[i]) }}
+        </td>
+
+      </tr>
+    </tbody>
+
+  </table>
+  <p>.</p>
+  <p>.</p>
 </div>
-
-
-
-
+</div>

@@ -88,6 +88,19 @@ input, select {
   font-weight: bold; /* Opcional: para destacar mais no fundo escuro */
 }
 
+/* Seleciona o placeholder de todos os inputs */
+input::placeholder {
+    color: white !important;
+    opacity: 1; /* Garante que a cor não fique transparente no Firefox */
+}
+
+/* Caso queira aplicar apenas a uma classe específica */
+.input-branco::placeholder {
+    color: white !important;
+    opacity: 1;
+}
+
+
 
 
 }
