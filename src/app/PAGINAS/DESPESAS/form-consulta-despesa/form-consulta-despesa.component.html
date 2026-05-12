@@ -237,9 +237,11 @@
         <td>{{ dados.categoria }}</td>
         <td>{{ dados.vencimento | date: 'dd/MM/yyyy' }}</td>
         <td [style.color]="dados.valor === '0,00' || dados.valor === '0' ? 'red' : 'white'"
-    [style.border]="dados.valor === '0,00' || dados.valor === '0' ? '1px solid red' : 'none'">
+    style="border: none;"
+    [style.borderBottom]="dados.valor === '0,00' || dados.valor === '0' ? '2px solid red' : '1px solid gray'">
     {{ dados.valor }}
 </td>
+
 
 
 
