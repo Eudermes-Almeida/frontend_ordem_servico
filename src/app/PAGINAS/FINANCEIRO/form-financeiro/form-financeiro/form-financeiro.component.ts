@@ -154,20 +154,41 @@ export class FormFinanceiroComponent {
   }
 
    buscaUltimaOs(): void {
-    this.servico?.ultimaOs().subscribe({
-      next: (retorno: number) => {
-        this.formulario.patchValue({
-          numOs: retorno.toString()
-        });
-        
-        // Dispara a busca automática da OS encontrada
-        this.getOsPorId(retorno);
-      },
-      error: (error) => {
-        console.error('Erro ao buscar última OS:', error);
+  this.spinnerLoading = true; // Liga o indicador de processamento
+
+  this.financeiroService.ultimaOs().subscribe({
+    next: (retorno: number) => {
+      this.spinnerLoading = false;
+
+      // Valida se o banco não retornou vazio (NULL)
+      if (retorno === null || retorno === undefined) {
+        alert('Nenhum registro financeiro encontrado no banco de dados.');
+        return;
       }
-    });
-  }
+
+      console.log("Esta é a última OS em financeiro:", retorno);
+
+      // Atualiza o input "numOs" do FormGroup com o ID encontrado
+      this.formulario.patchValue({
+        numOs: retorno.toString()
+      });
+      
+      // Executa a busca automática de todas as colunas dessa O.S. específica
+      //this.getOsPorId(retorno);
+    },
+    error: (error) => {
+      this.spinnerLoading = false; // Desliga o spinner em caso de falha
+      console.error('Erro ao buscar última OS:', error);
+      
+      if (error.status === 404) {
+        alert('Nenhuma ordem de serviço localizada na tabela financeira.');
+      } else {
+        alert('Erro interno ao buscar a última O.S. Verifique a conexão com o servidor.');
+      }
+    }
+  });
+}
+
 
   escreveDadosClienteNosInputs(cliente: Cliente): void {
     console.log('Dados do cliente:', cliente);

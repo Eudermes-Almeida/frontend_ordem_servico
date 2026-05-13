@@ -17,6 +17,10 @@ export class FinanceiroService {
   // URL CADASTRAR ORDEM SERVICO:
 urlFinanceiro: string = this.urlServidor + 'financeiro';
 
+// URL ULTIMA ORDEM SERVIÇO CADASTRADA
+urlUltimaOs:string = this.urlServidor+'financeiro/ultima-os';
+
+
   ///CRIANDO UM REGISTRO DE UMA OS NO FINANCEIRO:
     CadastrarOsFechadaNoFinanceiro(financeiro: Financeiro): Observable<Financeiro> {
     const headers = new HttpHeaders({
@@ -30,6 +34,15 @@ urlFinanceiro: string = this.urlServidor + 'financeiro';
     const url = this.urlServidor + `financeiro/codcli?codcli=${codcli}`;
     return this.http.get<Financeiro[]>(url);
   }
+
+  // Método para selecionar a última ordem de serviço (número)
+// Garanta que a URL base termine com /financeiro/ultima-os
+ultimaOs(): Observable<number> {
+  const url = `${this.urlServidor}financeiro/ultima-os`; 
+  return this.http.get<number>(url);
+}
+
+
 
   
 }
