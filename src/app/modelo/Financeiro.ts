@@ -1,0 +1,33 @@
+export class Financeiro {
+    os: number;
+    dataEntrada: string;
+    fantasia: string;
+    codcli: number;
+    equipamento: string;
+    marca: string;
+    modelo: string;
+    totaliq: string;
+    fechamento: string;
+    dataFaturamento: string;
+    codRemessa: string;
+    tipoPagamento: string;
+    qtParcela: string;
+    prazo: string;
+    vencimento1: string;
+    valorParcela1: string;
+    statusParcela1: string;
+    vencimento2: string;
+    valorParcela2: string;
+    statusParcela2: string;
+    vencimento3: string;
+    valorParcela3: string;
+    statusParcela3: string;
+    valorJaPago: string;
+    statusGeral: string;
+    jurosBordero: string;
+    iofAdicional: string;
+    iofDiario: string;
+    tarifaBordero: string;
+    custoBancarioTotal: string;
+    valorLiquidoCreditado: string;
+}

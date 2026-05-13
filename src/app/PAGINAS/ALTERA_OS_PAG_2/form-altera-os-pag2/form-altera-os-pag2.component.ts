@@ -14,6 +14,8 @@ import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { switchMap, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { Financeiro } from '../../../modelo/Financeiro';
+import { FinanceiroService } from '../../../servico/financeiro.service';
 
 @Component({
   selector: 'app-form-altera-os-pag2',
@@ -54,6 +56,7 @@ export class FORMALTERAOSPAG2Component {
   objetocliente: Cliente[] = [];
   objetoOs: Os[] = [];
   id: number = 0;
+  modeloFinanceiro: Financeiro = new Financeiro();
 
   ///////////CONTROLE DE RENDERIZAÇÃO/////////
   exibirBotaoSalvar: boolean = true;
@@ -134,7 +137,8 @@ export class FORMALTERAOSPAG2Component {
       private parametrosService: ParametrosService, 
       private servico: OrdemservicoService,
       private cdr: ChangeDetectorRef,
-      private route: ActivatedRoute // Injeta a rota ativa
+      private route: ActivatedRoute, // Injeta a rota ativa
+      private financeiroService: FinanceiroService 
   ) {}
 
 
@@ -688,6 +692,12 @@ atualizarOS() {
       console.error("Erro ao atualizar a ordem de serviço:", erro);
     }
   });
+
+  /////SE O STATUS ESTIVER COMO FECHADA, INSERE A OS NA TABELA DO FINANCEIRO, COM O STATUS GERAL "NAO FATURADO"
+if(this.os.status === "FECHADA"){
+this.enviaParaFinanceiro(this.os);
+}
+
 }
 
 // ////// PREVINE QUE OCORRA UM SUBMITE SE TECLAR ENTER
@@ -816,4 +826,34 @@ gerarPDF() {
   }, 500); // Espera de 1 segundo
 }
 
+enviaParaFinanceiro(os: Os) {
+  // Inicializa o objeto para evitar lixo de memória
+  const dadosParaEnviar: Financeiro = {
+    ...this.modeloFinanceiro,
+    os: Number(os.os),
+    dataEntrada: os.data ? String(os.data).split('T')[0] : '',
+    fantasia: os.fantasia ? String(os.fantasia).toUpperCase() : '',
+    codcli: Number(os.codcli),
+    equipamento: os.equipamento ? String(os.equipamento).toUpperCase() : '',
+    marca: os.marca ? String(os.marca).toUpperCase() : '',
+    modelo: os.modelo ? String(os.modelo).toUpperCase() : '',
+    totaliq: String(os.totaliq),
+    fechamento: os.fechamento ? String(os.fechamento).split('T')[0] : '',
+    statusGeral: "NAO FATURADO"
+  };
+
+  this.financeiroService.CadastrarOsFechadaNoFinanceiro(dadosParaEnviar).subscribe({
+    next: (res) => {
+      this.exibirAlertOsSalva = true;
+      console.log("Salvo no financeiro:", res);
+    },
+    error: (err) => {
+      console.error("Erro no servidor:", err);
+    }
+  });
 }
+
+}
+
+
+
