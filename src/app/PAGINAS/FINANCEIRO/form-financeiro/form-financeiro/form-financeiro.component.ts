@@ -9,12 +9,15 @@ import { OrdemservicoService } from '../../../../servico/ordemservico.service';
 import { ReactiveFormsModule} from '@angular/forms'; // 1. Importe o ReactiveFormsModule
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDatepickerModule} from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule } from '@angular/forms';
 
 
 @Component({
   selector: 'app-form-financeiro',
   standalone: true,
-  imports: [CommonModule, RouterLink, ReactiveFormsModule],
+  imports: [CommonModule, RouterLink, ReactiveFormsModule,  NgbDatepickerModule, FormsModule],
   templateUrl: './form-financeiro.component.html',
   styleUrl: './form-financeiro.component.css'
 })
@@ -32,6 +35,14 @@ export class FormFinanceiroComponent {
     objetoOs: Os[] = [];
     ultimaOs: number = 0;
     novaOs: number = 0;
+    dataInicialIntervalo: string = "";
+    dataFinalIntervalo: string = "";
+    statusFinanceiro: string = "";
+
+
+    ////DATEPICKER:
+     model: NgbDateStruct | undefined; 
+    model2: NgbDateStruct | undefined; 
   
     ///////////CONTROLE DE RENDERIZAÇÃO/////////
     exibirTabela: boolean = false;
@@ -510,6 +521,34 @@ export class FormFinanceiroComponent {
     this.isClickEvent = true; // Define a flag quando o botão é clicado
     this.limpar(); // Chama a função
   }
+
+  // Função para converter o objeto em string
+      onDateInicial(date: NgbDateStruct) {
+        // Formato Brasileiro: DD/MM/AAAA
+        const dia = date.day.toString().padStart(2, '0');
+        const mes = date.month.toString().padStart(2, '0');
+        const ano = date.year;
+    
+        console.log(" Este é dia ", dia)
+    
+        this.dataInicialIntervalo = `${ano}-${mes}-${dia}`; 
+        console.log('Data salva como string:', this.dataInicialIntervalo);
+      }
+    
+       onDateFinal(date: NgbDateStruct) {
+        // Formato Brasileiro: DD/MM/AAAA
+        const dia = date.day.toString().padStart(2, '0');
+        const mes = date.month.toString().padStart(2, '0');
+        const ano = date.year;
+        
+        this.dataFinalIntervalo = `${ano}-${mes}-${dia}`; 
+        console.log('Data salva como string:', this.dataFinalIntervalo);
+      }
+
+      onStatusFinanceiro(event: any) {
+  this.statusFinanceiro = event.target.value;
+  console.log("Categoria selecionada (via evento):", this.statusFinanceiro);
+}
   
 
 }
