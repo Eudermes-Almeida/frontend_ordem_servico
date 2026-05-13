@@ -3,40 +3,54 @@
 <div class="d-flex justify-content-center flex-column">
   <form [formGroup]="formulario" id="meuFormulario" class="centralizado-formulario">
 
-    <!-- PRIMEIRA LINHA DE INPUTS -->
-    <div class="form-row align-items-center">
-      <div class="form-group col-3">
-        <div class="d-flex align-items-center">
-          <label for="id">Código Cliente:</label>
-          <span class="espaco"></span>
-
-          <input type="checkbox" id="buscarUltimoCliente" name="buscarUltimoCliente" class="checkbox"
-            style="font-size: 5;" (click)="buscaUltimocliente(codigoClienteInput)">
-
-          <label for="buscarUltimoCliente">Último Cliente</label>
+    <!-- PRIMEIRA LINHA DE INPUTS (BLOCO CLIENTE CORRIGIDO COM PROPORÇÃO E BORDA) -->
+    <div class="row align-items-end g-3 p-2 mb-3 mx-0 w-100" style="border: 2px solid orange; border-radius: 10px;">
+      
+      <!-- CÓDIGO CLIENTE (45% Proporcional) -->
+      <div class="col-5">
+        <div class="form-group">
+          <div class="d-flex align-items-center">
+            <label for="codcli" class="mb-0 me-1 text-light small fw-bold">Código Cliente:</label>
+            <input type="checkbox" id="ultimoCliente" formControlName="ultimoCliente" class="checkbox me-1" (click)="buscaUltimocliente( )">
+            <label for="ultimoCliente" class="mb-0 text-muted small">Último Cliente</label>
+          </div>
+          <input type="text" id="codcli" #codigoClienteInput (keydown)="onClienteInput($event)"
+            formControlName="codcli" maxlength="10" class="form-control mt-1 w-100">
         </div>
-
-        <input type="text" id="codigoCliente" #codigoClienteInput (keydown)="onClienteInput($event)"
-          formControlName="codcli" maxlength="10" class="form-control">
       </div>
 
-      <div class="form-group col-3">
-        <label for="nomefantasia">Nome Fantasia:</label>
-        <input type="text" formControlName="fantasia" id="nomefantasia" name="nomefantasia" required
-          class="form-control" placeholder="Digite o nome fantasia">
+      <!-- NOME FANTASIA (45% Proporcional) -->
+      <div class="col-5">
+        <div class="form-group">
+          <label for="fantasia" class="form-label fw-bold small text-light d-block mb-1">Nome Fantasia:</label>
+          <input type="text" formControlName="fantasia" id="fantasia" name="fantasia" required
+            class="form-control w-100" placeholder="Digite o nome fantasia">
+        </div>
       </div>
 
-      <div *ngIf="spinnerLoading">
-        <p style="color: orange; margin: 10px;">processando...</p>
-        <div class="spinner-border text-primary"></div>
-        <div class="spinner-grow"></div>
+      <!-- BOTÃO BUSCAR DO CLIENTE (10% Proporcional) -->
+      <div class="col-2">
+        <div class="form-group">
+         <button type="button" class="btn btn-primary w-100" 
+        (click)="getOsPorCodCli(+formulario.get('codcli')?.value!)"> 
+  Buscar
+</button>
+
+        </div>
       </div>
 
-     
+      <!-- SPINNER LOADING -->
+      <div *ngIf="spinnerLoading" class="col-12">
+        <div class="d-flex align-items-center mb-1 w-100">
+          <span class="text-warning small fw-bold me-2">processando...</span>
+          <div class="spinner-border text-primary spinner-border-sm me-1" role="status"></div>
+          <div class="spinner-grow spinner-grow-sm text-primary" role="status"></div>
+        </div>
+      </div>
     </div>
 
     <!------------------ TABELA COM OS CLIENTES ------------------>
-    <div class="mt-3 tabela-scroll" style="max-height: 300px; overflow-y: auto;">
+    <div class="mt-3 tabela-scroll mb-3" style="max-height: 300px; overflow-y: auto;">
       <p class="text-secondary" *ngIf="exibirTabela">Quantidade de clientes selecionados: {{objetocliente.length}} </p>
       <table class="table table-dark table-hover" *ngIf="exibirTabela">
         <thead>
@@ -69,99 +83,99 @@
         </tbody>
       </table>
     </div>
-    <!----------------------------------------------------------------------------------------->
 
-    <!-- SEGUNDA LINHA DE INPUTS CENTRALIZADA -->
-    <!-- Adicionada a classe justify-content-center para alinhar o bloco inteiro ao meio -->
+    <!------------------ SEGUNDA LINHA DE INPUTS CENTRALIZADA ------------------>
     <div class="d-flex flex-row flex-wrap align-items-end justify-content-center gap-4 mt-3">
 
-      <!-- 1 - INPUT NUMERO OS -->
-      <div class="form-group" style="flex: 0 0 auto;">
-        <div class="d-flex align-items-center">
-          <label for="numOS" class="mb-0 me-1 text-light small fw-bold">Nº O.S. :</label>
-          <input type="checkbox" id="buscarUltimaOs" name="buscarUltimaOs" class="checkbox me-1"
-            (click)="buscaUltimaOs()">
-            <label for="numOS" class="mb-0 me-1 text-light small fw-bold">última</label>
+      <!-- Bloco isolado com borda laranja para os componentes de O.S. -->
+      <div class="d-flex align-items-end gap-3 p-2" style="border: 2px solid orange; border-radius: 10px; flex: 0 0 auto;">
+
+        <!-- 1 - INPUT NUMERO OS -->
+        <div class="form-group" style="flex: 0 0 auto;">
+          <div class="d-flex align-items-center">
+            <label for="numOs" class="mb-0 me-1 text-light small fw-bold">Nº O.S. :</label>
+            <input type="checkbox" id="ultimaOs" formControlName="ultimaOs" class="checkbox me-1" (click)="buscaUltimaOs()">
+            <label for="ultimaOs" class="mb-0 text-muted small">última</label>
+          </div>
+          <input type="text" id="numOs" #numOsInput (keydown)="onNumOsKey($event)" formControlName="numOs"
+            class="form-control mt-1" style="max-width: 130px;">
         </div>
-        <input type="text" id="numOs" #numOsInput (keydown)="onNumOsKey($event)" formControlName="os"
-          class="form-control mt-1" style="max-width: 130px;">
-      </div>
 
-      <!-- 5 - INPUT ULTIMA OS -->
-      <div class="form-group" style="flex: 0 0 auto;">
-        <label for="ultimasOs" class="form-label fw-bold small text-light d-block mb-1">Últimas O.S Fechadas:</label>
-        <input type="text" id="ultimasOs" #ultimasOsInput (keydown)="onUltimasOsKey($event)" formControlName="ultimasOs"
-          class="form-control" style="max-width: 180px;">
-      </div>
+        <!-- 5 - INPUT ULTIMA OS -->
+        <div class="form-group" style="flex: 0 0 auto;">
+          <label for="ultimasOs" class="form-label fw-bold small text-light d-block mb-1">Últimas O.S Fechadas:</label>
+          <input type="text" id="ultimasOs" #ultimasOsInput (keydown)="onUltimasOsKey($event)" formControlName="ultimasOs"
+            class="form-control" style="max-width: 180px;">
+        </div>
 
-      <!-- 2 - OS RADIOS -->
-      <!-- 2 - OS RADIOS -->
-<div class="form-group" style="flex: 0 0 auto;">
-  <label class="form-label fw-bold small text-light d-block mb-1">Filtrar por data</label>
-  <div class="btn-group" role="group" aria-label="Seleção de Tipo de Data">
-    <input type="radio" class="btn-check" name="tipoDataBtn" id="btnEntrada" value="entrada" autocomplete="off" checked>
-    <label class="btn btn-outline-primary" for="btnEntrada">Data de Entrada</label>
-
-    <input type="radio" class="btn-check" name="tipoDataBtn" id="btnFechamento" value="fechamento" autocomplete="off">
-    <label class="btn btn-outline-primary" for="btnFechamento">Data de Fechamento</label>
-
-    <!-- Terceira opção adicionada -->
-    <input type="radio" class="btn-check" name="tipoDataBtn" id="btnFaturamento" value="faturamento" autocomplete="off">
-    <label class="btn btn-outline-primary" for="btnFaturamento">Data de Faturamento</label>
-  </div>
-</div>
-
-
-      <!-- 3 - DATEPICKER INÍCIO -->
-      <div class="form-group" style="flex: 0 0 auto;">
-        <label class="form-label fw-bold small text-light d-block mb-1">Início</label>
-        <div class="input-group" style="max-width: 160px;">
-          <input class="form-control" placeholder="aaaa-mm-dd" name="dp" [(ngModel)]="model" ngbDatepicker
-            #d1="ngbDatepicker" (dateSelect)="onDateInicial($event)" container="body" />
-          <button class="btn btn-outline-primary d-flex align-items-center" (click)="d1.toggle()" type="button">
-            <i class="bi bi-calendar3"></i>
-          </button>
+        <!-- BOTÃO BUSCAR O.S. -->
+        <div class="form-group" style="flex: 0 0 auto;">
+          <button type="button" class="btn btn-primary" (click)="onButtonClick()">Buscar</button>
         </div>
       </div>
 
-      <!-- 4 - DATEPICKER FIM -->
-      <div class="form-group" style="flex: 0 0 auto;">
-        <label class="form-label fw-bold small text-light d-block mb-1">Fim</label>
-        <div class="input-group" style="max-width: 160px;">
-          <input class="form-control" placeholder="aaaa-mm-dd" name="dp2" [(ngModel)]="model2" ngbDatepicker
-            #d2="ngbDatepicker" (dateSelect)="onDateFinal($event)" container="body" />
-          <button class="btn btn-outline-primary d-flex align-items-center" (click)="d2.toggle()" type="button">
-            <i class="bi bi-calendar3"></i>
-          </button>
+      <!-- Bloco isolado com borda laranja para os componentes de Filtro por Data e Status -->
+      <div class="d-flex align-items-end gap-3 p-2" style="border: 2px solid orange; border-radius: 10px; flex: 0 0 auto;">
+
+        <!-- 2 - OS RADIOS (Agrupados logicamente por uma propriedade comum) -->
+        <div class="form-group" style="flex: 0 0 auto;">
+          <label class="form-label fw-bold small text-light d-block mb-1">Filtrar por data</label>
+          <div class="btn-group" role="group" aria-label="Seleção de Tipo de Data">
+            <!-- Vinculados ao controle do TypeScript para alternar os estados -->
+            <input type="radio" class="btn-check" id="btnEntrada" value="entrada" name="tipoDataBtn" formControlName="filtroDataEntrada" autocomplete="off">
+            <label class="btn btn-outline-primary" for="btnEntrada">Data de Entrada</label>
+
+            <input type="radio" class="btn-check" id="btnFechamento" value="fechamento" name="tipoDataBtn" formControlName="filtroDataFechamento" autocomplete="off">
+            <label class="btn btn-outline-primary" for="btnFechamento">Data de Fechamento</label>
+
+            <input type="radio" class="btn-check" id="btnFaturamento" value="faturamento" name="tipoDataBtn" formControlName="filtroDataFaturamento" autocomplete="off">
+            <label class="btn btn-outline-primary" for="btnFaturamento">Data de Faturamento</label>
+          </div>
+        </div>
+
+        <!-- 3 - DATEPICKER INÍCIO -->
+        <div class="form-group" style="flex: 0 0 auto;">
+          <label class="form-label fw-bold small text-light d-block mb-1">Início</label>
+          <div class="input-group" style="max-width: 160px;">
+            <input class="form-control" placeholder="aaaa-mm-dd" name="dp" formControlName="dataInicio" ngbDatepicker
+              #d1="ngbDatepicker" (dateSelect)="onDateInicial($event)" container="body" />
+            <button class="btn btn-outline-primary d-flex align-items-center" (click)="d1.toggle()" type="button">
+              <i class="bi bi-calendar3"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- 4 - DATEPICKER FIM -->
+        <div class="form-group" style="flex: 0 0 auto;">
+          <label class="form-label fw-bold small text-light d-block mb-1">Fim</label>
+          <div class="input-group" style="max-width: 160px;">
+            <input class="form-control" placeholder="aaaa-mm-dd" name="dp2" formControlName="dataFim" ngbDatepicker
+              #d2="ngbDatepicker" (dateSelect)="onDateFinal($event)" container="body" />
+            <button class="btn btn-outline-primary d-flex align-items-center" (click)="d2.toggle()" type="button">
+              <i class="bi bi-calendar3"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- SELECT STATUS FINANCEIRO -->
+        <div class="form-group" style="flex: 0 0 auto;">
+          <label class="form-label fw-bold small text-light d-block mb-1">Status Financeiro</label>
+          <select formControlName="statusFinanceiro" (change)="onStatusFinanceiro($event)" class="form-select" id="statusFinanceiro">
+            <option [value]="''" disabled selected>Selecione...</option>
+            <option value="TODOS">TODOS</option>
+            <option value="SEM FATURAR">SEM FATURAR</option>
+            <option value="PAGO">PAGO</option>
+            <option value="EM DIA">EM DIA</option>
+            <option value="ATRAZADO">ATRAZADO</option>
+          </select>
+        </div>
+
+        <!-- BOTÃO BUSCAR DO FILTRO -->
+        <div class="form-group" style="flex: 0 0 auto;">
+          <button type="button" class="btn btn-primary" (click)="onButtonClick()">Buscar</button>
         </div>
       </div>
-
-      <!-- SELECT STATUS FINANCEIRO -->
-      <div class="form-group" style="flex: 0 0 auto;">
-        <label class="form-label fw-bold small text-light d-block mb-1">Status Financeiro</label>
-        <select formControlName="StatusFinanceiro" (change)="onStatusFinanceiro($event)" class="form-select"
-          id="StatusFinanceiro" name="StatusFinanceiro">
-          <!-- Ajustado o value com [value]="''" para vincular perfeitamente com o Reactive Forms -->
-          <option [value]="''" disabled selected>Selecione...</option>
-          <option value="TODOS">TODOS</option>
-          <option value="SEM FATURAR">SEM FATURAR</option>
-          <option value="PAGO">PAGO</option>
-          <option value="EM DIA">EM DIA</option>
-          <option value="ATRAZADO">ATRAZADO</option>
-        </select>
-      </div>
-
-      <div>
-      <button type="button" style="margin-top: 20px;" class="btn btn-primary" (click)="onButtonClick()">Buscar</button>
     </div>
-
-     <button type="button" style="margin-top: 20px;" class="btn btn-primary" (click)="onButtonClick()">Limpar</button>
-
-
-    </div>
-
-    
-
   </form>
 </div>
 
@@ -170,36 +184,37 @@
 
 <!----------------------TABELA COM AS ORDENS DE SERVIÇO------------------------------------------------------>
 
-<p class="text-secondary" *ngIf="exibirTabela2">Quantidade de ordem de serviço: {{objetoOs.length}} </p>
+<p class="text-secondary" *ngIf="exibirTabela2">Quantidade de ordem de serviço: {{modeloFinanceiro.length}} </p>
 <table class="table table-dark table-hover" *ngIf="exibirTabela2">
   <thead>
     <tr>
       <th>Os</th>
       <th>Data Entrada</th>
+      <th>Data Fechamento</th>
+      <th>Data Faturamento</th>
       <th>Nome Fantasia</th>
-      <th>Status</th>
+      <th>código Cliente</th>
       <th>Equipamento</th>
       <th>Marca</th>
       <th>Modelo</th>
-      <th>Cor</th>
-      <th>Total Liquido</th>
-      <th>Data fechamento</th>
-      <th>Selecione</th>
-      <th *ngIf="exibirSerial">Serial</th>
+      <th>Valor Total</th>
+      <th>Status Financeiro</th>
+      <th>Alterar</th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let os of objetoOs">
-      <td>{{ os.os }}</td>
-      <td>{{ os.data | date: 'dd/MM/yyyy' }}</td>
-      <td>{{ os.fantasia }}</td>
-      <td>{{ os.status }}</td>
-      <td>{{ os.equipamento }}</td>
-      <td>{{ os.marca }}</td>
-      <td>{{ os.modelo }}</td>
-      <td>{{ os.cor}}</td>
-      <td>{{ os.totaliq}}</td>
-      <td>{{ os.fechamento | date: 'dd/MM/yyyy' }}</td>
+    <tr *ngFor="let financeiro of modeloFinanceiro">
+      <td>{{ financeiro.os}}</td>
+      <td>{{ financeiro.dataEntrada | date: 'dd/MM/yyyy'}}</td>
+      <td>{{ financeiro.fechamento | date: 'dd/MM/yyyy' }}</td>
+      <td>{{ financeiro.dataFaturamento | date: 'dd/MM/yyyy'}}</td>
+      <td>{{ financeiro.fantasia }}</td>
+      <td>{{ financeiro.codcli }}</td>
+      <td>{{ financeiro.equipamento }}</td>
+      <td>{{ financeiro.marca }}</td>
+      <td>{{ financeiro.modelo }}</td>
+      <td>{{ financeiro.totaliq }}</td>
+      <td>{{ financeiro.statusGeral }}</td>
       <td>
         <a>
           <button type="button" class="btn btn-dark" [routerLink]="['/os/consulta/alterapg1', os.os]">

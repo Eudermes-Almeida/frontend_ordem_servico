@@ -26,6 +26,11 @@ urlFinanceiro: string = this.urlServidor + 'financeiro';
     return this.http.post<Financeiro>(this.urlFinanceiro, financeiro, { headers });
   }
 
+  getOsPorCodCli(codcli: number): Observable<Financeiro[]> {
+    const url = this.urlServidor + `financeiro/codcli?codcli=${codcli}`;
+    return this.http.get<Financeiro[]>(url);
+  }
+
   
 }
 
