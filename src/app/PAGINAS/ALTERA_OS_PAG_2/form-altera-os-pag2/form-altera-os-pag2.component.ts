@@ -694,8 +694,8 @@ atualizarOS() {
   });
 
   /////SE O STATUS ESTIVER COMO FECHADA, INSERE A OS NA TABELA DO FINANCEIRO, COM O STATUS GERAL "NAO FATURADO"
-if(this.os.status === "FECHADA"){
-this.enviaParaFinanceiro(this.os);
+if (this.os.status === "FECHADA" && Number(this.os.totaliq) > 0) {
+  this.enviaParaFinanceiro(this.os);
 }
 
 }
