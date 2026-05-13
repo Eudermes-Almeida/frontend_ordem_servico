@@ -173,8 +173,6 @@ export class FormFinanceiroComponent {
         numOs: retorno.toString()
       });
       
-      // Executa a busca automática de todas as colunas dessa O.S. específica
-      //this.getOsPorId(retorno);
     },
     error: (error) => {
       this.spinnerLoading = false; // Desliga o spinner em caso de falha
@@ -205,34 +203,19 @@ export class FormFinanceiroComponent {
 
   //////////////////////////////////////////METODOS PARA BUSCAR OS //////////////////////////////////
 
-  //escuta o input num OS SE DIGITAR UM ENTER DEPOIS DO NUM OS
-  onNumOsKey(event: KeyboardEvent): void {
-    const input = (event.target as HTMLInputElement).value;
+  // //escuta o input num OS SE DIGITAR UM ENTER DEPOIS DO NUM OS
+  // onNumOsKey(event: KeyboardEvent): void {
+  //   const input = (event.target as HTMLInputElement).value;
 
-    if (event.key === 'Enter') { // Dispara a busca ao digitar 4 algarismos
-      const id = parseInt(input, 10); // Converte o valor para número
-      this.getOsPorId(id); // Chama o método getCliente com o valor digitado
-    }
-  }
+  //   if (event.key === 'Enter') { // Dispara a busca ao digitar 4 algarismos
+  //     const id = parseInt(input, 10); // Converte o valor para número
+  //     this.getOsPorId(id); // Chama o método getCliente com o valor digitado
+  //   }
+  // }
 
-  // Busca ORDEM SERVIÇO por id
-  getOsPorId(id: number): void {
-    this.servico.getOsPorId(id).subscribe(
-      (data: Os) => {
-        this.objetoOs = [data]; // Coloca o cliente dentro de um array
-        console.log('O.S. obtida:', this.objetoOs);
-        this.exibirTabela2 = true;
-      },
-      (error) => {
-        if (error.status === 404) {
-          alert(`Você informou o código ${id}, não existe ordem de serviço para este código`);
-        } else {
-          console.error('Erro ao buscar cliente:', error);
-          alert(`Você informou o código ${id}, não existe ordem de serviço para este código`);
-        }
-      }
-    );
-  }
+ 
+
+  
 
   // Escuta o input Cod Cliente APOS DIGITAR O ENTER
   onCodCliKey(event: KeyboardEvent): void {
@@ -313,24 +296,68 @@ export class FormFinanceiroComponent {
       }
     );
   }
-  // Escuta o input Ultimas O.S APOS DIGITAR O ENTER
-  onUltimasOsKey(event: KeyboardEvent): void {
-    const inputElement = event.target as HTMLInputElement;
-    const input = inputElement.value;
+  // // Escuta o input Ultimas O.S APOS DIGITAR O ENTER
+  // onUltimasOsKey(event: KeyboardEvent): void {
+  //   const inputElement = event.target as HTMLInputElement;
+  //   const input = inputElement.value;
 
-    // Verifica se a tecla Enter foi pressionada ou se o input tem 4 caracteres
-    if (event.key === 'Enter') {
-      const limite = parseInt(input, 10); // Converte o valor para número
-      this.buscaUltimasOrdensServico(limite); // Chama o método com o valor digitado
-    }
+  //   // Verifica se a tecla Enter foi pressionada ou se o input tem 4 caracteres
+  //   if (event.key === 'Enter') {
+  //     const limite = parseInt(input, 10); // Converte o valor para número
+  //     this.buscaUltimasOrdensServico(limite); // Chama o método com o valor digitado
+  //   }
+  // }
+
+
+gerenciaAbuscaOsPorIdOuUltimasOs(): void {
+  const numOsValue = this.formulario.get('numOs')?.value;
+  const ultimasOsValue = this.formulario.get('ultimasOs')?.value;
+
+  // Se o campo numOs estiver preenchido, busca por ID único
+  if (numOsValue) {
+    const idConvertido = Number(numOsValue); // CONVERSÃO CORRETA
+    this.getOsPorId(idConvertido);
+  } 
+  // Caso contrário, se o limite estiver preenchido, busca em lote pelas últimas OS
+  else if (ultimasOsValue) {
+    const limiteConvertido = Number(ultimasOsValue); // CONVERSÃO CORRETA
+    this.buscaUltimasOrdensServico(limiteConvertido);
+  } 
+  // Se nenhum dos dois campos estiver preenchido
+  else {
+    alert('Por favor, informe o Nº O.S. ou a quantidade de Últimas O.S. para realizar a busca.');
   }
+}
+
+
+  // Busca ORDEM SERVIÇO por id
+  getOsPorId(id: number): void {
+    console.log(" Este é o id da os ", id)
+    this.financeiroService.getOsPorId(id).subscribe(
+      (data: Financeiro) => {
+        this.modeloFinanceiro = [data]; // Coloca o cliente dentro de um array
+        console.log('O.S. obtida:', this.modeloFinanceiro);
+        this.exibirTabela2 = true;
+      },
+      (error) => {
+        if (error.status === 404) {
+          alert(`Você informou o código ${id}, não existe ordem de serviço para este código`);
+        } else {
+          console.error('Erro ao buscar cliente:', error);
+          alert(`Você informou o código ${id}, não existe ordem de serviço para este código`);
+        }
+      }
+    );
+  }
+
 
   // Busca ORDENS DE SERVIÇO PELA DATA DE ENTRADA
   buscaUltimasOrdensServico(limite: number): void {
-    this.servico.getUltimasOrdensServicos(limite).subscribe(
-      (data: Os[]) => { // Espera um array de os
-        this.objetoOs = data; // Armazena todos os clientes retornados
-        console.log('Ultimas os delimitadas:', this.objetoOs);
+    console.log ( "Este é o limite de busca de os ", limite)
+    this.financeiroService.getUltimasOrdensServicos(limite).subscribe(
+      (data: Financeiro[]) => { // Espera um array de os
+        this.modeloFinanceiro = data; // Armazena todos os clientes retornados
+        console.log('Ultimas os delimitadas:', this.modeloFinanceiro);
         this.exibirTabela2 = true;
       },
       (error) => {

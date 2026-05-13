@@ -42,6 +42,16 @@ ultimaOs(): Observable<number> {
   return this.http.get<number>(url);
 }
 
+getOsPorId(id: number): Observable<Financeiro> {  // ELEMENTO ÚNICO
+  const url = this.urlServidor+`financeiro/${id}`;
+  return this.http.get<Financeiro>(url);
+}
+
+getUltimasOrdensServicos(limite: number): Observable<Financeiro[]> {  /// LISTA DE ELEMENTOS
+  const url = this.urlServidor + `financeiro/ultimasos?limite=${limite}`;
+  return this.http.get<Financeiro[]>(url); // Altere para Observable<Os[]>
+}
+
 
 
   

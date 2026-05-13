@@ -97,20 +97,25 @@
             <input type="checkbox" id="ultimaOs" formControlName="ultimaOs" class="checkbox me-1" (click)="buscaUltimaOs()">
             <label for="ultimaOs" class="mb-0 text-muted small">última</label>
           </div>
-          <input type="text" id="numOs" #numOsInput (keydown)="onNumOsKey($event)" formControlName="numOs"
+          <input type="text" id="numOs" #numOsInput formControlName="numOs"
             class="form-control mt-1" style="max-width: 130px;">
         </div>
 
-        <!-- 5 - INPUT ULTIMA OS -->
+        <!-- 5 - INPUT ULTIMAS OS -->
         <div class="form-group" style="flex: 0 0 auto;">
           <label for="ultimasOs" class="form-label fw-bold small text-light d-block mb-1">Últimas O.S Fechadas:</label>
-          <input type="text" id="ultimasOs" #ultimasOsInput (keydown)="onUltimasOsKey($event)" formControlName="ultimasOs"
+          <input type="text" id="ultimasOs" #ultimasOsInput  formControlName="ultimasOs"
             class="form-control" style="max-width: 180px;">
         </div>
 
         <!-- BOTÃO BUSCAR O.S. -->
         <div class="form-group" style="flex: 0 0 auto;">
-          <button type="button" class="btn btn-primary" (click)="onButtonClick()">Buscar</button>
+          <!-- O sinal de "+" antes do formulario faz a conversão de String para Number -->
+<button type="button" class="btn btn-primary w-100" 
+        (click)="gerenciaAbuscaOsPorIdOuUltimasOs( )"> 
+  Buscar
+</button>
+
         </div>
       </div>
 
@@ -118,20 +123,24 @@
       <div class="d-flex align-items-end gap-3 p-2" style="border: 2px solid orange; border-radius: 10px; flex: 0 0 auto;">
 
         <!-- 2 - OS RADIOS (Agrupados logicamente por uma propriedade comum) -->
-        <div class="form-group" style="flex: 0 0 auto;">
-          <label class="form-label fw-bold small text-light d-block mb-1">Filtrar por data</label>
-          <div class="btn-group" role="group" aria-label="Seleção de Tipo de Data">
-            <!-- Vinculados ao controle do TypeScript para alternar os estados -->
-            <input type="radio" class="btn-check" id="btnEntrada" value="entrada" name="tipoDataBtn" formControlName="filtroDataEntrada" autocomplete="off">
-            <label class="btn btn-outline-primary" for="btnEntrada">Data de Entrada</label>
+        <!-- 2 - OS RADIOS ALINHADOS COM O SEU FORMULARIO TS -->
+<div class="form-group" style="flex: 0 0 auto;">
+  <label class="form-label fw-bold small text-light d-block mb-1">Filtrar por data</label>
+  <div class="btn-group" role="group" aria-label="Seleção de Tipo de Data">
+    
+    <!-- CORRIGIDO: formControlName="tipoData" em todos os inputs -->
+    <input type="radio" class="btn-check" id="btnEntrada" value="entrada" name="tipoDataBtn" formControlName="tipoData" autocomplete="off">
+    <label class="btn btn-outline-primary" for="btnEntrada">Data de Entrada</label>
 
-            <input type="radio" class="btn-check" id="btnFechamento" value="fechamento" name="tipoDataBtn" formControlName="filtroDataFechamento" autocomplete="off">
-            <label class="btn btn-outline-primary" for="btnFechamento">Data de Fechamento</label>
+    <input type="radio" class="btn-check" id="btnFechamento" value="fechamento" name="tipoDataBtn" formControlName="tipoData" autocomplete="off">
+    <label class="btn btn-outline-primary" for="btnFechamento">Data de Fechamento</label>
 
-            <input type="radio" class="btn-check" id="btnFaturamento" value="faturamento" name="tipoDataBtn" formControlName="filtroDataFaturamento" autocomplete="off">
-            <label class="btn btn-outline-primary" for="btnFaturamento">Data de Faturamento</label>
-          </div>
-        </div>
+    <input type="radio" class="btn-check" id="btnFaturamento" value="faturamento" name="tipoDataBtn" formControlName="tipoData" autocomplete="off">
+    <label class="btn btn-outline-primary" for="btnFaturamento">Data de Faturamento</label>
+    
+  </div>
+</div>
+
 
         <!-- 3 - DATEPICKER INÍCIO -->
         <div class="form-group" style="flex: 0 0 auto;">
