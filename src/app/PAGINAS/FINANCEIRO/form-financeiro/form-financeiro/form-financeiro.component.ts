@@ -75,6 +75,17 @@ export class FormFinanceiroComponent {
     statusFinanceiro: new FormControl('')
   });
 
+  // CONFIGURA FORMULÁRIO
+  formProcessaRemessa = new FormGroup({
+    dataFaturamento: new FormControl(''),
+    tipoPagamento: new FormControl(''),
+    quantidadeParcelas: new FormControl(''),
+    prazo: new FormControl(''),
+    taxaDeJuros: new FormControl(''),
+    taxaIof: new FormControl(''),
+    custoPorBoleto: new FormControl('entrada'),
+  });
+
   constructor(
     private router: Router,
     private parametrosService: ParametrosService,
@@ -96,7 +107,6 @@ export class FormFinanceiroComponent {
 
   // CONFIGURA AS FUNÇÕES QUE SERÃO EXECUTADAS NA INICIALIZAÇÃO DA PÁGINA
   ngOnInit(): void {
-
     // Escutar mudanças no campo de nomefantasia
     this.formulario.get('fantasia')?.valueChanges.subscribe((value: string) => {
       if (value && value.length >= 4) {

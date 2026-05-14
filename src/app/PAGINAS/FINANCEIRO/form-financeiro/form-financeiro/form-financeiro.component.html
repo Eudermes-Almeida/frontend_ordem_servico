@@ -268,13 +268,10 @@
   </table>
 </div>
 
-<!------------------------TABELA PARA GERAR A REMESSA-------------------------->
+<!------------------------FORMULÁRIO PARA GERAR REMESSA-------------------------->
 <p>.</p>
 <div>
-
-  <!-- CORRIGIDO: Adicionado justify-content-between para espaçamento equitativo e justify-content-center como salvaguarda responsiva -->
-  <!-- Bloco isolado com borda laranja para os componentes de Faturamento, Pagamento e Taxas -->
-<!-- CORRIGIDO: Alterado de w-100 para w-90 e adicionado mx-auto para centralizar o bloco deixando as margens livres -->
+ <form [formGroup]="formProcessaRemessa" id="formProcessaRemessa">
 <div class="d-flex flex-row flex-wrap align-items-end justify-content-around p-2 mx-auto" 
      style="border: 2px solid orange; border-radius: 10px; width: 90%;">
 
@@ -282,7 +279,7 @@
   <div class="form-group mb-2" style="flex: 0 0 auto;">
     <label class="form-label fw-bold small text-light d-block mb-1">Data Faturamento</label>
     <div class="input-group" style="max-width: 160px;">
-      <input class="form-control" placeholder="aaaa-mm-dd" name="dp" ngbDatepicker #d3="ngbDatepicker"
+      <input class="form-control" formControlName="dataFaturamento" placeholder="aaaa-mm-dd" name="dp" ngbDatepicker #d3="ngbDatepicker"
         (dateSelect)="onDateInicial($event)" container="body" />
       <button class="btn btn-outline-primary d-flex align-items-center" (click)="d3.toggle()" type="button">
         <i class="bi bi-calendar3"></i>
@@ -293,7 +290,7 @@
   <!-- 2 - TIPO DE PAGAMENTO -->
   <div class="form-group mb-2" style="flex: 0 0 auto; min-width: 180px;">
     <label class="form-label fw-bold small text-light d-block mb-1">Tipo de Pagamento</label>
-    <select formControlName="tipoPagamento" class="form-select" id="tipoPagamento">
+    <select formControlName="tipoPagamento"  class="form-select" id="tipoPagamento">
       <option [value]="''" disabled selected>Selecione...</option>
       <option value="DINHEIRO">DINHEIRO</option>
       <option value="PIX">PIX</option>
@@ -306,7 +303,7 @@
   <!-- 3 - QUANTIDADE PARCELAS -->
   <div class="form-group mb-2" style="flex: 0 0 auto; min-width: 160px;">
     <label class="form-label fw-bold small text-light d-block mb-1">Quantidade Parcelas</label>
-    <select formControlName="qtParcela" class="form-select" id="qtParcela">
+    <select formControlName="quantidadeParcelas" class="form-select" id="qtParcela">
       <option [value]="''" disabled selected>Selecione...</option>
       <option value="A VISTA">A VISTA</option>
       <option value="1">1</option>
@@ -335,19 +332,19 @@
   <!-- 5 - TAXA DE JUROS -->
   <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 120px;">
     <label for="taxaJuros" class="form-label fw-bold small text-light d-block mb-1">Taxa de Juros</label>
-    <input type="text" formControlName="jurosBordero" id="taxaJuros" class="form-control w-100" placeholder="0,00%">
+    <input formControlName="taxaDeJuros" type="text"  id="taxaJuros" class="form-control w-100" placeholder="0,00%">
   </div>
 
   <!-- 6 - TAXA IOF -->
   <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 120px;">
     <label for="taxaIof" class="form-label fw-bold small text-light d-block mb-1">Taxa IOF</label>
-    <input type="text" formControlName="iofAdicional" id="taxaIof" class="form-control w-100" placeholder="0,00%">
+    <input formControlName="taxaIof" type="text"  id="taxaIof" class="form-control w-100" placeholder="0,00%">
   </div>
 
   <!-- 7 - CUSTO POR BOLETO EMITIDO -->
   <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;">
     <label for="custoBoleto" class="form-label fw-bold small text-light d-block mb-1">Custo por Boleto</label>
-    <input type="text" formControlName="tarifaBordero" id="custoBoleto" class="form-control w-100" placeholder="R$ 0,00">
+    <input formControlName="custoPorBoleto" type="text"  id="custoBoleto" class="form-control w-100" placeholder="R$ 0,00">
   </div>
 
   <!-- 8 - BOTÃO PROCESSAR REMESSA -->
@@ -361,11 +358,12 @@
 
 </div>
 
-
+</form>
 
 </div>
 
 
+<!----------------------------------TABELA GERAR REMESSA ---------------------->
 
   <P>.</P>
   <P>.</P>
