@@ -5,17 +5,18 @@
 
     <!-- PRIMEIRA LINHA DE INPUTS (BLOCO CLIENTE CORRIGIDO COM PROPORÇÃO E BORDA) -->
     <div class="row align-items-end g-3 p-2 mb-3 mx-0 w-100" style="border: 2px solid orange; border-radius: 10px;">
-      
+
       <!-- CÓDIGO CLIENTE (45% Proporcional) -->
       <div class="col-5">
         <div class="form-group">
           <div class="d-flex align-items-center">
             <label for="codcli" class="mb-0 me-1 text-light small fw-bold">Código Cliente:</label>
-            <input type="checkbox" id="ultimoCliente" formControlName="ultimoCliente" class="checkbox me-1" (click)="buscaUltimocliente( )">
+            <input type="checkbox" id="ultimoCliente" formControlName="ultimoCliente" class="checkbox me-1"
+              (click)="buscaUltimocliente( )">
             <label for="ultimoCliente" class="mb-0 text-muted small">Último Cliente</label>
           </div>
-          <input type="text" id="codcli" #codigoClienteInput (keydown)="onClienteInput($event)"
-            formControlName="codcli" maxlength="10" class="form-control mt-1 w-100">
+          <input type="text" id="codcli" #codigoClienteInput (keydown)="onClienteInput($event)" formControlName="codcli"
+            maxlength="10" class="form-control mt-1 w-100">
         </div>
       </div>
 
@@ -31,10 +32,10 @@
       <!-- BOTÃO BUSCAR DO CLIENTE (10% Proporcional) -->
       <div class="col-2">
         <div class="form-group">
-         <button type="button" class="btn btn-primary w-100" 
-        (click)="getOsPorCodCli(+formulario.get('codcli')?.value!)"> 
-  Buscar
-</button>
+          <button type="button" class="btn btn-primary w-100"
+            (click)="getOsPorCodCli(+formulario.get('codcli')?.value!)">
+            Buscar
+          </button>
 
         </div>
       </div>
@@ -88,58 +89,63 @@
     <div class="d-flex flex-row flex-wrap align-items-end justify-content-center gap-4 mt-3">
 
       <!-- Bloco isolado com borda laranja para os componentes de O.S. -->
-      <div class="d-flex align-items-end gap-3 p-2" style="border: 2px solid orange; border-radius: 10px; flex: 0 0 auto;">
+      <div class="d-flex align-items-end gap-3 p-2"
+        style="border: 2px solid orange; border-radius: 10px; flex: 0 0 auto;">
 
         <!-- 1 - INPUT NUMERO OS -->
         <div class="form-group" style="flex: 0 0 auto;">
           <div class="d-flex align-items-center">
             <label for="numOs" class="mb-0 me-1 text-light small fw-bold">Nº O.S. :</label>
-            <input type="checkbox" id="ultimaOs" formControlName="ultimaOs" class="checkbox me-1" (click)="buscaUltimaOs()">
+            <input type="checkbox" id="ultimaOs" formControlName="ultimaOs" class="checkbox me-1"
+              (click)="buscaUltimaOs()">
             <label for="ultimaOs" class="mb-0 text-muted small">última</label>
           </div>
-          <input type="text" id="numOs" #numOsInput formControlName="numOs"
-            class="form-control mt-1" style="max-width: 130px;">
+          <input type="text" id="numOs" #numOsInput formControlName="numOs" class="form-control mt-1"
+            style="max-width: 130px;">
         </div>
 
         <!-- 5 - INPUT ULTIMAS OS -->
         <div class="form-group" style="flex: 0 0 auto;">
           <label for="ultimasOs" class="form-label fw-bold small text-light d-block mb-1">Últimas O.S Fechadas:</label>
-          <input type="text" id="ultimasOs" #ultimasOsInput  formControlName="ultimasOs"
-            class="form-control" style="max-width: 180px;">
+          <input type="text" id="ultimasOs" #ultimasOsInput formControlName="ultimasOs" class="form-control"
+            style="max-width: 180px;">
         </div>
 
         <!-- BOTÃO BUSCAR O.S. -->
         <div class="form-group" style="flex: 0 0 auto;">
           <!-- O sinal de "+" antes do formulario faz a conversão de String para Number -->
-<button type="button" class="btn btn-primary w-100" 
-        (click)="gerenciaAbuscaOsPorIdOuUltimasOs( )"> 
-  Buscar
-</button>
+          <button type="button" class="btn btn-primary w-100" (click)="gerenciaAbuscaOsPorIdOuUltimasOs( )">
+            Buscar
+          </button>
 
         </div>
       </div>
 
       <!-- Bloco isolado com borda laranja para os componentes de Filtro por Data e Status -->
-      <div class="d-flex align-items-end gap-3 p-2" style="border: 2px solid orange; border-radius: 10px; flex: 0 0 auto;">
+      <div class="d-flex align-items-end gap-3 p-2"
+        style="border: 2px solid orange; border-radius: 10px; flex: 0 0 auto;">
 
         <!-- 3 - OS RADIOS (Agrupados logicamente por uma propriedade comum)-->
-<!-- 2 - OS RADIOS CORRIGIDOS PARA ELIMINAR O ERRO NG01202 -->
-<!-- 2 - OS RADIOS COM EVENTO DE MUDANÇA FORÇADO -->
-<div class="form-group" style="flex: 0 0 auto;">
-  <label class="form-label fw-bold small text-light d-block mb-1">Filtrar por data</label>
-  <div class="btn-group" role="group" aria-label="Seleção de Tipo de Data">
-    
-    <input type="radio" class="btn-check" id="btnEntrada" value="entrada" name="tipoData" formControlName="tipoData" (change)="onRadioChange()" autocomplete="off">
-    <label class="btn btn-outline-primary" for="btnEntrada">Data de Entrada</label>
+        <!-- 2 - OS RADIOS CORRIGIDOS PARA ELIMINAR O ERRO NG01202 -->
+        <!-- 2 - OS RADIOS COM EVENTO DE MUDANÇA FORÇADO -->
+        <div class="form-group" style="flex: 0 0 auto;">
+          <label class="form-label fw-bold small text-light d-block mb-1">Filtrar por data</label>
+          <div class="btn-group" role="group" aria-label="Seleção de Tipo de Data">
 
-    <input type="radio" class="btn-check" id="btnFechamento" value="fechamento" name="tipoData" formControlName="tipoData" (change)="onRadioChange()" autocomplete="off">
-    <label class="btn btn-outline-primary" for="btnFechamento">Data de Fechamento</label>
+            <input type="radio" class="btn-check" id="btnEntrada" value="entrada" name="tipoData"
+              formControlName="tipoData" (change)="onRadioChange()" autocomplete="off">
+            <label class="btn btn-outline-primary" for="btnEntrada">Data de Entrada</label>
 
-    <input type="radio" class="btn-check" id="btnFaturamento" value="faturamento" name="tipoData" formControlName="tipoData" (change)="onRadioChange()" autocomplete="off">
-    <label class="btn btn-outline-primary" for="btnFaturamento">Data de Faturamento</label>
-    
-  </div>
-</div>
+            <input type="radio" class="btn-check" id="btnFechamento" value="fechamento" name="tipoData"
+              formControlName="tipoData" (change)="onRadioChange()" autocomplete="off">
+            <label class="btn btn-outline-primary" for="btnFechamento">Data de Fechamento</label>
+
+            <input type="radio" class="btn-check" id="btnFaturamento" value="faturamento" name="tipoData"
+              formControlName="tipoData" (change)="onRadioChange()" autocomplete="off">
+            <label class="btn btn-outline-primary" for="btnFaturamento">Data de Faturamento</label>
+
+          </div>
+        </div>
 
 
 
@@ -171,7 +177,8 @@
         <!-- SELECT STATUS FINANCEIRO -->
         <div class="form-group" style="flex: 0 0 auto;">
           <label class="form-label fw-bold small text-light d-block mb-1">Status Financeiro</label>
-          <select formControlName="statusFinanceiro" (change)="onStatusFinanceiro($event)" class="form-select" id="statusFinanceiro">
+          <select formControlName="statusFinanceiro" (change)="onStatusFinanceiro($event)" class="form-select"
+            id="statusFinanceiro">
             <option [value]="''" disabled selected>Selecione...</option>
             <option value="TODOS">TODOS</option>
             <option value="NAO FATURADO">NAO FATURADO</option>
@@ -190,58 +197,226 @@
   </form>
 </div>
 
+<div class="d-flex flex-row align-items-center justify-content-end gap-2 mt-3 w-100">
+
+  <!-- O botão sempre existirá no DOM, respeitando a inicialização do Tooltip -->
+  <div [hidden]="!exibirBtnGerarRemessa" class="form-group" style="flex: 0 0 auto;">
+    <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top"
+      data-bs-title="Gera boletos para uma ou mais ordem de serviço selecionadas. Selecione OS de um ÚNICO Cliente, por vez."
+      (click)="gerarRemessa()">
+      Gerar Remessa
+    </button>
+  </div>
+
+
+  <div class="form-group" style="flex: 0 0 auto;">
+    <!-- Adicionados os atributos para o Tooltip na parte superior -->
+    <!-- Alternativa caso use Ng-Bootstrap pura (Sem precisar mexer no TS) -->
+    <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top"
+      data-bs-title="Gera um borderô com as remessas (boletos) criados" (click)="onBuscarFiltros()">
+      Gerar Borderô
+    </button>
+  </div>
+
+</div>
+
+
 
 
 
 <!----------------------TABELA COM AS ORDENS DE SERVIÇO------------------------------------------------------>
+<div *ngIf="!exibirTabelaRemessa">
+  <p class="text-secondary" *ngIf="exibirTabela2">Quantidade de ordem de serviço: {{modeloFinanceiro.length}} </p>
+  <table class="table table-dark table-hover" *ngIf="exibirTabela2">
+    <thead>
+      <tr>
+        <th>Os</th>
+        <th>Data Entrada</th>
+        <th>Data Fechamento</th>
+        <th>Data Faturamento</th>
+        <th>Nome Fantasia</th>
+        <th>código Cliente</th>
+        <th>Equipamento</th>
+        <th>Marca</th>
+        <th>Modelo</th>
+        <th>Valor Total</th>
+        <th>Status Financeiro</th>
+        <th>Selecionar</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let financeiro of modeloFinanceiro">
+        <td>{{ financeiro.os }}</td>
+        <td>{{ financeiro.dataEntrada | date: 'dd/MM/yyyy' }}</td>
+        <td>{{ financeiro.fechamento | date: 'dd/MM/yyyy' }}</td>
+        <td>{{ financeiro.dataFaturamento | date: 'dd/MM/yyyy' }}</td>
+        <td>{{ financeiro.fantasia }}</td>
+        <td>{{ financeiro.codcli }}</td>
+        <td>{{ financeiro.equipamento }}</td>
+        <td>{{ financeiro.marca }}</td>
+        <td>{{ financeiro.modelo }}</td>
+        <td>{{ financeiro.totaliq }}</td>
+        <td>{{ financeiro.statusGeral }}</td>
+        <td>
+          <!-- CORRIGIDO: Alterado o primeiro parâmetro de "dados" para "financeiro" -->
+          <input type="checkbox" #check class="checkbox me-1"
+            (change)="adicionaOsnoArrayDeRemessa(financeiro, check.checked)">
+        </td>
+      </tr>
+    </tbody>
 
-<p class="text-secondary" *ngIf="exibirTabela2">Quantidade de ordem de serviço: {{modeloFinanceiro.length}} </p>
-<table class="table table-dark table-hover" *ngIf="exibirTabela2">
-  <thead>
-    <tr>
-      <th>Os</th>
-      <th>Data Entrada</th>
-      <th>Data Fechamento</th>
-      <th>Data Faturamento</th>
-      <th>Nome Fantasia</th>
-      <th>código Cliente</th>
-      <th>Equipamento</th>
-      <th>Marca</th>
-      <th>Modelo</th>
-      <th>Valor Total</th>
-      <th>Status Financeiro</th>
-      <th>Alterar</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let financeiro of modeloFinanceiro">
-      <td>{{ financeiro.os}}</td>
-      <td>{{ financeiro.dataEntrada | date: 'dd/MM/yyyy'}}</td>
-      <td>{{ financeiro.fechamento | date: 'dd/MM/yyyy' }}</td>
-      <td>{{ financeiro.dataFaturamento | date: 'dd/MM/yyyy'}}</td>
-      <td>{{ financeiro.fantasia }}</td>
-      <td>{{ financeiro.codcli }}</td>
-      <td>{{ financeiro.equipamento }}</td>
-      <td>{{ financeiro.marca }}</td>
-      <td>{{ financeiro.modelo }}</td>
-      <td>{{ financeiro.totaliq }}</td>
-      <td>{{ financeiro.statusGeral }}</td>
-      <td>
-        <a>
-          <button type="button" class="btn btn-dark" [routerLink]="['/os/consulta/alterapg1', os.os]">
-            <i class="bi bi-search" style="font-size: 15px;"></i>
-          </button>
-
-        </a>
-      </td>
-      <td *ngIf="exibirSerial">{{ os.serial }}</td>
-
-    </tr>
-  </tbody>
-</table>
-
-<div class="btn-salvar-ordem-servico">
-  <a routerLink="/home" routerLinkActive="active"><button type="button" class="btn btn-primary"
-      *ngIf="exibirBotaoSair">SAIR</button></a>
-  <button class="btn btn-primary" *ngIf="exibirBotaoSalvar">Salvar Ordem Serviço</button>
+  </table>
 </div>
+
+<!------------------------TABELA PARA GERAR A REMESSA-------------------------->
+<p>.</p>
+<div>
+
+  <!-- CORRIGIDO: Adicionado justify-content-between para espaçamento equitativo e justify-content-center como salvaguarda responsiva -->
+  <!-- Bloco isolado com borda laranja para os componentes de Faturamento, Pagamento e Taxas -->
+<!-- CORRIGIDO: Alterado de w-100 para w-90 e adicionado mx-auto para centralizar o bloco deixando as margens livres -->
+<div class="d-flex flex-row flex-wrap align-items-end justify-content-around p-2 mx-auto" 
+     style="border: 2px solid orange; border-radius: 10px; width: 90%;">
+
+  <!-- 1 - DATA FATURAMENTO -->
+  <div class="form-group mb-2" style="flex: 0 0 auto;">
+    <label class="form-label fw-bold small text-light d-block mb-1">Data Faturamento</label>
+    <div class="input-group" style="max-width: 160px;">
+      <input class="form-control" placeholder="aaaa-mm-dd" name="dp" ngbDatepicker #d3="ngbDatepicker"
+        (dateSelect)="onDateInicial($event)" container="body" />
+      <button class="btn btn-outline-primary d-flex align-items-center" (click)="d3.toggle()" type="button">
+        <i class="bi bi-calendar3"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- 2 - TIPO DE PAGAMENTO -->
+  <div class="form-group mb-2" style="flex: 0 0 auto; min-width: 180px;">
+    <label class="form-label fw-bold small text-light d-block mb-1">Tipo de Pagamento</label>
+    <select formControlName="tipoPagamento" class="form-select" id="tipoPagamento">
+      <option [value]="''" disabled selected>Selecione...</option>
+      <option value="DINHEIRO">DINHEIRO</option>
+      <option value="PIX">PIX</option>
+      <option value="BOLETO">BOLETO</option>
+      <option value="BORDERÔ">BORDERÔ</option>
+      <option value="CARTEIRA">CARTEIRA</option>
+    </select>
+  </div>
+
+  <!-- 3 - QUANTIDADE PARCELAS -->
+  <div class="form-group mb-2" style="flex: 0 0 auto; min-width: 160px;">
+    <label class="form-label fw-bold small text-light d-block mb-1">Quantidade Parcelas</label>
+    <select formControlName="qtParcela" class="form-select" id="qtParcela">
+      <option [value]="''" disabled selected>Selecione...</option>
+      <option value="A VISTA">A VISTA</option>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+    </select>
+  </div>
+
+  <!-- 4 - PRAZO -->
+  <div class="form-group mb-2" style="flex: 0 0 auto; min-width: 180px;">
+    <label class="form-label fw-bold small text-light d-block mb-1">Prazo</label>
+    <select formControlName="prazo" class="form-select" id="prazo">
+      <option [value]="''" disabled selected>Selecione...</option>
+      <option value="A VISTA">A VISTA</option>
+      <option value="3 DIAS"> 3 DIAS</option>
+      <option value="7 DIAS"> 7 DIAS</option>
+      <option value="15 DIAS"> 15 DIAS</option>
+      <option value="30 DIAS"> 30 DIAS</option>
+      <option value="15/30 DIAS"> 15/30 DIAS</option>
+      <option value="15/30/45 DIAS"> 15/30/45 DIAS</option>
+      <option value="30/60 DIAS"> 30/60 DIAS</option>
+      <option value="30/60/90 DIAS"> 30/60/90 DIAS</option>
+    </select>
+  </div>
+
+  <!-- 5 - TAXA DE JUROS -->
+  <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 120px;">
+    <label for="taxaJuros" class="form-label fw-bold small text-light d-block mb-1">Taxa de Juros</label>
+    <input type="text" formControlName="jurosBordero" id="taxaJuros" class="form-control w-100" placeholder="0,00%">
+  </div>
+
+  <!-- 6 - TAXA IOF -->
+  <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 120px;">
+    <label for="taxaIof" class="form-label fw-bold small text-light d-block mb-1">Taxa IOF</label>
+    <input type="text" formControlName="iofAdicional" id="taxaIof" class="form-control w-100" placeholder="0,00%">
+  </div>
+
+  <!-- 7 - CUSTO POR BOLETO EMITIDO -->
+  <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;">
+    <label for="custoBoleto" class="form-label fw-bold small text-light d-block mb-1">Custo por Boleto</label>
+    <input type="text" formControlName="tarifaBordero" id="custoBoleto" class="form-control w-100" placeholder="R$ 0,00">
+  </div>
+
+  <!-- 8 - BOTÃO PROCESSAR REMESSA -->
+  <div [hidden]="!exibirBtnGerarRemessa" class="form-group mb-2" style="flex: 0 0 auto;">
+    <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top"
+      data-bs-title="Gera boletos para uma ou mais ordem de serviço selecionadas. Selecione OS de um ÚNICO Cliente, por vez."
+      (click)="gerarRemessa()">
+      Processar Remessa
+    </button>
+  </div>
+
+</div>
+
+
+
+</div>
+
+
+
+  <P>.</P>
+  <P>.</P>
+  <div *ngIf="exibirTabelaRemessa">
+    <table class="table table-dark table-hover" *ngIf="exibirTabela2">
+      <thead>
+        <tr>
+          <th>Os</th>
+          <th>Remessa</th>
+          <th>Valor Total</th>
+          <th>Vencimento 1</th>
+          <th>Parcela 1</th>
+          <th>Pago 1 ?</th>
+          <th>Vencimento 2</th>
+          <th>Parcela 2</th>
+          <th>Pago 2 ?</th>
+          <th>Vencimento 3</th>
+          <th>Parcela 3</th>
+          <th>Pago 3 ?</th>
+          <th>Valor já pago</th>
+          <th>Status Geral</th>
+          <th>Juros</th>
+          <th>Iof</th>
+          <th>Tarifa</th>
+          <th>Custo Total Bancário*</th>
+          <th>Valor Liquido</th>
+
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let remessa of osSelecionadasParaRemessa">
+          <td>{{remessa.os}}</td>
+          <td>{{remessa.remessa}}</td>
+          <td>{{remessa.valorTotal}}</td>
+          <td>{{remessa.vencimento1}}</td>
+          <td>{{remessa.parcela1}}</td>
+          <td>{{remessa.pago1}}</td>
+          <td>{{remessa.vencimento2}}</td>
+          <td>{{remessa.parcela2}}</td>
+          <td>{{remessa.pago2}}</td>
+          <td>{{remessa.vencimento3}}</td>
+          <td>{{remessa.parcela3}}</td>
+          <td>{{remessa.pago3}}</td>
+          <td>{{remessa.valorJaPago}}</td>
+          <td>{{remessa.statusGeral}}</td>
+          <td>{{remessa.juros}}</td>
+          <td>{{remessa.iof}}</td>
+          <td>{{remessa.tarifa}}</td>
+          <td>{{remessa.custoTotalBancario}}</td>
+          <td>{{remessa.valorLiquido}}</td>
+
+      </tbody>
+    </table>
+  </div>

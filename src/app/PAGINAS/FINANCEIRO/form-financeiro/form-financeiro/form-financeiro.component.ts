@@ -14,6 +14,9 @@ import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { Financeiro } from '../../../../modelo/Financeiro';
+import { DadosRemessa } from '../../../../modelo/DadosRemessa';
+
+declare var bootstrap: any;
 
 @Component({
   selector: 'app-form-financeiro',
@@ -39,10 +42,14 @@ export class FormFinanceiroComponent {
   statusFinanceiro: string = "";
   private isClickEvent: boolean = false;
   modeloFinanceiro: Financeiro[] = [];
+  osSelecionadasParaRemessa: DadosRemessa[] = []
+
+
 
   ////DATEPICKER:
   model: NgbDateStruct | undefined;
   model2: NgbDateStruct | undefined;
+  model3: NgbDateStruct | undefined;
 
   ///////////CONTROLE DE RENDERIZAÇÃO/////////
   exibirTabela: boolean = false;
@@ -51,6 +58,8 @@ export class FormFinanceiroComponent {
   exibirBotaoSair: boolean = false;
   exibirSerial: boolean = false
   spinnerLoading: boolean = false;
+  exibirBtnGerarRemessa: boolean = false
+  exibirTabelaRemessa: boolean = false;
 
   // CONFIGURA FORMULÁRIO
   formulario = new FormGroup({
@@ -73,6 +82,17 @@ export class FormFinanceiroComponent {
     private cdr: ChangeDetectorRef,
     private financeiroService: FinanceiroService
   ) { }
+
+
+  ////METODO PARA HABILITAR TOOL TIP:
+
+  ngAfterViewInit(): void {
+    // Captura todos os elementos da tela que possuem o atributo de tooltip
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+    
+    // Inicializa o comportamento visual do Bootstrap para cada um deles
+    Array.from(tooltipTriggerList).map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+  }
 
   // CONFIGURA AS FUNÇÕES QUE SERÃO EXECUTADAS NA INICIALIZAÇÃO DA PÁGINA
   ngOnInit(): void {
@@ -203,20 +223,6 @@ export class FormFinanceiroComponent {
 
   //////////////////////////////////////////METODOS PARA BUSCAR OS //////////////////////////////////
 
-  // //escuta o input num OS SE DIGITAR UM ENTER DEPOIS DO NUM OS
-  // onNumOsKey(event: KeyboardEvent): void {
-  //   const input = (event.target as HTMLInputElement).value;
-
-  //   if (event.key === 'Enter') { // Dispara a busca ao digitar 4 algarismos
-  //     const id = parseInt(input, 10); // Converte o valor para número
-  //     this.getOsPorId(id); // Chama o método getCliente com o valor digitado
-  //   }
-  // }
-
- 
-
-  
-
   // Escuta o input Cod Cliente APOS DIGITAR O ENTER
   onCodCliKey(event: KeyboardEvent): void {
     const inputElement = event.target as HTMLInputElement;
@@ -297,19 +303,7 @@ export class FormFinanceiroComponent {
       }
     );
   }
-  // // Escuta o input Ultimas O.S APOS DIGITAR O ENTER
-  // onUltimasOsKey(event: KeyboardEvent): void {
-  //   const inputElement = event.target as HTMLInputElement;
-  //   const input = inputElement.value;
-
-  //   // Verifica se a tecla Enter foi pressionada ou se o input tem 4 caracteres
-  //   if (event.key === 'Enter') {
-  //     const limite = parseInt(input, 10); // Converte o valor para número
-  //     this.buscaUltimasOrdensServico(limite); // Chama o método com o valor digitado
-  //   }
-  // }
-
-
+  
 gerenciaAbuscaOsPorIdOuUltimasOs(): void {
   this.modeloFinanceiro = [];
   const numOsValue = this.formulario.get('numOs')?.value;
@@ -330,7 +324,6 @@ gerenciaAbuscaOsPorIdOuUltimasOs(): void {
     alert('Por favor, informe o Nº O.S. ou a quantidade de Últimas O.S. para realizar a busca.');
   }
 }
-
 
   // Busca ORDEM SERVIÇO por id
   getOsPorId(id: number): void {
@@ -476,6 +469,54 @@ onBuscarFiltros(): void {
       }
     }
   });
+}
+
+adicionaOsnoArrayDeRemessa(financeiro: Financeiro, isChecked: boolean): void {
+  if (isChecked) {
+    // Converte o objeto Financeiro recebido no formato exigido por DadosRemessa
+    const novoItemRemessa: DadosRemessa = {
+      os: financeiro.os.toString(), // Converte number/Long para string
+      remessa: financeiro.codRemessa || '',
+      valorTotal: financeiro.totaliq || '',
+      vencimento1: financeiro.vencimento1 ? financeiro.vencimento1.toString() : '',
+      parcela1: financeiro.valorParcela1 || '',
+      pago1: financeiro.statusParcela1 || '',
+      vencimento2: financeiro.vencimento2 ? financeiro.vencimento2.toString() : '',
+      parcela2: financeiro.valorParcela2 || '',
+      pago2: financeiro.statusParcela2 || '',
+      vencimento3: financeiro.vencimento3 ? financeiro.vencimento3.toString() : '',
+      parcela3: financeiro.valorParcela3 || '',
+      pago3: financeiro.statusParcela3 || '',
+      valorJaPago: financeiro.valorJaPago || '',
+      statusGeral: financeiro.statusGeral || '',
+      juros: financeiro.jurosBordero || '',
+      iof: financeiro.iofAdicional || '', // Mapeia iofAdicional para iof
+      tarifa: financeiro.tarifaBordero || '',
+      custoTotalBancario: financeiro.custoBancarioTotal || '',
+      valorLiquido: financeiro.valorLiquidoCreditado || ''
+    };
+
+    this.osSelecionadasParaRemessa.push(novoItemRemessa);
+    console.log(`OS ${financeiro.os} ADICIONADA. Total no lote:`, this.osSelecionadasParaRemessa.length);
+  } else {
+    // CORRIGIDO: Converte o ID numérico para String para bater com a tipagem da interface DadosRemessa
+    const osParaRemoverStr = financeiro.os.toString();
+    const index = this.osSelecionadasParaRemessa.findIndex(item => item.os === osParaRemoverStr);
+    
+    if (index !== -1) {
+      this.osSelecionadasParaRemessa.splice(index, 1);
+      console.log(`OS ${financeiro.os} REMOVIDA. Total no lote:`, this.osSelecionadasParaRemessa.length);
+    }
+  }
+
+  // Define a exibição do botão de forma simplificada
+  this.exibirBtnGerarRemessa = this.osSelecionadasParaRemessa.length > 0;
+
+  console.log('Lista atual de OS para remessa:', this.osSelecionadasParaRemessa);
+}
+
+gerarRemessa(){
+  this.exibirTabelaRemessa = true;
 }
 
 
