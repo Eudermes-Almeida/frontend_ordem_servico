@@ -122,24 +122,26 @@
       <!-- Bloco isolado com borda laranja para os componentes de Filtro por Data e Status -->
       <div class="d-flex align-items-end gap-3 p-2" style="border: 2px solid orange; border-radius: 10px; flex: 0 0 auto;">
 
-        <!-- 2 - OS RADIOS (Agrupados logicamente por uma propriedade comum) -->
-        <!-- 2 - OS RADIOS ALINHADOS COM O SEU FORMULARIO TS -->
+        <!-- 3 - OS RADIOS (Agrupados logicamente por uma propriedade comum)-->
+<!-- 2 - OS RADIOS CORRIGIDOS PARA ELIMINAR O ERRO NG01202 -->
+<!-- 2 - OS RADIOS COM EVENTO DE MUDANÇA FORÇADO -->
 <div class="form-group" style="flex: 0 0 auto;">
   <label class="form-label fw-bold small text-light d-block mb-1">Filtrar por data</label>
   <div class="btn-group" role="group" aria-label="Seleção de Tipo de Data">
     
-    <!-- CORRIGIDO: formControlName="tipoData" em todos os inputs -->
-    <input type="radio" class="btn-check" id="btnEntrada" value="entrada" name="tipoDataBtn" formControlName="tipoData" autocomplete="off">
+    <input type="radio" class="btn-check" id="btnEntrada" value="entrada" name="tipoData" formControlName="tipoData" (change)="onRadioChange()" autocomplete="off">
     <label class="btn btn-outline-primary" for="btnEntrada">Data de Entrada</label>
 
-    <input type="radio" class="btn-check" id="btnFechamento" value="fechamento" name="tipoDataBtn" formControlName="tipoData" autocomplete="off">
+    <input type="radio" class="btn-check" id="btnFechamento" value="fechamento" name="tipoData" formControlName="tipoData" (change)="onRadioChange()" autocomplete="off">
     <label class="btn btn-outline-primary" for="btnFechamento">Data de Fechamento</label>
 
-    <input type="radio" class="btn-check" id="btnFaturamento" value="faturamento" name="tipoDataBtn" formControlName="tipoData" autocomplete="off">
+    <input type="radio" class="btn-check" id="btnFaturamento" value="faturamento" name="tipoData" formControlName="tipoData" (change)="onRadioChange()" autocomplete="off">
     <label class="btn btn-outline-primary" for="btnFaturamento">Data de Faturamento</label>
     
   </div>
 </div>
+
+
 
 
         <!-- 3 - DATEPICKER INÍCIO -->
@@ -172,7 +174,7 @@
           <select formControlName="statusFinanceiro" (change)="onStatusFinanceiro($event)" class="form-select" id="statusFinanceiro">
             <option [value]="''" disabled selected>Selecione...</option>
             <option value="TODOS">TODOS</option>
-            <option value="SEM FATURAR">SEM FATURAR</option>
+            <option value="NAO FATURADO">NAO FATURADO</option>
             <option value="PAGO">PAGO</option>
             <option value="EM DIA">EM DIA</option>
             <option value="ATRAZADO">ATRAZADO</option>
@@ -181,7 +183,7 @@
 
         <!-- BOTÃO BUSCAR DO FILTRO -->
         <div class="form-group" style="flex: 0 0 auto;">
-          <button type="button" class="btn btn-primary" (click)="onButtonClick()">Buscar</button>
+          <button type="button" class="btn btn-primary" (click)="onBuscarFiltros()">Buscar</button>
         </div>
       </div>
     </div>

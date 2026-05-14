@@ -241,6 +241,7 @@ export class FormFinanceiroComponent {
 
   // Busca ORDENS DE SERVIÇO PELO CODIGO DO CLIENTE
   getOsPorCodCli(codcli: number): void {
+    this.modeloFinanceiro = [];
   this.spinnerLoading = true;
   
   this.financeiroService.getOsPorCodCli(codcli).subscribe(
@@ -310,6 +311,7 @@ export class FormFinanceiroComponent {
 
 
 gerenciaAbuscaOsPorIdOuUltimasOs(): void {
+  this.modeloFinanceiro = [];
   const numOsValue = this.formulario.get('numOs')?.value;
   const ultimasOsValue = this.formulario.get('ultimasOs')?.value;
 
@@ -392,22 +394,91 @@ gerenciaAbuscaOsPorIdOuUltimasOs(): void {
     });
   }
 
+  ////tratando clicks dos radios
   onButtonClick() {
     this.isClickEvent = true; // Define a flag quando o botão é clicado
     this.limpar(); // Chama a função
   }
 
-  // Função para converter o objeto em string
-  onDateInicial(event: any): void {
-    this.formulario.patchValue({ dataInicio: event });
-  }
-
-  onDateFinal(event: any): void {
-    this.formulario.patchValue({ dataFim: event });
-  }
+  
 
    onStatusFinanceiro(event: Event): void {
     const elemento = event.target as HTMLSelectElement;
     this.formulario.patchValue({ statusFinanceiro: elemento.value });
   }
+
+ // tratando clicks dos radios
+onRadioChange(): void {
+  const valorAtual = this.formulario.get('tipoData')?.value;
+  console.log('Rádio clicado! Novo valor detectado no formulário:', valorAtual);
+}
+
+
+// Função para converter o objeto em string
+    onDateInicial(date: NgbDateStruct) {
+      // Formato Brasileiro: DD/MM/AAAA
+      const dia = date.day.toString().padStart(2, '0');
+      const mes = date.month.toString().padStart(2, '0');
+      const ano = date.year;
+  
+      console.log(" Este é dia ", dia)
+  
+      this.dataInicialIntervalo = `${ano}-${mes}-${dia}`; 
+      console.log('Data salva como string:', this.dataInicialIntervalo);
+    }
+  
+     onDateFinal(date: NgbDateStruct) {
+      // Formato Brasileiro: DD/MM/AAAA
+      const dia = date.day.toString().padStart(2, '0');
+      const mes = date.month.toString().padStart(2, '0');
+      const ano = date.year;
+      
+      this.dataFinalIntervalo = `${ano}-${mes}-${dia}`; 
+      console.log('Data salva como string:', this.dataFinalIntervalo);
+    }
+
+onBuscarFiltros(): void {
+
+  this.modeloFinanceiro = [];
+  // 1. Captura o status e o tipo de data direto do FormGroup
+  const statusSelecionado = this.formulario.get('statusFinanceiro')?.value || 'TODOS';
+  const tipoDataSelecionado = this.formulario.get('tipoData')?.value || 'entrada';
+
+  // 2. Validação: Garante que as variáveis globais de data foram preenchidas pelo datepicker
+  if (!this.dataInicialIntervalo || !this.dataFinalIntervalo) {
+    alert('Por favor, selecione o período de Início e Fim para realizar a busca.');
+    return;
+  }
+
+  this.spinnerLoading = true; // Ativa o indicador de processamento
+
+  // 3. Dispara a requisição passando as variáveis globais que você já possui formatadas
+  this.financeiroService.getRegistrosFiltrados(
+    this.dataInicialIntervalo, 
+    this.dataFinalIntervalo, 
+    statusSelecionado, 
+    tipoDataSelecionado
+  ).subscribe({
+    next: (dados: Financeiro[]) => {
+      this.modeloFinanceiro = dados; // Alimenta a sua tabela com os registros retornados
+      this.exibirTabela2 = true;
+      this.spinnerLoading = false;
+      console.log('Filtro dinâmico carregado com sucesso:', this.modeloFinanceiro);
+    },
+    error: (erro) => {
+      this.spinnerLoading = false; // Desliga o spinner em caso de falha
+      console.error('Erro na busca avançada:', erro);
+      
+      if (erro.status === 404) {
+        alert('Nenhum registro financeiro localizado para os critérios informados.');
+      } else {
+        alert('Erro interno ao processar a busca no servidor.');
+      }
+    }
+  });
+}
+
+
+
+
 }

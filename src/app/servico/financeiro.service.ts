@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Financeiro } from '../modelo/Financeiro';
 import { Observable } from 'rxjs';
@@ -52,6 +52,16 @@ getUltimasOrdensServicos(limite: number): Observable<Financeiro[]> {  /// LISTA 
   return this.http.get<Financeiro[]>(url); // Altere para Observable<Os[]>
 }
 
+getRegistrosFiltrados(dataInicio: string, dataFim: string, status: string, tipoData: string): Observable<Financeiro[]> {
+  const params = new HttpParams()
+    .set('dataInicio', dataInicio)
+    .set('dataFim', dataFim)
+    .set('status', status)
+    .set('tipoData', tipoData); // Adicionado para a API do Quarkus
+
+  const url = `${this.urlServidor}financeiro/filtro-avancado`;
+  return this.http.get<Financeiro[]>(url, { params });
+}
 
 
   
