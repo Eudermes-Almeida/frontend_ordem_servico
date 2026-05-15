@@ -544,14 +544,14 @@ pagamentoAvista(): void {
     return {
       ...item, // Mantém todas as colunas que não foram citadas (como os, fantasia, codcli, etc.)
       dataFaturamento: this.dataFaturamento,
-      tipoPagamento: 'DINHEIRO',
+      tipoPagamento: 'A VISTA',
       valorJaPago: item.totaliq, // Copia o valor atual do total líquido
       statusGeral: 'PAGO',
-      juros: '0.00',
-      iof: '0.00',
-      tarifa: '0.00',
-      custoTotalBancario: '0.00', // Mapeia custoBancario para a propriedade correta da interface
-      valorLiquido: item.totaliq  // Copia o valor atual do total líquido para o líquido final
+      jurosBordero: '0.00',
+      iofDiario: '0.00',
+      tarifaBordero: '0.00',
+      custoBancarioTotal: '0.00', // Mapeia custoBancario para a propriedade correta da interface
+      valorLiquidoCreditado: item.totaliq  // Copia o valor atual do total líquido para o líquido final
     };
   });
 

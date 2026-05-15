@@ -398,7 +398,7 @@
       <tbody>
         <tr *ngFor="let remessa of osSelecionadasParaRemessa">
           <td>{{remessa.os}}</td>
-          <td>{{remessa.remessa}}</td>
+          <td>{{remessa.codRemessa}}</td>
           <td>{{remessa.totaliq}}</td>
           <td>{{remessa.dataFaturamento}}</td>
           <td>{{remessa.tipoPagamento}}</td>
@@ -413,11 +413,11 @@
           <td>{{remessa.statusParcela3}}</td>
           <td>{{remessa.valorJaPago}}</td>
           <td>{{remessa.statusGeral}}</td>
-          <td>{{remessa.juros}}</td>
-          <td>{{remessa.iof}}</td>
-          <td>{{remessa.tarifa}}</td>
-          <td>{{remessa.custoTotalBancario}}</td>
-          <td>{{remessa.valorLiquido}}</td>
+          <td>{{remessa.jurosBordero}}</td>
+          <td>{{remessa.iofDiario}}</td>
+          <td>{{remessa.tarifaBordero}}</td>
+          <td>{{remessa.custoBancarioTotal}}</td>
+          <td>{{remessa.valorLiquidoCreditado}}</td>
 
       </tbody>
     </table>

@@ -31,11 +31,4 @@ export class Financeiro {
     tarifaBordero: string;
     custoBancarioTotal: string;
     valorLiquidoCreditado: string;
-    remessa: string;
-    valorTotal: string;
-    juros: string;
-    iof: string;
-    tarifa: string;
-    custoTotalBancario: string;
-    valorLiquido: string
 }
