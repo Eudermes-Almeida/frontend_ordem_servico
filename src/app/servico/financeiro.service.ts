@@ -63,6 +63,13 @@ getRegistrosFiltrados(dataInicio: string, dataFim: string, status: string, tipoD
   return this.http.get<Financeiro[]>(url, { params });
 }
 
+atualizarFinanceiroEmLote(loteFinanceiro: Financeiro[]): Observable<Financeiro[]> {
+  const url = `${this.urlServidor}financeiro/atualizar-lote`;
+  
+  // Envia a array "loteFinanceiro" diretamente no corpo do PUT
+  return this.http.put<Financeiro[]>(url, loteFinanceiro);
+}
+
 
   
 }

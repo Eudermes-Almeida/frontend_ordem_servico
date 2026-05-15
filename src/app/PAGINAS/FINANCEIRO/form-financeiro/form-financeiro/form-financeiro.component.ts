@@ -559,7 +559,34 @@ pagamentoAvista(): void {
   console.log("Array osSelecionadasParaRemessa ATUALIZADO À VISTA: ", this.osSelecionadasParaRemessa);
 }
 
+processaRemessa(){
+this.financeiroService.atualizarFinanceiroEmLote(this.osSelecionadasParaRemessa).subscribe({
+    next: (retornoDoBanco: Financeiro[]) => {
+      this.spinnerLoading = false;
+      
+      // Validação de garantia caso ocorra falha silenciosa no JPA
+      if (!retornoDoBanco || retornoDoBanco.length === 0) {
+        alert('Ocorreu um problema: os registros não puderam ser gravados no banco.');
+        return;
+      }
 
+      alert(`${retornoDoBanco.length} A remessa foi salva com sucesso`);
+      
+      // Limpa os dados e esconde o bloco laranja de faturamento para resetar o fluxo
+      //this.osSelecionadasParaRemessa = [];
+      //this.exibirBtnGerarRemessa = false;
+      
+      // Opcional: Atualiza a listagem da tabela principal chamando a pesquisa novamente
+      //this.onBuscarFiltros(); 
+    },
+    error: (erro) => {
+      this.spinnerLoading = false;
+      console.error('Falha catastrófica ao liquidar lote financeiro:', erro);
+      alert('Erro interno do servidor ao processar o pagamento em lote. Verifique o terminal do Quarkus.');
+    }
+  });
+
+}
 
 
 

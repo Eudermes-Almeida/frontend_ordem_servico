@@ -271,154 +271,162 @@
 <!------------------------FORMULÁRIO PARA GERAR REMESSA-------------------------->
 <p>.</p>
 <div *ngIf="exibirTabelaRemessa">
- <form [formGroup]="formProcessaRemessa" id="formProcessaRemessa">
-<div class="d-flex flex-row flex-wrap align-items-end justify-content-around p-2 mx-auto" 
-     style="border: 2px solid orange; border-radius: 10px; width: 90%;">
+  <form [formGroup]="formProcessaRemessa" id="formProcessaRemessa">
+    <div class="d-flex flex-row flex-wrap align-items-end justify-content-around p-2 mx-auto"
+      style="border: 2px solid orange; border-radius: 10px; width: 90%;">
 
-  <!-- 1 - DATA FATURAMENTO -->
-  <div class="form-group mb-2" style="flex: 0 0 auto;">
-    <label class="form-label fw-bold small text-light d-block mb-1">Data Faturamento</label>
-    <div class="input-group" style="max-width: 160px;">
-      <input class="form-control" formControlName="dataFaturamento" placeholder="aaaa-mm-dd" name="dp" ngbDatepicker #d3="ngbDatepicker"
-        (dateSelect)="onDateFaturamento($event)" container="body" />
-      <button class="btn btn-outline-primary d-flex align-items-center" (click)="d3.toggle()" type="button">
-        <i class="bi bi-calendar3"></i>
-      </button>
+      <!-- 1 - DATA FATURAMENTO -->
+      <div class="form-group mb-2" style="flex: 0 0 auto;">
+        <label class="form-label fw-bold small text-light d-block mb-1">Data Faturamento</label>
+        <div class="input-group" style="max-width: 160px;">
+          <input class="form-control" formControlName="dataFaturamento" placeholder="aaaa-mm-dd" name="dp" ngbDatepicker
+            #d3="ngbDatepicker" (dateSelect)="onDateFaturamento($event)" container="body" />
+          <button class="btn btn-outline-primary d-flex align-items-center" (click)="d3.toggle()" type="button">
+            <i class="bi bi-calendar3"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- 2 - TIPO DE PAGAMENTO -->
+      <div class="form-group mb-2" style="flex: 0 0 auto; min-width: 180px;">
+        <label class="form-label fw-bold small text-light d-block mb-1">Tipo de Pagamento</label>
+        <select formControlName="tipoPagamento" class="form-select" id="tipoPagamento"
+          (change)="onTipoPagamento($event)">
+          <option [value]="''" disabled selected>Selecione...</option>
+          <option value="DINHEIRO">DINHEIRO</option>
+          <option value="PIX">PIX</option>
+          <option value="BOLETO">BOLETO</option>
+          <option value="BORDERÔ">BORDERÔ</option>
+          <option value="CARTEIRA">CARTEIRA</option>
+        </select>
+      </div>
+
+      <!-- 3 - QUANTIDADE PARCELAS -->
+      <div class="form-group mb-2" style="flex: 0 0 auto; min-width: 160px;" *ngIf="exibeOpcoesParcelamento">
+        <label class="form-label fw-bold small text-light d-block mb-1">Quantidade Parcelas</label>
+        <select formControlName="quantidadeParcelas" class="form-select" id="qtParcela">
+          <option [value]="''" disabled selected>Selecione...</option>
+          <option value="A VISTA">A VISTA</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+        </select>
+      </div>
+
+      <!-- 4 - PRAZO -->
+      <div class="form-group mb-2" style="flex: 0 0 auto; min-width: 180px;" *ngIf="exibeOpcoesParcelamento">
+        <label class="form-label fw-bold small text-light d-block mb-1">Prazo</label>
+        <select formControlName="prazo" class="form-select" id="prazo">
+          <option [value]="''" disabled selected>Selecione...</option>
+          <option value="A VISTA">A VISTA</option>
+          <option value="3 DIAS"> 3 DIAS</option>
+          <option value="7 DIAS"> 7 DIAS</option>
+          <option value="15 DIAS"> 15 DIAS</option>
+          <option value="30 DIAS"> 30 DIAS</option>
+          <option value="15/30 DIAS"> 15/30 DIAS</option>
+          <option value="15/30/45 DIAS"> 15/30/45 DIAS</option>
+          <option value="30/60 DIAS"> 30/60 DIAS</option>
+          <option value="30/60/90 DIAS"> 30/60/90 DIAS</option>
+        </select>
+      </div>
+
+      <!-- 5 - TAXA DE JUROS -->
+      <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 120px;" *ngIf="exibeOpcoesParcelamento">
+        <label for="taxaJuros" class="form-label fw-bold small text-light d-block mb-1">Taxa de Juros</label>
+        <input formControlName="taxaDeJuros" type="text" id="taxaJuros" class="form-control w-100" placeholder="0,00%">
+      </div>
+
+      <!-- 6 - TAXA IOF -->
+      <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 120px;" *ngIf="exibeOpcoesParcelamento">
+        <label for="taxaIof" class="form-label fw-bold small text-light d-block mb-1">Taxa IOF</label>
+        <input formControlName="taxaIof" type="text" id="taxaIof" class="form-control w-100" placeholder="0,00%">
+      </div>
+
+      <!-- 7 - CUSTO POR BOLETO EMITIDO -->
+      <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;" *ngIf="exibeOpcoesParcelamento">
+        <label for="custoBoleto" class="form-label fw-bold small text-light d-block mb-1">Custo por Boleto</label>
+        <input formControlName="custoPorBoleto" type="text" id="custoBoleto" class="form-control w-100"
+          placeholder="R$ 0,00">
+      </div>
+
+      <!-- 8 - BOTÃO PROCESSAR REMESSA -->
+      <div [hidden]="!exibirBtnGerarRemessa" class="form-group mb-2" style="flex: 0 0 auto;">
+        <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top"
+          data-bs-title="Gera boletos para uma ou mais ordem de serviço selecionadas. Selecione OS de um ÚNICO Cliente, por vez."
+          (click)="processaRemessa()">
+          Processar Remessa
+        </button>
+      </div>
+
     </div>
-  </div>
 
-  <!-- 2 - TIPO DE PAGAMENTO -->
-  <div class="form-group mb-2" style="flex: 0 0 auto; min-width: 180px;">
-    <label class="form-label fw-bold small text-light d-block mb-1">Tipo de Pagamento</label>
-    <select formControlName="tipoPagamento"  class="form-select" id="tipoPagamento" (change)="onTipoPagamento($event)">
-      <option [value]="''" disabled selected>Selecione...</option>
-      <option value="DINHEIRO">DINHEIRO</option>
-      <option value="PIX">PIX</option>
-      <option value="BOLETO">BOLETO</option>
-      <option value="BORDERÔ">BORDERÔ</option>
-      <option value="CARTEIRA">CARTEIRA</option>
-    </select>
-  </div>
-
-  <!-- 3 - QUANTIDADE PARCELAS -->
-  <div class="form-group mb-2" style="flex: 0 0 auto; min-width: 160px;" *ngIf="exibeOpcoesParcelamento">
-    <label class="form-label fw-bold small text-light d-block mb-1">Quantidade Parcelas</label>
-    <select formControlName="quantidadeParcelas" class="form-select" id="qtParcela">
-      <option [value]="''" disabled selected>Selecione...</option>
-      <option value="A VISTA">A VISTA</option>
-      <option value="1">1</option>
-      <option value="2">2</option>
-      <option value="3">3</option>
-    </select>
-  </div>
-
-  <!-- 4 - PRAZO -->
-  <div class="form-group mb-2" style="flex: 0 0 auto; min-width: 180px;" *ngIf="exibeOpcoesParcelamento">
-    <label class="form-label fw-bold small text-light d-block mb-1">Prazo</label>
-    <select formControlName="prazo" class="form-select" id="prazo">
-      <option [value]="''" disabled selected>Selecione...</option>
-      <option value="A VISTA">A VISTA</option>
-      <option value="3 DIAS"> 3 DIAS</option>
-      <option value="7 DIAS"> 7 DIAS</option>
-      <option value="15 DIAS"> 15 DIAS</option>
-      <option value="30 DIAS"> 30 DIAS</option>
-      <option value="15/30 DIAS"> 15/30 DIAS</option>
-      <option value="15/30/45 DIAS"> 15/30/45 DIAS</option>
-      <option value="30/60 DIAS"> 30/60 DIAS</option>
-      <option value="30/60/90 DIAS"> 30/60/90 DIAS</option>
-    </select>
-  </div>
-
-  <!-- 5 - TAXA DE JUROS -->
-  <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 120px;" *ngIf="exibeOpcoesParcelamento">
-    <label for="taxaJuros" class="form-label fw-bold small text-light d-block mb-1">Taxa de Juros</label>
-    <input formControlName="taxaDeJuros" type="text"  id="taxaJuros" class="form-control w-100" placeholder="0,00%">
-  </div>
-
-  <!-- 6 - TAXA IOF -->
-  <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 120px;" *ngIf="exibeOpcoesParcelamento">
-    <label for="taxaIof" class="form-label fw-bold small text-light d-block mb-1">Taxa IOF</label>
-    <input formControlName="taxaIof" type="text"  id="taxaIof" class="form-control w-100" placeholder="0,00%">
-  </div>
-
-  <!-- 7 - CUSTO POR BOLETO EMITIDO -->
-  <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;" *ngIf="exibeOpcoesParcelamento">
-    <label for="custoBoleto" class="form-label fw-bold small text-light d-block mb-1">Custo por Boleto</label>
-    <input formControlName="custoPorBoleto" type="text"  id="custoBoleto" class="form-control w-100" placeholder="R$ 0,00">
-  </div>
-
-  <!-- 8 - BOTÃO PROCESSAR REMESSA -->
-  <div [hidden]="!exibirBtnGerarRemessa" class="form-group mb-2" style="flex: 0 0 auto;">
-    <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top"
-      data-bs-title="Gera boletos para uma ou mais ordem de serviço selecionadas. Selecione OS de um ÚNICO Cliente, por vez."
-      (click)="gerarRemessa()">
-      Processar Remessa
-    </button>
-  </div>
-
-</div>
-
-</form>
+  </form>
 
 </div>
 
 
 <!----------------------------------TABELA GERAR REMESSA ---------------------->
 
-  <P>.</P>
-  <P>.</P>
-  <div *ngIf="exibirTabelaRemessa">
-    <table class="table table-dark table-hover" *ngIf="exibirTabela2">
-      <thead>
-        <tr>
-          <th>Os</th>
-          <th>Remessa</th>
-          <th>Valor</th>
-          <th>Data Faturamento</th>
-          <th>Tipo Pagamento</th>
-          <th>Vencimento 1</th>
-          <th>Parcela 1</th>
-          <th>Status Parcela 1</th>
-          <th>Vencimento 2</th>
-          <th>Parcela 2</th>
-          <th>Status Parcela 2</th>
-          <th>Vencimento 3</th>
-          <th>Parcela 3</th>
-          <th>Status Parcela 3</th>
-          <th>Valor já pago</th>
-          <th>Status Geral</th>
-          <th>Juros</th>
-          <th>Iof</th>
-          <th>Tarifa</th>
-          <th>Custo Total Bancário*</th>
-          <th>Valor Liquido</th>
+<P>.</P>
+<P>.</P>
+<div *ngIf="exibirTabelaRemessa">
+  <table class="table table-dark table-hover" *ngIf="exibirTabela2">
+    <thead>
+      <tr>
+        <th>Os</th>
+        <th>Remessa</th>
+        <th>Equipamento</th>
+        <th>Marca</th>
+        <th>Modelo</th>
+        <th>Valor</th>
+        <th>Data Faturamento</th>
+        <th>Tipo Pagamento</th>
+        <th>Vencimento 1</th>
+        <th>Parcela 1</th>
+        <th>Status Parcela 1</th>
+        <th>Vencimento 2</th>
+        <th>Parcela 2</th>
+        <th>Status Parcela 2</th>
+        <th>Vencimento 3</th>
+        <th>Parcela 3</th>
+        <th>Status Parcela 3</th>
+        <th>Valor já pago</th>
+        <th>Status Geral</th>
+        <th>Juros</th>
+        <th>Iof</th>
+        <th>Tarifa</th>
+        <th>Custo Total Bancário*</th>
+        <th>Valor Liquido</th>
 
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let remessa of osSelecionadasParaRemessa">
-          <td>{{remessa.os}}</td>
-          <td>{{remessa.codRemessa}}</td>
-          <td>{{remessa.totaliq}}</td>
-          <td>{{remessa.dataFaturamento}}</td>
-          <td>{{remessa.tipoPagamento}}</td>
-          <td>{{remessa.vencimento1}}</td>
-          <td>{{remessa.valorParcela1}}</td>
-          <td>{{remessa.statusParcela1}}</td>
-          <td>{{remessa.vencimento2}}</td>
-          <td>{{remessa.valorParcela2}}</td>
-          <td>{{remessa.statusParcela2}}</td>
-          <td>{{remessa.vencimento3}}</td>
-          <td>{{remessa.valorParcela3}}</td>
-          <td>{{remessa.statusParcela3}}</td>
-          <td>{{remessa.valorJaPago}}</td>
-          <td>{{remessa.statusGeral}}</td>
-          <td>{{remessa.jurosBordero}}</td>
-          <td>{{remessa.iofDiario}}</td>
-          <td>{{remessa.tarifaBordero}}</td>
-          <td>{{remessa.custoBancarioTotal}}</td>
-          <td>{{remessa.valorLiquidoCreditado}}</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let remessa of osSelecionadasParaRemessa">
+        <td>{{remessa.os}}</td>
+        <td>{{remessa.codRemessa}}</td>
+        <td>{{remessa.equipamento}}</td>
+        <td>{{remessa.marca}}</td>
+        <td>{{remessa.modelo}}</td>
+        <td>{{remessa.totaliq}}</td>
+        <td>{{remessa.dataFaturamento}}</td>
+        <td>{{remessa.tipoPagamento}}</td>
+        <td>{{remessa.vencimento1}}</td>
+        <td>{{remessa.valorParcela1}}</td>
+        <td>{{remessa.statusParcela1}}</td>
+        <td>{{remessa.vencimento2}}</td>
+        <td>{{remessa.valorParcela2}}</td>
+        <td>{{remessa.statusParcela2}}</td>
+        <td>{{remessa.vencimento3}}</td>
+        <td>{{remessa.valorParcela3}}</td>
+        <td>{{remessa.statusParcela3}}</td>
+        <td>{{remessa.valorJaPago}}</td>
+        <td>{{remessa.statusGeral}}</td>
+        <td>{{remessa.jurosBordero}}</td>
+        <td>{{remessa.iofDiario}}</td>
+        <td>{{remessa.tarifaBordero}}</td>
+        <td>{{remessa.custoBancarioTotal}}</td>
+        <td>{{remessa.valorLiquidoCreditado}}</td>
 
-      </tbody>
-    </table>
-  </div>
+    </tbody>
+  </table>
+</div>
