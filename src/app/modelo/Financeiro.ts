@@ -10,6 +10,7 @@ export class Financeiro {
     fechamento: string;
     dataFaturamento: string;
     codRemessa: string;
+    codBordero: string;
     tipoPagamento: string;
     qtParcela: string;
     prazo: string;
@@ -30,4 +31,11 @@ export class Financeiro {
     tarifaBordero: string;
     custoBancarioTotal: string;
     valorLiquidoCreditado: string;
+    remessa: string;
+    valorTotal: string;
+    juros: string;
+    iof: string;
+    tarifa: string;
+    custoTotalBancario: string;
+    valorLiquido: string
 }

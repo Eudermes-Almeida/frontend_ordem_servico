@@ -1,6 +1,7 @@
 
 export class DadosRemessa {
     os: string;
+    codcli: string;
     remessa: string;
     valorTotal: string;
     vencimento1: string;

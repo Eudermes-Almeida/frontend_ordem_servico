@@ -39,10 +39,11 @@ export class FormFinanceiroComponent {
   novaOs: number = 0;
   dataInicialIntervalo: string = "";
   dataFinalIntervalo: string = "";
+  dataFaturamento: string = "";
   statusFinanceiro: string = "";
   private isClickEvent: boolean = false;
   modeloFinanceiro: Financeiro[] = [];
-  osSelecionadasParaRemessa: DadosRemessa[] = []
+  osSelecionadasParaRemessa: Financeiro[] = []
 
 
 
@@ -60,6 +61,7 @@ export class FormFinanceiroComponent {
   spinnerLoading: boolean = false;
   exibirBtnGerarRemessa: boolean = false
   exibirTabelaRemessa: boolean = false;
+  exibeOpcoesParcelamento: boolean = true;
 
   // CONFIGURA FORMULÁRIO
   formulario = new FormGroup({
@@ -483,35 +485,12 @@ onBuscarFiltros(): void {
 
 adicionaOsnoArrayDeRemessa(financeiro: Financeiro, isChecked: boolean): void {
   if (isChecked) {
-    // Converte o objeto Financeiro recebido no formato exigido por DadosRemessa
-    const novoItemRemessa: DadosRemessa = {
-      os: financeiro.os.toString(), // Converte number/Long para string
-      remessa: financeiro.codRemessa || '',
-      valorTotal: financeiro.totaliq || '',
-      vencimento1: financeiro.vencimento1 ? financeiro.vencimento1.toString() : '',
-      parcela1: financeiro.valorParcela1 || '',
-      pago1: financeiro.statusParcela1 || '',
-      vencimento2: financeiro.vencimento2 ? financeiro.vencimento2.toString() : '',
-      parcela2: financeiro.valorParcela2 || '',
-      pago2: financeiro.statusParcela2 || '',
-      vencimento3: financeiro.vencimento3 ? financeiro.vencimento3.toString() : '',
-      parcela3: financeiro.valorParcela3 || '',
-      pago3: financeiro.statusParcela3 || '',
-      valorJaPago: financeiro.valorJaPago || '',
-      statusGeral: financeiro.statusGeral || '',
-      juros: financeiro.jurosBordero || '',
-      iof: financeiro.iofAdicional || '', // Mapeia iofAdicional para iof
-      tarifa: financeiro.tarifaBordero || '',
-      custoTotalBancario: financeiro.custoBancarioTotal || '',
-      valorLiquido: financeiro.valorLiquidoCreditado || ''
-    };
-
-    this.osSelecionadasParaRemessa.push(novoItemRemessa);
+    // Insere o objeto diretamente, pois as tipagens agora são compatíveis
+    this.osSelecionadasParaRemessa.push(financeiro);
     console.log(`OS ${financeiro.os} ADICIONADA. Total no lote:`, this.osSelecionadasParaRemessa.length);
   } else {
-    // CORRIGIDO: Converte o ID numérico para String para bater com a tipagem da interface DadosRemessa
-    const osParaRemoverStr = financeiro.os.toString();
-    const index = this.osSelecionadasParaRemessa.findIndex(item => item.os === osParaRemoverStr);
+    // CORRIGIDO: Comparação direta usando number (sem necessidade de .toString())
+    const index = this.osSelecionadasParaRemessa.findIndex(item => item.os === financeiro.os);
     
     if (index !== -1) {
       this.osSelecionadasParaRemessa.splice(index, 1);
@@ -519,15 +498,67 @@ adicionaOsnoArrayDeRemessa(financeiro: Financeiro, isChecked: boolean): void {
     }
   }
 
-  // Define a exibição do botão de forma simplificada
+  // Atualiza o estado de visibilidade do botão com base no tamanho do lote
   this.exibirBtnGerarRemessa = this.osSelecionadasParaRemessa.length > 0;
 
   console.log('Lista atual de OS para remessa:', this.osSelecionadasParaRemessa);
 }
 
+
 gerarRemessa(){
   this.exibirTabelaRemessa = true;
+  this.formProcessaRemessa.patchValue({taxaDeJuros: "2.98"})
+  this.formProcessaRemessa.patchValue({taxaIof: "0.38"})
+  this.formProcessaRemessa.patchValue({custoPorBoleto: "3.50"})
 }
+
+// Função para converter o objeto em string
+    onDateFaturamento(date: NgbDateStruct) {
+      // Formato Brasileiro: DD/MM/AAAA
+      const dia = date.day.toString().padStart(2, '0');
+      const mes = date.month.toString().padStart(2, '0');
+      const ano = date.year;
+  
+      console.log(" Este é dia ", dia)
+  
+      this.dataFaturamento = `${ano}-${mes}-${dia}`; 
+      console.log('Data salva como string:', this.dataFaturamento);
+    }
+
+ 
+
+onTipoPagamento(event: Event): void {
+  const target = event.target as HTMLSelectElement;
+  const tipoPagamento = target.value;
+  if (tipoPagamento === "DINHEIRO" || tipoPagamento === "PIX" || tipoPagamento === "CARTEIRA"){
+    this.pagamentoAvista();
+  }
+  
+}
+
+pagamentoAvista(): void {
+  this.exibeOpcoesParcelamento = false;
+
+  // Percorre todo o array atualizando os campos solicitados com os novos valores à vista
+  this.osSelecionadasParaRemessa = this.osSelecionadasParaRemessa.map(item => {
+    return {
+      ...item, // Mantém todas as colunas que não foram citadas (como os, fantasia, codcli, etc.)
+      dataFaturamento: this.dataFaturamento,
+      tipoPagamento: 'DINHEIRO',
+      valorJaPago: item.totaliq, // Copia o valor atual do total líquido
+      statusGeral: 'PAGO',
+      juros: '0.00',
+      iof: '0.00',
+      tarifa: '0.00',
+      custoTotalBancario: '0.00', // Mapeia custoBancario para a propriedade correta da interface
+      valorLiquido: item.totaliq  // Copia o valor atual do total líquido para o líquido final
+    };
+  });
+
+  // Imprime a lista completamente modificada e pronta para envio no console
+  console.log("Array osSelecionadasParaRemessa ATUALIZADO À VISTA: ", this.osSelecionadasParaRemessa);
+}
+
 
 
 

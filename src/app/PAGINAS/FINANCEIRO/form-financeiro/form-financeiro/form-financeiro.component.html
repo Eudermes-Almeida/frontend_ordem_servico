@@ -270,7 +270,7 @@
 
 <!------------------------FORMULÁRIO PARA GERAR REMESSA-------------------------->
 <p>.</p>
-<div>
+<div *ngIf="exibirTabelaRemessa">
  <form [formGroup]="formProcessaRemessa" id="formProcessaRemessa">
 <div class="d-flex flex-row flex-wrap align-items-end justify-content-around p-2 mx-auto" 
      style="border: 2px solid orange; border-radius: 10px; width: 90%;">
@@ -280,7 +280,7 @@
     <label class="form-label fw-bold small text-light d-block mb-1">Data Faturamento</label>
     <div class="input-group" style="max-width: 160px;">
       <input class="form-control" formControlName="dataFaturamento" placeholder="aaaa-mm-dd" name="dp" ngbDatepicker #d3="ngbDatepicker"
-        (dateSelect)="onDateInicial($event)" container="body" />
+        (dateSelect)="onDateFaturamento($event)" container="body" />
       <button class="btn btn-outline-primary d-flex align-items-center" (click)="d3.toggle()" type="button">
         <i class="bi bi-calendar3"></i>
       </button>
@@ -290,7 +290,7 @@
   <!-- 2 - TIPO DE PAGAMENTO -->
   <div class="form-group mb-2" style="flex: 0 0 auto; min-width: 180px;">
     <label class="form-label fw-bold small text-light d-block mb-1">Tipo de Pagamento</label>
-    <select formControlName="tipoPagamento"  class="form-select" id="tipoPagamento">
+    <select formControlName="tipoPagamento"  class="form-select" id="tipoPagamento" (change)="onTipoPagamento($event)">
       <option [value]="''" disabled selected>Selecione...</option>
       <option value="DINHEIRO">DINHEIRO</option>
       <option value="PIX">PIX</option>
@@ -301,7 +301,7 @@
   </div>
 
   <!-- 3 - QUANTIDADE PARCELAS -->
-  <div class="form-group mb-2" style="flex: 0 0 auto; min-width: 160px;">
+  <div class="form-group mb-2" style="flex: 0 0 auto; min-width: 160px;" *ngIf="exibeOpcoesParcelamento">
     <label class="form-label fw-bold small text-light d-block mb-1">Quantidade Parcelas</label>
     <select formControlName="quantidadeParcelas" class="form-select" id="qtParcela">
       <option [value]="''" disabled selected>Selecione...</option>
@@ -313,7 +313,7 @@
   </div>
 
   <!-- 4 - PRAZO -->
-  <div class="form-group mb-2" style="flex: 0 0 auto; min-width: 180px;">
+  <div class="form-group mb-2" style="flex: 0 0 auto; min-width: 180px;" *ngIf="exibeOpcoesParcelamento">
     <label class="form-label fw-bold small text-light d-block mb-1">Prazo</label>
     <select formControlName="prazo" class="form-select" id="prazo">
       <option [value]="''" disabled selected>Selecione...</option>
@@ -330,19 +330,19 @@
   </div>
 
   <!-- 5 - TAXA DE JUROS -->
-  <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 120px;">
+  <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 120px;" *ngIf="exibeOpcoesParcelamento">
     <label for="taxaJuros" class="form-label fw-bold small text-light d-block mb-1">Taxa de Juros</label>
     <input formControlName="taxaDeJuros" type="text"  id="taxaJuros" class="form-control w-100" placeholder="0,00%">
   </div>
 
   <!-- 6 - TAXA IOF -->
-  <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 120px;">
+  <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 120px;" *ngIf="exibeOpcoesParcelamento">
     <label for="taxaIof" class="form-label fw-bold small text-light d-block mb-1">Taxa IOF</label>
     <input formControlName="taxaIof" type="text"  id="taxaIof" class="form-control w-100" placeholder="0,00%">
   </div>
 
   <!-- 7 - CUSTO POR BOLETO EMITIDO -->
-  <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;">
+  <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;" *ngIf="exibeOpcoesParcelamento">
     <label for="custoBoleto" class="form-label fw-bold small text-light d-block mb-1">Custo por Boleto</label>
     <input formControlName="custoPorBoleto" type="text"  id="custoBoleto" class="form-control w-100" placeholder="R$ 0,00">
   </div>
@@ -373,16 +373,18 @@
         <tr>
           <th>Os</th>
           <th>Remessa</th>
-          <th>Valor Total</th>
+          <th>Valor</th>
+          <th>Data Faturamento</th>
+          <th>Tipo Pagamento</th>
           <th>Vencimento 1</th>
           <th>Parcela 1</th>
-          <th>Pago 1 ?</th>
+          <th>Status Parcela 1</th>
           <th>Vencimento 2</th>
           <th>Parcela 2</th>
-          <th>Pago 2 ?</th>
+          <th>Status Parcela 2</th>
           <th>Vencimento 3</th>
           <th>Parcela 3</th>
-          <th>Pago 3 ?</th>
+          <th>Status Parcela 3</th>
           <th>Valor já pago</th>
           <th>Status Geral</th>
           <th>Juros</th>
@@ -397,16 +399,18 @@
         <tr *ngFor="let remessa of osSelecionadasParaRemessa">
           <td>{{remessa.os}}</td>
           <td>{{remessa.remessa}}</td>
-          <td>{{remessa.valorTotal}}</td>
+          <td>{{remessa.totaliq}}</td>
+          <td>{{remessa.dataFaturamento}}</td>
+          <td>{{remessa.tipoPagamento}}</td>
           <td>{{remessa.vencimento1}}</td>
-          <td>{{remessa.parcela1}}</td>
-          <td>{{remessa.pago1}}</td>
+          <td>{{remessa.valorParcela1}}</td>
+          <td>{{remessa.statusParcela1}}</td>
           <td>{{remessa.vencimento2}}</td>
-          <td>{{remessa.parcela2}}</td>
-          <td>{{remessa.pago2}}</td>
+          <td>{{remessa.valorParcela2}}</td>
+          <td>{{remessa.statusParcela2}}</td>
           <td>{{remessa.vencimento3}}</td>
-          <td>{{remessa.parcela3}}</td>
-          <td>{{remessa.pago3}}</td>
+          <td>{{remessa.valorParcela3}}</td>
+          <td>{{remessa.statusParcela3}}</td>
           <td>{{remessa.valorJaPago}}</td>
           <td>{{remessa.statusGeral}}</td>
           <td>{{remessa.juros}}</td>
