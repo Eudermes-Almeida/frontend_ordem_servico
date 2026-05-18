@@ -3,7 +3,7 @@ import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/co
 import { ParametrosCombobox } from '../../../../modelo/ParametrosCombobox';
 import { Cliente } from '../../../../modelo/Cliente';
 import { Os } from '../../../../modelo/Os';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ParametrosService } from '../../../../servico/parametros.service';
 import { OrdemservicoService } from '../../../../servico/ordemservico.service';
@@ -37,13 +37,18 @@ export class FormFinanceiroComponent {
   objetoOs: Os[] = [];
   ultimaOs: number = 0;
   novaOs: number = 0;
-  dataInicialIntervalo: string = "";
-  dataFinalIntervalo: string = "";
+  dataInicialIntervalo: string = "2010-01-01";
+  dataFinalIntervalo: string = "2099-05-30";
   dataFaturamento: string = "";
   statusFinanceiro: string = "";
   private isClickEvent: boolean = false;
   modeloFinanceiro: Financeiro[] = [];
   osSelecionadasParaRemessa: Financeiro[] = []
+  opcaoTipoPagamento: string = "";
+  opcaoQuantidadeParcela: string = "";
+  opcaoPrazo: string = "";
+  prazosDisponiveis: string[] = [];
+
 
 
 
@@ -93,7 +98,8 @@ export class FormFinanceiroComponent {
     private parametrosService: ParametrosService,
     private servico: OrdemservicoService,
     private cdr: ChangeDetectorRef,
-    private financeiroService: FinanceiroService
+    private financeiroService: FinanceiroService,
+    private fb: FormBuilder
   ) { }
 
 
@@ -102,7 +108,7 @@ export class FormFinanceiroComponent {
   ngAfterViewInit(): void {
     // Captura todos os elementos da tela que possuem o atributo de tooltip
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-    
+
     // Inicializa o comportamento visual do Bootstrap para cada um deles
     Array.from(tooltipTriggerList).map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
   }
@@ -115,6 +121,8 @@ export class FormFinanceiroComponent {
         this.buscarClientesPorNomeFantasia(); // Dispara a busca quando atingir 4 ou mais caracteres
       }
     });
+
+
   }
 
   // Buscar clientes por nome fantasia
@@ -171,10 +179,10 @@ export class FormFinanceiroComponent {
     this.servico?.ultimocliente().subscribe({
       next: (retorno: number) => {
         console.log("Este é o ultimo cliente " + retorno);
-        
+
         // Aplica o valor diretamente no FormGroup
-        this.formulario.patchValue({codcli: retorno.toString()});
-        
+        this.formulario.patchValue({ codcli: retorno.toString() });
+
         // Executa a busca automaticamente usando o ID encontrado
         this.getCliente(retorno);
       },
@@ -185,39 +193,39 @@ export class FormFinanceiroComponent {
     });
   }
 
-   buscaUltimaOs(): void {
-  this.spinnerLoading = true; // Liga o indicador de processamento
+  buscaUltimaOs(): void {
+    this.spinnerLoading = true; // Liga o indicador de processamento
 
-  this.financeiroService.ultimaOs().subscribe({
-    next: (retorno: number) => {
-      this.spinnerLoading = false;
+    this.financeiroService.ultimaOs().subscribe({
+      next: (retorno: number) => {
+        this.spinnerLoading = false;
 
-      // Valida se o banco não retornou vazio (NULL)
-      if (retorno === null || retorno === undefined) {
-        alert('Nenhum registro financeiro encontrado no banco de dados.');
-        return;
+        // Valida se o banco não retornou vazio (NULL)
+        if (retorno === null || retorno === undefined) {
+          alert('Nenhum registro financeiro encontrado no banco de dados.');
+          return;
+        }
+
+        console.log("Esta é a última OS em financeiro:", retorno);
+
+        // Atualiza o input "numOs" do FormGroup com o ID encontrado
+        this.formulario.patchValue({
+          numOs: retorno.toString()
+        });
+
+      },
+      error: (error) => {
+        this.spinnerLoading = false; // Desliga o spinner em caso de falha
+        console.error('Erro ao buscar última OS:', error);
+
+        if (error.status === 404) {
+          alert('Nenhuma ordem de serviço localizada na tabela financeira.');
+        } else {
+          alert('Erro interno ao buscar a última O.S. Verifique a conexão com o servidor.');
+        }
       }
-
-      console.log("Esta é a última OS em financeiro:", retorno);
-
-      // Atualiza o input "numOs" do FormGroup com o ID encontrado
-      this.formulario.patchValue({
-        numOs: retorno.toString()
-      });
-      
-    },
-    error: (error) => {
-      this.spinnerLoading = false; // Desliga o spinner em caso de falha
-      console.error('Erro ao buscar última OS:', error);
-      
-      if (error.status === 404) {
-        alert('Nenhuma ordem de serviço localizada na tabela financeira.');
-      } else {
-        alert('Erro interno ao buscar a última O.S. Verifique a conexão com o servidor.');
-      }
-    }
-  });
-}
+    });
+  }
 
 
   escreveDadosClienteNosInputs(cliente: Cliente): void {
@@ -260,29 +268,29 @@ export class FormFinanceiroComponent {
   // Busca ORDENS DE SERVIÇO PELO CODIGO DO CLIENTE
   getOsPorCodCli(codcli: number): void {
     this.modeloFinanceiro = [];
-  this.spinnerLoading = true;
-  
-  this.financeiroService.getOsPorCodCli(codcli).subscribe(
-    (data: Financeiro[]) => { // 1. CORRIGIDO: Adicionado os colchetes [] para indicar que é um Array
-      this.modeloFinanceiro = data; // Armazena a lista de registros retornada
-      
-      // 2. CORRIGIDO: Exibe no console a variável correta que acabou de receber os dados
-      console.log('Ordens financeiras obtidas:', this.modeloFinanceiro); 
-      this.exibirTabela2 = true;
-      this.spinnerLoading = false;
-    },
-    (error) => {
-      this.spinnerLoading = false; // 3. CORRIGIDO: Desliga o spinner em caso de falha na requisição
-      
-      if (error.status === 404) {
-        alert(`Não há ordens de serviço cadastradas com este código: ${codcli}.`);
-      } else {
-        console.error('Erro ao buscar ordens financeiras:', error);
-        alert(`Erro ao buscar ordens com este código: ${codcli}.`);
+    this.spinnerLoading = true;
+
+    this.financeiroService.getOsPorCodCli(codcli).subscribe(
+      (data: Financeiro[]) => { // 1. CORRIGIDO: Adicionado os colchetes [] para indicar que é um Array
+        this.modeloFinanceiro = data; // Armazena a lista de registros retornada
+
+        // 2. CORRIGIDO: Exibe no console a variável correta que acabou de receber os dados
+        console.log('Ordens financeiras obtidas:', this.modeloFinanceiro);
+        this.exibirTabela2 = true;
+        this.spinnerLoading = false;
+      },
+      (error) => {
+        this.spinnerLoading = false; // 3. CORRIGIDO: Desliga o spinner em caso de falha na requisição
+
+        if (error.status === 404) {
+          alert(`Não há ordens de serviço cadastradas com este código: ${codcli}.`);
+        } else {
+          console.error('Erro ao buscar ordens financeiras:', error);
+          alert(`Erro ao buscar ordens com este código: ${codcli}.`);
+        }
       }
-    }
-  );
-}
+    );
+  }
 
   // Escuta o input Cod Cliente
   onDataEntradaInput(event: Event): void {
@@ -315,27 +323,27 @@ export class FormFinanceiroComponent {
       }
     );
   }
-  
-gerenciaAbuscaOsPorIdOuUltimasOs(): void {
-  this.modeloFinanceiro = [];
-  const numOsValue = this.formulario.get('numOs')?.value;
-  const ultimasOsValue = this.formulario.get('ultimasOs')?.value;
 
-  // Se o campo numOs estiver preenchido, busca por ID único
-  if (numOsValue) {
-    const idConvertido = Number(numOsValue); // CONVERSÃO CORRETA
-    this.getOsPorId(idConvertido);
-  } 
-  // Caso contrário, se o limite estiver preenchido, busca em lote pelas últimas OS
-  else if (ultimasOsValue) {
-    const limiteConvertido = Number(ultimasOsValue); // CONVERSÃO CORRETA
-    this.buscaUltimasOrdensServico(limiteConvertido);
-  } 
-  // Se nenhum dos dois campos estiver preenchido
-  else {
-    alert('Por favor, informe o Nº O.S. ou a quantidade de Últimas O.S. para realizar a busca.');
+  gerenciaAbuscaOsPorIdOuUltimasOs(): void {
+    this.modeloFinanceiro = [];
+    const numOsValue = this.formulario.get('numOs')?.value;
+    const ultimasOsValue = this.formulario.get('ultimasOs')?.value;
+
+    // Se o campo numOs estiver preenchido, busca por ID único
+    if (numOsValue) {
+      const idConvertido = Number(numOsValue); // CONVERSÃO CORRETA
+      this.getOsPorId(idConvertido);
+    }
+    // Caso contrário, se o limite estiver preenchido, busca em lote pelas últimas OS
+    else if (ultimasOsValue) {
+      const limiteConvertido = Number(ultimasOsValue); // CONVERSÃO CORRETA
+      this.buscaUltimasOrdensServico(limiteConvertido);
+    }
+    // Se nenhum dos dois campos estiver preenchido
+    else {
+      alert('Por favor, informe o Nº O.S. ou a quantidade de Últimas O.S. para realizar a busca.');
+    }
   }
-}
 
   // Busca ORDEM SERVIÇO por id
   getOsPorId(id: number): void {
@@ -360,7 +368,7 @@ gerenciaAbuscaOsPorIdOuUltimasOs(): void {
 
   // Busca ORDENS DE SERVIÇO PELA DATA DE ENTRADA
   buscaUltimasOrdensServico(limite: number): void {
-    console.log ( "Este é o limite de busca de os ", limite)
+    console.log("Este é o limite de busca de os ", limite)
     this.financeiroService.getUltimasOrdensServicos(limite).subscribe(
       (data: Financeiro[]) => { // Espera um array de os
         this.modeloFinanceiro = data; // Armazena todos os clientes retornados
@@ -385,7 +393,7 @@ gerenciaAbuscaOsPorIdOuUltimasOs(): void {
     console.log(serial)
 
     // Verifica se a tecla Enter foi pressionada ou se o input tem 4 caracteres
-   
+
   }
 
   limpar() {
@@ -405,188 +413,284 @@ gerenciaAbuscaOsPorIdOuUltimasOs(): void {
     this.limpar(); // Chama a função
   }
 
-  
 
-   onStatusFinanceiro(event: Event): void {
+
+  onStatusFinanceiro(event: Event): void {
     const elemento = event.target as HTMLSelectElement;
     this.formulario.patchValue({ statusFinanceiro: elemento.value });
   }
 
- // tratando clicks dos radios
-onRadioChange(): void {
-  const valorAtual = this.formulario.get('tipoData')?.value;
-  console.log('Rádio clicado! Novo valor detectado no formulário:', valorAtual);
-}
-
-
-// Função para converter o objeto em string
-    onDateInicial(date: NgbDateStruct) {
-      // Formato Brasileiro: DD/MM/AAAA
-      const dia = date.day.toString().padStart(2, '0');
-      const mes = date.month.toString().padStart(2, '0');
-      const ano = date.year;
-  
-      console.log(" Este é dia ", dia)
-  
-      this.dataInicialIntervalo = `${ano}-${mes}-${dia}`; 
-      console.log('Data salva como string:', this.dataInicialIntervalo);
-    }
-  
-     onDateFinal(date: NgbDateStruct) {
-      // Formato Brasileiro: DD/MM/AAAA
-      const dia = date.day.toString().padStart(2, '0');
-      const mes = date.month.toString().padStart(2, '0');
-      const ano = date.year;
-      
-      this.dataFinalIntervalo = `${ano}-${mes}-${dia}`; 
-      console.log('Data salva como string:', this.dataFinalIntervalo);
-    }
-
-onBuscarFiltros(): void {
-
-  this.modeloFinanceiro = [];
-  // 1. Captura o status e o tipo de data direto do FormGroup
-  const statusSelecionado = this.formulario.get('statusFinanceiro')?.value || 'TODOS';
-  const tipoDataSelecionado = this.formulario.get('tipoData')?.value || 'entrada';
-
-  // 2. Validação: Garante que as variáveis globais de data foram preenchidas pelo datepicker
-  if (!this.dataInicialIntervalo || !this.dataFinalIntervalo) {
-    alert('Por favor, selecione o período de Início e Fim para realizar a busca.');
-    return;
+  // tratando clicks dos radios
+  onRadioChange(): void {
+    const valorAtual = this.formulario.get('tipoData')?.value;
+    console.log('Rádio clicado! Novo valor detectado no formulário:', valorAtual);
   }
 
-  this.spinnerLoading = true; // Ativa o indicador de processamento
 
-  // 3. Dispara a requisição passando as variáveis globais que você já possui formatadas
-  this.financeiroService.getRegistrosFiltrados(
-    this.dataInicialIntervalo, 
-    this.dataFinalIntervalo, 
-    statusSelecionado, 
-    tipoDataSelecionado
-  ).subscribe({
-    next: (dados: Financeiro[]) => {
-      this.modeloFinanceiro = dados; // Alimenta a sua tabela com os registros retornados
-      this.exibirTabela2 = true;
-      this.spinnerLoading = false;
-      console.log('Filtro dinâmico carregado com sucesso:', this.modeloFinanceiro);
-    },
-    error: (erro) => {
-      this.spinnerLoading = false; // Desliga o spinner em caso de falha
-      console.error('Erro na busca avançada:', erro);
-      
-      if (erro.status === 404) {
-        alert('Nenhum registro financeiro localizado para os critérios informados.');
-      } else {
-        alert('Erro interno ao processar a busca no servidor.');
+  // Função para converter o objeto em string
+  onDateInicial(date: NgbDateStruct) {
+    // Formato Brasileiro: DD/MM/AAAA
+    const dia = date.day.toString().padStart(2, '0');
+    const mes = date.month.toString().padStart(2, '0');
+    const ano = date.year;
+
+    console.log(" Este é dia ", dia)
+
+    this.dataInicialIntervalo = `${ano}-${mes}-${dia}`;
+    console.log('Data salva como string:', this.dataInicialIntervalo);
+  }
+
+  onDateFinal(date: NgbDateStruct) {
+    // Formato Brasileiro: DD/MM/AAAA
+    const dia = date.day.toString().padStart(2, '0');
+    const mes = date.month.toString().padStart(2, '0');
+    const ano = date.year;
+
+    this.dataFinalIntervalo = `${ano}-${mes}-${dia}`;
+    console.log('Data salva como string:', this.dataFinalIntervalo);
+  }
+
+  onBuscarFiltros(): void {
+
+    this.modeloFinanceiro = [];
+    // 1. Captura o status e o tipo de data direto do FormGroup
+    const statusSelecionado = this.formulario.get('statusFinanceiro')?.value || 'TODOS';
+    const tipoDataSelecionado = this.formulario.get('tipoData')?.value || 'entrada';
+
+    // 2. Validação: Garante que as variáveis globais de data foram preenchidas pelo datepicker
+    if (!this.dataInicialIntervalo || !this.dataFinalIntervalo) {
+      alert('Por favor, selecione o período de Início e Fim para realizar a busca.');
+      return;
+    }
+
+    this.spinnerLoading = true; // Ativa o indicador de processamento
+
+    // 3. Dispara a requisição passando as variáveis globais que você já possui formatadas
+    this.financeiroService.getRegistrosFiltrados(
+      this.dataInicialIntervalo,
+      this.dataFinalIntervalo,
+      statusSelecionado,
+      tipoDataSelecionado
+    ).subscribe({
+      next: (dados: Financeiro[]) => {
+        this.modeloFinanceiro = dados; // Alimenta a sua tabela com os registros retornados
+        this.exibirTabela2 = true;
+        this.spinnerLoading = false;
+        console.log('Filtro dinâmico carregado com sucesso:', this.modeloFinanceiro);
+      },
+      error: (erro) => {
+        this.spinnerLoading = false; // Desliga o spinner em caso de falha
+        console.error('Erro na busca avançada:', erro);
+
+        if (erro.status === 404) {
+          alert('Nenhum registro financeiro localizado para os critérios informados.');
+        } else {
+          alert('Erro interno ao processar a busca no servidor.');
+        }
+      }
+    });
+  }
+
+  adicionaOsnoArrayDeRemessa(financeiro: Financeiro, isChecked: boolean): void {
+    if (isChecked) {
+      // Insere o objeto diretamente, pois as tipagens agora são compatíveis
+      this.osSelecionadasParaRemessa.push(financeiro);
+      console.log(`OS ${financeiro.os} ADICIONADA. Total no lote:`, this.osSelecionadasParaRemessa.length);
+    } else {
+      // CORRIGIDO: Comparação direta usando number (sem necessidade de .toString())
+      const index = this.osSelecionadasParaRemessa.findIndex(item => item.os === financeiro.os);
+
+      if (index !== -1) {
+        this.osSelecionadasParaRemessa.splice(index, 1);
+        console.log(`OS ${financeiro.os} REMOVIDA. Total no lote:`, this.osSelecionadasParaRemessa.length);
       }
     }
-  });
-}
 
-adicionaOsnoArrayDeRemessa(financeiro: Financeiro, isChecked: boolean): void {
-  if (isChecked) {
-    // Insere o objeto diretamente, pois as tipagens agora são compatíveis
-    this.osSelecionadasParaRemessa.push(financeiro);
-    console.log(`OS ${financeiro.os} ADICIONADA. Total no lote:`, this.osSelecionadasParaRemessa.length);
-  } else {
-    // CORRIGIDO: Comparação direta usando number (sem necessidade de .toString())
-    const index = this.osSelecionadasParaRemessa.findIndex(item => item.os === financeiro.os);
-    
-    if (index !== -1) {
-      this.osSelecionadasParaRemessa.splice(index, 1);
-      console.log(`OS ${financeiro.os} REMOVIDA. Total no lote:`, this.osSelecionadasParaRemessa.length);
+    // Atualiza o estado de visibilidade do botão com base no tamanho do lote
+    this.exibirBtnGerarRemessa = this.osSelecionadasParaRemessa.length > 0;
+
+    console.log('Lista atual de OS para remessa:', this.osSelecionadasParaRemessa);
+  }
+
+
+  gerarRemessa() {
+    this.exibirTabelaRemessa = true;
+    this.formProcessaRemessa.patchValue({ taxaDeJuros: "2.98" })
+    this.formProcessaRemessa.patchValue({ taxaIof: "0.38" })
+    this.formProcessaRemessa.patchValue({ custoPorBoleto: "3.50" })
+  }
+
+  // Função para converter o objeto em string
+  onDateFaturamento(date: NgbDateStruct) {
+    // Formato Brasileiro: DD/MM/AAAA
+    const dia = date.day.toString().padStart(2, '0');
+    const mes = date.month.toString().padStart(2, '0');
+    const ano = date.year;
+    console.log(" Este é dia ", dia)
+    this.dataFaturamento = `${ano}-${mes}-${dia}`;
+    console.log('Data salva como string:', this.dataFaturamento);
+  }
+
+  onTipoPagamento(event: Event): void {
+    const target = event.target as HTMLSelectElement;
+    this.opcaoTipoPagamento = target.value;
+    if(this.opcaoTipoPagamento === "DINHEIRO"  || this.opcaoTipoPagamento === "PIX" || this.opcaoTipoPagamento === "CARTEIRA"){
+      this.exibeOpcoesParcelamento = false;
+      //this.processaRemessa();
     }
   }
 
-  // Atualiza o estado de visibilidade do botão com base no tamanho do lote
-  this.exibirBtnGerarRemessa = this.osSelecionadasParaRemessa.length > 0;
+  
+  // onQuantidadeParcelas(event: Event): void {
+  //   const target = event.target as HTMLSelectElement;
+  //   this.opcaoQuantidadeParcela = target.value;
+  // }
+  
+  onQuantidadeParcelas(event: Event) {
+  const selectElement = event.target as HTMLSelectElement;
+  const valorSelecionado = selectElement.value;
 
-  console.log('Lista atual de OS para remessa:', this.osSelecionadasParaRemessa);
+  // Reseta o campo prazo usando a estrutura que você já declarou
+  this.formProcessaRemessa.get('prazo')?.setValue('');
+
+  // Atualiza a lista de prazos com base no mapa (declarado na classe)
+  this.prazosDisponiveis = this.mapaPrazos[valorSelecionado] || [];
 }
 
-
-gerarRemessa(){
-  this.exibirTabelaRemessa = true;
-  this.formProcessaRemessa.patchValue({taxaDeJuros: "2.98"})
-  this.formProcessaRemessa.patchValue({taxaIof: "0.38"})
-  this.formProcessaRemessa.patchValue({custoPorBoleto: "3.50"})
-}
-
-// Função para converter o objeto em string
-    onDateFaturamento(date: NgbDateStruct) {
-      // Formato Brasileiro: DD/MM/AAAA
-      const dia = date.day.toString().padStart(2, '0');
-      const mes = date.month.toString().padStart(2, '0');
-      const ano = date.year;
   
-      console.log(" Este é dia ", dia)
+
   
-      this.dataFaturamento = `${ano}-${mes}-${dia}`; 
-      console.log('Data salva como string:', this.dataFaturamento);
-    }
-
- 
-
-onTipoPagamento(event: Event): void {
-  const target = event.target as HTMLSelectElement;
-  const tipoPagamento = target.value;
-  if (tipoPagamento === "DINHEIRO" || tipoPagamento === "PIX" || tipoPagamento === "CARTEIRA"){
-    this.pagamentoAvista();
+  onPrazo(event: Event): void {
+    const target = event.target as HTMLSelectElement;
+    this.opcaoPrazo = target.value;
   }
-  
-}
 
-pagamentoAvista(): void {
-  this.exibeOpcoesParcelamento = false;
-
-  // Percorre todo o array atualizando os campos solicitados com os novos valores à vista
-  this.osSelecionadasParaRemessa = this.osSelecionadasParaRemessa.map(item => {
-    return {
-      ...item, // Mantém todas as colunas que não foram citadas (como os, fantasia, codcli, etc.)
-      dataFaturamento: this.dataFaturamento,
-      tipoPagamento: 'A VISTA',
-      valorJaPago: item.totaliq, // Copia o valor atual do total líquido
-      statusGeral: 'PAGO',
-      jurosBordero: '0.00',
-      iofDiario: '0.00',
-      tarifaBordero: '0.00',
-      custoBancarioTotal: '0.00', // Mapeia custoBancario para a propriedade correta da interface
-      valorLiquidoCreditado: item.totaliq  // Copia o valor atual do total líquido para o líquido final
-    };
-  });
-
-  // Imprime a lista completamente modificada e pronta para envio no console
-  console.log("Array osSelecionadasParaRemessa ATUALIZADO À VISTA: ", this.osSelecionadasParaRemessa);
-}
 
 processaRemessa(){
-this.financeiroService.atualizarFinanceiroEmLote(this.osSelecionadasParaRemessa).subscribe({
-    next: (retornoDoBanco: Financeiro[]) => {
-      this.spinnerLoading = false;
-      
-      // Validação de garantia caso ocorra falha silenciosa no JPA
-      if (!retornoDoBanco || retornoDoBanco.length === 0) {
-        alert('Ocorreu um problema: os registros não puderam ser gravados no banco.');
-        return;
-      }
 
-      alert(`${retornoDoBanco.length} A remessa foi salva com sucesso`);
-      
-      // Limpa os dados e esconde o bloco laranja de faturamento para resetar o fluxo
-      //this.osSelecionadasParaRemessa = [];
-      //this.exibirBtnGerarRemessa = false;
-      
-      // Opcional: Atualiza a listagem da tabela principal chamando a pesquisa novamente
-      //this.onBuscarFiltros(); 
-    },
-    error: (erro) => {
-      this.spinnerLoading = false;
-      console.error('Falha catastrófica ao liquidar lote financeiro:', erro);
-      alert('Erro interno do servidor ao processar o pagamento em lote. Verifique o terminal do Quarkus.');
+  if(!this.dataFaturamento){
+    alert("Você precisa escolher a data do faturamento!")
+    return
+  }
+
+    switch (this.opcaoTipoPagamento) {
+      case "DINHEIRO":
+        this.pagamentoAvista();
+        break;
+
+      case "PIX":
+        this.pagamentoAvista();
+        break;
+
+      case "BOLETO":
+        this.pagamentoPorBoleto();
+        break;
+
+      case "BORDERO":
+        this.pagamentoPorBordero();
+        break;
+
+      case "CARTEIRA":
+        this.carteira();
+        break;
+
+      default:
+        console.warn("Tipo de pagamento inválido")
+        break;
+
     }
-  });
+  }
 
-}
+  pagamentoPorBoleto() {
+    console.log("Forma de pagamento Escolhido: Boleto")
+    this.calculosBoleto()
+  }
+
+  pagamentoPorBordero() {
+    console.log("Forma de pagamento Escolhido: Borderô")
+    this.persisteRemessa();
+  }
+
+  carteira() {
+    console.log("Forma de pagamento Escolhido: Carteira")
+    this.exibeOpcoesParcelamento = false;
+    // Percorre todo o array atualizando os campos solicitados com os novos valores à vista
+    this.osSelecionadasParaRemessa = this.osSelecionadasParaRemessa.map(item => {
+      return {
+        ...item, // Mantém todas as colunas que não foram citadas (como os, fantasia, codcli, etc.)
+        tipoPagamento: 'CARTEIRA',
+        statusGeral: 'CARTEIRA',
+        
+      };
+    });
+    this.persisteRemessa();
+  }
+
+  pagamentoAvista(): void {
+    this.exibeOpcoesParcelamento = false;
+    // Percorre todo o array atualizando os campos solicitados com os novos valores à vista
+    this.osSelecionadasParaRemessa = this.osSelecionadasParaRemessa.map(item => {
+      return {
+        ...item, // Mantém todas as colunas que não foram citadas (como os, fantasia, codcli, etc.)
+        dataFaturamento: this.dataFaturamento,
+        tipoPagamento: 'A VISTA',
+        //codRemessa: item.codcli +"-" + this.dataFaturamento,
+        valorJaPago: item.totaliq, // Copia o valor atual do total líquido
+        statusGeral: 'PAGO',
+        jurosBordero: '0.00',
+        iofDiario: '0.00',
+        tarifaBordero: '0.00',
+        custoBancarioTotal: '0.00', // Mapeia custoBancario para a propriedade correta da interface
+        valorLiquidoCreditado: item.totaliq  // Copia o valor atual do total líquido para o líquido final
+      };
+    });
+
+    this.persisteRemessa();
+
+    // Imprime a lista completamente modificada e pronta para envio no console
+    console.log("Array osSelecionadasParaRemessa ATUALIZADO À VISTA: ", this.osSelecionadasParaRemessa);
+  }
+
+  persisteRemessa() {
+    this.financeiroService.atualizarFinanceiroEmLote(this.osSelecionadasParaRemessa).subscribe({
+      next: (retornoDoBanco: Financeiro[]) => {
+        this.spinnerLoading = false;
+        if (!retornoDoBanco || retornoDoBanco.length === 0) {
+          alert('Ocorreu um problema: os registros não puderam ser gravados no banco.');
+          return;
+        }
+        alert(`${retornoDoBanco.length} A remessa foi salva com sucesso`);
+      },
+      error: (erro) => {
+        this.spinnerLoading = false;
+        console.error('Falha catastrófica ao liquidar lote financeiro:', erro);
+        alert('Erro interno do servidor ao processar o pagamento em lote. Verifique o terminal do Quarkus.');
+      }
+    });
+
+  }
+
+
+  calculosBoleto(){
+    console.log("Esta é a data do faturamento ", this.dataFaturamento);
+    console.log("Este é a quantidade de parcelas  ", this.formProcessaRemessa.value.quantidadeParcelas);
+    console.log("Este é prazo  ", this.formProcessaRemessa.value.prazo);
+    
+
+    ///se a quantidade de parcelas for igual a 1:
+    /// calcular remessa.vencimento1 = (data faturamento + prazo)
+    ///  
+
+
+    
+  }
+
+  private mapaPrazos: { [key: string]: string[] } = {
+    'A VISTA': ['A VISTA'],
+    '1': ['A VISTA', '3 DIAS', '7 DIAS', '15 DIAS', '30 DIAS'],
+    '2': ['15/30 DIAS', '30/60 DIAS'],
+    '3': ['15/30/45 DIAS', '30/60/90 DIAS']
+  };
 
 
 

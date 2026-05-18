@@ -185,6 +185,7 @@
             <option value="PAGO">PAGO</option>
             <option value="EM DIA">EM DIA</option>
             <option value="ATRAZADO">ATRAZADO</option>
+            <option value="CARTEIRA">CARTEIRA</option>
           </select>
         </div>
 
@@ -231,41 +232,65 @@
     <thead>
       <tr>
         <th>Os</th>
-        <th>Data Entrada</th>
-        <th>Data Fechamento</th>
+        <th>Nome</th>
+        <th>Código Interno Boleto</th>
+        <th>Valor</th>
         <th>Data Faturamento</th>
-        <th>Nome Fantasia</th>
-        <th>código Cliente</th>
-        <th>Equipamento</th>
-        <th>Marca</th>
-        <th>Modelo</th>
-        <th>Valor Total</th>
-        <th>Status Financeiro</th>
+        <th>Tipo Pagamento</th>
+        <th>Vencimento 1</th>
+        <th>Parcela 1</th>
+        <th>Status Parcela 1</th>
+        <th>Vencimento 2</th>
+        <th>Parcela 2</th>
+        <th>Status Parcela 2</th>
+        <th>Vencimento 3</th>
+        <th>Parcela 3</th>
+        <th>Status Parcela 3</th>
+        <th>Valor já pago</th>
+        <th>Status Geral</th>
+        <th>Juros</th>
+        <th>Iof</th>
+        <th>Tarifa</th>
+        <th>Custo Total Bancário*</th>
+        <th>Valor Liquido</th>
         <th>Selecionar</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let financeiro of modeloFinanceiro">
-        <td>{{ financeiro.os }}</td>
-        <td>{{ financeiro.dataEntrada | date: 'dd/MM/yyyy' }}</td>
-        <td>{{ financeiro.fechamento | date: 'dd/MM/yyyy' }}</td>
-        <td>{{ financeiro.dataFaturamento | date: 'dd/MM/yyyy' }}</td>
-        <td>{{ financeiro.fantasia }}</td>
-        <td>{{ financeiro.codcli }}</td>
-        <td>{{ financeiro.equipamento }}</td>
-        <td>{{ financeiro.marca }}</td>
-        <td>{{ financeiro.modelo }}</td>
-        <td>{{ financeiro.totaliq }}</td>
-        <td>{{ financeiro.statusGeral }}</td>
+      <tr *ngFor="let remessa of modeloFinanceiro">
+        <td>{{remessa.os}}</td>
+        <td>{{remessa.fantasia}}</td>
+        <td>{{remessa.codRemessa}}</td>
+        <td>{{remessa.totaliq}}</td>
+        <td>{{remessa.dataFaturamento}}</td>
+        <td>{{remessa.tipoPagamento}}</td>
+        <td>{{remessa.vencimento1}}</td>
+        <td>{{remessa.valorParcela1}}</td>
+        <td>{{remessa.statusParcela1}}</td>
+        <td>{{remessa.vencimento2}}</td>
+        <td>{{remessa.valorParcela2}}</td>
+        <td>{{remessa.statusParcela2}}</td>
+        <td>{{remessa.vencimento3}}</td>
+        <td>{{remessa.valorParcela3}}</td>
+        <td>{{remessa.statusParcela3}}</td>
+        <td>{{remessa.valorJaPago}}</td>
+        <td>{{remessa.statusGeral}}</td>
+        <td>{{remessa.jurosBordero}}</td>
+        <td>{{remessa.iofDiario}}</td>
+        <td>{{remessa.tarifaBordero}}</td>
+        <td>{{remessa.custoBancarioTotal}}</td>
+        <td>{{remessa.valorLiquidoCreditado}}</td>
         <td>
           <!-- CORRIGIDO: Alterado o primeiro parâmetro de "dados" para "financeiro" -->
           <input type="checkbox" #check class="checkbox me-1"
-            (change)="adicionaOsnoArrayDeRemessa(financeiro, check.checked)">
+            (change)="adicionaOsnoArrayDeRemessa(remessa, check.checked)">
         </td>
       </tr>
     </tbody>
 
   </table>
+  <p>.</p>
+  <p>.</p>
 </div>
 
 <!------------------------FORMULÁRIO PARA GERAR REMESSA-------------------------->
@@ -303,32 +328,29 @@
 
       <!-- 3 - QUANTIDADE PARCELAS -->
       <div class="form-group mb-2" style="flex: 0 0 auto; min-width: 160px;" *ngIf="exibeOpcoesParcelamento">
-        <label class="form-label fw-bold small text-light d-block mb-1">Quantidade Parcelas</label>
-        <select formControlName="quantidadeParcelas" class="form-select" id="qtParcela">
-          <option [value]="''" disabled selected>Selecione...</option>
-          <option value="A VISTA">A VISTA</option>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-        </select>
-      </div>
+  <label class="form-label fw-bold small text-light d-block mb-1">Quantidade Parcelas</label>
+  <select formControlName="quantidadeParcelas" class="form-select" id="qtParcela" (change)="onQuantidadeParcelas($event)">
+    <option value="" disabled selected>Selecione...</option>
+    <option value="A VISTA">A VISTA</option>
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+  </select>
+</div>
 
-      <!-- 4 - PRAZO -->
-      <div class="form-group mb-2" style="flex: 0 0 auto; min-width: 180px;" *ngIf="exibeOpcoesParcelamento">
-        <label class="form-label fw-bold small text-light d-block mb-1">Prazo</label>
-        <select formControlName="prazo" class="form-select" id="prazo">
-          <option [value]="''" disabled selected>Selecione...</option>
-          <option value="A VISTA">A VISTA</option>
-          <option value="3 DIAS"> 3 DIAS</option>
-          <option value="7 DIAS"> 7 DIAS</option>
-          <option value="15 DIAS"> 15 DIAS</option>
-          <option value="30 DIAS"> 30 DIAS</option>
-          <option value="15/30 DIAS"> 15/30 DIAS</option>
-          <option value="15/30/45 DIAS"> 15/30/45 DIAS</option>
-          <option value="30/60 DIAS"> 30/60 DIAS</option>
-          <option value="30/60/90 DIAS"> 30/60/90 DIAS</option>
-        </select>
-      </div>
+<!-- 4 - PRAZO -->
+<div class="form-group mb-2" style="flex: 0 0 auto; min-width: 180px;" *ngIf="exibeOpcoesParcelamento">
+  <label class="form-label fw-bold small text-light d-block mb-1">Prazo</label>
+  <select formControlName="prazo" class="form-select" id="prazo" (change)="onPrazo($event)">
+    <option value="" disabled selected>Selecione...</option>
+    
+    <!-- Novo controle de fluxo do Angular 17 -->
+    @for (opcao of prazosDisponiveis; track opcao) {
+      <option [value]="opcao">{{ opcao }}</option>
+    }
+  </select>
+</div>
+
 
       <!-- 5 - TAXA DE JUROS -->
       <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 120px;" *ngIf="exibeOpcoesParcelamento">
@@ -374,10 +396,7 @@
     <thead>
       <tr>
         <th>Os</th>
-        <th>Remessa</th>
-        <th>Equipamento</th>
-        <th>Marca</th>
-        <th>Modelo</th>
+        <th>Código Interno Boleto</th>
         <th>Valor</th>
         <th>Data Faturamento</th>
         <th>Tipo Pagamento</th>
@@ -404,9 +423,6 @@
       <tr *ngFor="let remessa of osSelecionadasParaRemessa">
         <td>{{remessa.os}}</td>
         <td>{{remessa.codRemessa}}</td>
-        <td>{{remessa.equipamento}}</td>
-        <td>{{remessa.marca}}</td>
-        <td>{{remessa.modelo}}</td>
         <td>{{remessa.totaliq}}</td>
         <td>{{remessa.dataFaturamento}}</td>
         <td>{{remessa.tipoPagamento}}</td>
@@ -429,4 +445,6 @@
 
     </tbody>
   </table>
+  <p>.</p>
+  <p>.</p>
 </div>
