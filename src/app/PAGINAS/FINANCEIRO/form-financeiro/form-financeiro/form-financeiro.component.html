@@ -280,11 +280,14 @@
         <td>{{remessa.tarifaBordero}}</td>
         <td>{{remessa.custoBancarioTotal}}</td>
         <td>{{remessa.valorLiquidoCreditado}}</td>
-        <td>
-          <!-- CORRIGIDO: Alterado o primeiro parâmetro de "dados" para "financeiro" -->
-          <input type="checkbox" #check class="checkbox me-1"
-            (change)="adicionaOsnoArrayDeRemessa(remessa, check.checked)">
-        </td>
+       <td>
+  <input 
+    type="checkbox" 
+    class="checkbox me-1"
+    [checked]="isOsSelecionada(remessa)"
+    (change)="adicionaOsnoArrayDeRemessa(remessa, $event)">
+</td>
+
       </tr>
     </tbody>
 
@@ -408,8 +411,8 @@
 
   <!-- 12 - VALOR TOTAL OS -->
   <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;" *ngIf="exibeOpcoesParcelamento">
-    <label for="valorTotalLiquido" class="form-label fw-bold small text-light d-block mb-1">Total OS</label>
-    <input formControlName="valorTotalLiquido" type="text" id="valorTotalLiquido" class="form-control w-100" placeholder="R$ 0,00">
+    <label for="valorTotalOs" class="form-label fw-bold small text-light d-block mb-1">Total OS</label>
+    <input formControlName="valorTotalOs" type="text" id="valorTotalOs" class="form-control w-100" placeholder="R$ 0,00">
   </div>
 
   <!-- 13 - TOTAL DESPESAS BANCÁRIAS -->

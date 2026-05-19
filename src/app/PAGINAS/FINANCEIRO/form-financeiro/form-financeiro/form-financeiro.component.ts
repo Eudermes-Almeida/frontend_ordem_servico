@@ -92,7 +92,7 @@ export class FormFinanceiroComponent {
     valorTotalLiquido: new FormControl(''),
     fantasia: new FormControl(''),
     codCli: new FormControl(''),
-    
+
   });
 
   constructor(
@@ -478,26 +478,47 @@ export class FormFinanceiroComponent {
     });
   }
 
-  adicionaOsnoArrayDeRemessa(financeiro: Financeiro, isChecked: boolean): void {
-    if (isChecked) {
-      // Insere o objeto diretamente, pois as tipagens agora são compatíveis
-      this.osSelecionadasParaRemessa.push(financeiro);
-      console.log(`OS ${financeiro.os} ADICIONADA. Total no lote:`, this.osSelecionadasParaRemessa.length);
-    } else {
-      // CORRIGIDO: Comparação direta usando number (sem necessidade de .toString())
-      const index = this.osSelecionadasParaRemessa.findIndex(item => item.os === financeiro.os);
+  codCliAceito: number = 0;
 
-      if (index !== -1) {
-        this.osSelecionadasParaRemessa.splice(index, 1);
-        console.log(`OS ${financeiro.os} REMOVIDA. Total no lote:`, this.osSelecionadasParaRemessa.length);
-      }
+  adicionaOsnoArrayDeRemessa(financeiro: Financeiro, event: Event): void {
+    // Captura o estado real do checkbox (true/false) a partir do evento de mudança
+    const inputCheckbox = event.target as HTMLInputElement;
+    const isChecked = inputCheckbox.checked;
+
+    if (this.osSelecionadasParaRemessa.length === 0) {
+      this.codCliAceito = financeiro.codcli;
     }
 
-    // Atualiza o estado de visibilidade do botão com base no tamanho do lote
-    this.exibirBtnGerarRemessa = this.osSelecionadasParaRemessa.length > 0;
+    if (financeiro.codcli !== 0 && financeiro.codcli === this.codCliAceito) {
+      if (isChecked) {
+        this.osSelecionadasParaRemessa.push(financeiro);
+        console.log(`OS ${financeiro.os} ADICIONADA. Total no lote:`, this.osSelecionadasParaRemessa.length);
+      } else {
+        const index = this.osSelecionadasParaRemessa.findIndex(item => item.os === financeiro.os);
+        if (index !== -1) {
+          this.osSelecionadasParaRemessa.splice(index, 1);
+          console.log(`OS ${financeiro.os} REMOVIDA. Total no lote:`, this.osSelecionadasParaRemessa.length);
+        }
+      }
 
-    console.log('Lista atual de OS para remessa:', this.osSelecionadasParaRemessa);
+      // Atualiza o estado de visibilidade do botão com base no tamanho do lote
+      this.exibirBtnGerarRemessa = this.osSelecionadasParaRemessa.length > 0;
+      console.log('Lista atual de OS para remessa:', this.osSelecionadasParaRemessa);
+
+    } else {
+      // Força o checkbox que acabou de ser clicado a voltar para o estado desmarcado
+      inputCheckbox.checked = false;
+
+      alert("Todas as OS de uma remessa, precisam ser de um mesmo cliente ");
+      return;
+    }
   }
+
+  // NOVA FUNÇÃO AUXILIAR: Mantém a marcação visual em sincronia com o Array
+  isOsSelecionada(financeiro: Financeiro): boolean {
+    return this.osSelecionadasParaRemessa.some(item => item.os === financeiro.os);
+  }
+
 
   gerarRemessa() {
     this.exibirTabelaRemessa = true;
@@ -520,30 +541,30 @@ export class FormFinanceiroComponent {
   onTipoPagamento(event: Event): void {
     const target = event.target as HTMLSelectElement;
     this.opcaoTipoPagamento = target.value;
-    if(this.opcaoTipoPagamento === "DINHEIRO"  || this.opcaoTipoPagamento === "PIX" || this.opcaoTipoPagamento === "CARTEIRA"){
+    if (this.opcaoTipoPagamento === "DINHEIRO" || this.opcaoTipoPagamento === "PIX" || this.opcaoTipoPagamento === "CARTEIRA") {
       this.exibeOpcoesParcelamento = false;
       //this.processaRemessa();
     }
   }
 
   onQuantidadeParcelas(event: Event) {
-  const selectElement = event.target as HTMLSelectElement;
-  const valorSelecionado = selectElement.value;
+    const selectElement = event.target as HTMLSelectElement;
+    const valorSelecionado = selectElement.value;
 
-  // Reseta o campo prazo usando a estrutura que você já declarou
-  this.formProcessaRemessa.get('prazo')?.setValue('');
+    // Reseta o campo prazo usando a estrutura que você já declarou
+    this.formProcessaRemessa.get('prazo')?.setValue('');
 
-  // Atualiza a lista de prazos com base no mapa (declarado na classe)
-  this.prazosDisponiveis = this.mapaPrazos[valorSelecionado] || [];
-}
-
-
-processaRemessa(){
-
-  if(!this.dataFaturamento){
-    alert("Você precisa escolher a data do faturamento!")
-    return
+    // Atualiza a lista de prazos com base no mapa (declarado na classe)
+    this.prazosDisponiveis = this.mapaPrazos[valorSelecionado] || [];
   }
+
+
+  processaRemessa() {
+
+    if (!this.dataFaturamento) {
+      alert("Você precisa escolher a data do faturamento!")
+      return
+    }
 
     switch (this.opcaoTipoPagamento) {
       case "DINHEIRO":
@@ -576,13 +597,15 @@ processaRemessa(){
   pagamentoPorBoleto() {
     console.log("Forma de pagamento Escolhido: Boleto")
     this.atualizarDadosDasOrdensSelecionadas();
+    this.atualizaTotalizadores();
+
     this.persisteRemessa()
   }
 
   pagamentoPorBordero() {
     console.log("Forma de pagamento Escolhido: Borderô")
     this.persisteRemessa();
-     
+
   }
 
   carteira() {
@@ -594,7 +617,7 @@ processaRemessa(){
         ...item, // Mantém todas as colunas que não foram citadas (como os, fantasia, codcli, etc.)
         tipoPagamento: 'CARTEIRA',
         statusGeral: 'CARTEIRA',
-        
+
       };
     });
     this.persisteRemessa();
@@ -647,146 +670,193 @@ processaRemessa(){
     '3': ['15/30/45 DIAS', '30/60/90 DIAS']
   };
 
-onPrazo(event: Event): void {
-  const target = event.target as HTMLSelectElement;
-  this.opcaoPrazo = target.value;
-}
-
-obterDiasDoPrazo(prazo: string): number[] {
-  if (!prazo || prazo === 'A VISTA') return [0];
-  
-  // Limpa o texto "DIAS" e separa por barra "/"
-  const apenasNumeros = prazo.replace(/DIAS/gi, '').trim();
-  return apenasNumeros.split('/').map(num => parseInt(num.trim(), 10) || 0);
-}
-
-// Mantido recebendo number[] e retornando string[] (Array de datas YYYY-MM-DD)
-somarDias(dataStr: string, dias: number[]): string[] {
-  if (!dataStr || !dias || dias.length === 0) return [];
-
-  return dias.map(qtdDias => {
-    // Cria a data interpretando estritamente em UTC para evitar distorções locais
-    const [ano, mes, dia] = dataStr.split('-').map(Number);
-    const data = new Date(Date.UTC(ano, mes - 1, dia)); 
-
-    // Soma os dias diretamente no tempo UTC
-    data.setUTCDate(data.getUTCDate() + qtdDias);
-    
-    // Retorna formatado perfeitamente como YYYY-MM-DD
-    return data.toISOString().split('T')[0]; 
-  });
-}
-
-atualizarDadosDasOrdensSelecionadas() {
-  const formValues = this.formProcessaRemessa.value;
-  const rawDataFat = formValues.dataFaturamento; 
-  const qtdParcelasStr = formValues.quantidadeParcelas;
-  const prazoSelecionado = formValues.prazo || '';
-  const tipoPagto = formValues.tipoPagamento || '';
-
-  // 1. Validação defensiva: se a data não estiver preenchida, interrompe o cálculo
-  if (!rawDataFat) {
-    console.warn('Data de faturamento não foi selecionada.');
-    return; 
+  onPrazo(event: Event): void {
+    const target = event.target as HTMLSelectElement;
+    this.opcaoPrazo = target.value;
   }
 
-  // 2. Agora o TypeScript sabe com 100% de certeza que 'rawDataFat' NÃO é null ou undefined
-  let dataFat = '';
-  if (typeof rawDataFat === 'object') {
-    // USANDO A INTERFACE NATIVA DO NG-BOOTSTRAP CORRETAMENTE
-    const dataObjeto = rawDataFat as unknown as NgbDateStruct;
-    
-    const ano = dataObjeto.year;
-    const mes = String(dataObjeto.month).padStart(2, '0');
-    const dia = String(dataObjeto.day).padStart(2, '0');
-    
-    dataFat = `${ano}-${mes}-${dia}`;
-  } else if (typeof rawDataFat === 'string') {
-    dataFat = rawDataFat;
+  obterDiasDoPrazo(prazo: string): number[] {
+    if (!prazo || prazo === 'A VISTA') return [0];
+
+    // Limpa o texto "DIAS" e separa por barra "/"
+    const apenasNumeros = prazo.replace(/DIAS/gi, '').trim();
+    return apenasNumeros.split('/').map(num => parseInt(num.trim(), 10) || 0);
   }
 
-  const qtdParcelas = qtdParcelasStr === 'A VISTA' ? 1 : parseInt(qtdParcelasStr || '1', 10);
+  // Mantido recebendo number[] e retornando string[] (Array de datas YYYY-MM-DD)
+  somarDias(dataStr: string, dias: number[]): string[] {
+    if (!dataStr || !dias || dias.length === 0) return [];
 
-  // 2. Obtém o array de dias extras (Ex: [30, 60])
-  const listaDias = this.obterDiasDoPrazo(prazoSelecionado);
+    return dias.map(qtdDias => {
+      // Cria a data interpretando estritamente em UTC para evitar distorções locais
+      const [ano, mes, dia] = dataStr.split('-').map(Number);
+      const data = new Date(Date.UTC(ano, mes - 1, dia));
 
-  // 3. Percorre o array original alterando os dados
-  this.osSelecionadasParaRemessa = this.osSelecionadasParaRemessa.map(item => {
-    const totalLiquido = parseFloat(item.totaliq) || 0;
-    const valorCadaParcela = (totalLiquido / qtdParcelas).toFixed(2);
+      // Soma os dias diretamente no tempo UTC
+      data.setUTCDate(data.getUTCDate() + qtdDias);
 
-    // Agora 'dataFat' está garantida como String válida ("2026-05-01")
-    const datasVencimento = this.somarDias(dataFat, listaDias);
+      // Retorna formatado perfeitamente como YYYY-MM-DD
+      return data.toISOString().split('T')[0];
+    });
+  }
 
-    // Inicializa os campos como null em vez de string vazia
-    let venc1: string | null = null, val1 = '0.00', status1 = '';
-    let venc2: string | null = null, val2 = '0.00', status2 = '';
-    let venc3: string | null = null, val3 = '0.00', status3 = '';
+  atualizarDadosDasOrdensSelecionadas() {
+    const formValues = this.formProcessaRemessa.value;
+    const rawDataFat = formValues.dataFaturamento;
+    const qtdParcelasStr = formValues.quantidadeParcelas;
+    const prazoSelecionado = formValues.prazo || '';
+    const tipoPagto = formValues.tipoPagamento || '';
 
-    // Extrai as posições correspondentes do array de datas gerado
-    if (qtdParcelas >= 1) {
-      venc1 = datasVencimento[0] || null;
-      val1 = valorCadaParcela;
-      status1 = 'EM DIA';
-    }
-    if (qtdParcelas >= 2) {
-      venc2 = datasVencimento[1] || null;
-      val2 = valorCadaParcela;
-      status2 = 'EM DIA';
-    }
-    if (qtdParcelas === 3) {
-      venc3 = datasVencimento[2] || null;
-      val3 = valorCadaParcela;
-      status3 = 'EM DIA';
+    // 1. Validação defensiva: se a data não estiver preenchida, interrompe o cálculo
+    if (!rawDataFat) {
+      console.warn('Data de faturamento não foi selecionada.');
+      return;
     }
 
-    return {
-      ...item,
-      dataFaturamento: dataFat, // Salva a data já formatada como string na OS
-      tipoPagamento: tipoPagto,
-      qtParcela: qtdParcelasStr || '',
-      prazo: prazoSelecionado,
-      
-      vencimento1: venc1,
-      valorParcela1: val1,
-      statusParcela1: status1,
+    // 2. Agora o TypeScript sabe com 100% de certeza que 'rawDataFat' NÃO é null ou undefined
+    let dataFat = '';
+    if (typeof rawDataFat === 'object') {
+      // USANDO A INTERFACE NATIVA DO NG-BOOTSTRAP CORRETAMENTE
+      const dataObjeto = rawDataFat as unknown as NgbDateStruct;
 
-      vencimento2: venc2, // Enviará null para o Quarkus se não houver 2ª parcela
-      valorParcela2: val2,
-      statusParcela2: status2,
+      const ano = dataObjeto.year;
+      const mes = String(dataObjeto.month).padStart(2, '0');
+      const dia = String(dataObjeto.day).padStart(2, '0');
 
-      vencimento3: venc3, // Enviará null para o Quarkus se não houver 3ª parcela
-      valorParcela3: val3,
-      statusParcela3: status3
-    };
-  });
+      dataFat = `${ano}-${mes}-${dia}`;
+    } else if (typeof rawDataFat === 'string') {
+      dataFat = rawDataFat;
+    }
 
-  this.atualizaTabelaPagamentoPorBoleto();
-  // Força a atualização visual caso use detecção OnPush
-  this.cdr.markForCheck();
-}
+    const qtdParcelas = qtdParcelasStr === 'A VISTA' ? 1 : parseInt(qtdParcelasStr || '1', 10);
 
-atualizaTabelaPagamentoPorBoleto() {
-  this.osSelecionadasParaRemessa = this.osSelecionadasParaRemessa.map(item => {
-    // Captura o valor tratando o risco de vir nulo ou indefinido
-    const custoBoleto = this.formProcessaRemessa.value.custoPorBoleto || '0.00';
+    // 2. Obtém o array de dias extras (Ex: [30, 60])
+    const listaDias = this.obterDiasDoPrazo(prazoSelecionado);
 
-    return {
-      ...item, // Mantém todas as colunas que não foram citadas (como os, fantasia, codcli, etc.)
-      dataFaturamento: this.dataFaturamento,
-      tipoPagamento: 'BOLETO',
-      codRemessa: item.codcli + "-" + this.dataFaturamento,
-      valorJaPago: '0.00',
-      tarifa: custoBoleto,
-      statusGeral: 'EM DIA',
-      jurosBordero: '0.00',
-      iofDiario: '0.00',
-      tarifaBordero: custoBoleto,
-      custoBancarioTotal: custoBoleto, // Mapeia custoBancario para a propriedade correta da interface
-      valorLiquidoCreditado: (Number(item.totaliq) - Number(custoBoleto)).toFixed(2) 
-    };
-  });
-}
+    // 3. Percorre o array original alterando os dados
+    this.osSelecionadasParaRemessa = this.osSelecionadasParaRemessa.map(item => {
+      const totalLiquido = parseFloat(item.totaliq) || 0;
+      const valorCadaParcela = (totalLiquido / qtdParcelas).toFixed(2);
+
+      // Agora 'dataFat' está garantida como String válida ("2026-05-01")
+      const datasVencimento = this.somarDias(dataFat, listaDias);
+
+      // Inicializa os campos como null em vez de string vazia
+      let venc1: string | null = null, val1 = '0.00', status1 = '';
+      let venc2: string | null = null, val2 = '0.00', status2 = '';
+      let venc3: string | null = null, val3 = '0.00', status3 = '';
+
+      // Extrai as posições correspondentes do array de datas gerado
+      if (qtdParcelas >= 1) {
+        venc1 = datasVencimento[0] || null;
+        val1 = valorCadaParcela;
+        status1 = 'EM DIA';
+      }
+      if (qtdParcelas >= 2) {
+        venc2 = datasVencimento[1] || null;
+        val2 = valorCadaParcela;
+        status2 = 'EM DIA';
+      }
+      if (qtdParcelas === 3) {
+        venc3 = datasVencimento[2] || null;
+        val3 = valorCadaParcela;
+        status3 = 'EM DIA';
+      }
+
+      return {
+        ...item,
+        dataFaturamento: dataFat, // Salva a data já formatada como string na OS
+        tipoPagamento: tipoPagto,
+        qtParcela: qtdParcelasStr || '',
+        prazo: prazoSelecionado,
+
+        vencimento1: venc1,
+        valorParcela1: val1,
+        statusParcela1: status1,
+
+        vencimento2: venc2, // Enviará null para o Quarkus se não houver 2ª parcela
+        valorParcela2: val2,
+        statusParcela2: status2,
+
+        vencimento3: venc3, // Enviará null para o Quarkus se não houver 3ª parcela
+        valorParcela3: val3,
+        statusParcela3: status3
+      };
+    });
+
+    this.atualizaTabelaPagamentoPorBoleto();
+    // Força a atualização visual caso use detecção OnPush
+    this.cdr.markForCheck();
+  }
+
+  atualizaTabelaPagamentoPorBoleto() {
+    this.osSelecionadasParaRemessa = this.osSelecionadasParaRemessa.map(item => {
+      // Captura o valor tratando o risco de vir nulo ou indefinido
+      const custoCalculado = Number(this.formProcessaRemessa.value.custoPorBoleto) / this.osSelecionadasParaRemessa.length;
+      const custoBoleto = !isNaN(custoCalculado) && isFinite(custoCalculado) ? custoCalculado.toFixed(2) : '0.00';
+      return {
+        ...item, // Mantém todas as colunas que não foram citadas (como os, fantasia, codcli, etc.)
+        dataFaturamento: this.dataFaturamento,
+        tipoPagamento: 'BOLETO',
+        codRemessa: item.codcli + "-" + this.dataFaturamento,
+        valorJaPago: '0.00',
+        tarifa: custoBoleto,
+        statusGeral: 'EM DIA',
+        jurosBordero: '0.00',
+        iofDiario: '0.00',
+        tarifaBordero: custoBoleto,
+        custoBancarioTotal: custoBoleto, // Mapeia custoBancario para a propriedade correta da interface
+        valorLiquidoCreditado: (Number(item.totaliq) - Number(custoBoleto)).toFixed(2)
+      };
+    });
+    this.atualizaTotalizadores()
+  }
+
+  /////VARIÁVEIS USADAS EM ATUALIZA TOTALZIADORES  
+  totalOs: number = 0;
+  totalDespesasBancarias: number = 0;
+  somatoriaTotaliq: number = 0;
+
+  atualizaTotalizadores() {
+    // 1. Zera os acumuladores para evitar duplicar valores caso a função rode várias vezes
+    this.totalOs = 0;
+    this.totalDespesasBancarias = 0;
+    this.somatoriaTotaliq = 0;
+
+    // Validação de segurança se a lista estiver vazia
+    if (!this.osSelecionadasParaRemessa || this.osSelecionadasParaRemessa.length === 0) {
+      this.formProcessaRemessa.patchValue({
+        fantasia: '',
+        codCli: '',
+        quantidadeBoletos: '0',
+        valorTotalOs: '0.00',
+        valorTotalDespesaBancaria: '0.00',
+        valorTotalLiquido: '0.00'
+      });
+      return;
+    }
+
+    // 2. APENAS CALCULA: Passa pelos itens acumulando os valores sem alterar nada no array original
+    this.osSelecionadasParaRemessa.forEach(item => {
+      this.totalOs += Number(item.totaliq || 0);
+      this.totalDespesasBancarias += Number(item.custoBancarioTotal || 0);
+      this.somatoriaTotaliq += Number(item.valorLiquidoCreditado || 0);
+    });
+
+    // 3. ATUALIZA A TELA: Envia os resultados diretamente para os inputs do formulário
+    this.formProcessaRemessa.patchValue({
+      fantasia: this.osSelecionadasParaRemessa[0].fantasia,
+      codCli: this.osSelecionadasParaRemessa[0].codcli ? String(this.osSelecionadasParaRemessa[0].codcli) : '',
+      quantidadeBoletos: this.formProcessaRemessa.value.quantidadeParcelas || '0',
+      valorTotalOs: this.totalOs.toFixed(2),
+      valorTotalDespesaBancaria: this.totalDespesasBancarias.toFixed(2),
+      valorTotalLiquido: String(this.somatoriaTotaliq)
+    });
+  }
+
+
+
+
 }
 
 
