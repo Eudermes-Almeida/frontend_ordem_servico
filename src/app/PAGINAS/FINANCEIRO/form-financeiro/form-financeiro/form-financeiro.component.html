@@ -40,6 +40,8 @@
         </div>
       </div>
 
+      
+
       <!-- SPINNER LOADING -->
       <div *ngIf="spinnerLoading" class="col-12">
         <div class="d-flex align-items-center mb-1 w-100">
@@ -119,6 +121,7 @@
           </button>
 
         </div>
+
       </div>
 
       <!-- Bloco isolado com borda laranja para os componentes de Filtro por Data e Status -->
@@ -246,7 +249,6 @@
         <th>Vencimento 3</th>
         <th>Parcela 3</th>
         <th>Status Parcela 3</th>
-        <th>Valor já pago</th>
         <th>Status Geral</th>
         <th>Juros</th>
         <th>Iof</th>
@@ -273,7 +275,6 @@
         <td>{{remessa.vencimento3}}</td>
         <td>{{remessa.valorParcela3}}</td>
         <td>{{remessa.statusParcela3}}</td>
-        <td>{{remessa.valorJaPago}}</td>
         <td>{{remessa.statusGeral}}</td>
         <td>{{remessa.jurosBordero}}</td>
         <td>{{remessa.iofDiario}}</td>
@@ -324,7 +325,7 @@
           <option value="DINHEIRO">DINHEIRO</option>
           <option value="PIX">PIX</option>
           <option value="BOLETO">BOLETO</option>
-          <option value="BORDERÔ">BORDERÔ</option>
+          <option value="BORDERO">BORDERÔ</option>
           <option value="CARTEIRA">CARTEIRA</option>
         </select>
       </div>
@@ -392,37 +393,37 @@
       <div class="d-flex flex-row flex-wrap align-items-end justify-content-around w-100">
         
   <!-- 9 - Nome Cliente (CORRIGIDO) -->
-  <div class="form-group mb-2" style="flex: 1 1 600px; max-width: 600px;" *ngIf="exibeOpcoesParcelamento">
+  <div class="form-group mb-2" style="flex: 1 1 600px; max-width: 600px;" >
     <label for="fantasia" class="form-label fw-bold small text-light d-block mb-1">Nome Cliente</label>
     <input formControlName="fantasia" type="text" id="fantasia" class="form-control w-100">
   </div>
 
   <!-- 10 - CÓDIGO DO CLIENTE -->
-  <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;" *ngIf="exibeOpcoesParcelamento">
+  <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;">
     <label for="quantidadeBoletos" class="form-label fw-bold small text-light d-block mb-1">Codigo Cliente</label>
     <input formControlName="codCli" type="text" id="codCli" class="form-control w-100" placeholder="0">
   </div>
 
   <!-- 11 - QUANTIDADE BOLETOS -->
-  <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;" *ngIf="exibeOpcoesParcelamento">
+  <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;" >
     <label for="quantidadeBoletos" class="form-label fw-bold small text-light d-block mb-1">Quantidade Boletos</label>
     <input formControlName="quantidadeBoletos" type="text" id="quantidadeBoletos" class="form-control w-100" placeholder="0">
   </div>
 
   <!-- 12 - VALOR TOTAL OS -->
-  <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;" *ngIf="exibeOpcoesParcelamento">
+  <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;" >
     <label for="valorTotalOs" class="form-label fw-bold small text-light d-block mb-1">Total OS</label>
     <input formControlName="valorTotalOs" type="text" id="valorTotalOs" class="form-control w-100" placeholder="R$ 0,00">
   </div>
 
   <!-- 13 - TOTAL DESPESAS BANCÁRIAS -->
-  <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;" *ngIf="exibeOpcoesParcelamento">
+  <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;" >
     <label for="valorTotalDespesaBancaria" class="form-label fw-bold small text-light d-block mb-1">Despesas Bancarias</label>
     <input formControlName="valorTotalDespesaBancaria" type="text" id="valorTotalDespesaBancaria" class="form-control w-100" placeholder="R$ 0,00">
   </div>
 
   <!-- 14  - TOTAL LIQUIDO -->
-  <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;" *ngIf="exibeOpcoesParcelamento">
+  <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;" >
     <label for="valorTotalLiquido" class="form-label fw-bold small text-light d-block mb-1">Total Liquido</label>
     <input formControlName="valorTotalLiquido" type="text" id="valorTotalLiquido" class="form-control w-100" placeholder="R$ 0,00">
   </div>
@@ -458,7 +459,6 @@
         <th>Vencimento 3</th>
         <th>Parcela 3</th>
         <th>Status Parcela 3</th>
-        <th>Valor já pago</th>
         <th>Status Geral</th>
         <th>Juros</th>
         <th>Iof</th>
@@ -484,7 +484,6 @@
         <td>{{remessa.vencimento3}}</td>
         <td>{{remessa.valorParcela3}}</td>
         <td>{{remessa.statusParcela3}}</td>
-        <td>{{remessa.valorJaPago}}</td>
         <td>{{remessa.statusGeral}}</td>
         <td>{{remessa.jurosBordero}}</td>
         <td>{{remessa.iofDiario}}</td>

@@ -122,6 +122,7 @@ export class FormFinanceiroComponent {
         this.buscarClientesPorNomeFantasia(); // Dispara a busca quando atingir 4 ou mais caracteres
       }
     });
+    this.executaVerificacaoDeAtrasos();
   }
 
   // Buscar clientes por nome fantasia
@@ -595,17 +596,15 @@ export class FormFinanceiroComponent {
   }
 
   pagamentoPorBoleto() {
-    console.log("Forma de pagamento Escolhido: Boleto")
     this.atualizarDadosDasOrdensSelecionadas();
     this.atualizaTotalizadores();
-
     this.persisteRemessa()
   }
 
   pagamentoPorBordero() {
-    console.log("Forma de pagamento Escolhido: Borderô")
-    this.persisteRemessa();
-
+    this.atualizarDadosDasOrdensSelecionadas();
+    this.atualizaTotalizadores();
+    this.persisteRemessa()
   }
 
   carteira() {
@@ -620,6 +619,40 @@ export class FormFinanceiroComponent {
 
       };
     });
+
+    this.totalOs = 0;
+    this.totalDespesasBancarias = 0;
+    this.somatoriaTotaliq = 0;
+
+    // Validação de segurança se a lista estiver vazia
+    if (!this.osSelecionadasParaRemessa || this.osSelecionadasParaRemessa.length === 0) {
+      this.formProcessaRemessa.patchValue({
+        fantasia: '',
+        codCli: '',
+        quantidadeBoletos: '0',
+        valorTotalOs: '0.00',
+        valorTotalDespesaBancaria: '0.00',
+        valorTotalLiquido: '0.00'
+      });
+      return;
+    }
+
+    // 2. APENAS CALCULA: Passa pelos itens acumulando os valores sem alterar nada no array original
+    this.osSelecionadasParaRemessa.forEach(item => {
+      this.totalOs += Number(item.totaliq || 0);
+      this.totalDespesasBancarias += Number(item.custoBancarioTotal || 0);
+      this.somatoriaTotaliq += Number(item.valorLiquidoCreditado || 0);
+    });
+
+    // 3. ATUALIZA A TELA: Envia os resultados diretamente para os inputs do formulário
+    this.formProcessaRemessa.patchValue({
+      fantasia: this.osSelecionadasParaRemessa[0].fantasia,
+      codCli: this.osSelecionadasParaRemessa[0].codcli ? String(this.osSelecionadasParaRemessa[0].codcli) : '',
+      quantidadeBoletos: this.formProcessaRemessa.value.quantidadeParcelas || '0',
+      valorTotalOs: this.totalOs.toFixed(2),
+      valorTotalDespesaBancaria: '0.00',
+      valorTotalLiquido: this.totalOs.toFixed(2),
+    });
     this.persisteRemessa();
   }
 
@@ -630,7 +663,7 @@ export class FormFinanceiroComponent {
       return {
         ...item, // Mantém todas as colunas que não foram citadas (como os, fantasia, codcli, etc.)
         dataFaturamento: this.dataFaturamento,
-        tipoPagamento: 'A VISTA',
+        tipoPagamento: this.formProcessaRemessa.value.tipoPagamento,
         //codRemessa: item.codcli +"-" + this.dataFaturamento,
         valorJaPago: item.totaliq, // Copia o valor atual do total líquido
         statusGeral: 'PAGO',
@@ -641,8 +674,44 @@ export class FormFinanceiroComponent {
         valorLiquidoCreditado: item.totaliq  // Copia o valor atual do total líquido para o líquido final
       };
     });
+
+    this.totalOs = 0;
+    this.totalDespesasBancarias = 0;
+    this.somatoriaTotaliq = 0;
+
+    // Validação de segurança se a lista estiver vazia
+    if (!this.osSelecionadasParaRemessa || this.osSelecionadasParaRemessa.length === 0) {
+      this.formProcessaRemessa.patchValue({
+        fantasia: '',
+        codCli: '',
+        quantidadeBoletos: '0',
+        valorTotalOs: '0.00',
+        valorTotalDespesaBancaria: '0.00',
+        valorTotalLiquido: '0.00'
+      });
+      return;
+    }
+
+    // 2. APENAS CALCULA: Passa pelos itens acumulando os valores sem alterar nada no array original
+    this.osSelecionadasParaRemessa.forEach(item => {
+      this.totalOs += Number(item.totaliq || 0);
+      this.totalDespesasBancarias += Number(item.custoBancarioTotal || 0);
+      this.somatoriaTotaliq += Number(item.valorLiquidoCreditado || 0);
+    });
+
+    // 3. ATUALIZA A TELA: Envia os resultados diretamente para os inputs do formulário
+    this.formProcessaRemessa.patchValue({
+      fantasia: this.osSelecionadasParaRemessa[0].fantasia,
+      codCli: this.osSelecionadasParaRemessa[0].codcli ? String(this.osSelecionadasParaRemessa[0].codcli) : '',
+      quantidadeBoletos: this.formProcessaRemessa.value.quantidadeParcelas || '0',
+      valorTotalOs: this.totalOs.toFixed(2),
+      valorTotalDespesaBancaria: '0.00',
+      valorTotalLiquido: this.totalOs.toFixed(2),
+    });
     this.persisteRemessa();
   }
+
+  
 
   persisteRemessa() {
     this.financeiroService.atualizarFinanceiroEmLote(this.osSelecionadasParaRemessa).subscribe({
@@ -792,12 +861,12 @@ export class FormFinanceiroComponent {
   atualizaTabelaPagamentoPorBoleto() {
     this.osSelecionadasParaRemessa = this.osSelecionadasParaRemessa.map(item => {
       // Captura o valor tratando o risco de vir nulo ou indefinido
-      const custoCalculado = Number(this.formProcessaRemessa.value.custoPorBoleto) / this.osSelecionadasParaRemessa.length;
+      const custoCalculado = (Number(this.formProcessaRemessa.value.custoPorBoleto)*Number(this.formProcessaRemessa.value.quantidadeParcelas)) / this.osSelecionadasParaRemessa.length;
       const custoBoleto = !isNaN(custoCalculado) && isFinite(custoCalculado) ? custoCalculado.toFixed(2) : '0.00';
       return {
         ...item, // Mantém todas as colunas que não foram citadas (como os, fantasia, codcli, etc.)
         dataFaturamento: this.dataFaturamento,
-        tipoPagamento: 'BOLETO',
+        tipoPagamento: this.formProcessaRemessa.value.tipoPagamento,
         codRemessa: item.codcli + "-" + this.dataFaturamento,
         valorJaPago: '0.00',
         tarifa: custoBoleto,
@@ -854,8 +923,33 @@ export class FormFinanceiroComponent {
     });
   }
 
+  executaVerificacaoDeAtrasos() {
+  this.spinnerLoading = true;
 
+  this.financeiroService.verificarEAtualizarAtrasos().subscribe({
+    next: (retorno: Financeiro[] | string) => {
+      this.spinnerLoading = false;
 
+      // Verifica se o retorno é uma mensagem de texto (caso não haja atualizações)
+      if (typeof retorno === 'string') {
+        alert(retorno);
+        return;
+      }
+
+      // Se for uma lista válida e contiver registros atualizados
+      if (retorno && retorno.length > 0) {
+       // alert(`Sucesso: ${retorno.length} parcelas foram identificadas e atualizadas para 'ATRAZADO'.`);
+      } else {
+        //alert('Nenhum registro precisou de atualização.');
+      }
+    },
+    error: (erro) => {
+      this.spinnerLoading = false;
+      console.error('Falha ao processar rotina de atrasos:', erro);
+      //alert('Erro interno do servidor ao processar a verificação de atrasos. Verifique o terminal do Quarkus.');
+    }
+  });
+}
 
 }
 

@@ -70,6 +70,14 @@ atualizarFinanceiroEmLote(loteFinanceiro: Financeiro[]): Observable<Financeiro[]
   return this.http.put<Financeiro[]>(url, loteFinanceiro);
 }
 
+verificarEAtualizarAtrasos(): Observable<Financeiro[] | string> {
+  const url = `${this.urlServidor}financeiro/verificar-atrasos`;
+  
+  // Como o endpoint não recebe dados no corpo, passamos null
+  return this.http.put<Financeiro[] | string>(url, null);
+}
+
+
 
   
 }
