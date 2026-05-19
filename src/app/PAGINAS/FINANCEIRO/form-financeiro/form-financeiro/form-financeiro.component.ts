@@ -596,16 +596,15 @@ export class FormFinanceiroComponent {
   }
 
   pagamentoPorBoleto() {
-    this.atualizarDadosDasOrdensSelecionadas();
-    this.atualizaTotalizadores();
-    this.persisteRemessa()
-  }
+  this.atualizarDadosDasOrdensSelecionadas('BOLETO');
+  this.persisteRemessa();
+}
 
-  pagamentoPorBordero() {
-    this.atualizarDadosDasOrdensSelecionadas();
-    this.atualizaTotalizadores();
-    this.persisteRemessa()
-  }
+ pagamentoPorBordero() {
+  // Passamos um parâmetro para avisar que o fluxo atual é BORDERO
+  this.atualizarDadosDasOrdensSelecionadas('BORDERO');
+  this.persisteRemessa();
+}
 
   carteira() {
     console.log("Forma de pagamento Escolhido: Carteira")
@@ -711,8 +710,6 @@ export class FormFinanceiroComponent {
     this.persisteRemessa();
   }
 
-  
-
   persisteRemessa() {
     this.financeiroService.atualizarFinanceiroEmLote(this.osSelecionadasParaRemessa).subscribe({
       next: (retornoDoBanco: Financeiro[]) => {
@@ -769,94 +766,68 @@ export class FormFinanceiroComponent {
     });
   }
 
-  atualizarDadosDasOrdensSelecionadas() {
-    const formValues = this.formProcessaRemessa.value;
-    const rawDataFat = formValues.dataFaturamento;
-    const qtdParcelasStr = formValues.quantidadeParcelas;
-    const prazoSelecionado = formValues.prazo || '';
-    const tipoPagto = formValues.tipoPagamento || '';
+  // Adicionado o parâmetro tipoFluxo
+atualizarDadosDasOrdensSelecionadas(tipoFluxo: 'BOLETO' | 'BORDERO' = 'BOLETO') {
+  const formValues = this.formProcessaRemessa.value;
+  const rawDataFat = formValues.dataFaturamento;
+  const qtdParcelasStr = formValues.quantidadeParcelas;
+  const prazoSelecionado = formValues.prazo || '';
+  const tipoPagto = formValues.tipoPagamento || '';
 
-    // 1. Validação defensiva: se a data não estiver preenchida, interrompe o cálculo
-    if (!rawDataFat) {
-      console.warn('Data de faturamento não foi selecionada.');
-      return;
-    }
-
-    // 2. Agora o TypeScript sabe com 100% de certeza que 'rawDataFat' NÃO é null ou undefined
-    let dataFat = '';
-    if (typeof rawDataFat === 'object') {
-      // USANDO A INTERFACE NATIVA DO NG-BOOTSTRAP CORRETAMENTE
-      const dataObjeto = rawDataFat as unknown as NgbDateStruct;
-
-      const ano = dataObjeto.year;
-      const mes = String(dataObjeto.month).padStart(2, '0');
-      const dia = String(dataObjeto.day).padStart(2, '0');
-
-      dataFat = `${ano}-${mes}-${dia}`;
-    } else if (typeof rawDataFat === 'string') {
-      dataFat = rawDataFat;
-    }
-
-    const qtdParcelas = qtdParcelasStr === 'A VISTA' ? 1 : parseInt(qtdParcelasStr || '1', 10);
-
-    // 2. Obtém o array de dias extras (Ex: [30, 60])
-    const listaDias = this.obterDiasDoPrazo(prazoSelecionado);
-
-    // 3. Percorre o array original alterando os dados
-    this.osSelecionadasParaRemessa = this.osSelecionadasParaRemessa.map(item => {
-      const totalLiquido = parseFloat(item.totaliq) || 0;
-      const valorCadaParcela = (totalLiquido / qtdParcelas).toFixed(2);
-
-      // Agora 'dataFat' está garantida como String válida ("2026-05-01")
-      const datasVencimento = this.somarDias(dataFat, listaDias);
-
-      // Inicializa os campos como null em vez de string vazia
-      let venc1: string | null = null, val1 = '0.00', status1 = '';
-      let venc2: string | null = null, val2 = '0.00', status2 = '';
-      let venc3: string | null = null, val3 = '0.00', status3 = '';
-
-      // Extrai as posições correspondentes do array de datas gerado
-      if (qtdParcelas >= 1) {
-        venc1 = datasVencimento[0] || null;
-        val1 = valorCadaParcela;
-        status1 = 'EM DIA';
-      }
-      if (qtdParcelas >= 2) {
-        venc2 = datasVencimento[1] || null;
-        val2 = valorCadaParcela;
-        status2 = 'EM DIA';
-      }
-      if (qtdParcelas === 3) {
-        venc3 = datasVencimento[2] || null;
-        val3 = valorCadaParcela;
-        status3 = 'EM DIA';
-      }
-
-      return {
-        ...item,
-        dataFaturamento: dataFat, // Salva a data já formatada como string na OS
-        tipoPagamento: tipoPagto,
-        qtParcela: qtdParcelasStr || '',
-        prazo: prazoSelecionado,
-
-        vencimento1: venc1,
-        valorParcela1: val1,
-        statusParcela1: status1,
-
-        vencimento2: venc2, // Enviará null para o Quarkus se não houver 2ª parcela
-        valorParcela2: val2,
-        statusParcela2: status2,
-
-        vencimento3: venc3, // Enviará null para o Quarkus se não houver 3ª parcela
-        valorParcela3: val3,
-        statusParcela3: status3
-      };
-    });
-
-    this.atualizaTabelaPagamentoPorBoleto();
-    // Força a atualização visual caso use detecção OnPush
-    this.cdr.markForCheck();
+  if (!rawDataFat) {
+    console.warn('Data de faturamento não foi selecionada.');
+    return;
   }
+
+  let dataFat = '';
+  if (typeof rawDataFat === 'object') {
+    const dataObjeto = rawDataFat as unknown as NgbDateStruct;
+    const ano = dataObjeto.year;
+    const mes = String(dataObjeto.month).padStart(2, '0');
+    const dia = String(dataObjeto.day).padStart(2, '0');
+    dataFat = `${ano}-${mes}-${dia}`;
+  } else if (typeof rawDataFat === 'string') {
+    dataFat = rawDataFat;
+  }
+
+  const qtdParcelas = qtdParcelasStr === 'A VISTA' ? 1 : parseInt(qtdParcelasStr || '1', 10);
+  const listaDias = this.obterDiasDoPrazo(prazoSelecionado);
+
+  this.osSelecionadasParaRemessa = this.osSelecionadasParaRemessa.map(item => {
+    const totalLiquido = parseFloat(item.totaliq) || 0;
+    const valorCadaParcela = (totalLiquido / qtdParcelas).toFixed(2);
+    const datasVencimento = this.somarDias(dataFat, listaDias);
+
+    let venc1: string | null = null, val1 = '0.00', status1 = '';
+    let venc2: string | null = null, val2 = '0.00', status2 = '';
+    let venc3: string | null = null, val3 = '0.00', status3 = '';
+
+    if (qtdParcelas >= 1) { venc1 = datasVencimento[0] || null; val1 = valorCadaParcela; status1 = 'EM DIA'; }
+    if (qtdParcelas >= 2) { venc2 = datasVencimento[1] || null; val2 = valorCadaParcela; status2 = 'EM DIA'; }
+    if (qtdParcelas === 3) { venc3 = datasVencimento[2] || null; val3 = valorCadaParcela; status3 = 'EM DIA'; }
+
+    return {
+      ...item,
+      dataFaturamento: dataFat,
+      tipoPagamento: tipoPagto,
+      qtParcela: qtdParcelasStr || '',
+      prazo: prazoSelecionado,
+      vencimento1: venc1, valorParcela1: val1, statusParcela1: status1,
+      vencimento2: venc2, valorParcela2: val2, statusParcela2: status2,
+      vencimento3: venc3, valorParcela3: val3, statusParcela3: status3
+    };
+  });
+
+  // CORREÇÃO DO DESVIO DE FLUXO:
+  if (tipoFluxo === 'BORDERO') {
+    this.atualizaTabelaPagamentoPorBordero(dataFat);
+  } else {
+    this.atualizaTabelaPagamentoPorBoleto();
+  }
+
+  this.atualizaTotalizadores();
+  this.cdr.markForCheck();
+}
 
   atualizaTabelaPagamentoPorBoleto() {
     this.osSelecionadasParaRemessa = this.osSelecionadasParaRemessa.map(item => {
@@ -886,43 +857,6 @@ export class FormFinanceiroComponent {
   totalDespesasBancarias: number = 0;
   somatoriaTotaliq: number = 0;
 
-  atualizaTotalizadores() {
-    // 1. Zera os acumuladores para evitar duplicar valores caso a função rode várias vezes
-    this.totalOs = 0;
-    this.totalDespesasBancarias = 0;
-    this.somatoriaTotaliq = 0;
-
-    // Validação de segurança se a lista estiver vazia
-    if (!this.osSelecionadasParaRemessa || this.osSelecionadasParaRemessa.length === 0) {
-      this.formProcessaRemessa.patchValue({
-        fantasia: '',
-        codCli: '',
-        quantidadeBoletos: '0',
-        valorTotalOs: '0.00',
-        valorTotalDespesaBancaria: '0.00',
-        valorTotalLiquido: '0.00'
-      });
-      return;
-    }
-
-    // 2. APENAS CALCULA: Passa pelos itens acumulando os valores sem alterar nada no array original
-    this.osSelecionadasParaRemessa.forEach(item => {
-      this.totalOs += Number(item.totaliq || 0);
-      this.totalDespesasBancarias += Number(item.custoBancarioTotal || 0);
-      this.somatoriaTotaliq += Number(item.valorLiquidoCreditado || 0);
-    });
-
-    // 3. ATUALIZA A TELA: Envia os resultados diretamente para os inputs do formulário
-    this.formProcessaRemessa.patchValue({
-      fantasia: this.osSelecionadasParaRemessa[0].fantasia,
-      codCli: this.osSelecionadasParaRemessa[0].codcli ? String(this.osSelecionadasParaRemessa[0].codcli) : '',
-      quantidadeBoletos: this.formProcessaRemessa.value.quantidadeParcelas || '0',
-      valorTotalOs: this.totalOs.toFixed(2),
-      valorTotalDespesaBancaria: this.totalDespesasBancarias.toFixed(2),
-      valorTotalLiquido: String(this.somatoriaTotaliq)
-    });
-  }
-
   executaVerificacaoDeAtrasos() {
   this.spinnerLoading = true;
 
@@ -950,6 +884,154 @@ export class FormFinanceiroComponent {
     }
   });
 }
+
+atualizaTotalizadores() {
+  this.totalOs = 0;
+  this.totalDespesasBancarias = 0;
+  this.somatoriaTotaliq = 0;
+
+  if (!this.osSelecionadasParaRemessa || this.osSelecionadasParaRemessa.length === 0) {
+    this.formProcessaRemessa.patchValue({
+      fantasia: '', codCli: '', quantidadeBoletos: '0',
+      valorTotalOs: '0.00', valorTotalDespesaBancaria: '0.00', valorTotalLiquido: '0.00'
+    });
+    return;
+  }
+
+  // 1. Soma os valores brutos normais acumulados de cada OS
+  this.osSelecionadasParaRemessa.forEach(item => {
+    this.totalOs += Number(item.totaliq || 0);
+    // IMPORTANTE: custoBancarioTotal já possui Tarifa + Juros inclusos de cada OS
+    this.totalDespesasBancarias += Number(item.custoBancarioTotal || 0);
+  });
+
+  // CORREÇÃO: O valor líquido é apenas o Bruto menos o Custo Bancário Acumulado
+  const valorLiquidoReal = this.totalOs - this.totalDespesasBancarias;
+
+  // 3. Atualiza os inputs do formulário com os valores idênticos aos da planilha
+  this.formProcessaRemessa.patchValue({
+    fantasia: this.osSelecionadasParaRemessa[0].fantasia,
+    codCli: this.osSelecionadasParaRemessa[0].codcli ? String(this.osSelecionadasParaRemessa[0].codcli) : '',
+    quantidadeBoletos: this.formProcessaRemessa.value.quantidadeParcelas || '0',
+    valorTotalOs: this.totalOs.toFixed(2),               // Exibirá: 1210.00
+    valorTotalDespesaBancaria: this.totalDespesasBancarias.toFixed(2), // Exibirá: 82.62
+    valorTotalLiquido: valorLiquidoReal.toFixed(2)         // Exibirá: 1127.38
+  });
+}
+
+
+calcularJurosTotaisBordero(): number {
+  const form = this.formProcessaRemessa.value;
+  
+  if (!this.osSelecionadasParaRemessa || this.osSelecionadasParaRemessa.length === 0) return 0;
+  if (!form.dataFaturamento || !form.prazo || !form.taxaDeJuros) return 0;
+
+  // Limpa a taxa de juros (converte "2,50" ou "2.5" em número)
+  const taxaMensal = Number(String(form.taxaDeJuros).replace(/[^0-9.,]/g, '').replace(',', '.')) || 0;
+  if (taxaMensal <= 0) return 0;
+
+  const taxaDiaria = (taxaMensal / 100) / 30;
+  
+  // Data atual zerada em UTC para bater com as datas do somarDias
+  const hoje = new Date();
+  const hojeUtc = Date.UTC(hoje.getFullYear(), hoje.getMonth(), hoje.getDate());
+
+  // CORREÇÃO DA DATA: Extrai a string de faturamento tratando se for objeto ou string
+  let dataFatStr = '';
+  if (typeof form.dataFaturamento === 'object' && form.dataFaturamento !== null) {
+    const dataObjeto = form.dataFaturamento as any;
+    const ano = dataObjeto.year;
+    const mes = String(dataObjeto.month).padStart(2, '0');
+    const dia = String(dataObjeto.day).padStart(2, '0');
+    dataFatStr = `${ano}-${mes}-${dia}`;
+  } else {
+    dataFatStr = String(form.dataFaturamento);
+  }
+
+  const arrayDiasDoPrazo = this.obterDiasDoPrazo(form.prazo);
+  const quantidadeParcelas = arrayDiasDoPrazo.length;
+
+  let jurosTotalAcumulado = 0;
+
+  this.osSelecionadasParaRemessa.forEach(item => {
+    const valorTotalOs = Number(item.totaliq || 0);
+    if (valorTotalOs <= 0) return;
+
+    const valorParcela = valorTotalOs / quantidadeParcelas;
+    const datasVencimento = this.somarDias(dataFatStr, arrayDiasDoPrazo);
+
+    datasVencimento.forEach(dataVencStr => {
+      if (!dataVencStr) return;
+      const [ano, mes, dia] = dataVencStr.split('-').map(Number);
+      const dataVencUtc = Date.UTC(ano, mes - 1, dia);
+
+      const diferencaMilissegundos = dataVencUtc - hojeUtc;
+      const diasAteVencer = Math.ceil(diferencaMilissegundos / (1000 * 60 * 60 * 24));
+
+      if (diasAteVencer > 0) {
+        const jurosDaParcela = valorParcela * taxaDiaria * diasAteVencer;
+        jurosTotalAcumulado += jurosDaParcela;
+      }
+    });
+  });
+
+  return jurosTotalAcumulado;
+}
+
+atualizaTabelaPagamentoPorBordero(dataFaturamentoStr: string) {
+  const form = this.formProcessaRemessa.value;
+  
+  const taxaMensal = Number(String(form.taxaDeJuros || '0').replace(/[^0-9.,]/g, '').replace(',', '.')) || 0;
+  const tarifaPorBoleto = Number(form.custoPorBoleto) || 0;
+  const qtdParcelas = form.quantidadeParcelas === 'A VISTA' ? 1 : parseInt(form.quantidadeParcelas || '1', 10);
+
+  const taxaDiaria = (taxaMensal / 100) / 30;
+  const hoje = new Date();
+  const hojeUtc = Date.UTC(hoje.getFullYear(), hoje.getMonth(), hoje.getDate());
+  const arrayDiasDoPrazo = this.obterDiasDoPrazo(form.prazo || '');
+
+  this.osSelecionadasParaRemessa = this.osSelecionadasParaRemessa.map(item => {
+    const valorTotalOs = Number(item.totaliq || 0);
+    const valorParcela = valorTotalOs / qtdParcelas;
+    const datasVencimento = this.somarDias(dataFaturamentoStr, arrayDiasDoPrazo);
+    
+    let jurosDaOs = 0;
+
+    // Calcula os juros pro rata desta OS específica
+    datasVencimento.forEach(dataVencStr => {
+      if (!dataVencStr) return;
+      const [ano, mes, dia] = dataVencStr.split('-').map(Number);
+      const dataVencUtc = Date.UTC(ano, mes - 1, dia);
+      const diasAteVencer = Math.ceil((dataVencUtc - hojeUtc) / (1000 * 60 * 60 * 24));
+      
+      if (diasAteVencer > 0) {
+        jurosDaOs += valorParcela * taxaDiaria * diasAteVencer;
+      }
+    });
+
+    const custoTarifaOs = (tarifaPorBoleto * qtdParcelas) / this.osSelecionadasParaRemessa.length;
+    const despesasTotaisDestaOs = jurosDaOs + custoTarifaOs;
+
+    return {
+      ...item,
+      dataFaturamento: dataFaturamentoStr,
+      tipoPagamento: form.tipoPagamento || 'BORDERÔ',
+      codRemessa: item.codcli + "-" + dataFaturamentoStr,
+      valorJaPago: '0.00',
+      statusGeral: 'EM DIA',
+      
+      // AQUI ELE RECEBE OS JUROS INDIVIDUAIS DA OS:
+      jurosBordero: jurosDaOs.toFixed(2),
+      
+      iofDiario: '0.00',
+      tarifaBordero: custoTarifaOs.toFixed(2),
+      custoBancarioTotal: despesasTotaisDestaOs.toFixed(2),
+      valorLiquidoCreditado: (valorTotalOs - despesasTotaisDestaOs).toFixed(2)
+    };
+  });
+}
+
+
 
 }
 
