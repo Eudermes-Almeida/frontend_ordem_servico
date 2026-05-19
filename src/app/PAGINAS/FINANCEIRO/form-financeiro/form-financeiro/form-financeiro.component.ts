@@ -86,6 +86,13 @@ export class FormFinanceiroComponent {
     taxaDeJuros: new FormControl(''),
     taxaIof: new FormControl(''),
     custoPorBoleto: new FormControl('entrada'),
+    quantidadeBoletos: new FormControl(''),
+    valorTotalOs: new FormControl(''),
+    valorTotalDespesaBancaria: new FormControl(''),
+    valorTotalLiquido: new FormControl(''),
+    fantasia: new FormControl(''),
+    codCli: new FormControl(''),
+    
   });
 
   constructor(

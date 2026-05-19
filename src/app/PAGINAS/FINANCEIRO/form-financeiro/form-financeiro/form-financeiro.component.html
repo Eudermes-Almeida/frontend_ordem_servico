@@ -233,7 +233,7 @@
       <tr>
         <th>Os</th>
         <th>Nome</th>
-        <th>Código Interno Boleto</th>
+        <th>Codigo Remessa</th>
         <th>Valor</th>
         <th>Data Faturamento</th>
         <th>Tipo Pagamento</th>
@@ -328,29 +328,29 @@
 
       <!-- 3 - QUANTIDADE PARCELAS -->
       <div class="form-group mb-2" style="flex: 0 0 auto; min-width: 160px;" *ngIf="exibeOpcoesParcelamento">
-  <label class="form-label fw-bold small text-light d-block mb-1">Quantidade Parcelas</label>
-  <select formControlName="quantidadeParcelas" class="form-select" id="qtParcela" (change)="onQuantidadeParcelas($event)">
-    <option value="" disabled selected>Selecione...</option>
-    <option value="A VISTA">A VISTA</option>
-    <option value="1">1</option>
-    <option value="2">2</option>
-    <option value="3">3</option>
-  </select>
-</div>
+        <label class="form-label fw-bold small text-light d-block mb-1">Quantidade Parcelas</label>
+        <select formControlName="quantidadeParcelas" class="form-select" id="qtParcela"
+          (change)="onQuantidadeParcelas($event)">
+          <option value="" disabled selected>Selecione...</option>
+          <option value="A VISTA">A VISTA</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+        </select>
+      </div>
 
-<!-- 4 - PRAZO -->
-<div class="form-group mb-2" style="flex: 0 0 auto; min-width: 180px;" *ngIf="exibeOpcoesParcelamento">
-  <label class="form-label fw-bold small text-light d-block mb-1">Prazo</label>
-  <select formControlName="prazo" class="form-select" id="prazo" (change)="onPrazo($event)">
-    <option value="" disabled selected>Selecione...</option>
-    
-    <!-- Novo controle de fluxo do Angular 17 -->
-    @for (opcao of prazosDisponiveis; track opcao) {
-      <option [value]="opcao">{{ opcao }}</option>
-    }
-  </select>
-</div>
+      <!-- 4 - PRAZO -->
+      <div class="form-group mb-2" style="flex: 0 0 auto; min-width: 180px;" *ngIf="exibeOpcoesParcelamento">
+        <label class="form-label fw-bold small text-light d-block mb-1">Prazo</label>
+        <select formControlName="prazo" class="form-select" id="prazo" (change)="onPrazo($event)">
+          <option value="" disabled selected>Selecione...</option>
 
+          <!-- Novo controle de fluxo do Angular 17 -->
+          @for (opcao of prazosDisponiveis; track opcao) {
+          <option [value]="opcao">{{ opcao }}</option>
+          }
+        </select>
+      </div>
 
       <!-- 5 - TAXA DE JUROS -->
       <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 120px;" *ngIf="exibeOpcoesParcelamento">
@@ -380,11 +380,57 @@
         </button>
       </div>
 
-    </div>
 
-  </form>
+      <!-- ELEMENTO DE QUEBRA DE LINHA DO BOOTSTRAP -->
+      <div class="w-100 mt-2"></div>
+
+
+      <!-----------------TOTALIZADORES (NOVA LINHA CORRIGIDA)---------------->
+      <div class="d-flex flex-row flex-wrap align-items-end justify-content-around w-100">
+        
+  <!-- 9 - Nome Cliente (CORRIGIDO) -->
+  <div class="form-group mb-2" style="flex: 1 1 600px; max-width: 600px;" *ngIf="exibeOpcoesParcelamento">
+    <label for="fantasia" class="form-label fw-bold small text-light d-block mb-1">Nome Cliente</label>
+    <input formControlName="fantasia" type="text" id="fantasia" class="form-control w-100">
+  </div>
+
+  <!-- 10 - CÓDIGO DO CLIENTE -->
+  <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;" *ngIf="exibeOpcoesParcelamento">
+    <label for="quantidadeBoletos" class="form-label fw-bold small text-light d-block mb-1">Codigo Cliente</label>
+    <input formControlName="codCli" type="text" id="codCli" class="form-control w-100" placeholder="0">
+  </div>
+
+  <!-- 11 - QUANTIDADE BOLETOS -->
+  <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;" *ngIf="exibeOpcoesParcelamento">
+    <label for="quantidadeBoletos" class="form-label fw-bold small text-light d-block mb-1">Quantidade Boletos</label>
+    <input formControlName="quantidadeBoletos" type="text" id="quantidadeBoletos" class="form-control w-100" placeholder="0">
+  </div>
+
+  <!-- 12 - VALOR TOTAL OS -->
+  <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;" *ngIf="exibeOpcoesParcelamento">
+    <label for="valorTotalLiquido" class="form-label fw-bold small text-light d-block mb-1">Total OS</label>
+    <input formControlName="valorTotalLiquido" type="text" id="valorTotalLiquido" class="form-control w-100" placeholder="R$ 0,00">
+  </div>
+
+  <!-- 13 - TOTAL DESPESAS BANCÁRIAS -->
+  <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;" *ngIf="exibeOpcoesParcelamento">
+    <label for="valorTotalDespesaBancaria" class="form-label fw-bold small text-light d-block mb-1">Despesas Bancarias</label>
+    <input formControlName="valorTotalDespesaBancaria" type="text" id="valorTotalDespesaBancaria" class="form-control w-100" placeholder="R$ 0,00">
+  </div>
+
+  <!-- 14  - TOTAL LIQUIDO -->
+  <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;" *ngIf="exibeOpcoesParcelamento">
+    <label for="valorTotalLiquido" class="form-label fw-bold small text-light d-block mb-1">Total Liquido</label>
+    <input formControlName="valorTotalLiquido" type="text" id="valorTotalLiquido" class="form-control w-100" placeholder="R$ 0,00">
+  </div>
 
 </div>
+
+
+    </div>
+  </form>
+</div>
+
 
 
 <!----------------------------------TABELA GERAR REMESSA ---------------------->
@@ -396,7 +442,7 @@
     <thead>
       <tr>
         <th>Os</th>
-        <th>Código Interno Boleto</th>
+        <th>Codigo Remessa</th>
         <th>Valor</th>
         <th>Data Faturamento</th>
         <th>Tipo Pagamento</th>
