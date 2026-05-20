@@ -134,7 +134,6 @@ export class FormFinanceiroComponent {
       this.servico?.getClientesPorNomeFantasia(nomefantasia).subscribe(
         (dados: Cliente[]) => {
           this.objetocliente = dados; // Armazena os clientes retornados
-          console.log('Clientes encontrados:', this.objetocliente);
           this.exibirTabela = true;
         },
         (erro) => {
@@ -152,7 +151,6 @@ export class FormFinanceiroComponent {
     this.servico.getClientePorId(id).subscribe(
       (data: Cliente) => {
         this.objetocliente = [data]; // Coloca o cliente dentro de um array
-        console.log('Cliente obtido:', this.objetocliente);
         this.exibirTabela = true;
       },
       (error) => {
