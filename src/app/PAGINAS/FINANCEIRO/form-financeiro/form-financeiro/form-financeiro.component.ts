@@ -1,3 +1,4 @@
+import { Despesa } from './../../../../modelo/Despesa';
 import { FinanceiroService } from './../../../../servico/financeiro.service';
 import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
 import { Cliente } from '../../../../modelo/Cliente';
@@ -67,6 +68,7 @@ export class FormFinanceiroComponent {
   tabelaBordero: boolean = false;
   exibirFormularioBordero: boolean = false;
   exibirTabelaBordero: boolean = false;
+  exibirTabelaGeral: boolean = false;
 
   // CONFIGURA FORMULÁRIO
   formulario = new FormGroup({
@@ -283,6 +285,9 @@ export class FormFinanceiroComponent {
 
   // Busca ORDENS DE SERVIÇO PELO CODIGO DO CLIENTE
   getOsPorCodCli(codcli: number): void {
+  
+    this.exibirTabelaGeral = true;
+
     this.modeloFinanceiro = [];
     this.spinnerLoading = true;
 
@@ -341,6 +346,9 @@ export class FormFinanceiroComponent {
   }
 
   gerenciaAbuscaOsPorIdOuUltimasOs(): void {
+
+    this.exibirTabelaGeral = true;
+
     this.modeloFinanceiro = [];
     const numOsValue = this.formulario.get('numOs')?.value;
     const ultimasOsValue = this.formulario.get('ultimasOs')?.value;
@@ -453,6 +461,8 @@ export class FormFinanceiroComponent {
 
   onBuscarFiltros(): void {
 
+    this.exibirTabelaGeral = true;
+
     this.modeloFinanceiro = [];
     // 1. Captura o status e o tipo de data direto do FormGroup
     const statusSelecionado = this.formulario.get('statusFinanceiro')?.value || 'TODOS';
@@ -539,10 +549,22 @@ export class FormFinanceiroComponent {
   /////////////////////////////////////////////////////////////////////////////////////////////////////
 
   gerarRemessa() {
+    this.exibirTabelaGeral = false;
     this.exibirTabelaRemessa = true;
     this.formProcessaRemessa.patchValue({ taxaDeJuros: "2.98" })
     this.formProcessaRemessa.patchValue({ taxaIof: "0.38" })
     this.formProcessaRemessa.patchValue({ custoPorBoleto: "3.50" })
+    this.formProcessaRemessa.patchValue({ dataFaturamento: "" })
+    this.formProcessaRemessa.patchValue({ tipoPagamento: "" })
+    this.formProcessaRemessa.patchValue({ quantidadeParcelas: "" })
+    this.formProcessaRemessa.patchValue({ prazo: "" })
+    this.formProcessaRemessa.patchValue({ fantasia: "" })
+    this.formProcessaRemessa.patchValue({ codCli: "" })
+    this.formProcessaRemessa.patchValue({ quantidadeBoletos: "" })
+    this.formProcessaRemessa.patchValue({ valorCadaBoleto: "" })
+    this.formProcessaRemessa.patchValue({ valorTotalOs: "" })
+    this.formProcessaRemessa.patchValue({ valorTotalDespesaBancaria: "" })
+    this.formProcessaRemessa.patchValue({ valorTotalLiquido: "" })
   }
 
   // Função para converter o objeto em string
@@ -1130,6 +1152,7 @@ export class FormFinanceiroComponent {
   buscaPendentesBordero(): void {
     this.exibirFormularioBordero = true;
     this.exibirTabelaBordero = true;
+    this.exibirTabelaGeral = false;
 
 
 
@@ -1138,23 +1161,21 @@ export class FormFinanceiroComponent {
         // Se o backend retornar 204 No Content, o Angular pode entregar o corpo vazio ou null
         if (!data || data.length === 0) {
           console.log('Nenhum registro pendente de borderô encontrado.');
-          this.modeloFinanceiro = [];
+          this.borderoPendentes = [];
           alert('Nenhum registro financeiro pendente de borderô foi encontrado.');
           this.exibirTabela2 = false; // Oculta a tabela se estiver vazia
           return;
         }
 
         this.borderoPendentes = data;
-        this.exibirTabela2 = false; // Exibe a tabela com os dados
-        this.tabelaBordero = true;
         this.populaInicialmenteTotalizadores();
         this.populaTotalizadoresGerarBordero();
       },
       (error) => {
         if (error.status === 204) {
           alert('Nenhum registro financeiro pendente de borderô foi encontrado.');
-          this.modeloFinanceiro = [];
-          this.exibirTabela2 = false;
+          //this.modeloFinanceiro = [];
+          //this.exibirTabela2 = false;
         } else {
           console.error('Erro ao buscar financeiros pendentes de borderô:', error);
           alert('Erro interno ao carregar os dados de borderô. Tente novamente mais tarde.');
@@ -1276,7 +1297,13 @@ export class FormFinanceiroComponent {
 
   }
 
-
+voltar(){
+  this.exibirFormularioBordero = false;
+  this.exibirTabelaBordero = false;
+  this.exibirTabelaRemessa = false;
+  this.exibirTabela2 = true;
+  this.exibirTabelaGeral = true;
+}
 
 
 }

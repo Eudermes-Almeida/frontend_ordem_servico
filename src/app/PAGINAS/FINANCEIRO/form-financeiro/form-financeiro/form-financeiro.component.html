@@ -226,6 +226,11 @@
        (click)="limpar()">
       Limpar
     </button>
+
+    <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top"
+       (click)="voltar()">
+      Voltar
+    </button>
 </div>
 
 
@@ -233,7 +238,7 @@
 
 
 <!----------------------TABELA COM AS ORDENS DE SERVIÇO------------------------------------------------------>
-<div *ngIf="!exibirTabelaRemessa">
+<div *ngIf="exibirTabelaGeral">
   <p class="text-secondary" *ngIf="exibirTabela2">Quantidade de ordem de serviço: {{modeloFinanceiro.length}} </p>
   <table class="table table-dark table-hover" *ngIf="exibirTabela2">
     <thead>
