@@ -892,32 +892,36 @@ atualizaTotalizadores() {
 
   if (!this.osSelecionadasParaRemessa || this.osSelecionadasParaRemessa.length === 0) {
     this.formProcessaRemessa.patchValue({
-      fantasia: '', codCli: '', quantidadeBoletos: '0',
-      valorTotalOs: '0.00', valorTotalDespesaBancaria: '0.00', valorTotalLiquido: '0.00'
+      fantasia: '', 
+      codCli: '', 
+      quantidadeBoletos: '0',
+      valorTotalOs: '0.00', 
+      valorTotalDespesaBancaria: '0.00', 
+      valorTotalLiquido: '0.00'
     });
     return;
   }
 
-  // 1. Soma os valores brutos normais acumulados de cada OS
+  // 1. Soma os valores acumulados. O 'custoBancarioTotal' agora engloba: Tarifa + Juros + IOF de cada OS
   this.osSelecionadasParaRemessa.forEach(item => {
     this.totalOs += Number(item.totaliq || 0);
-    // IMPORTANTE: custoBancarioTotal já possui Tarifa + Juros inclusos de cada OS
     this.totalDespesasBancarias += Number(item.custoBancarioTotal || 0);
   });
 
-  // CORREÇÃO: O valor líquido é apenas o Bruto menos o Custo Bancário Acumulado
+  // 2. DEDUÇÃO AUTOMÁTICA: O valor líquido desconta o montante total de despesas calculadas
   const valorLiquidoReal = this.totalOs - this.totalDespesasBancarias;
 
-  // 3. Atualiza os inputs do formulário com os valores idênticos aos da planilha
+  // 3. Atualiza os inputs do formulário reativo refletindo os totais na tela
   this.formProcessaRemessa.patchValue({
     fantasia: this.osSelecionadasParaRemessa[0].fantasia,
     codCli: this.osSelecionadasParaRemessa[0].codcli ? String(this.osSelecionadasParaRemessa[0].codcli) : '',
     quantidadeBoletos: this.formProcessaRemessa.value.quantidadeParcelas || '0',
-    valorTotalOs: this.totalOs.toFixed(2),               // Exibirá: 1210.00
-    valorTotalDespesaBancaria: this.totalDespesasBancarias.toFixed(2), // Exibirá: 82.62
-    valorTotalLiquido: valorLiquidoReal.toFixed(2)         // Exibirá: 1127.38
+    valorTotalOs: this.totalOs.toFixed(2),               
+    valorTotalDespesaBancaria: this.totalDespesasBancarias.toFixed(2), // Exibirá o somatório de Tarifas + Juros + IOF do lote
+    valorTotalLiquido: valorLiquidoReal.toFixed(2)         
   });
 }
+
 
 
 calcularJurosTotaisBordero(): number {
@@ -982,10 +986,13 @@ atualizaTabelaPagamentoPorBordero(dataFaturamentoStr: string) {
   const form = this.formProcessaRemessa.value;
   
   const taxaMensal = Number(String(form.taxaDeJuros || '0').replace(/[^0-9.,]/g, '').replace(',', '.')) || 0;
+  const taxaIofMensal = Number(String(form.taxaIof || '0').replace(/[^0-9.,]/g, '').replace(',', '.')) || 0;
   const tarifaPorBoleto = Number(form.custoPorBoleto) || 0;
   const qtdParcelas = form.quantidadeParcelas === 'A VISTA' ? 1 : parseInt(form.quantidadeParcelas || '1', 10);
 
   const taxaDiaria = (taxaMensal / 100) / 30;
+  const taxaIofDiaria = (taxaIofMensal / 100) / 30;
+  
   const hoje = new Date();
   const hojeUtc = Date.UTC(hoje.getFullYear(), hoje.getMonth(), hoje.getDate());
   const arrayDiasDoPrazo = this.obterDiasDoPrazo(form.prazo || '');
@@ -996,8 +1003,9 @@ atualizaTabelaPagamentoPorBordero(dataFaturamentoStr: string) {
     const datasVencimento = this.somarDias(dataFaturamentoStr, arrayDiasDoPrazo);
     
     let jurosDaOs = 0;
+    let iofDaOs = 0;
 
-    // Calcula os juros pro rata desta OS específica
+    // Calcula os juros e o IOF pro rata desta OS específica
     datasVencimento.forEach(dataVencStr => {
       if (!dataVencStr) return;
       const [ano, mes, dia] = dataVencStr.split('-').map(Number);
@@ -1006,11 +1014,14 @@ atualizaTabelaPagamentoPorBordero(dataFaturamentoStr: string) {
       
       if (diasAteVencer > 0) {
         jurosDaOs += valorParcela * taxaDiaria * diasAteVencer;
+        iofDaOs += valorParcela * taxaIofDiaria * diasAteVencer;
       }
     });
 
     const custoTarifaOs = (tarifaPorBoleto * qtdParcelas) / this.osSelecionadasParaRemessa.length;
-    const despesasTotaisDestaOs = jurosDaOs + custoTarifaOs;
+    
+    // O Custo bancário total agora engloba Juros + Tarifa + IOF
+    const despesasTotaisDestaOs = jurosDaOs + custoTarifaOs + iofDaOs;
 
     return {
       ...item,
@@ -1020,16 +1031,69 @@ atualizaTabelaPagamentoPorBordero(dataFaturamentoStr: string) {
       valorJaPago: '0.00',
       statusGeral: 'EM DIA',
       
-      // AQUI ELE RECEBE OS JUROS INDIVIDUAIS DA OS:
       jurosBordero: jurosDaOs.toFixed(2),
-      
-      iofDiario: '0.00',
+      iofDiario: iofDaOs.toFixed(2), // Mapeia o IOF individual da OS
       tarifaBordero: custoTarifaOs.toFixed(2),
+      
       custoBancarioTotal: despesasTotaisDestaOs.toFixed(2),
       valorLiquidoCreditado: (valorTotalOs - despesasTotaisDestaOs).toFixed(2)
     };
   });
 }
+
+
+calcularIofTotaisBordero(): number {
+  const form = this.formProcessaRemessa.value;
+  
+  if (!this.osSelecionadasParaRemessa || this.osSelecionadasParaRemessa.length === 0) return 0;
+  if (!form.dataFaturamento || !form.prazo || !form.taxaIof) return 0;
+
+  // Limpa a taxa de IOF (converte "0,38" ou "0.38" em número)
+  const taxaIofMensal = Number(String(form.taxaIof).replace(/[^0-9.,]/g, '').replace(',', '.')) || 0;
+  if (taxaIofMensal <= 0) return 0;
+
+  const taxaIofDiaria = (taxaIofMensal / 100) / 30;
+  
+  const hoje = new Date();
+  const hojeUtc = Date.UTC(hoje.getFullYear(), hoje.getMonth(), hoje.getDate());
+
+  let dataFatStr = '';
+  if (typeof form.dataFaturamento === 'object' && form.dataFaturamento !== null) {
+    const dataObjeto = form.dataFaturamento as any;
+    dataFatStr = `${dataObjeto.year}-${String(dataObjeto.month).padStart(2, '0')}-${String(dataObjeto.day).padStart(2, '0')}`;
+  } else {
+    dataFatStr = String(form.dataFaturamento);
+  }
+
+  const arrayDiasDoPrazo = this.obterDiasDoPrazo(form.prazo);
+  const quantidadeParcelas = arrayDiasDoPrazo.length;
+
+  let iofTotalAcumulado = 0;
+
+  this.osSelecionadasParaRemessa.forEach(item => {
+    const valorTotalOs = Number(item.totaliq || 0);
+    if (valorTotalOs <= 0) return;
+
+    const valorParcela = valorTotalOs / quantidadeParcelas;
+    const datasVencimento = this.somarDias(dataFatStr, arrayDiasDoPrazo);
+
+    datasVencimento.forEach(dataVencStr => {
+      if (!dataVencStr) return;
+      const [ano, mes, dia] = dataVencStr.split('-').map(Number);
+      const dataVencUtc = Date.UTC(ano, mes - 1, dia);
+
+      const diasAteVencer = Math.ceil((dataVencUtc - hojeUtc) / (1000 * 60 * 60 * 24));
+
+      if (diasAteVencer > 0) {
+        const iofDaParcela = valorParcela * taxaIofDiaria * diasAteVencer;
+        iofTotalAcumulado += iofDaParcela;
+      }
+    });
+  });
+
+  return iofTotalAcumulado;
+}
+
 
 
 
