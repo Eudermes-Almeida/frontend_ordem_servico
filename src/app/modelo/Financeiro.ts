@@ -32,3 +32,5 @@ export class Financeiro {
     custoBancarioTotal: string;
     valorLiquidoCreditado: string;
 }
+
+    

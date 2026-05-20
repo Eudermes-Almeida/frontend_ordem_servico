@@ -1206,13 +1206,34 @@ export class FormFinanceiroComponent {
       elemento.taxaBordero = taxaUnicaBorderoPorOS.toFixed(2);
     });
 
+    //////SOMA JUROS, TAXA BORDERO, IOF E CUSTO BOLETO E COLOCA EM CUSTO BANCARIO TOTAL
+    this.borderoPendentes.forEach(elemento => {
+  // Converte cada string para número de forma segura (se for nula ou vazia, assume 0)
+  const juros = elemento.jurosBordero ? parseFloat(elemento.jurosBordero) : 0;
+  const taxa = elemento.taxaBordero ? parseFloat(elemento.taxaBordero) : 0;
+  const iof = elemento.iofDiario ? parseFloat(elemento.iofDiario) : 0;
+  const tarifa = elemento.tarifaBordero ? parseFloat(elemento.tarifaBordero) : 0;
+
+  // Soma todas as taxas do elemento atual
+  const somaCustoTotal = juros + taxa + iof + tarifa;
+
+  // Guarda a soma formatada como string com duas casas decimais
+  elemento.custoBancarioTotal = somaCustoTotal.toFixed(2);
+
+
+  const valorDespesasTotalBancaria = this.borderoPendentes.reduce((acc, el) => {
+    const custo = el.custoBancarioTotal ? parseFloat(el.custoBancarioTotal) : 0;
+    return acc + custo
+
+  },0)
+
+
+  this.formProcessaBordero.patchValue({ totalDespesasBancarias: String(valorDespesasTotalBancaria) });
+});
+
 
 
   }
-
-
-
-
 
 }
 
