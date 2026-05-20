@@ -1193,16 +1193,20 @@ export class FormFinanceiroComponent {
 
 
     /////QUANTIDADE BOLETOS////////////////
-const valorTotaCustoBoleto = this.borderoPendentes.reduce((acc, elemento) => {
-
+    const valorTotaCustoBoleto = this.borderoPendentes.reduce((acc, elemento) => {
       const valorElemento = elemento.tarifaBordero ? parseFloat(elemento.tarifaBordero) : 0;
       return acc + valorElemento;
     }, 0);
-    
-    console.log("Este é o total do custo  com boleto ", valorTotaCustoBoleto)
-
-   const quantidadeBoletos = valorTotaCustoBoleto / Number(this.formProcessaBordero.value.custoPorBoleto)
+    const quantidadeBoletos = valorTotaCustoBoleto / Number(this.formProcessaBordero.value.custoPorBoleto)
     this.formProcessaBordero.patchValue({ qtBoletos: String(quantidadeBoletos) });
+
+    //////// VALOR DA TAXA UNICA BORDERÔ POR BOLETO/////////
+    const taxaUnicaBorderoPorOS = Number(this.formProcessaBordero.value.taxaUnicaBordero) / this.borderoPendentes.length;
+    this.borderoPendentes.forEach(elemento => {
+      elemento.taxaBordero = taxaUnicaBorderoPorOS.toFixed(2);
+    });
+
+
 
   }
 
