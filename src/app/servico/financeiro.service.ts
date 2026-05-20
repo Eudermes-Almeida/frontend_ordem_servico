@@ -77,6 +77,11 @@ verificarEAtualizarAtrasos(): Observable<Financeiro[] | string> {
   return this.http.put<Financeiro[] | string>(url, null);
 }
 
+getPendentesBordero(): Observable<Financeiro[]> {
+  const url = `${this.urlServidor}financeiro/pendentes-bordero`;
+  return this.http.get<Financeiro[]>(url);
+}
+
 
 
   

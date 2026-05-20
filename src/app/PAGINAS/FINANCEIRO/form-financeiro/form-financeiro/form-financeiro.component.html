@@ -217,15 +217,12 @@
     <!-- Adicionados os atributos para o Tooltip na parte superior -->
     <!-- Alternativa caso use Ng-Bootstrap pura (Sem precisar mexer no TS) -->
     <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top"
-      data-bs-title="Gera um borderô com as remessas (boletos) criados" (click)="onBuscarFiltros()">
+      data-bs-title="Gera um borderô com as remessas (boletos) criados" (click)="buscaPendentesBordero()">
       Gerar Borderô
     </button>
   </div>
 
 </div>
-
-
-
 
 
 <!----------------------TABELA COM AS ORDENS DE SERVIÇO------------------------------------------------------>
@@ -412,7 +409,8 @@
 
         <!-- 10 - VALOR CADA BOLETO -->
         <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;">
-          <label for="valorCadaBoleto" class="form-label fw-bold small text-light d-block mb-1">Valor Cada Boleto</label>
+          <label for="valorCadaBoleto" class="form-label fw-bold small text-light d-block mb-1">Valor Cada
+            Boleto</label>
           <input formControlName="valorCadaBoleto" type="text" id="valorCadaBoleto" class="form-control w-100"
             placeholder="R$ 0,00">
         </div>
@@ -502,6 +500,146 @@
         <td>{{remessa.tarifaBordero}}</td>
         <td>{{remessa.custoBancarioTotal}}</td>
         <td>{{remessa.valorLiquidoCreditado}}</td>
+
+    </tbody>
+  </table>
+  <p>.</p>
+  <p>.</p>
+</div>
+
+
+
+    
+  
+    
+  
+  
+    
+
+
+
+<!-------FORMULÁRIO GERAR BORDERO-->
+
+ <form [formGroup]="formProcessaBordero" id="formProcessaBordero">
+<div class="d-flex flex-row flex-wrap align-items-end justify-content-around w-100">
+ 
+<!--CODIGO BORDERO-->
+<div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;">
+  <label for="codBordero" class="form-label fw-bold small text-light d-block mb-1">CÓDIGO BORDERÔ</label>
+  <input formControlName="codBordero" type="text" id="codBordero" class="form-control w-100"
+    placeholder="R$ 0,00">
+</div>
+
+<!--QUANTIDADE OS-->
+<div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;">
+  <label for="qtOs" class="form-label fw-bold small text-light d-block mb-1">QUANTIDADE OS</label>
+  <input formControlName="qtOs" type="text" id="qtOs" class="form-control w-100"
+    placeholder="R$ 0,00">
+</div>
+
+<!--VALOR TOTAL OS-->
+<div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;">
+  <label for="valorTotalOs" class="form-label fw-bold small text-light d-block mb-1">VALOR TOTAL OS</label>
+  <input formControlName="valorTotalOs" type="text" id="valorTotalOs" class="form-control w-100"
+    placeholder="R$ 0,00">
+</div>
+
+
+<!--QUANTIDADE CLIENTES-->
+<div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;">
+  <label for="qtClientes" class="form-label fw-bold small text-light d-block mb-1">QT CLIENTES</label>
+  <input formControlName="qtClientes" type="text" id="qtClientes" class="form-control w-100"
+    placeholder="R$ 0,00">
+</div>
+
+<!--QUANTIDADE BOLETOS-->
+<div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;">
+  <label for="qtBoletos" class="form-label fw-bold small text-light d-block mb-1">QT BOLETOS</label>
+  <input formControlName="qtBoletos" type="text" id="qtBoletos" class="form-control w-100"
+    placeholder="R$ 0,00">
+</div>
+
+<!--CUSTO POR BOLETO-->
+<div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;">
+  <label for="custoPorBoleto" class="form-label fw-bold small text-light d-block mb-1">CUSTO POR BOLETO</label>
+  <input formControlName="custoPorBoleto" type="text" id="custoPorBoleto" class="form-control w-100"
+    placeholder="R$ 0,00">
+</div>
+
+<!--TAXA UNICA BORDERO-->
+<div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;">
+  <label for="taxaUnicaBordero" class="form-label fw-bold small text-light d-block mb-1">TX UNICA BORDERÔ</label>
+  <input formControlName="taxaUnicaBordero" type="text" id="taxaUnicaBordero" class="form-control w-100"
+    placeholder="R$ 0,00">
+</div>
+
+
+<!--TOTAL DESPESAS BANCÁRIAS-->
+<div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;">
+  <label for="totalDespesasBancarias" class="form-label fw-bold small text-light d-block mb-1">CUSTO BANCÁRIO</label>
+  <input formControlName="totalDespesasBancarias" type="text" id="totalDespesasBancarias" class="form-control w-100"
+    placeholder="R$ 0,00">
+</div>
+
+
+<!--VALOR LIQUIDO CREDITADO-->
+<div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;">
+  <label for="valorLiquidoCreditado" class="form-label fw-bold small text-light d-block mb-1">LIQUIDO CREDITADO</label>
+  <input formControlName="valorLiquidoCreditado" type="text" id="valorLiquidoCreditado" class="form-control w-100"
+    placeholder="R$ 0,00">
+</div>
+
+</div>
+</form>
+
+<!-------------TABELA GERAR BORDERO-->
+<P>.</P>
+<P>.</P>
+<div>
+  <table class="table table-dark table-hover">
+    <thead>
+      <tr>
+        <th>Os</th>
+        <th>Nome</th>
+        <th>Codigo Remessa</th>
+        <th>Valor</th>
+        <th>Data Faturamento</th>
+        <th>Tipo Pagamento</th>
+        <th>Vencimento 1</th>
+        <th>Parcela 1</th>
+        <th>Vencimento 2</th>
+        <th>Parcela 2</th>
+        <th>Vencimento 3</th>
+        <th>Parcela 3</th>
+        <th>Juros</th>
+        <th>Iof</th>
+        <th>Boleto</th>
+        <th>Taxa Bordero</th>
+        <th>Total Bancário</th>
+        <th>Valor Liquido</th>
+
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let bordero of borderoPendentes">
+        <td>{{bordero.os}}</td>
+        <td>{{bordero.fantasia}}</td>
+        <td>{{bordero.codRemessa}}</td>
+        <td>{{bordero.totaliq}}</td>
+        <td>{{bordero.dataFaturamento}}</td>
+        <td>{{bordero.tipoPagamento}}</td>
+        <td>{{bordero.vencimento1}}</td>
+        <td>{{bordero.valorParcela1}}</td>
+        <td>{{bordero.vencimento2}}</td>
+        <td>{{bordero.valorParcela2}}</td>
+        <td>{{bordero.vencimento3}}</td>
+        <td>{{bordero.valorParcela3}}</td>
+        <td>{{bordero.jurosBordero}}</td>
+        <td>{{bordero.iofDiario}}</td>
+        <td>{{bordero.tarifaBordero}}</td>
+        <td>{{bordero.taxaBordero}}</td>
+        <td>{{bordero.custoBancarioTotal}}</td>
+        <td>{{bordero.valorLiquidoCreditado}}</td>
 
     </tbody>
   </table>

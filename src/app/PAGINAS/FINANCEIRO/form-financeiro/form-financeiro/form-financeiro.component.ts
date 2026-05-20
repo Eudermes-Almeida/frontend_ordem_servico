@@ -13,6 +13,7 @@ import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { Financeiro } from '../../../../modelo/Financeiro';
+import { Observable } from 'rxjs';
 
 declare var bootstrap: any;
 
@@ -41,6 +42,7 @@ export class FormFinanceiroComponent {
   statusFinanceiro: string = "";
   private isClickEvent: boolean = false;
   modeloFinanceiro: Financeiro[] = [];
+  borderoPendentes: Financeiro[] = [];
   osSelecionadasParaRemessa: Financeiro[] = []
   opcaoTipoPagamento: string = "";
   opcaoQuantidadeParcela: string = "";
@@ -62,6 +64,7 @@ export class FormFinanceiroComponent {
   exibirBtnGerarRemessa: boolean = false
   exibirTabelaRemessa: boolean = false;
   exibeOpcoesParcelamento: boolean = true;
+  tabelaBordero: boolean = false;
 
   // CONFIGURA FORMULÁRIO
   formulario = new FormGroup({
@@ -93,7 +96,19 @@ export class FormFinanceiroComponent {
     fantasia: new FormControl(''),
     codCli: new FormControl(''),
     valorCadaBoleto: new FormControl(''),
+  });
 
+  // CONFIGURA FORMULÁRIO
+  formProcessaBordero = new FormGroup({
+    codBordero: new FormControl(''),
+    qtOs: new FormControl(''),
+    valorTotalOs: new FormControl(''),
+    qtClientes: new FormControl(''),
+    qtBoletos: new FormControl(''),
+    taxaUnicaBordero: new FormControl(''),
+    totalDespesasBancarias: new FormControl(''),
+    valorLiquidoCreditado: new FormControl(''),
+    custoPorBoleto: new FormControl(''),
   });
 
   constructor(
@@ -520,6 +535,10 @@ export class FormFinanceiroComponent {
   }
 
 
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////GERANDO REMESSAS/////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////////////
+
   gerarRemessa() {
     this.exibirTabelaRemessa = true;
     this.formProcessaRemessa.patchValue({ taxaDeJuros: "2.98" })
@@ -595,15 +614,15 @@ export class FormFinanceiroComponent {
   }
 
   pagamentoPorBoleto() {
-  this.atualizarDadosDasOrdensSelecionadas('BOLETO');
-  this.persisteRemessa();
-}
+    this.atualizarDadosDasOrdensSelecionadas('BOLETO');
+    this.persisteRemessa();
+  }
 
- pagamentoPorBordero() {
-  // Passamos um parâmetro para avisar que o fluxo atual é BORDERO
-  this.atualizarDadosDasOrdensSelecionadas('BORDERO');
-  this.persisteRemessa();
-}
+  pagamentoPorBordero() {
+    // Passamos um parâmetro para avisar que o fluxo atual é BORDERO
+    this.atualizarDadosDasOrdensSelecionadas('BORDERO');
+    this.persisteRemessa();
+  }
 
   carteira() {
     console.log("Forma de pagamento Escolhido: Carteira")
@@ -766,72 +785,72 @@ export class FormFinanceiroComponent {
   }
 
   // Adicionado o parâmetro tipoFluxo
-atualizarDadosDasOrdensSelecionadas(tipoFluxo: 'BOLETO' | 'BORDERO' = 'BOLETO') {
-  const formValues = this.formProcessaRemessa.value;
-  const rawDataFat = formValues.dataFaturamento;
-  const qtdParcelasStr = formValues.quantidadeParcelas;
-  const prazoSelecionado = formValues.prazo || '';
-  const tipoPagto = formValues.tipoPagamento || '';
+  atualizarDadosDasOrdensSelecionadas(tipoFluxo: 'BOLETO' | 'BORDERO' = 'BOLETO') {
+    const formValues = this.formProcessaRemessa.value;
+    const rawDataFat = formValues.dataFaturamento;
+    const qtdParcelasStr = formValues.quantidadeParcelas;
+    const prazoSelecionado = formValues.prazo || '';
+    const tipoPagto = formValues.tipoPagamento || '';
 
-  if (!rawDataFat) {
-    console.warn('Data de faturamento não foi selecionada.');
-    return;
+    if (!rawDataFat) {
+      console.warn('Data de faturamento não foi selecionada.');
+      return;
+    }
+
+    let dataFat = '';
+    if (typeof rawDataFat === 'object') {
+      const dataObjeto = rawDataFat as unknown as NgbDateStruct;
+      const ano = dataObjeto.year;
+      const mes = String(dataObjeto.month).padStart(2, '0');
+      const dia = String(dataObjeto.day).padStart(2, '0');
+      dataFat = `${ano}-${mes}-${dia}`;
+    } else if (typeof rawDataFat === 'string') {
+      dataFat = rawDataFat;
+    }
+
+    const qtdParcelas = qtdParcelasStr === 'A VISTA' ? 1 : parseInt(qtdParcelasStr || '1', 10);
+    const listaDias = this.obterDiasDoPrazo(prazoSelecionado);
+
+    this.osSelecionadasParaRemessa = this.osSelecionadasParaRemessa.map(item => {
+      const totalLiquido = parseFloat(item.totaliq) || 0;
+      const valorCadaParcela = (totalLiquido / qtdParcelas).toFixed(2);
+      const datasVencimento = this.somarDias(dataFat, listaDias);
+
+      let venc1: string | null = null, val1 = '0.00', status1 = '';
+      let venc2: string | null = null, val2 = '0.00', status2 = '';
+      let venc3: string | null = null, val3 = '0.00', status3 = '';
+
+      if (qtdParcelas >= 1) { venc1 = datasVencimento[0] || null; val1 = valorCadaParcela; status1 = 'EM DIA'; }
+      if (qtdParcelas >= 2) { venc2 = datasVencimento[1] || null; val2 = valorCadaParcela; status2 = 'EM DIA'; }
+      if (qtdParcelas === 3) { venc3 = datasVencimento[2] || null; val3 = valorCadaParcela; status3 = 'EM DIA'; }
+
+      return {
+        ...item,
+        dataFaturamento: dataFat,
+        tipoPagamento: tipoPagto,
+        qtParcela: qtdParcelasStr || '',
+        prazo: prazoSelecionado,
+        vencimento1: venc1, valorParcela1: val1, statusParcela1: status1,
+        vencimento2: venc2, valorParcela2: val2, statusParcela2: status2,
+        vencimento3: venc3, valorParcela3: val3, statusParcela3: status3
+      };
+    });
+
+    // CORREÇÃO DO DESVIO DE FLUXO:
+    if (tipoFluxo === 'BORDERO') {
+      this.atualizaTabelaPagamentoPorBordero(dataFat);
+    } else {
+      this.atualizaTabelaPagamentoPorBoleto();
+    }
+
+    this.atualizaTotalizadores();
+    this.cdr.markForCheck();
   }
-
-  let dataFat = '';
-  if (typeof rawDataFat === 'object') {
-    const dataObjeto = rawDataFat as unknown as NgbDateStruct;
-    const ano = dataObjeto.year;
-    const mes = String(dataObjeto.month).padStart(2, '0');
-    const dia = String(dataObjeto.day).padStart(2, '0');
-    dataFat = `${ano}-${mes}-${dia}`;
-  } else if (typeof rawDataFat === 'string') {
-    dataFat = rawDataFat;
-  }
-
-  const qtdParcelas = qtdParcelasStr === 'A VISTA' ? 1 : parseInt(qtdParcelasStr || '1', 10);
-  const listaDias = this.obterDiasDoPrazo(prazoSelecionado);
-
-  this.osSelecionadasParaRemessa = this.osSelecionadasParaRemessa.map(item => {
-    const totalLiquido = parseFloat(item.totaliq) || 0;
-    const valorCadaParcela = (totalLiquido / qtdParcelas).toFixed(2);
-    const datasVencimento = this.somarDias(dataFat, listaDias);
-
-    let venc1: string | null = null, val1 = '0.00', status1 = '';
-    let venc2: string | null = null, val2 = '0.00', status2 = '';
-    let venc3: string | null = null, val3 = '0.00', status3 = '';
-
-    if (qtdParcelas >= 1) { venc1 = datasVencimento[0] || null; val1 = valorCadaParcela; status1 = 'EM DIA'; }
-    if (qtdParcelas >= 2) { venc2 = datasVencimento[1] || null; val2 = valorCadaParcela; status2 = 'EM DIA'; }
-    if (qtdParcelas === 3) { venc3 = datasVencimento[2] || null; val3 = valorCadaParcela; status3 = 'EM DIA'; }
-
-    return {
-      ...item,
-      dataFaturamento: dataFat,
-      tipoPagamento: tipoPagto,
-      qtParcela: qtdParcelasStr || '',
-      prazo: prazoSelecionado,
-      vencimento1: venc1, valorParcela1: val1, statusParcela1: status1,
-      vencimento2: venc2, valorParcela2: val2, statusParcela2: status2,
-      vencimento3: venc3, valorParcela3: val3, statusParcela3: status3
-    };
-  });
-
-  // CORREÇÃO DO DESVIO DE FLUXO:
-  if (tipoFluxo === 'BORDERO') {
-    this.atualizaTabelaPagamentoPorBordero(dataFat);
-  } else {
-    this.atualizaTabelaPagamentoPorBoleto();
-  }
-
-  this.atualizaTotalizadores();
-  this.cdr.markForCheck();
-}
 
   atualizaTabelaPagamentoPorBoleto() {
     this.osSelecionadasParaRemessa = this.osSelecionadasParaRemessa.map(item => {
       // Captura o valor tratando o risco de vir nulo ou indefinido
-      const custoCalculado = (Number(this.formProcessaRemessa.value.custoPorBoleto)*Number(this.formProcessaRemessa.value.quantidadeParcelas)) / this.osSelecionadasParaRemessa.length;
+      const custoCalculado = (Number(this.formProcessaRemessa.value.custoPorBoleto) * Number(this.formProcessaRemessa.value.quantidadeParcelas)) / this.osSelecionadasParaRemessa.length;
       const custoBoleto = !isNaN(custoCalculado) && isFinite(custoCalculado) ? custoCalculado.toFixed(2) : '0.00';
       return {
         ...item, // Mantém todas as colunas que não foram citadas (como os, fantasia, codcli, etc.)
@@ -851,35 +870,35 @@ atualizarDadosDasOrdensSelecionadas(tipoFluxo: 'BOLETO' | 'BORDERO' = 'BOLETO') 
     this.atualizaTotalizadores()
   }
 
-  
+
 
   executaVerificacaoDeAtrasos() {
-  this.spinnerLoading = true;
+    this.spinnerLoading = true;
 
-  this.financeiroService.verificarEAtualizarAtrasos().subscribe({
-    next: (retorno: Financeiro[] | string) => {
-      this.spinnerLoading = false;
+    this.financeiroService.verificarEAtualizarAtrasos().subscribe({
+      next: (retorno: Financeiro[] | string) => {
+        this.spinnerLoading = false;
 
-      // Verifica se o retorno é uma mensagem de texto (caso não haja atualizações)
-      if (typeof retorno === 'string') {
-        alert(retorno);
-        return;
+        // Verifica se o retorno é uma mensagem de texto (caso não haja atualizações)
+        if (typeof retorno === 'string') {
+          alert(retorno);
+          return;
+        }
+
+        // Se for uma lista válida e contiver registros atualizados
+        if (retorno && retorno.length > 0) {
+          // alert(`Sucesso: ${retorno.length} parcelas foram identificadas e atualizadas para 'ATRAZADO'.`);
+        } else {
+          //alert('Nenhum registro precisou de atualização.');
+        }
+      },
+      error: (erro) => {
+        this.spinnerLoading = false;
+        console.error('Falha ao processar rotina de atrasos:', erro);
+        //alert('Erro interno do servidor ao processar a verificação de atrasos. Verifique o terminal do Quarkus.');
       }
-
-      // Se for uma lista válida e contiver registros atualizados
-      if (retorno && retorno.length > 0) {
-       // alert(`Sucesso: ${retorno.length} parcelas foram identificadas e atualizadas para 'ATRAZADO'.`);
-      } else {
-        //alert('Nenhum registro precisou de atualização.');
-      }
-    },
-    error: (erro) => {
-      this.spinnerLoading = false;
-      console.error('Falha ao processar rotina de atrasos:', erro);
-      //alert('Erro interno do servidor ao processar a verificação de atrasos. Verifique o terminal do Quarkus.');
-    }
-  });
-}
+    });
+  }
 
   /////VARIÁVEIS USADAS EM ATUALIZA TOTALIZADORES  
   totalOs: number = 0;
@@ -895,11 +914,11 @@ atualizarDadosDasOrdensSelecionadas(tipoFluxo: 'BOLETO' | 'BORDERO' = 'BOLETO') 
 
     if (!this.osSelecionadasParaRemessa || this.osSelecionadasParaRemessa.length === 0) {
       this.formProcessaRemessa.patchValue({
-        fantasia: '', 
-        codCli: '', 
+        fantasia: '',
+        codCli: '',
         quantidadeBoletos: '0',
-        valorTotalOs: '0.00', 
-        valorTotalDespesaBancaria: '0.00', 
+        valorTotalOs: '0.00',
+        valorTotalDespesaBancaria: '0.00',
         valorTotalLiquido: '0.00',
         valorCadaBoleto: '0.00' // Reseta o novo campo
       });
@@ -910,7 +929,7 @@ atualizarDadosDasOrdensSelecionadas(tipoFluxo: 'BOLETO' | 'BORDERO' = 'BOLETO') 
     this.osSelecionadasParaRemessa.forEach(item => {
       this.totalOs += Number(item.totaliq || 0);
       this.totalDespesasBancarias += Number(item.custoBancarioTotal || 0);
-      
+
       // Nova somatória: converte a string do valor da parcela 1 para número de forma segura
       this.totalPrimeiraParcela += Number(item.valorParcela1 || 0);
     });
@@ -923,10 +942,10 @@ atualizarDadosDasOrdensSelecionadas(tipoFluxo: 'BOLETO' | 'BORDERO' = 'BOLETO') 
       fantasia: this.osSelecionadasParaRemessa[0].fantasia,
       codCli: this.osSelecionadasParaRemessa[0].codcli ? String(this.osSelecionadasParaRemessa[0].codcli) : '',
       quantidadeBoletos: this.formProcessaRemessa.value.quantidadeParcelas || '0',
-      valorTotalOs: this.totalOs.toFixed(2),               
-      valorTotalDespesaBancaria: this.totalDespesasBancarias.toFixed(2), 
+      valorTotalOs: this.totalOs.toFixed(2),
+      valorTotalDespesaBancaria: this.totalDespesasBancarias.toFixed(2),
       valorTotalLiquido: valorLiquidoReal.toFixed(2),
-      
+
       // Injeta o valor somado e formatado no novo input da tela
       valorCadaBoleto: this.totalPrimeiraParcela.toFixed(2)
     });
@@ -935,175 +954,258 @@ atualizarDadosDasOrdensSelecionadas(tipoFluxo: 'BOLETO' | 'BORDERO' = 'BOLETO') 
 
 
 
-calcularJurosTotaisBordero(): number {
-  const form = this.formProcessaRemessa.value;
-  
-  if (!this.osSelecionadasParaRemessa || this.osSelecionadasParaRemessa.length === 0) return 0;
-  if (!form.dataFaturamento || !form.prazo || !form.taxaDeJuros) return 0;
+  calcularJurosTotaisBordero(): number {
+    const form = this.formProcessaRemessa.value;
 
-  // Limpa a taxa de juros (converte "2,50" ou "2.5" em número)
-  const taxaMensal = Number(String(form.taxaDeJuros).replace(/[^0-9.,]/g, '').replace(',', '.')) || 0;
-  if (taxaMensal <= 0) return 0;
+    if (!this.osSelecionadasParaRemessa || this.osSelecionadasParaRemessa.length === 0) return 0;
+    if (!form.dataFaturamento || !form.prazo || !form.taxaDeJuros) return 0;
 
-  const taxaDiaria = (taxaMensal / 100) / 30;
-  
-  // Data atual zerada em UTC para bater com as datas do somarDias
-  const hoje = new Date();
-  const hojeUtc = Date.UTC(hoje.getFullYear(), hoje.getMonth(), hoje.getDate());
+    // Limpa a taxa de juros (converte "2,50" ou "2.5" em número)
+    const taxaMensal = Number(String(form.taxaDeJuros).replace(/[^0-9.,]/g, '').replace(',', '.')) || 0;
+    if (taxaMensal <= 0) return 0;
 
-  // CORREÇÃO DA DATA: Extrai a string de faturamento tratando se for objeto ou string
-  let dataFatStr = '';
-  if (typeof form.dataFaturamento === 'object' && form.dataFaturamento !== null) {
-    const dataObjeto = form.dataFaturamento as any;
-    const ano = dataObjeto.year;
-    const mes = String(dataObjeto.month).padStart(2, '0');
-    const dia = String(dataObjeto.day).padStart(2, '0');
-    dataFatStr = `${ano}-${mes}-${dia}`;
-  } else {
-    dataFatStr = String(form.dataFaturamento);
+    const taxaDiaria = (taxaMensal / 100) / 30;
+
+    // Data atual zerada em UTC para bater com as datas do somarDias
+    const hoje = new Date();
+    const hojeUtc = Date.UTC(hoje.getFullYear(), hoje.getMonth(), hoje.getDate());
+
+    // CORREÇÃO DA DATA: Extrai a string de faturamento tratando se for objeto ou string
+    let dataFatStr = '';
+    if (typeof form.dataFaturamento === 'object' && form.dataFaturamento !== null) {
+      const dataObjeto = form.dataFaturamento as any;
+      const ano = dataObjeto.year;
+      const mes = String(dataObjeto.month).padStart(2, '0');
+      const dia = String(dataObjeto.day).padStart(2, '0');
+      dataFatStr = `${ano}-${mes}-${dia}`;
+    } else {
+      dataFatStr = String(form.dataFaturamento);
+    }
+
+    const arrayDiasDoPrazo = this.obterDiasDoPrazo(form.prazo);
+    const quantidadeParcelas = arrayDiasDoPrazo.length;
+
+    let jurosTotalAcumulado = 0;
+
+    this.osSelecionadasParaRemessa.forEach(item => {
+      const valorTotalOs = Number(item.totaliq || 0);
+      if (valorTotalOs <= 0) return;
+
+      const valorParcela = valorTotalOs / quantidadeParcelas;
+      const datasVencimento = this.somarDias(dataFatStr, arrayDiasDoPrazo);
+
+      datasVencimento.forEach(dataVencStr => {
+        if (!dataVencStr) return;
+        const [ano, mes, dia] = dataVencStr.split('-').map(Number);
+        const dataVencUtc = Date.UTC(ano, mes - 1, dia);
+
+        const diferencaMilissegundos = dataVencUtc - hojeUtc;
+        const diasAteVencer = Math.ceil(diferencaMilissegundos / (1000 * 60 * 60 * 24));
+
+        if (diasAteVencer > 0) {
+          const jurosDaParcela = valorParcela * taxaDiaria * diasAteVencer;
+          jurosTotalAcumulado += jurosDaParcela;
+        }
+      });
+    });
+
+    return jurosTotalAcumulado;
   }
 
-  const arrayDiasDoPrazo = this.obterDiasDoPrazo(form.prazo);
-  const quantidadeParcelas = arrayDiasDoPrazo.length;
+  atualizaTabelaPagamentoPorBordero(dataFaturamentoStr: string) {
+    const form = this.formProcessaRemessa.value;
 
-  let jurosTotalAcumulado = 0;
+    const taxaMensal = Number(String(form.taxaDeJuros || '0').replace(/[^0-9.,]/g, '').replace(',', '.')) || 0;
+    const taxaIofMensal = Number(String(form.taxaIof || '0').replace(/[^0-9.,]/g, '').replace(',', '.')) || 0;
+    const tarifaPorBoleto = Number(form.custoPorBoleto) || 0;
+    const qtdParcelas = form.quantidadeParcelas === 'A VISTA' ? 1 : parseInt(form.quantidadeParcelas || '1', 10);
 
-  this.osSelecionadasParaRemessa.forEach(item => {
-    const valorTotalOs = Number(item.totaliq || 0);
-    if (valorTotalOs <= 0) return;
+    const taxaDiaria = (taxaMensal / 100) / 30;
+    const taxaIofDiaria = (taxaIofMensal / 100) / 30;
 
-    const valorParcela = valorTotalOs / quantidadeParcelas;
-    const datasVencimento = this.somarDias(dataFatStr, arrayDiasDoPrazo);
+    const hoje = new Date();
+    const hojeUtc = Date.UTC(hoje.getFullYear(), hoje.getMonth(), hoje.getDate());
+    const arrayDiasDoPrazo = this.obterDiasDoPrazo(form.prazo || '');
 
-    datasVencimento.forEach(dataVencStr => {
-      if (!dataVencStr) return;
-      const [ano, mes, dia] = dataVencStr.split('-').map(Number);
-      const dataVencUtc = Date.UTC(ano, mes - 1, dia);
+    this.osSelecionadasParaRemessa = this.osSelecionadasParaRemessa.map(item => {
+      const valorTotalOs = Number(item.totaliq || 0);
+      const valorParcela = valorTotalOs / qtdParcelas;
+      const datasVencimento = this.somarDias(dataFaturamentoStr, arrayDiasDoPrazo);
 
-      const diferencaMilissegundos = dataVencUtc - hojeUtc;
-      const diasAteVencer = Math.ceil(diferencaMilissegundos / (1000 * 60 * 60 * 24));
+      let jurosDaOs = 0;
+      let iofDaOs = 0;
 
-      if (diasAteVencer > 0) {
-        const jurosDaParcela = valorParcela * taxaDiaria * diasAteVencer;
-        jurosTotalAcumulado += jurosDaParcela;
-      }
+      // Calcula os juros e o IOF pro rata desta OS específica
+      datasVencimento.forEach(dataVencStr => {
+        if (!dataVencStr) return;
+        const [ano, mes, dia] = dataVencStr.split('-').map(Number);
+        const dataVencUtc = Date.UTC(ano, mes - 1, dia);
+        const diasAteVencer = Math.ceil((dataVencUtc - hojeUtc) / (1000 * 60 * 60 * 24));
+
+        if (diasAteVencer > 0) {
+          jurosDaOs += valorParcela * taxaDiaria * diasAteVencer;
+          iofDaOs += valorParcela * taxaIofDiaria * diasAteVencer;
+        }
+      });
+
+      const custoTarifaOs = (tarifaPorBoleto * qtdParcelas) / this.osSelecionadasParaRemessa.length;
+
+      // O Custo bancário total agora engloba Juros + Tarifa + IOF
+      const despesasTotaisDestaOs = jurosDaOs + custoTarifaOs + iofDaOs;
+
+      return {
+        ...item,
+        dataFaturamento: dataFaturamentoStr,
+        tipoPagamento: form.tipoPagamento || 'BORDERÔ',
+        codRemessa: item.codcli + "-" + dataFaturamentoStr,
+        valorJaPago: '0.00',
+        statusGeral: 'EM DIA',
+
+        jurosBordero: jurosDaOs.toFixed(2),
+        iofDiario: iofDaOs.toFixed(2), // Mapeia o IOF individual da OS
+        tarifaBordero: custoTarifaOs.toFixed(2),
+
+        custoBancarioTotal: despesasTotaisDestaOs.toFixed(2),
+        valorLiquidoCreditado: (valorTotalOs - despesasTotaisDestaOs).toFixed(2)
+      };
     });
-  });
-
-  return jurosTotalAcumulado;
-}
-
-atualizaTabelaPagamentoPorBordero(dataFaturamentoStr: string) {
-  const form = this.formProcessaRemessa.value;
-  
-  const taxaMensal = Number(String(form.taxaDeJuros || '0').replace(/[^0-9.,]/g, '').replace(',', '.')) || 0;
-  const taxaIofMensal = Number(String(form.taxaIof || '0').replace(/[^0-9.,]/g, '').replace(',', '.')) || 0;
-  const tarifaPorBoleto = Number(form.custoPorBoleto) || 0;
-  const qtdParcelas = form.quantidadeParcelas === 'A VISTA' ? 1 : parseInt(form.quantidadeParcelas || '1', 10);
-
-  const taxaDiaria = (taxaMensal / 100) / 30;
-  const taxaIofDiaria = (taxaIofMensal / 100) / 30;
-  
-  const hoje = new Date();
-  const hojeUtc = Date.UTC(hoje.getFullYear(), hoje.getMonth(), hoje.getDate());
-  const arrayDiasDoPrazo = this.obterDiasDoPrazo(form.prazo || '');
-
-  this.osSelecionadasParaRemessa = this.osSelecionadasParaRemessa.map(item => {
-    const valorTotalOs = Number(item.totaliq || 0);
-    const valorParcela = valorTotalOs / qtdParcelas;
-    const datasVencimento = this.somarDias(dataFaturamentoStr, arrayDiasDoPrazo);
-    
-    let jurosDaOs = 0;
-    let iofDaOs = 0;
-
-    // Calcula os juros e o IOF pro rata desta OS específica
-    datasVencimento.forEach(dataVencStr => {
-      if (!dataVencStr) return;
-      const [ano, mes, dia] = dataVencStr.split('-').map(Number);
-      const dataVencUtc = Date.UTC(ano, mes - 1, dia);
-      const diasAteVencer = Math.ceil((dataVencUtc - hojeUtc) / (1000 * 60 * 60 * 24));
-      
-      if (diasAteVencer > 0) {
-        jurosDaOs += valorParcela * taxaDiaria * diasAteVencer;
-        iofDaOs += valorParcela * taxaIofDiaria * diasAteVencer;
-      }
-    });
-
-    const custoTarifaOs = (tarifaPorBoleto * qtdParcelas) / this.osSelecionadasParaRemessa.length;
-    
-    // O Custo bancário total agora engloba Juros + Tarifa + IOF
-    const despesasTotaisDestaOs = jurosDaOs + custoTarifaOs + iofDaOs;
-
-    return {
-      ...item,
-      dataFaturamento: dataFaturamentoStr,
-      tipoPagamento: form.tipoPagamento || 'BORDERÔ',
-      codRemessa: item.codcli + "-" + dataFaturamentoStr,
-      valorJaPago: '0.00',
-      statusGeral: 'EM DIA',
-      
-      jurosBordero: jurosDaOs.toFixed(2),
-      iofDiario: iofDaOs.toFixed(2), // Mapeia o IOF individual da OS
-      tarifaBordero: custoTarifaOs.toFixed(2),
-      
-      custoBancarioTotal: despesasTotaisDestaOs.toFixed(2),
-      valorLiquidoCreditado: (valorTotalOs - despesasTotaisDestaOs).toFixed(2)
-    };
-  });
-}
-
-
-calcularIofTotaisBordero(): number {
-  const form = this.formProcessaRemessa.value;
-  
-  if (!this.osSelecionadasParaRemessa || this.osSelecionadasParaRemessa.length === 0) return 0;
-  if (!form.dataFaturamento || !form.prazo || !form.taxaIof) return 0;
-
-  // Limpa a taxa de IOF (converte "0,38" ou "0.38" em número)
-  const taxaIofMensal = Number(String(form.taxaIof).replace(/[^0-9.,]/g, '').replace(',', '.')) || 0;
-  if (taxaIofMensal <= 0) return 0;
-
-  const taxaIofDiaria = (taxaIofMensal / 100) / 30;
-  
-  const hoje = new Date();
-  const hojeUtc = Date.UTC(hoje.getFullYear(), hoje.getMonth(), hoje.getDate());
-
-  let dataFatStr = '';
-  if (typeof form.dataFaturamento === 'object' && form.dataFaturamento !== null) {
-    const dataObjeto = form.dataFaturamento as any;
-    dataFatStr = `${dataObjeto.year}-${String(dataObjeto.month).padStart(2, '0')}-${String(dataObjeto.day).padStart(2, '0')}`;
-  } else {
-    dataFatStr = String(form.dataFaturamento);
   }
 
-  const arrayDiasDoPrazo = this.obterDiasDoPrazo(form.prazo);
-  const quantidadeParcelas = arrayDiasDoPrazo.length;
 
-  let iofTotalAcumulado = 0;
+  calcularIofTotaisBordero(): number {
+    const form = this.formProcessaRemessa.value;
 
-  this.osSelecionadasParaRemessa.forEach(item => {
-    const valorTotalOs = Number(item.totaliq || 0);
-    if (valorTotalOs <= 0) return;
+    if (!this.osSelecionadasParaRemessa || this.osSelecionadasParaRemessa.length === 0) return 0;
+    if (!form.dataFaturamento || !form.prazo || !form.taxaIof) return 0;
 
-    const valorParcela = valorTotalOs / quantidadeParcelas;
-    const datasVencimento = this.somarDias(dataFatStr, arrayDiasDoPrazo);
+    // Limpa a taxa de IOF (converte "0,38" ou "0.38" em número)
+    const taxaIofMensal = Number(String(form.taxaIof).replace(/[^0-9.,]/g, '').replace(',', '.')) || 0;
+    if (taxaIofMensal <= 0) return 0;
 
-    datasVencimento.forEach(dataVencStr => {
-      if (!dataVencStr) return;
-      const [ano, mes, dia] = dataVencStr.split('-').map(Number);
-      const dataVencUtc = Date.UTC(ano, mes - 1, dia);
+    const taxaIofDiaria = (taxaIofMensal / 100) / 30;
 
-      const diasAteVencer = Math.ceil((dataVencUtc - hojeUtc) / (1000 * 60 * 60 * 24));
+    const hoje = new Date();
+    const hojeUtc = Date.UTC(hoje.getFullYear(), hoje.getMonth(), hoje.getDate());
 
-      if (diasAteVencer > 0) {
-        const iofDaParcela = valorParcela * taxaIofDiaria * diasAteVencer;
-        iofTotalAcumulado += iofDaParcela;
-      }
+    let dataFatStr = '';
+    if (typeof form.dataFaturamento === 'object' && form.dataFaturamento !== null) {
+      const dataObjeto = form.dataFaturamento as any;
+      dataFatStr = `${dataObjeto.year}-${String(dataObjeto.month).padStart(2, '0')}-${String(dataObjeto.day).padStart(2, '0')}`;
+    } else {
+      dataFatStr = String(form.dataFaturamento);
+    }
+
+    const arrayDiasDoPrazo = this.obterDiasDoPrazo(form.prazo);
+    const quantidadeParcelas = arrayDiasDoPrazo.length;
+
+    let iofTotalAcumulado = 0;
+
+    this.osSelecionadasParaRemessa.forEach(item => {
+      const valorTotalOs = Number(item.totaliq || 0);
+      if (valorTotalOs <= 0) return;
+
+      const valorParcela = valorTotalOs / quantidadeParcelas;
+      const datasVencimento = this.somarDias(dataFatStr, arrayDiasDoPrazo);
+
+      datasVencimento.forEach(dataVencStr => {
+        if (!dataVencStr) return;
+        const [ano, mes, dia] = dataVencStr.split('-').map(Number);
+        const dataVencUtc = Date.UTC(ano, mes - 1, dia);
+
+        const diasAteVencer = Math.ceil((dataVencUtc - hojeUtc) / (1000 * 60 * 60 * 24));
+
+        if (diasAteVencer > 0) {
+          const iofDaParcela = valorParcela * taxaIofDiaria * diasAteVencer;
+          iofTotalAcumulado += iofDaParcela;
+        }
+      });
     });
-  });
 
-  return iofTotalAcumulado;
-}
+    return iofTotalAcumulado;
+  }
+
+  /////////////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////GERANDO BORDERO////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////////////////////
+
+  buscaPendentesBordero(): void {
+
+    this.financeiroService.getPendentesBordero().subscribe(
+      (data: Financeiro[]) => {
+        // Se o backend retornar 204 No Content, o Angular pode entregar o corpo vazio ou null
+        if (!data || data.length === 0) {
+          console.log('Nenhum registro pendente de borderô encontrado.');
+          this.modeloFinanceiro = [];
+          alert('Nenhum registro financeiro pendente de borderô foi encontrado.');
+          this.exibirTabela2 = false; // Oculta a tabela se estiver vazia
+          return;
+        }
+
+        this.borderoPendentes = data;
+        this.exibirTabela2 = false; // Exibe a tabela com os dados
+        this.tabelaBordero = true;
+        this.populaInicialmenteTotalizadores();
+        this.populaTotalizadoresGerarBordero();
+      },
+      (error) => {
+        if (error.status === 204) {
+          alert('Nenhum registro financeiro pendente de borderô foi encontrado.');
+          this.modeloFinanceiro = [];
+          this.exibirTabela2 = false;
+        } else {
+          console.error('Erro ao buscar financeiros pendentes de borderô:', error);
+          alert('Erro interno ao carregar os dados de borderô. Tente novamente mais tarde.');
+        }
+      }
+    );
+
+  }
+
+  populaInicialmenteTotalizadores() {
+    this.formProcessaBordero.patchValue({ taxaUnicaBordero: "150.00" });
+    this.formProcessaBordero.patchValue({ custoPorBoleto: "3.50" });
+  }
+
+
+  populaTotalizadoresGerarBordero() {
+
+    /////código borderô///////////
+    const hoje = new Date().toISOString().substring(0, 10);
+    this.formProcessaBordero.patchValue({ codBordero: hoje });
+
+    ////quantidade os///////////////////
+    this.formProcessaBordero.patchValue({ qtOs: String(this.borderoPendentes.length) });
+
+    //// valor total os////////////////////////////
+    const valorTotalOs = this.borderoPendentes.reduce((acc, elemento) => {
+
+      const valorElemento = elemento.totaliq ? parseFloat(elemento.totaliq) : 0;
+      return acc + valorElemento;
+    }, 0);
+    this.formProcessaBordero.patchValue({ valorTotalOs: valorTotalOs.toFixed(2) });
+
+    //////quantidade de clientes diferentes
+    const clientesUnicos = new Set(this.borderoPendentes
+      .map(elemento => elemento.codcli)
+      .filter(codcli => codcli !== null && codcli !== undefined));
+    const totalClientesDiferentes = clientesUnicos.size;
+    this.formProcessaBordero.patchValue({ qtClientes: String(totalClientesDiferentes) });
+
+
+    /////QUANTIDADE BOLETOS////////////////
+const valorTotaCustoBoleto = this.borderoPendentes.reduce((acc, elemento) => {
+
+      const valorElemento = elemento.tarifaBordero ? parseFloat(elemento.tarifaBordero) : 0;
+      return acc + valorElemento;
+    }, 0);
+    
+    console.log("Este é o total do custo  com boleto ", valorTotaCustoBoleto)
+
+   const quantidadeBoletos = valorTotaCustoBoleto / Number(this.formProcessaBordero.value.custoPorBoleto)
+    this.formProcessaBordero.patchValue({ qtBoletos: String(quantidadeBoletos) });
+
+  }
+
 
 
 

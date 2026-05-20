@@ -26,7 +26,7 @@ export class Financeiro {
     valorJaPago: string;
     statusGeral: string;
     jurosBordero: string;
-    iofAdicional: string;
+    taxaBordero: string;
     iofDiario: string;
     tarifaBordero: string;
     custoBancarioTotal: string;
