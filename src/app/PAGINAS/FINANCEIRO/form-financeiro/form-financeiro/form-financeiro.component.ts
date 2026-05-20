@@ -92,6 +92,7 @@ export class FormFinanceiroComponent {
     valorTotalLiquido: new FormControl(''),
     fantasia: new FormControl(''),
     codCli: new FormControl(''),
+    valorCadaBoleto: new FormControl(''),
 
   });
 
@@ -852,10 +853,7 @@ atualizarDadosDasOrdensSelecionadas(tipoFluxo: 'BOLETO' | 'BORDERO' = 'BOLETO') 
     this.atualizaTotalizadores()
   }
 
-  /////VARIÁVEIS USADAS EM ATUALIZA TOTALZIADORES  
-  totalOs: number = 0;
-  totalDespesasBancarias: number = 0;
-  somatoriaTotaliq: number = 0;
+  
 
   executaVerificacaoDeAtrasos() {
   this.spinnerLoading = true;
@@ -885,42 +883,57 @@ atualizarDadosDasOrdensSelecionadas(tipoFluxo: 'BOLETO' | 'BORDERO' = 'BOLETO') 
   });
 }
 
-atualizaTotalizadores() {
-  this.totalOs = 0;
-  this.totalDespesasBancarias = 0;
-  this.somatoriaTotaliq = 0;
+  /////VARIÁVEIS USADAS EM ATUALIZA TOTALIZADORES  
+  totalOs: number = 0;
+  totalDespesasBancarias: number = 0;
+  somatoriaTotaliq: number = 0;
+  totalPrimeiraParcela: number = 0; // Nova variável acumuladora
 
-  if (!this.osSelecionadasParaRemessa || this.osSelecionadasParaRemessa.length === 0) {
-    this.formProcessaRemessa.patchValue({
-      fantasia: '', 
-      codCli: '', 
-      quantidadeBoletos: '0',
-      valorTotalOs: '0.00', 
-      valorTotalDespesaBancaria: '0.00', 
-      valorTotalLiquido: '0.00'
+  atualizaTotalizadores() {
+    this.totalOs = 0;
+    this.totalDespesasBancarias = 0;
+    this.somatoriaTotaliq = 0;
+    this.totalPrimeiraParcela = 0; // Inicia zerada para não duplicar
+
+    if (!this.osSelecionadasParaRemessa || this.osSelecionadasParaRemessa.length === 0) {
+      this.formProcessaRemessa.patchValue({
+        fantasia: '', 
+        codCli: '', 
+        quantidadeBoletos: '0',
+        valorTotalOs: '0.00', 
+        valorTotalDespesaBancaria: '0.00', 
+        valorTotalLiquido: '0.00',
+        valorCadaBoleto: '0.00' // Reseta o novo campo
+      });
+      return;
+    }
+
+    // 1. Soma os valores acumulados. O 'custoBancarioTotal' engloba Tarifa + Juros + IOF
+    this.osSelecionadasParaRemessa.forEach(item => {
+      this.totalOs += Number(item.totaliq || 0);
+      this.totalDespesasBancarias += Number(item.custoBancarioTotal || 0);
+      
+      // Nova somatória: converte a string do valor da parcela 1 para número de forma segura
+      this.totalPrimeiraParcela += Number(item.valorParcela1 || 0);
     });
-    return;
+
+    // 2. DEDUÇÃO AUTOMÁTICA: O valor líquido desconta o montante total de despesas calculadas
+    const valorLiquidoReal = this.totalOs - this.totalDespesasBancarias;
+
+    // 3. Atualiza os inputs do formulário reativo refletindo os totais na tela
+    this.formProcessaRemessa.patchValue({
+      fantasia: this.osSelecionadasParaRemessa[0].fantasia,
+      codCli: this.osSelecionadasParaRemessa[0].codcli ? String(this.osSelecionadasParaRemessa[0].codcli) : '',
+      quantidadeBoletos: this.formProcessaRemessa.value.quantidadeParcelas || '0',
+      valorTotalOs: this.totalOs.toFixed(2),               
+      valorTotalDespesaBancaria: this.totalDespesasBancarias.toFixed(2), 
+      valorTotalLiquido: valorLiquidoReal.toFixed(2),
+      
+      // Injeta o valor somado e formatado no novo input da tela
+      valorCadaBoleto: this.totalPrimeiraParcela.toFixed(2)
+    });
   }
 
-  // 1. Soma os valores acumulados. O 'custoBancarioTotal' agora engloba: Tarifa + Juros + IOF de cada OS
-  this.osSelecionadasParaRemessa.forEach(item => {
-    this.totalOs += Number(item.totaliq || 0);
-    this.totalDespesasBancarias += Number(item.custoBancarioTotal || 0);
-  });
-
-  // 2. DEDUÇÃO AUTOMÁTICA: O valor líquido desconta o montante total de despesas calculadas
-  const valorLiquidoReal = this.totalOs - this.totalDespesasBancarias;
-
-  // 3. Atualiza os inputs do formulário reativo refletindo os totais na tela
-  this.formProcessaRemessa.patchValue({
-    fantasia: this.osSelecionadasParaRemessa[0].fantasia,
-    codCli: this.osSelecionadasParaRemessa[0].codcli ? String(this.osSelecionadasParaRemessa[0].codcli) : '',
-    quantidadeBoletos: this.formProcessaRemessa.value.quantidadeParcelas || '0',
-    valorTotalOs: this.totalOs.toFixed(2),               
-    valorTotalDespesaBancaria: this.totalDespesasBancarias.toFixed(2), // Exibirá o somatório de Tarifas + Juros + IOF do lote
-    valorTotalLiquido: valorLiquidoReal.toFixed(2)         
-  });
-}
 
 
 

@@ -40,7 +40,7 @@
         </div>
       </div>
 
-      
+
 
       <!-- SPINNER LOADING -->
       <div *ngIf="spinnerLoading" class="col-12">
@@ -252,7 +252,7 @@
         <th>Status Geral</th>
         <th>Juros</th>
         <th>Iof</th>
-        <th>Tarifa</th>
+        <th>Boleto</th>
         <th>Custo Total Bancário*</th>
         <th>Valor Liquido</th>
         <th>Selecionar</th>
@@ -281,13 +281,10 @@
         <td>{{remessa.tarifaBordero}}</td>
         <td>{{remessa.custoBancarioTotal}}</td>
         <td>{{remessa.valorLiquidoCreditado}}</td>
-       <td>
-  <input 
-    type="checkbox" 
-    class="checkbox me-1"
-    [checked]="isOsSelecionada(remessa)"
-    (change)="adicionaOsnoArrayDeRemessa(remessa, $event)">
-</td>
+        <td>
+          <input type="checkbox" class="checkbox me-1" [checked]="isOsSelecionada(remessa)"
+            (change)="adicionaOsnoArrayDeRemessa(remessa, $event)">
+        </td>
 
       </tr>
     </tbody>
@@ -391,44 +388,59 @@
 
       <!-----------------TOTALIZADORES (NOVA LINHA CORRIGIDA)---------------->
       <div class="d-flex flex-row flex-wrap align-items-end justify-content-around w-100">
-        
-  <!-- 9 - Nome Cliente (CORRIGIDO) -->
-  <div class="form-group mb-2" style="flex: 1 1 600px; max-width: 600px;" >
-    <label for="fantasia" class="form-label fw-bold small text-light d-block mb-1">Nome Cliente</label>
-    <input formControlName="fantasia" type="text" id="fantasia" class="form-control w-100">
-  </div>
 
-  <!-- 10 - CÓDIGO DO CLIENTE -->
-  <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;">
-    <label for="quantidadeBoletos" class="form-label fw-bold small text-light d-block mb-1">Codigo Cliente</label>
-    <input formControlName="codCli" type="text" id="codCli" class="form-control w-100" placeholder="0">
-  </div>
+        <!-- 9 - Nome Cliente (CORRIGIDO) -->
+        <div class="form-group mb-2" style="flex: 1 1 600px; max-width: 600px;">
+          <label for="fantasia" class="form-label fw-bold small text-light d-block mb-1">Nome Cliente</label>
+          <input formControlName="fantasia" type="text" id="fantasia" class="form-control w-100">
+        </div>
 
-  <!-- 11 - QUANTIDADE BOLETOS -->
-  <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;" >
-    <label for="quantidadeBoletos" class="form-label fw-bold small text-light d-block mb-1">Quantidade Boletos</label>
-    <input formControlName="quantidadeBoletos" type="text" id="quantidadeBoletos" class="form-control w-100" placeholder="0">
-  </div>
+        <!-- 10 - CÓDIGO DO CLIENTE -->
+        <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;">
+          <label for="quantidadeBoletos" class="form-label fw-bold small text-light d-block mb-1">Codigo Cliente</label>
+          <input formControlName="codCli" type="text" id="codCli" class="form-control w-100" placeholder="0">
+        </div>
 
-  <!-- 12 - VALOR TOTAL OS -->
-  <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;" >
-    <label for="valorTotalOs" class="form-label fw-bold small text-light d-block mb-1">Total OS</label>
-    <input formControlName="valorTotalOs" type="text" id="valorTotalOs" class="form-control w-100" placeholder="R$ 0,00">
-  </div>
 
-  <!-- 13 - TOTAL DESPESAS BANCÁRIAS -->
-  <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;" >
-    <label for="valorTotalDespesaBancaria" class="form-label fw-bold small text-light d-block mb-1">Despesas Bancarias</label>
-    <input formControlName="valorTotalDespesaBancaria" type="text" id="valorTotalDespesaBancaria" class="form-control w-100" placeholder="R$ 0,00">
-  </div>
+        <!-- 11 - QUANTIDADE BOLETOS -->
+        <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;">
+          <label for="quantidadeBoletos" class="form-label fw-bold small text-light d-block mb-1">Quantidade
+            Boletos</label>
+          <input formControlName="quantidadeBoletos" type="text" id="quantidadeBoletos" class="form-control w-100"
+            placeholder="0">
+        </div>
 
-  <!-- 14  - TOTAL LIQUIDO -->
-  <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;" >
-    <label for="valorTotalLiquido" class="form-label fw-bold small text-light d-block mb-1">Total Liquido</label>
-    <input formControlName="valorTotalLiquido" type="text" id="valorTotalLiquido" class="form-control w-100" placeholder="R$ 0,00">
-  </div>
+        <!-- 10 - VALOR CADA BOLETO -->
+        <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;">
+          <label for="valorCadaBoleto" class="form-label fw-bold small text-light d-block mb-1">Valor Cada Boleto</label>
+          <input formControlName="valorCadaBoleto" type="text" id="valorCadaBoleto" class="form-control w-100"
+            placeholder="R$ 0,00">
+        </div>
 
-</div>
+
+        <!-- 12 - VALOR TOTAL OS -->
+        <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;">
+          <label for="valorTotalOs" class="form-label fw-bold small text-light d-block mb-1">Total OS</label>
+          <input formControlName="valorTotalOs" type="text" id="valorTotalOs" class="form-control w-100"
+            placeholder="R$ 0,00">
+        </div>
+
+        <!-- 13 - TOTAL DESPESAS BANCÁRIAS -->
+        <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;">
+          <label for="valorTotalDespesaBancaria" class="form-label fw-bold small text-light d-block mb-1">Despesas
+            Bancarias</label>
+          <input formControlName="valorTotalDespesaBancaria" type="text" id="valorTotalDespesaBancaria"
+            class="form-control w-100" placeholder="R$ 0,00">
+        </div>
+
+        <!-- 14  - TOTAL LIQUIDO -->
+        <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;">
+          <label for="valorTotalLiquido" class="form-label fw-bold small text-light d-block mb-1">Total Liquido</label>
+          <input formControlName="valorTotalLiquido" type="text" id="valorTotalLiquido" class="form-control w-100"
+            placeholder="R$ 0,00">
+        </div>
+
+      </div>
 
 
     </div>
@@ -462,7 +474,7 @@
         <th>Status Geral</th>
         <th>Juros</th>
         <th>Iof</th>
-        <th>Tarifa</th>
+        <th>Boleto</th>
         <th>Custo Total Bancário*</th>
         <th>Valor Liquido</th>
 
