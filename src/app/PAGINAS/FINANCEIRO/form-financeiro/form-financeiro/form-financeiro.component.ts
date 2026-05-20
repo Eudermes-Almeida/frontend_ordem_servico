@@ -55,7 +55,7 @@ export class FormFinanceiroComponent {
   model3: NgbDateStruct | undefined;
 
   ///////////CONTROLE DE RENDERIZAÇÃO/////////
-  exibirTabela: boolean = false;
+  exibirTabelaCliente: boolean = false;
   exibirTabela2: boolean = false;
   exibirBotaoSalvar: boolean = false;
   exibirBotaoSair: boolean = false;
@@ -65,6 +65,8 @@ export class FormFinanceiroComponent {
   exibirTabelaRemessa: boolean = false;
   exibeOpcoesParcelamento: boolean = true;
   tabelaBordero: boolean = false;
+  exibirFormularioBordero: boolean = false;
+  exibirTabelaBordero: boolean = false;
 
   // CONFIGURA FORMULÁRIO
   formulario = new FormGroup({
@@ -149,7 +151,7 @@ export class FormFinanceiroComponent {
       this.servico?.getClientesPorNomeFantasia(nomefantasia).subscribe(
         (dados: Cliente[]) => {
           this.objetocliente = dados; // Armazena os clientes retornados
-          this.exibirTabela = true;
+          this.exibirTabelaCliente = true;
         },
         (erro) => {
           console.error('Erro ao buscar clientes por nome fantasia:', erro);
@@ -166,7 +168,7 @@ export class FormFinanceiroComponent {
     this.servico.getClientePorId(id).subscribe(
       (data: Cliente) => {
         this.objetocliente = [data]; // Coloca o cliente dentro de um array
-        this.exibirTabela = true;
+        this.exibirTabelaCliente = true;
       },
       (error) => {
         if (error.status === 404) {
@@ -250,7 +252,7 @@ export class FormFinanceiroComponent {
     });
 
     setTimeout(() => {  // aguarda 1 segundo para fechar a tabela
-      this.exibirTabela = false;
+      this.exibirTabelaCliente = false;
       this.cdr.detectChanges(); // Força a atualização da visualização imediatamente
     }, 1000);
   }
@@ -401,13 +403,10 @@ export class FormFinanceiroComponent {
   }
 
   limpar() {
-    if (!this.isClickEvent) {
-      return; // Sai da função se não foi disparada por um clique
-    }
 
     this.isClickEvent = false; // Reseta a flag após o clique
     this.router.navigate(['/home']).then(() => {
-      this.router.navigate(['financeiro']);
+      this.router.navigate(['financeiro/consulta']);
     });
   }
 
@@ -1129,6 +1128,10 @@ export class FormFinanceiroComponent {
   ///////////////////////////////////////////////////////////////////////////////////////////////////
 
   buscaPendentesBordero(): void {
+    this.exibirFormularioBordero = true;
+    this.exibirTabelaBordero = true;
+
+
 
     this.financeiroService.getPendentesBordero().subscribe(
       (data: Financeiro[]) => {
@@ -1175,9 +1178,11 @@ export class FormFinanceiroComponent {
 
     ////INSERE O CÓDIGO DO BORDERO NO ARRAY (BANCO DE DADOS)
 
-    this.borderoPendentes.forEach((os) => {{
-      os.codBordero = hoje
-    }})
+    this.borderoPendentes.forEach((os) => {
+      {
+        os.codBordero = hoje
+      }
+    })
 
     ////quantidade os///////////////////
     this.formProcessaBordero.patchValue({ qtOs: String(this.borderoPendentes.length) });
@@ -1246,10 +1251,10 @@ export class FormFinanceiroComponent {
       return soma
     }, 0)
     this.formProcessaBordero.patchValue({ valorLiquidoCreditado: String(calculoValorLiquidoCreditado.toFixed(2)) });
-  
+
     ///////PERSISTE OS DADOS:
     this.persisteBordero();
-  
+
   }
 
   persisteBordero() {
@@ -1272,7 +1277,7 @@ export class FormFinanceiroComponent {
   }
 
 
-  
+
 
 }
 

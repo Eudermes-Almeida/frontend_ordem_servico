@@ -54,8 +54,8 @@
 
     <!------------------ TABELA COM OS CLIENTES ------------------>
     <div class="mt-3 tabela-scroll mb-3" style="max-height: 300px; overflow-y: auto;">
-      <p class="text-secondary" *ngIf="exibirTabela">Quantidade de clientes selecionados: {{objetocliente.length}} </p>
-      <table class="table table-dark table-hover" *ngIf="exibirTabela">
+      <p class="text-secondary" *ngIf="exibirTabelaCliente">Quantidade de clientes selecionados: {{objetocliente.length}} </p>
+      <table class="table table-dark table-hover" *ngIf="exibirTabelaCliente">
         <thead>
           <tr>
             <th>Codigo</th>
@@ -213,14 +213,21 @@
   </div>
 
 
-  <div class="form-group" style="flex: 0 0 auto;">
+  <!-- Adicionado 'd-flex' para ativar o flexbox e 'gap-2' para o espaçamento de ~10px -->
+<div class="form-group d-flex gap-2" style="flex: 0 0 auto;">
     <!-- Adicionados os atributos para o Tooltip na parte superior -->
     <!-- Alternativa caso use Ng-Bootstrap pura (Sem precisar mexer no TS) -->
     <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top"
       data-bs-title="Gera um borderô com as remessas (boletos) criados" (click)="buscaPendentesBordero()">
-      Gerar Borderô
+      Gerar Novo Borderô
     </button>
-  </div>
+
+     <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top"
+       (click)="limpar()">
+      Limpar
+    </button>
+</div>
+
 
 </div>
 
@@ -512,18 +519,11 @@
 </div>
 
 
-
-    
-  
-    
-  
-  
-    
-
-
-
 <!-------FORMULÁRIO GERAR BORDERO-->
 
+<div style="border: 2px solid orange; border-radius: 10px; width: 90%; margin: 0 auto;" *ngIf="exibirFormularioBordero">
+
+  <p>.</p>
  <form [formGroup]="formProcessaBordero" id="formProcessaBordero">
 <div class="d-flex flex-row flex-wrap align-items-end justify-content-around w-100">
  
@@ -595,11 +595,13 @@
 
 </div>
 </form>
+<p>.</p>
+</div>
 
 <!-------------TABELA GERAR BORDERO-->
 <P>.</P>
 <P>.</P>
-<div>
+<div *ngIf="exibirTabelaBordero">
   <table class="table table-dark table-hover">
     <thead>
       <tr>
