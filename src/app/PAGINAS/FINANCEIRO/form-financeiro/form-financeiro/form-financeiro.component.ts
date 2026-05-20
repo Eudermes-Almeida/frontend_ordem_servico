@@ -1173,6 +1173,12 @@ export class FormFinanceiroComponent {
     const hoje = new Date().toISOString().substring(0, 10);
     this.formProcessaBordero.patchValue({ codBordero: hoje });
 
+    ////INSERE O CÓDIGO DO BORDERO NO ARRAY (BANCO DE DADOS)
+
+    this.borderoPendentes.forEach((os) => {{
+      os.codBordero = hoje
+    }})
+
     ////quantidade os///////////////////
     this.formProcessaBordero.patchValue({ qtOs: String(this.borderoPendentes.length) });
 
@@ -1208,32 +1214,65 @@ export class FormFinanceiroComponent {
 
     //////SOMA JUROS, TAXA BORDERO, IOF E CUSTO BOLETO E COLOCA EM CUSTO BANCARIO TOTAL
     this.borderoPendentes.forEach(elemento => {
-  // Converte cada string para número de forma segura (se for nula ou vazia, assume 0)
-  const juros = elemento.jurosBordero ? parseFloat(elemento.jurosBordero) : 0;
-  const taxa = elemento.taxaBordero ? parseFloat(elemento.taxaBordero) : 0;
-  const iof = elemento.iofDiario ? parseFloat(elemento.iofDiario) : 0;
-  const tarifa = elemento.tarifaBordero ? parseFloat(elemento.tarifaBordero) : 0;
+      // Converte cada string para número de forma segura (se for nula ou vazia, assume 0)
+      const juros = elemento.jurosBordero ? parseFloat(elemento.jurosBordero) : 0;
+      const taxa = elemento.taxaBordero ? parseFloat(elemento.taxaBordero) : 0;
+      const iof = elemento.iofDiario ? parseFloat(elemento.iofDiario) : 0;
+      const tarifa = elemento.tarifaBordero ? parseFloat(elemento.tarifaBordero) : 0;
+      const somaCustoTotal = juros + taxa + iof + tarifa;
+      elemento.custoBancarioTotal = somaCustoTotal.toFixed(2);
 
-  // Soma todas as taxas do elemento atual
-  const somaCustoTotal = juros + taxa + iof + tarifa;
+      const valorDespesasTotalBancaria = this.borderoPendentes.reduce((acc, el) => {
+        const custo = el.custoBancarioTotal ? parseFloat(el.custoBancarioTotal) : 0;
+        return acc + custo
+      }, 0)
 
-  // Guarda a soma formatada como string com duas casas decimais
-  elemento.custoBancarioTotal = somaCustoTotal.toFixed(2);
+      this.formProcessaBordero.patchValue({ totalDespesasBancarias: String(valorDespesasTotalBancaria) });
+    });
 
+    ////////RECALCULAR VALOR LIQUIDO DE CADA OS
+    this.borderoPendentes.forEach((os) => {
+      {
+        const valorOs = Number(os.totaliq)
+        const totalDespesas = Number(os.custoBancarioTotal)
+        const totaliqRecalculado = (valorOs - totalDespesas).toFixed(2);
+        os.valorLiquidoCreditado = totaliqRecalculado
+      }
+    })
 
-  const valorDespesasTotalBancaria = this.borderoPendentes.reduce((acc, el) => {
-    const custo = el.custoBancarioTotal ? parseFloat(el.custoBancarioTotal) : 0;
-    return acc + custo
+    /////CALCULANDO VALOR LIQUIDO CREDITADO PARA TOTALIZADOR
+    const calculoValorLiquidoCreditado = this.borderoPendentes.reduce((acc, os) => {
+      const soma = acc + parseFloat(os.valorLiquidoCreditado)
+      return soma
+    }, 0)
+    this.formProcessaBordero.patchValue({ valorLiquidoCreditado: String(calculoValorLiquidoCreditado.toFixed(2)) });
+  
+    ///////PERSISTE OS DADOS:
+    this.persisteBordero();
+  
+  }
 
-  },0)
-
-
-  this.formProcessaBordero.patchValue({ totalDespesasBancarias: String(valorDespesasTotalBancaria) });
-});
-
-
+  persisteBordero() {
+    this.financeiroService.atualizarFinanceiroEmLote(this.borderoPendentes).subscribe({
+      next: (retornoDoBanco: Financeiro[]) => {
+        this.spinnerLoading = false;
+        if (!retornoDoBanco || retornoDoBanco.length === 0) {
+          alert('Ocorreu um problema: os registros não puderam ser gravados no banco.');
+          return;
+        }
+        alert(`${retornoDoBanco.length} A remessa foi salva com sucesso`);
+      },
+      error: (erro) => {
+        this.spinnerLoading = false;
+        console.error('Falha catastrófica ao liquidar lote financeiro:', erro);
+        alert('Erro interno do servidor ao processar o pagamento em lote. Verifique o terminal do Quarkus.');
+      }
+    });
 
   }
+
+
+  
 
 }
 
