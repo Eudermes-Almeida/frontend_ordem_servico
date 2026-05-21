@@ -50,6 +50,8 @@ export class FormFinanceiroComponent {
   opcaoPrazo: string = "";
   prazosDisponiveis: string[] = [];
   borderoJaSalvo: string = "borderô AINDA NÃO salvo"
+  flagIrRemessa: boolean = false;
+  flagIrBordero: boolean = false;
 
   ////DATEPICKER:
   model: NgbDateStruct | undefined;
@@ -590,6 +592,7 @@ export class FormFinanceiroComponent {
 
 
   gerarRemessa() {
+    this.flagIrRemessa = true;
     this.exibeOpcoesParcelamento = true;
     this.exibirFormularioConsulta = false;
     this.exibirTabelaGeral = false;
@@ -1194,6 +1197,7 @@ export class FormFinanceiroComponent {
   ///////////////////////////////////////////////////////////////////////////////////////////////////
 
   buscaPendentesBordero(): void {
+    this.flagIrBordero = true;
     this.exibirFormularioConsulta = false;
     this.exibirTabelaRemessa = false;
     this.exibirFormularioBordero = true;
@@ -1358,14 +1362,37 @@ export class FormFinanceiroComponent {
     this.exibirTabelaGeral = true;
 
     this.exibirBtnGerarRemessa = false;
-    this.atualizarModeloFinanceiro(); /// atualiza a tabela consulta com os dados da remessa
+    if(this.flagIrRemessa){this.atualizarModeloFinanceiroComDadosRemessa();}/// atualiza a tabela consulta com os dados da remessa
+    if(this.flagIrBordero){this.atualizarModeloFinanceiroComDadosBordero();} 
     this.osSelecionadasParaRemessa = [];
+    this.flagIrBordero = false;
+    this.flagIrRemessa = false;
   }
 
-  atualizarModeloFinanceiro(): void {
+  atualizarModeloFinanceiroComDadosRemessa(): void {
   // 1. Cria um mapa para busca rápida dos dados novos indexados pelo número da OS
   const mapaNovosDados = new Map<number, Financeiro>(
     this.osSelecionadasParaRemessa.map(item => [item.os, item])
+  );
+
+  // 2. Percorre o modeloFinanceiro e atualiza apenas os itens que estão no mapa
+  this.modeloFinanceiro = this.modeloFinanceiro.map(itemOriginal => {
+    const dadosAtualizados = mapaNovosDados.get(itemOriginal.os);
+    
+    // Se encontrou dados correspondentes no array de remessa, mescla/substitui
+    if (dadosAtualizados) {
+      return { ...itemOriginal, ...dadosAtualizados };
+    }
+    
+    // Se não encontrou, mantém o item original intacto
+    return itemOriginal;
+  });
+}
+
+atualizarModeloFinanceiroComDadosBordero(): void {
+  // 1. Cria um mapa para busca rápida dos dados novos indexados pelo número da OS
+  const mapaNovosDados = new Map<number, Financeiro>(
+    this.borderoPendentes.map(item => [item.os, item])
   );
 
   // 2. Percorre o modeloFinanceiro e atualiza apenas os itens que estão no mapa
