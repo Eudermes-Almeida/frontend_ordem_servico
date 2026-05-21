@@ -1356,7 +1356,32 @@ export class FormFinanceiroComponent {
     this.exibirTabelaRemessa = false;
     this.exibirTabela2 = true;
     this.exibirTabelaGeral = true;
+
+    this.exibirBtnGerarRemessa = false;
+    this.atualizarModeloFinanceiro(); /// atualiza a tabela consulta com os dados da remessa
+    this.osSelecionadasParaRemessa = [];
   }
+
+  atualizarModeloFinanceiro(): void {
+  // 1. Cria um mapa para busca rápida dos dados novos indexados pelo número da OS
+  const mapaNovosDados = new Map<number, Financeiro>(
+    this.osSelecionadasParaRemessa.map(item => [item.os, item])
+  );
+
+  // 2. Percorre o modeloFinanceiro e atualiza apenas os itens que estão no mapa
+  this.modeloFinanceiro = this.modeloFinanceiro.map(itemOriginal => {
+    const dadosAtualizados = mapaNovosDados.get(itemOriginal.os);
+    
+    // Se encontrou dados correspondentes no array de remessa, mescla/substitui
+    if (dadosAtualizados) {
+      return { ...itemOriginal, ...dadosAtualizados };
+    }
+    
+    // Se não encontrou, mantém o item original intacto
+    return itemOriginal;
+  });
+}
+
 
 
 }
