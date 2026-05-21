@@ -227,10 +227,11 @@
       Limpar
     </button>
 
-    <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top"
+    <button *ngIf="!exibirFormularioConsulta" type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top"
        (click)="voltar()">
       Voltar
     </button>
+
 </div>
 
 
@@ -242,32 +243,33 @@
 
   <h1 style="color: orange; text-align: center";>TABELA CONSULTA</h1>
   <p class="text-secondary" *ngIf="exibirTabela2">Quantidade de ordem de serviço: {{modeloFinanceiro.length}} </p>
-  <table class="table table-dark table-hover" *ngIf="exibirTabela2">
+  <!-- Adicionado text-center aqui -->
+<table class="table table-dark table-hover text-center" *ngIf="exibirTabela2">
     <thead>
-      <tr>
-        <th>Os</th>
-        <th>Nome</th>
-        <th>Codigo Remessa</th>
-        <th>Valor</th>
-        <th>Data Faturamento</th>
-        <th>Tipo Pagamento</th>
-        <th>Vencimento 1</th>
-        <th>Parcela 1</th>
-        <th>Status Parcela 1</th>
-        <th>Vencimento 2</th>
-        <th>Parcela 2</th>
-        <th>Status Parcela 2</th>
-        <th>Vencimento 3</th>
-        <th>Parcela 3</th>
-        <th>Status Parcela 3</th>
-        <th>Status Geral</th>
-        <th>Juros</th>
-        <th>Iof</th>
-        <th>Boleto</th>
-        <th>Taxa Bordero</th>
-        <th>Custo Total Bancário*</th>
-        <th>Valor Liquido</th>
-        <th>Selecionar</th>
+      <tr style="color: orange;">
+        <th style="color: orange;">Os</th>
+        <th style="color: orange;">Nome</th>
+        <th style="color: orange;">Codigo Remessa</th>
+        <th style="color: orange;">Valor</th>
+        <th style="color: orange;">Data Faturamento</th>
+        <th style="color: orange;">Tipo Pagamento</th>
+        <th style="color: orange;">Vencimento 1</th>
+        <th style="color: orange;">Parcela 1</th>
+        <th style="color: orange;">Status Parcela 1</th>
+        <th style="color: orange;">Vencimento 2</th>
+        <th style="color: orange;">Parcela 2</th>
+        <th style="color: orange;">Status Parcela 2</th>
+        <th style="color: orange;">Vencimento 3</th>
+        <th style="color: orange;">Parcela 3</th>
+        <th style="color: orange;">Status Parcela 3</th>
+        <th style="color: orange;">Status Geral</th>
+        <th style="color: orange;">Juros</th>
+        <th style="color: orange;">Iof</th>
+        <th style="color: orange;">Boleto</th>
+        <th style="color: orange;">Taxa Bordero</th>
+        <th style="color: orange;">Custo Total Bancário*</th>
+        <th style="color: orange;">Valor Liquido</th>
+        <th style="color: orange;">Selecionar</th>
       </tr>
     </thead>
     <tbody>
@@ -280,14 +282,14 @@
         <td>{{remessa.tipoPagamento}}</td>
         <td>{{remessa.vencimento1}}</td>
         <td>{{remessa.valorParcela1}}</td>
-        <td>{{remessa.statusParcela1}}</td>
+        <td  [ngClass]="{'text-danger fw-bold': remessa.statusParcela1 === 'ATRAZADO'}">{{remessa.statusParcela1}}</td>
         <td>{{remessa.vencimento2}}</td>
         <td>{{remessa.valorParcela2}}</td>
-        <td>{{remessa.statusParcela2}}</td>
+        <td  [ngClass]="{'text-danger fw-bold': remessa.statusParcela2 === 'ATRAZADO'}">{{remessa.statusParcela2}}</td>
         <td>{{remessa.vencimento3}}</td>
         <td>{{remessa.valorParcela3}}</td>
-        <td>{{remessa.statusParcela3}}</td>
-        <td>{{remessa.statusGeral}}</td>
+        <td  [ngClass]="{'text-danger fw-bold': remessa.statusParcela3 === 'ATRAZADO'}">{{remessa.statusParcela3}}</td>
+        <td  [ngClass]="{'text-danger fw-bold': remessa.statusGeral === 'ATRAZADO'}">{{remessa.statusGeral}}</td>
         <td>{{remessa.jurosBordero}}</td>
         <td>{{remessa.iofDiario}}</td>
         <td>{{remessa.tarifaBordero}}</td>
@@ -298,11 +300,10 @@
           <input type="checkbox" class="checkbox me-1" [checked]="isOsSelecionada(remessa)"
             (change)="adicionaOsnoArrayDeRemessa(remessa, $event)">
         </td>
-
       </tr>
     </tbody>
+</table>
 
-  </table>
   <p>.</p>
   <p>.</p>
 </div>
@@ -469,30 +470,30 @@
 <P>.</P>
 <P>.</P>
 <div *ngIf="exibirTabelaRemessa">
-  <table class="table table-dark table-hover" *ngIf="exibirTabela2">
+  <table class="table table-dark table-hover text-center" *ngIf="exibirTabela2">
     <thead>
       <tr>
-        <th>Os</th>
-        <th>Codigo Remessa</th>
-        <th>Valor</th>
-        <th>Data Faturamento</th>
-        <th>Tipo Pagamento</th>
-        <th>Vencimento 1</th>
-        <th>Parcela 1</th>
-        <th>Status Parcela 1</th>
-        <th>Vencimento 2</th>
-        <th>Parcela 2</th>
-        <th>Status Parcela 2</th>
-        <th>Vencimento 3</th>
-        <th>Parcela 3</th>
-        <th>Status Parcela 3</th>
-        <th>Status Geral</th>
-        <th>Juros</th>
-        <th>Iof</th>
-        <th>Boleto</th>
-        <th>Taxa Bordero</th>
-        <th>Custo Total Bancário*</th>
-        <th>Valor Liquido</th>
+        <th style="color: orange;">Os</th>
+        <th style="color: orange;">Codigo Remessa</th>
+        <th style="color: orange;">Valor</th>
+        <th style="color: orange;">Data Faturamento</th>
+        <th style="color: orange;">Tipo Pagamento</th>
+        <th style="color: orange;">Vencimento 1</th>
+        <th style="color: orange;">Parcela 1</th>
+        <th style="color: orange;">Status Parcela 1</th>
+        <th style="color: orange;">Vencimento 2</th>
+        <th style="color: orange;">Parcela 2</th>
+        <th style="color: orange;">Status Parcela 2</th>
+        <th style="color: orange;">Vencimento 3</th>
+        <th style="color: orange;">Parcela 3</th>
+        <th style="color: orange;">Status Parcela 3</th>
+        <th style="color: orange;">Status Geral</th>
+        <th style="color: orange;">Juros</th>
+        <th style="color: orange;">Iof</th>
+        <th style="color: orange;">Boleto</th>
+        <th style="color: orange;">Taxa Bordero</th>
+        <th style="color: orange;">Custo Total Bancário*</th>
+        <th style="color: orange;">Valor Liquido</th>
 
       </tr>
     </thead>
@@ -505,14 +506,14 @@
         <td>{{remessa.tipoPagamento}}</td>
         <td>{{remessa.vencimento1}}</td>
         <td>{{remessa.valorParcela1}}</td>
-        <td>{{remessa.statusParcela1}}</td>
+        <td [ngClass]="{'text-danger fw-bold': remessa.statusParcela1 === 'ATRAZADO'}">{{remessa.statusParcela1}}</td>
         <td>{{remessa.vencimento2}}</td>
         <td>{{remessa.valorParcela2}}</td>
-        <td>{{remessa.statusParcela2}}</td>
+        <td [ngClass]="{'text-danger fw-bold': remessa.statusParcela2 === 'ATRAZADO'}">{{remessa.statusParcela2}}</td>
         <td>{{remessa.vencimento3}}</td>
         <td>{{remessa.valorParcela3}}</td>
-        <td>{{remessa.statusParcela3}}</td>
-        <td>{{remessa.statusGeral}}</td>
+        <td [ngClass]="{'text-danger fw-bold': remessa.statusParcela3 === 'ATRAZADO'}">{{remessa.statusParcela3}}</td>
+        <td [ngClass]="{'text-danger fw-bold': remessa.statusGeral === 'ATRAZADO'}">{{remessa.statusGeral}}</td>
         <td>{{remessa.jurosBordero}}</td>
         <td>{{remessa.iofDiario}}</td>
         <td>{{remessa.tarifaBordero}}</td>
@@ -601,6 +602,12 @@
     placeholder="R$ 0,00">
 </div>
 
+<!-- 8 - BOTÃO PROCESSAR REMESSA -->
+      <div  class="form-group mb-2" style="flex: 0 0 auto;">
+        <button type="button" class="btn btn-primary" (click)="processarBordero()"> Processar Borderô</button>
+        <p style="color: orange;">{{borderoJaSalvo}}</p>
+      </div>
+
 </div>
 </form>
 <p>.</p>
@@ -610,27 +617,27 @@
 <P>.</P>
 <P>.</P>
 <div *ngIf="exibirTabelaBordero">
-  <table class="table table-dark table-hover">
+  <table class="table table-dark table-hover text-center">
     <thead>
       <tr>
-        <th>Os</th>
-        <th>Nome</th>
-        <th>Codigo Remessa</th>
-        <th>Valor</th>
-        <th>Data Faturamento</th>
-        <th>Tipo Pagamento</th>
-        <th>Vencimento 1</th>
-        <th>Parcela 1</th>
-        <th>Vencimento 2</th>
-        <th>Parcela 2</th>
-        <th>Vencimento 3</th>
-        <th>Parcela 3</th>
-        <th>Juros</th>
-        <th>Iof</th>
-        <th>Boleto</th>
-        <th>Taxa Bordero</th>
-        <th>Total Bancário</th>
-        <th>Valor Liquido</th>
+        <th style="color: orange;">Os</th>
+        <th style="color: orange;">Nome</th>
+        <th style="color: orange;">Codigo Remessa</th>
+        <th style="color: orange;">Valor</th>
+        <th style="color: orange;">Data Faturamento</th>
+        <th style="color: orange;">Tipo Pagamento</th>
+        <th style="color: orange;">Vencimento 1</th>
+        <th style="color: orange;">Parcela 1</th>
+        <th style="color: orange;">Vencimento 2</th>
+        <th style="color: orange;">Parcela 2</th>
+        <th style="color: orange;">Vencimento 3</th>
+        <th style="color: orange;">Parcela 3</th>
+        <th style="color: orange;">Juros</th>
+        <th style="color: orange;">Iof</th>
+        <th style="color: orange;">Boleto</th>
+        <th style="color: orange;">Taxa Bordero</th>
+        <th style="color: orange;">Total Bancário</th>
+        <th style="color: orange;">Valor Liquido</th>
 
       </tr>
     </thead>

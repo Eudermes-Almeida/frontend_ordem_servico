@@ -49,6 +49,7 @@ export class FormFinanceiroComponent {
   opcaoQuantidadeParcela: string = "";
   opcaoPrazo: string = "";
   prazosDisponiveis: string[] = [];
+  borderoJaSalvo: string = "borderô AINDA NÃO salvo"
 
   ////DATEPICKER:
   model: NgbDateStruct | undefined;
@@ -286,7 +287,7 @@ export class FormFinanceiroComponent {
 
   // Busca ORDENS DE SERVIÇO PELO CODIGO DO CLIENTE
   getOsPorCodCli(codcli: number): void {
-  
+
     this.exibirTabelaGeral = true;
 
     this.modeloFinanceiro = [];
@@ -549,7 +550,42 @@ export class FormFinanceiroComponent {
   /////////////////////////GERANDO REMESSAS/////////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+  limparFormularios() {
+    this.formProcessaRemessa.patchValue({ dataFaturamento: "" });
+    this.formProcessaRemessa.patchValue({ tipoPagamento: "" });
+    this.formProcessaRemessa.patchValue({ quantidadeParcelas: "" });
+    this.formProcessaRemessa.patchValue({ prazo: "" });
+    this.formProcessaRemessa.patchValue({ fantasia: "" });
+    this.formProcessaRemessa.patchValue({ codCli: "" });
+    this.formProcessaRemessa.patchValue({ quantidadeBoletos: "" });
+    this.formProcessaRemessa.patchValue({ valorCadaBoleto: "" });
+    this.formProcessaRemessa.patchValue({ valorTotalOs: "" });
+    this.formProcessaRemessa.patchValue({ valorTotalDespesaBancaria: "" });
+    this.formProcessaRemessa.patchValue({ valorTotalLiquido: "" });
+    this.opcaoPrazo = "";
+    this.dataFaturamento = "";
+    this.opcaoTipoPagamento = "";
+    this.opcaoQuantidadeParcela = "";
+    this.opcaoQuantidadeParcela = "";
+
+    ////limpar formulário bordero////
+
+    this.formProcessaBordero.patchValue({codBordero: ""});
+    this.formProcessaBordero.patchValue({qtOs: ""});
+    this.formProcessaBordero.patchValue({valorTotalOs: ""});
+    this.formProcessaBordero.patchValue({qtClientes: ""});
+    this.formProcessaBordero.patchValue({qtBoletos: ""});
+    this.formProcessaBordero.patchValue({valorLiquidoCreditado: ""});
+    this.formProcessaBordero.patchValue({totalDespesasBancarias: ""});
+
+    this.borderoJaSalvo = "borderô AINDA NÃO salvo!";
+
+  }
+
+
   gerarRemessa() {
+    this.exibeOpcoesParcelamento = true;
     this.exibirFormularioConsulta = false;
     this.exibirTabelaGeral = false;
     this.exibirTabelaRemessa = true;
@@ -558,17 +594,9 @@ export class FormFinanceiroComponent {
     this.formProcessaRemessa.patchValue({ taxaDeJuros: "2.98" })
     this.formProcessaRemessa.patchValue({ taxaIof: "0.38" })
     this.formProcessaRemessa.patchValue({ custoPorBoleto: "3.50" })
-    this.formProcessaRemessa.patchValue({ dataFaturamento: "" })
-    this.formProcessaRemessa.patchValue({ tipoPagamento: "" })
-    this.formProcessaRemessa.patchValue({ quantidadeParcelas: "" })
-    this.formProcessaRemessa.patchValue({ prazo: "" })
-    this.formProcessaRemessa.patchValue({ fantasia: "" })
-    this.formProcessaRemessa.patchValue({ codCli: "" })
-    this.formProcessaRemessa.patchValue({ quantidadeBoletos: "" })
-    this.formProcessaRemessa.patchValue({ valorCadaBoleto: "" })
-    this.formProcessaRemessa.patchValue({ valorTotalOs: "" })
-    this.formProcessaRemessa.patchValue({ valorTotalDespesaBancaria: "" })
-    this.formProcessaRemessa.patchValue({ valorTotalLiquido: "" })
+
+    this.limparFormularios();
+
   }
 
   // Função para converter o objeto em string
@@ -605,9 +633,16 @@ export class FormFinanceiroComponent {
 
   processaRemessa() {
 
-    if (!this.dataFaturamento) {
-      alert("Você precisa escolher a data do faturamento!")
+    if (!this.dataFaturamento || !this.opcaoTipoPagamento) {
+      alert("Você precisa preencher todos os campos do formulário")
       return
+    }
+
+    if (this.opcaoTipoPagamento !== "DINHEIRO" && this.opcaoTipoPagamento !== "PIX" && this.opcaoTipoPagamento !== "CARTEIRA") {
+      if (!this.opcaoQuantidadeParcela && !this.opcaoPrazo) {
+        alert("Você precisa preencher todos os campos do formulário")
+        return
+      }
     }
 
     switch (this.opcaoTipoPagamento) {
@@ -1160,6 +1195,7 @@ export class FormFinanceiroComponent {
     this.exibirTabelaBordero = true;
     this.exibirTabelaGeral = false;
 
+    this.limparFormularios();
 
 
     this.financeiroService.getPendentesBordero().subscribe(
@@ -1279,8 +1315,14 @@ export class FormFinanceiroComponent {
     }, 0)
     this.formProcessaBordero.patchValue({ valorLiquidoCreditado: String(calculoValorLiquidoCreditado.toFixed(2)) });
 
+
+
+  }
+
+  processarBordero() {
     ///////PERSISTE OS DADOS:
     this.persisteBordero();
+    this.borderoJaSalvo = "";
 
   }
 
@@ -1303,13 +1345,13 @@ export class FormFinanceiroComponent {
 
   }
 
-voltar(){
-  this.exibirFormularioBordero = false;
-  this.exibirTabelaBordero = false;
-  this.exibirTabelaRemessa = false;
-  this.exibirTabela2 = true;
-  this.exibirTabelaGeral = true;
-}
+  voltar() {
+    this.exibirFormularioBordero = false;
+    this.exibirTabelaBordero = false;
+    this.exibirTabelaRemessa = false;
+    this.exibirTabela2 = true;
+    this.exibirTabelaGeral = true;
+  }
 
 
 }
