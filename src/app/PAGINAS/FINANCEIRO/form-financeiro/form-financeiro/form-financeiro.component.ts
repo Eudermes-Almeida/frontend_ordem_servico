@@ -515,7 +515,7 @@ export class FormFinanceiroComponent {
       this.codCliAceito = financeiro.codcli;
     }
 
-    if (financeiro.codcli !== 0 && financeiro.codcli === this.codCliAceito) {
+    if (financeiro.codcli !== 0 && financeiro.codcli === this.codCliAceito && !financeiro.codRemessa) {
       if (isChecked) {
         this.osSelecionadasParaRemessa.push(financeiro);
         console.log(`OS ${financeiro.os} ADICIONADA. Total no lote:`, this.osSelecionadasParaRemessa.length);
@@ -532,11 +532,16 @@ export class FormFinanceiroComponent {
       console.log('Lista atual de OS para remessa:', this.osSelecionadasParaRemessa);
 
     } else {
-      // Força o checkbox que acabou de ser clicado a voltar para o estado desmarcado
+      if(financeiro.codRemessa){
+        alert("Já foi elaborada uma remessa para esta ordem de serviço!")
+        inputCheckbox.checked = false;
+        return
+      }else{// Força o checkbox que acabou de ser clicado a voltar para o estado desmarcado
       inputCheckbox.checked = false;
 
       alert("Todas as OS de uma remessa, precisam ser de um mesmo cliente ");
-      return;
+      return;}
+      
     }
   }
 
