@@ -69,6 +69,7 @@ export class FormFinanceiroComponent {
   exibirFormularioBordero: boolean = false;
   exibirTabelaBordero: boolean = false;
   exibirTabelaGeral: boolean = false;
+  exibirFormularioConsulta: boolean = true;
 
   // CONFIGURA FORMULÁRIO
   formulario = new FormGroup({
@@ -549,8 +550,11 @@ export class FormFinanceiroComponent {
   /////////////////////////////////////////////////////////////////////////////////////////////////////
 
   gerarRemessa() {
+    this.exibirFormularioConsulta = false;
     this.exibirTabelaGeral = false;
     this.exibirTabelaRemessa = true;
+    this.exibirFormularioBordero = false;
+    this.exibirTabelaBordero = false;
     this.formProcessaRemessa.patchValue({ taxaDeJuros: "2.98" })
     this.formProcessaRemessa.patchValue({ taxaIof: "0.38" })
     this.formProcessaRemessa.patchValue({ custoPorBoleto: "3.50" })
@@ -1150,6 +1154,8 @@ export class FormFinanceiroComponent {
   ///////////////////////////////////////////////////////////////////////////////////////////////////
 
   buscaPendentesBordero(): void {
+    this.exibirFormularioConsulta = false;
+    this.exibirTabelaRemessa = false;
     this.exibirFormularioBordero = true;
     this.exibirTabelaBordero = true;
     this.exibirTabelaGeral = false;

@@ -4,8 +4,8 @@
   <form [formGroup]="formulario" id="meuFormulario" class="centralizado-formulario">
 
     <!-- PRIMEIRA LINHA DE INPUTS (BLOCO CLIENTE CORRIGIDO COM PROPORÇÃO E BORDA) -->
-    <div class="row align-items-end g-3 p-2 mb-3 mx-0 w-100" style="border: 2px solid orange; border-radius: 10px;">
-
+    <div *ngIf="exibirFormularioConsulta" class="row align-items-end g-3 p-2 mb-3 mx-0 w-100" style="border: 2px solid orange; border-radius: 10px;">
+<h1 style="color: orange; text-align: center";>FORMULÁRIO CONSULTA</h1>
       <!-- CÓDIGO CLIENTE (45% Proporcional) -->
       <div class="col-5">
         <div class="form-group">
@@ -88,7 +88,7 @@
     </div>
 
     <!------------------ SEGUNDA LINHA DE INPUTS CENTRALIZADA ------------------>
-    <div class="d-flex flex-row flex-wrap align-items-end justify-content-center gap-4 mt-3">
+    <div *ngIf="exibirFormularioConsulta" class="d-flex flex-row flex-wrap align-items-end justify-content-center gap-4 mt-3">
 
       <!-- Bloco isolado com borda laranja para os componentes de O.S. -->
       <div class="d-flex align-items-end gap-3 p-2"
@@ -239,6 +239,8 @@
 
 <!----------------------TABELA COM AS ORDENS DE SERVIÇO------------------------------------------------------>
 <div *ngIf="exibirTabelaGeral">
+
+  <h1 style="color: orange; text-align: center";>TABELA CONSULTA</h1>
   <p class="text-secondary" *ngIf="exibirTabela2">Quantidade de ordem de serviço: {{modeloFinanceiro.length}} </p>
   <table class="table table-dark table-hover" *ngIf="exibirTabela2">
     <thead>
@@ -308,6 +310,7 @@
 <!------------------------FORMULÁRIO PARA GERAR REMESSA-------------------------->
 <p>.</p>
 <div *ngIf="exibirTabelaRemessa">
+  <h1 style="color: orange; text-align: center";>FORMULÁRIO REMESSA</h1>
   <form [formGroup]="formProcessaRemessa" id="formProcessaRemessa">
     <div class="d-flex flex-row flex-wrap align-items-end justify-content-around p-2 mx-auto"
       style="border: 2px solid orange; border-radius: 10px; width: 90%;">
@@ -527,7 +530,7 @@
 <!-------FORMULÁRIO GERAR BORDERO-->
 
 <div style="border: 2px solid orange; border-radius: 10px; width: 90%; margin: 0 auto;" *ngIf="exibirFormularioBordero">
-
+<h1 style="color: orange; text-align: center";>FORMULÁRIO BORDERÔ</h1>
   <p>.</p>
  <form [formGroup]="formProcessaBordero" id="formProcessaBordero">
 <div class="d-flex flex-row flex-wrap align-items-end justify-content-around w-100">
