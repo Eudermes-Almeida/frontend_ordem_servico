@@ -227,14 +227,14 @@
           <div class="form-group" style="flex: 0 0 auto;">
             <label class="form-label fw-bold small text-light d-block mb-1">Data Borderô</label>
             <div class="input-group" style="max-width: 160px;">
-              <input class="form-control" placeholder="aaaa-mm-dd" name="dp2" formControlName="dataBordero" ngbDatepicker
-                #d3="ngbDatepicker" (dateSelect)="onDateBordero($event)" container="body" />
+              <input class="form-control" placeholder="aaaa-mm-dd" name="dp2" formControlName="dataBordero"
+                ngbDatepicker #d3="ngbDatepicker" (dateSelect)="onDateBordero($event)" container="body" />
               <button class="btn btn-outline-primary d-flex align-items-center" (click)="d3.toggle()" type="button">
                 <i class="bi bi-calendar3"></i>
               </button>
             </div>
           </div>
-          
+
 
           <!-- BOTÃO BUSCAR BORDERO -->
           <div class="form-group" style="flex: 0 0 auto;">
@@ -279,7 +279,7 @@
       Limpar
     </button>
 
-    <button *ngIf="exibirBotaoVoltar"type="button" class="btn btn-primary" data-bs-toggle="tooltip"
+    <button *ngIf="exibirBotaoVoltar" type="button" class="btn btn-primary" data-bs-toggle="tooltip"
       data-bs-placement="top" (click)="voltar()">
       Voltar
     </button>
@@ -431,20 +431,22 @@
       <!-- 5 - TAXA DE JUROS -->
       <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 120px;" *ngIf="exibeOpcoesParcelamento">
         <label for="taxaJuros" class="form-label fw-bold small text-light d-block mb-1">Taxa de Juros</label>
-        <input style="text-align: center;" formControlName="taxaDeJuros" type="text" id="taxaJuros" class="form-control w-100" placeholder="0,00%">
+        <input style="text-align: center;" formControlName="taxaDeJuros" type="text" id="taxaJuros"
+          class="form-control w-100" placeholder="0,00%">
       </div>
 
       <!-- 6 - TAXA IOF -->
       <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 120px;" *ngIf="exibeOpcoesParcelamento">
         <label for="taxaIof" class="form-label fw-bold small text-light d-block mb-1">Taxa IOF</label>
-        <input style="text-align: center;"  formControlName="taxaIof" type="text" id="taxaIof" class="form-control w-100" placeholder="0,00%">
+        <input style="text-align: center;" formControlName="taxaIof" type="text" id="taxaIof" class="form-control w-100"
+          placeholder="0,00%">
       </div>
 
       <!-- 7 - CUSTO POR BOLETO EMITIDO -->
       <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;" *ngIf="exibeOpcoesParcelamento">
         <label for="custoBoleto" class="form-label fw-bold small text-light d-block mb-1">Custo por Boleto</label>
-        <input style="text-align: center;"  formControlName="custoPorBoleto" type="text" id="custoBoleto" class="form-control w-100"
-          placeholder="R$ 0,00">
+        <input style="text-align: center;" formControlName="custoPorBoleto" type="text" id="custoBoleto"
+          class="form-control w-100" placeholder="R$ 0,00">
       </div>
 
       <!-- 8 - BOTÃO PROCESSAR REMESSA -->
@@ -473,7 +475,8 @@
         <!-- 10 - CÓDIGO DO CLIENTE -->
         <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;">
           <label for="quantidadeBoletos" class="form-label fw-bold small text-light d-block mb-1">Codigo Cliente</label>
-          <input style="text-align: center;"  formControlName="codCli" type="text" id="codCli" class="form-control w-100" placeholder="0">
+          <input style="text-align: center;" formControlName="codCli" type="text" id="codCli" class="form-control w-100"
+            placeholder="0">
         </div>
 
 
@@ -481,39 +484,39 @@
         <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;">
           <label for="quantidadeBoletos" class="form-label fw-bold small text-light d-block mb-1">Quantidade
             Boletos</label>
-          <input style="text-align: center;"  formControlName="quantidadeBoletos" type="text" id="quantidadeBoletos" class="form-control w-100"
-            placeholder="0">
+          <input style="text-align: center;" formControlName="quantidadeBoletos" type="text" id="quantidadeBoletos"
+            class="form-control w-100" placeholder="0">
         </div>
 
         <!-- 10 - VALOR CADA BOLETO -->
         <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;">
           <label for="valorCadaBoleto" class="form-label fw-bold small text-light d-block mb-1">Valor Cada
             Boleto</label>
-          <input style="text-align: center;"  formControlName="valorCadaBoleto" type="text" id="valorCadaBoleto" class="form-control w-100"
-            placeholder="R$ 0,00">
+          <input style="text-align: center;" formControlName="valorCadaBoleto" type="text" id="valorCadaBoleto"
+            class="form-control w-100" placeholder="R$ 0,00">
         </div>
 
 
         <!-- 12 - VALOR TOTAL OS -->
         <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;">
           <label for="valorTotalOs" class="form-label fw-bold small text-light d-block mb-1">Total OS</label>
-          <input style="text-align: center;"  formControlName="valorTotalOs" type="text" id="valorTotalOs" class="form-control w-100"
-            placeholder="R$ 0,00">
+          <input style="text-align: center;" formControlName="valorTotalOs" type="text" id="valorTotalOs"
+            class="form-control w-100" placeholder="R$ 0,00">
         </div>
 
         <!-- 13 - TOTAL DESPESAS BANCÁRIAS -->
         <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;">
           <label for="valorTotalDespesaBancaria" class="form-label fw-bold small text-light d-block mb-1">Despesas
             Bancarias</label>
-          <input style="text-align: center;"  formControlName="valorTotalDespesaBancaria" type="text" id="valorTotalDespesaBancaria"
-            class="form-control w-100" placeholder="R$ 0,00">
+          <input style="text-align: center;" formControlName="valorTotalDespesaBancaria" type="text"
+            id="valorTotalDespesaBancaria" class="form-control w-100" placeholder="R$ 0,00">
         </div>
 
         <!-- 14  - TOTAL LIQUIDO -->
         <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;">
           <label for="valorTotalLiquido" class="form-label fw-bold small text-light d-block mb-1">Total Liquido</label>
-          <input style="text-align: center;"  formControlName="valorTotalLiquido" type="text" id="valorTotalLiquido" class="form-control w-100"
-            placeholder="R$ 0,00">
+          <input style="text-align: center;" formControlName="valorTotalLiquido" type="text" id="valorTotalLiquido"
+            class="form-control w-100" placeholder="R$ 0,00">
         </div>
 
       </div>
@@ -599,49 +602,51 @@
       <!--CODIGO BORDERO-->
       <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;">
         <label for="codBordero" class="form-label fw-bold small text-light d-block mb-1">CÓDIGO BORDERÔ</label>
-        <input style="text-align: center;" formControlName="codBordero" type="text" id="codBordero" class="form-control w-100"
-          placeholder="R$ 0,00">
+        <input style="text-align: center;" formControlName="codBordero" type="text" id="codBordero"
+          class="form-control w-100" placeholder="R$ 0,00">
       </div>
 
       <!--QUANTIDADE OS-->
       <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;">
         <label for="qtOs" class="form-label fw-bold small text-light d-block mb-1">QUANTIDADE OS</label>
-        <input style="text-align: center;" formControlName="qtOs" type="text" id="qtOs" class="form-control w-100" placeholder="R$ 0,00">
+        <input style="text-align: center;" formControlName="qtOs" type="text" id="qtOs" class="form-control w-100"
+          placeholder="R$ 0,00">
       </div>
 
       <!--VALOR TOTAL OS-->
       <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;">
         <label for="valorTotalOs" class="form-label fw-bold small text-light d-block mb-1">VALOR TOTAL OS</label>
-        <input style="text-align: center;" formControlName="valorTotalOs" type="text" id="valorTotalOs" class="form-control w-100"
-          placeholder="R$ 0,00">
+        <input style="text-align: center;" formControlName="valorTotalOs" type="text" id="valorTotalOs"
+          class="form-control w-100" placeholder="R$ 0,00">
       </div>
 
 
       <!--QUANTIDADE CLIENTES-->
       <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;">
         <label for="qtClientes" class="form-label fw-bold small text-light d-block mb-1">QT CLIENTES</label>
-        <input style="text-align: center;" formControlName="qtClientes" type="text" id="qtClientes" class="form-control w-100"
-          placeholder="R$ 0,00">
+        <input style="text-align: center;" formControlName="qtClientes" type="text" id="qtClientes"
+          class="form-control w-100" placeholder="R$ 0,00">
       </div>
 
       <!--QUANTIDADE BOLETOS-->
       <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;">
         <label for="qtBoletos" class="form-label fw-bold small text-light d-block mb-1">QT BOLETOS</label>
-        <input style="text-align: center;" formControlName="qtBoletos" type="text" id="qtBoletos" class="form-control w-100" placeholder="R$ 0,00">
+        <input style="text-align: center;" formControlName="qtBoletos" type="text" id="qtBoletos"
+          class="form-control w-100" placeholder="R$ 0,00">
       </div>
 
       <!--CUSTO POR BOLETO-->
       <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;">
         <label for="custoPorBoleto" class="form-label fw-bold small text-light d-block mb-1">CUSTO POR BOLETO</label>
-        <input style="text-align: center;" formControlName="custoPorBoleto" type="text" id="custoPorBoleto" class="form-control w-100"
-          placeholder="R$ 0,00">
+        <input style="text-align: center;" formControlName="custoPorBoleto" type="text" id="custoPorBoleto"
+          class="form-control w-100" placeholder="R$ 0,00">
       </div>
 
       <!--TAXA UNICA BORDERO-->
       <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;">
         <label for="taxaUnicaBordero" class="form-label fw-bold small text-light d-block mb-1">TX UNICA BORDERÔ</label>
-        <input style="text-align: center;" formControlName="taxaUnicaBordero" type="text" id="taxaUnicaBordero" class="form-control w-100"
-          placeholder="R$ 0,00">
+        <input style="text-align: center;" formControlName="taxaUnicaBordero" type="text" id="taxaUnicaBordero"
+          class="form-control w-100" placeholder="R$ 0,00">
       </div>
 
 
@@ -649,8 +654,8 @@
       <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;">
         <label for="totalDespesasBancarias" class="form-label fw-bold small text-light d-block mb-1">CUSTO
           BANCÁRIO</label>
-        <input style="text-align: center;" formControlName="totalDespesasBancarias" type="text" id="totalDespesasBancarias"
-          class="form-control w-100" placeholder="R$ 0,00">
+        <input style="text-align: center;" formControlName="totalDespesasBancarias" type="text"
+          id="totalDespesasBancarias" class="form-control w-100" placeholder="R$ 0,00">
       </div>
 
 
@@ -658,8 +663,8 @@
       <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;">
         <label for="valorLiquidoCreditado" class="form-label fw-bold small text-light d-block mb-1">LIQUIDO
           CREDITADO</label>
-        <input style="text-align: center;" formControlName="valorLiquidoCreditado" type="text" id="valorLiquidoCreditado" class="form-control w-100"
-          placeholder="R$ 0,00">
+        <input style="text-align: center;" formControlName="valorLiquidoCreditado" type="text"
+          id="valorLiquidoCreditado" class="form-control w-100" placeholder="R$ 0,00">
       </div>
 
       <!-- 8 - BOTÃO PROCESSAR REMESSA -->
@@ -729,7 +734,53 @@
 </div>
 
 
-<!---------TABELA PARA ALTERAR STATUS FINANCEIRO ----------------->
+<!-----------------------------FORMULÁRIO ALTERAR STATUS FINANCEIRO----------->
+<!-- Adicionado p-3 para dar o espaçamento interno no container sem precisar usar tags <p> com pontos -->
+<div *ngIf="exibirFormularioAlteraStatusParcelas" style="border: 2px solid orange; border-radius: 10px; width: 90%; margin: 0 auto;" class="p-3">
+  <!-- Correção de sintaxe no ponto e vírgula -->
+  <h1 style="color: orange; text-align: center;">FORMULÁRIO ALTERA STATUS PARCELAS</h1>
+  
+  <form [formGroup]="formAlteraStatusParcela" id="formAlteraStatusParcela" class="d-flex justify-content-center align-items-end gap-3 w-100">
+
+    <!-- Status Parcela 1 (ADICIONADO: min-width de 250px) -->
+    <div class="form-group" style="flex: 0 0 auto; min-width: 250px;">
+      <label class="form-label fw-bold small text-light d-block mb-1">Status Parcela 1</label>
+      <select formControlName="statusParcela1" (change)="onStatusFinanceiro($event)" class="form-select" id="statusParcela1">
+        <option [value]="''" disabled selected>Selecione...</option>
+        <option value="PAGO">PAGO</option>
+      </select>
+    </div>
+
+    <!-- Status Parcela 2 (ADICIONADO: min-width de 250px) -->
+    <div class="form-group" style="flex: 0 0 auto; min-width: 250px;">
+      <label class="form-label fw-bold small text-light d-block mb-1">Status Parcela 2</label>
+      <select formControlName="statusParcela2" (change)="onStatusFinanceiro($event)" class="form-select" id="statusParcela2">
+        <option [value]="''" disabled selected>Selecione...</option>
+        <option value="PAGO">PAGO</option>
+      </select>
+    </div>
+
+    <!-- Status Parcela 3 (ADICIONADO: min-width de 250px) -->
+    <div class="form-group" style="flex: 0 0 auto; min-width: 250px;">
+      <label class="form-label fw-bold small text-light d-block mb-1">Status Parcela 3</label>
+      <select formControlName="statusParcela3" (change)="onStatusFinanceiro($event)" class="form-select" id="statusParcela3">
+        <option [value]="''" disabled selected>Selecione...</option>
+        <option value="PAGO">PAGO</option>
+      </select>
+    </div>
+
+    <!-- Botão Alterar Status -->
+    <div class="form-group" style="flex: 0 0 auto;">
+      <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" (click)="limpar()">
+        Alterar Status
+      </button>
+    </div>
+
+  </form>
+</div>
+
+
+<!---------TABELA PARA ALTERAR STATUS FINANCEIRO --------------------------->
 
 <P>.</P>
 <P>.</P>
@@ -752,7 +803,7 @@
         <th style="color: orange;">Vencimento 3</th>
         <th style="color: orange;">Status Parcela 3</th>
         <th style="color: orange;">Parcela 3</th>
-        
+
 
       </tr>
     </thead>
@@ -773,7 +824,7 @@
         <td>{{bordero.vencimento3}}</td>
         <td>{{bordero.statusParcela3}}</td>
         <td>{{bordero.valorParcela3}}</td>
-       
+
 
     </tbody>
   </table>

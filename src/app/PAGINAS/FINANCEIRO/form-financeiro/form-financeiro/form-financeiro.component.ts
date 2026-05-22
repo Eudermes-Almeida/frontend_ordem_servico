@@ -79,6 +79,7 @@ export class FormFinanceiroComponent {
   exibirBotaoProcessarBordero: boolean = true;
   exibirBotaoVoltar: boolean = true;
   exibirTabelaAlterarStatusFinanceiro: boolean = false;
+  exibirFormularioAlteraStatusParcelas: boolean = false;
 
   // CONFIGURA FORMULÁRIO CONSULTA GERAL
   formulario = new FormGroup({
@@ -124,6 +125,13 @@ export class FormFinanceiroComponent {
     totalDespesasBancarias: new FormControl(''),
     valorLiquidoCreditado: new FormControl(''),
     custoPorBoleto: new FormControl(''),
+  });
+
+  // CONFIGURA FORMULÁRIO ALTERA STATUS FINANCEIRO PARCELA
+  formAlteraStatusParcela = new FormGroup({
+    statusParcela1: new FormControl(''),
+    statusParcela2: new FormControl(''),
+    statusParcela3: new FormControl(''),
   });
 
   constructor(
@@ -1444,6 +1452,8 @@ export class FormFinanceiroComponent {
     this.exibirTabelaRemessa = false;
     this.exibirTabela2 = true;
     this.exibirTabelaGeral = true;
+    this.exibirFormularioAlteraStatusParcelas = false;
+    this.exibirTabelaAlterarStatusFinanceiro = false;
 
     this.exibirBtnGerarRemessa = false;
     if (this.flagIrRemessa) { this.atualizarModeloFinanceiroComDadosRemessa(); }/// atualiza a tabela consulta com os dados da remessa
@@ -1517,6 +1527,8 @@ export class FormFinanceiroComponent {
         this.arrayAlterarStatusFinanceiro = data;
         this.exibirTabelaAlterarStatusFinanceiro = true;
         this.exibirTabelaGeral = false;
+        this.exibirFormularioAlteraStatusParcelas = true;
+        this.exibirFormularioConsulta = false;
 
       },
       (error) => {
