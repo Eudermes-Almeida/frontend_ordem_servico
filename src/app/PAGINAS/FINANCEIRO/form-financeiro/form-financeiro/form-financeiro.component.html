@@ -279,7 +279,7 @@
       Limpar
     </button>
 
-    <button *ngIf="!exibirFormularioConsulta" type="button" class="btn btn-primary" data-bs-toggle="tooltip"
+    <button *ngIf="exibirBotaoVoltar"type="button" class="btn btn-primary" data-bs-toggle="tooltip"
       data-bs-placement="top" (click)="voltar()">
       Voltar
     </button>
@@ -423,19 +423,19 @@
       <!-- 5 - TAXA DE JUROS -->
       <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 120px;" *ngIf="exibeOpcoesParcelamento">
         <label for="taxaJuros" class="form-label fw-bold small text-light d-block mb-1">Taxa de Juros</label>
-        <input formControlName="taxaDeJuros" type="text" id="taxaJuros" class="form-control w-100" placeholder="0,00%">
+        <input style="text-align: center;" formControlName="taxaDeJuros" type="text" id="taxaJuros" class="form-control w-100" placeholder="0,00%">
       </div>
 
       <!-- 6 - TAXA IOF -->
       <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 120px;" *ngIf="exibeOpcoesParcelamento">
         <label for="taxaIof" class="form-label fw-bold small text-light d-block mb-1">Taxa IOF</label>
-        <input formControlName="taxaIof" type="text" id="taxaIof" class="form-control w-100" placeholder="0,00%">
+        <input style="text-align: center;"  formControlName="taxaIof" type="text" id="taxaIof" class="form-control w-100" placeholder="0,00%">
       </div>
 
       <!-- 7 - CUSTO POR BOLETO EMITIDO -->
       <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;" *ngIf="exibeOpcoesParcelamento">
         <label for="custoBoleto" class="form-label fw-bold small text-light d-block mb-1">Custo por Boleto</label>
-        <input formControlName="custoPorBoleto" type="text" id="custoBoleto" class="form-control w-100"
+        <input style="text-align: center;"  formControlName="custoPorBoleto" type="text" id="custoBoleto" class="form-control w-100"
           placeholder="R$ 0,00">
       </div>
 
@@ -465,7 +465,7 @@
         <!-- 10 - CÓDIGO DO CLIENTE -->
         <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;">
           <label for="quantidadeBoletos" class="form-label fw-bold small text-light d-block mb-1">Codigo Cliente</label>
-          <input formControlName="codCli" type="text" id="codCli" class="form-control w-100" placeholder="0">
+          <input style="text-align: center;"  formControlName="codCli" type="text" id="codCli" class="form-control w-100" placeholder="0">
         </div>
 
 
@@ -473,7 +473,7 @@
         <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;">
           <label for="quantidadeBoletos" class="form-label fw-bold small text-light d-block mb-1">Quantidade
             Boletos</label>
-          <input formControlName="quantidadeBoletos" type="text" id="quantidadeBoletos" class="form-control w-100"
+          <input style="text-align: center;"  formControlName="quantidadeBoletos" type="text" id="quantidadeBoletos" class="form-control w-100"
             placeholder="0">
         </div>
 
@@ -481,7 +481,7 @@
         <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;">
           <label for="valorCadaBoleto" class="form-label fw-bold small text-light d-block mb-1">Valor Cada
             Boleto</label>
-          <input formControlName="valorCadaBoleto" type="text" id="valorCadaBoleto" class="form-control w-100"
+          <input style="text-align: center;"  formControlName="valorCadaBoleto" type="text" id="valorCadaBoleto" class="form-control w-100"
             placeholder="R$ 0,00">
         </div>
 
@@ -489,7 +489,7 @@
         <!-- 12 - VALOR TOTAL OS -->
         <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;">
           <label for="valorTotalOs" class="form-label fw-bold small text-light d-block mb-1">Total OS</label>
-          <input formControlName="valorTotalOs" type="text" id="valorTotalOs" class="form-control w-100"
+          <input style="text-align: center;"  formControlName="valorTotalOs" type="text" id="valorTotalOs" class="form-control w-100"
             placeholder="R$ 0,00">
         </div>
 
@@ -497,14 +497,14 @@
         <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;">
           <label for="valorTotalDespesaBancaria" class="form-label fw-bold small text-light d-block mb-1">Despesas
             Bancarias</label>
-          <input formControlName="valorTotalDespesaBancaria" type="text" id="valorTotalDespesaBancaria"
+          <input style="text-align: center;"  formControlName="valorTotalDespesaBancaria" type="text" id="valorTotalDespesaBancaria"
             class="form-control w-100" placeholder="R$ 0,00">
         </div>
 
         <!-- 14  - TOTAL LIQUIDO -->
         <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;">
           <label for="valorTotalLiquido" class="form-label fw-bold small text-light d-block mb-1">Total Liquido</label>
-          <input formControlName="valorTotalLiquido" type="text" id="valorTotalLiquido" class="form-control w-100"
+          <input style="text-align: center;"  formControlName="valorTotalLiquido" type="text" id="valorTotalLiquido" class="form-control w-100"
             placeholder="R$ 0,00">
         </div>
 
@@ -580,7 +580,7 @@
 </div>
 
 
-<!-------FORMULÁRIO GERAR BORDERO-->
+<!-----------------------------------FORMULÁRIO GERAR BORDERO-->
 
 <div style="border: 2px solid orange; border-radius: 10px; width: 90%; margin: 0 auto;" *ngIf="exibirFormularioBordero">
   <h1 style="color: orange; text-align: center" ;>FORMULÁRIO BORDERÔ</h1>
@@ -591,20 +591,20 @@
       <!--CODIGO BORDERO-->
       <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;">
         <label for="codBordero" class="form-label fw-bold small text-light d-block mb-1">CÓDIGO BORDERÔ</label>
-        <input formControlName="codBordero" type="text" id="codBordero" class="form-control w-100"
+        <input style="text-align: center;" formControlName="codBordero" type="text" id="codBordero" class="form-control w-100"
           placeholder="R$ 0,00">
       </div>
 
       <!--QUANTIDADE OS-->
       <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;">
         <label for="qtOs" class="form-label fw-bold small text-light d-block mb-1">QUANTIDADE OS</label>
-        <input formControlName="qtOs" type="text" id="qtOs" class="form-control w-100" placeholder="R$ 0,00">
+        <input style="text-align: center;" formControlName="qtOs" type="text" id="qtOs" class="form-control w-100" placeholder="R$ 0,00">
       </div>
 
       <!--VALOR TOTAL OS-->
       <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;">
         <label for="valorTotalOs" class="form-label fw-bold small text-light d-block mb-1">VALOR TOTAL OS</label>
-        <input formControlName="valorTotalOs" type="text" id="valorTotalOs" class="form-control w-100"
+        <input style="text-align: center;" formControlName="valorTotalOs" type="text" id="valorTotalOs" class="form-control w-100"
           placeholder="R$ 0,00">
       </div>
 
@@ -612,27 +612,27 @@
       <!--QUANTIDADE CLIENTES-->
       <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;">
         <label for="qtClientes" class="form-label fw-bold small text-light d-block mb-1">QT CLIENTES</label>
-        <input formControlName="qtClientes" type="text" id="qtClientes" class="form-control w-100"
+        <input style="text-align: center;" formControlName="qtClientes" type="text" id="qtClientes" class="form-control w-100"
           placeholder="R$ 0,00">
       </div>
 
       <!--QUANTIDADE BOLETOS-->
       <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;">
         <label for="qtBoletos" class="form-label fw-bold small text-light d-block mb-1">QT BOLETOS</label>
-        <input formControlName="qtBoletos" type="text" id="qtBoletos" class="form-control w-100" placeholder="R$ 0,00">
+        <input style="text-align: center;" formControlName="qtBoletos" type="text" id="qtBoletos" class="form-control w-100" placeholder="R$ 0,00">
       </div>
 
       <!--CUSTO POR BOLETO-->
       <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;">
         <label for="custoPorBoleto" class="form-label fw-bold small text-light d-block mb-1">CUSTO POR BOLETO</label>
-        <input formControlName="custoPorBoleto" type="text" id="custoPorBoleto" class="form-control w-100"
+        <input style="text-align: center;" formControlName="custoPorBoleto" type="text" id="custoPorBoleto" class="form-control w-100"
           placeholder="R$ 0,00">
       </div>
 
       <!--TAXA UNICA BORDERO-->
       <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;">
         <label for="taxaUnicaBordero" class="form-label fw-bold small text-light d-block mb-1">TX UNICA BORDERÔ</label>
-        <input formControlName="taxaUnicaBordero" type="text" id="taxaUnicaBordero" class="form-control w-100"
+        <input style="text-align: center;" formControlName="taxaUnicaBordero" type="text" id="taxaUnicaBordero" class="form-control w-100"
           placeholder="R$ 0,00">
       </div>
 
@@ -641,7 +641,7 @@
       <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;">
         <label for="totalDespesasBancarias" class="form-label fw-bold small text-light d-block mb-1">CUSTO
           BANCÁRIO</label>
-        <input formControlName="totalDespesasBancarias" type="text" id="totalDespesasBancarias"
+        <input style="text-align: center;" formControlName="totalDespesasBancarias" type="text" id="totalDespesasBancarias"
           class="form-control w-100" placeholder="R$ 0,00">
       </div>
 
@@ -650,12 +650,12 @@
       <div class="form-group mb-2" style="flex: 0 0 auto; max-width: 150px;">
         <label for="valorLiquidoCreditado" class="form-label fw-bold small text-light d-block mb-1">LIQUIDO
           CREDITADO</label>
-        <input formControlName="valorLiquidoCreditado" type="text" id="valorLiquidoCreditado" class="form-control w-100"
+        <input style="text-align: center;" formControlName="valorLiquidoCreditado" type="text" id="valorLiquidoCreditado" class="form-control w-100"
           placeholder="R$ 0,00">
       </div>
 
       <!-- 8 - BOTÃO PROCESSAR REMESSA -->
-      <div class="form-group mb-2" style="flex: 0 0 auto;">
+      <div class="form-group mb-2" style="flex: 0 0 auto;" *ngIf="exibirBotaoProcessarBordero">
         <button type="button" class="btn btn-primary" (click)="processarBordero()"> Processar Borderô</button>
         <p style="color: orange;">{{borderoJaSalvo}}</p>
       </div>

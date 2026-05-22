@@ -75,6 +75,8 @@ export class FormFinanceiroComponent {
   exibirTabelaBordero: boolean = false;
   exibirTabelaGeral: boolean = false;
   exibirFormularioConsulta: boolean = true;
+  exibirBotaoProcessarBordero: boolean = true;
+  exibirBotaoVoltar: boolean = true;
 
   // CONFIGURA FORMULÁRIO CONSULTA GERAL
   formulario = new FormGroup({
@@ -226,7 +228,7 @@ export class FormFinanceiroComponent {
   }
 
 
-///////////////////////////////CONSULTAS POR ORDEM DE SERVIÇO////////////////////////////
+  ///////////////////////////////CONSULTAS POR ORDEM DE SERVIÇO////////////////////////////
 
   buscaUltimaOs(): void {
     this.spinnerLoading = true; // Liga o indicador de processamento
@@ -425,7 +427,7 @@ export class FormFinanceiroComponent {
     );
   }
 
-//////////////////////////BUSCA POR STATUS FINNACEIRO////////////////////////////////////////
+  //////////////////////////BUSCA POR STATUS FINNACEIRO////////////////////////////////////////
 
 
   ////tratando clicks dos radios
@@ -531,19 +533,29 @@ export class FormFinanceiroComponent {
 
   getBorderoPorData(codbordero: string): void {
 
-    this.exibirTabelaGeral = true;
+    this.exibirTabelaGeral = false;
+    this.exibirTabelaBordero = true;
+    this.exibirFormularioBordero = true;
+    this.exibirFormularioConsulta = false;
+    this.exibirBotaoVoltar = false;
+    
 
     this.modeloFinanceiro = [];
     this.spinnerLoading = true;
 
     this.financeiroService.getBorderoPorData(codbordero).subscribe(
-      (data: Financeiro[]) => { 
-        this.borderoPendentes = data; 
+      (data: Financeiro[]) => {
+        this.borderoPendentes = data;
 
         // 2. CORRIGIDO: Exibe no console a variável correta que acabou de receber os dados
         console.log('Ordens financeiras obtidas:', this.modeloFinanceiro);
         this.exibirTabela2 = true;
         this.spinnerLoading = false;
+
+        this.populaInicialmenteTotalizadores();
+        this.populaTotalizadoresGerarBordero();
+        this.exibirBotaoProcessarBordero = false;
+
       },
       (error) => {
         this.spinnerLoading = false; // 3. CORRIGIDO: Desliga o spinner em caso de falha na requisição
@@ -556,6 +568,8 @@ export class FormFinanceiroComponent {
         }
       }
     );
+
+
   }
 
 
@@ -1324,6 +1338,7 @@ export class FormFinanceiroComponent {
     })
 
     ////quantidade os///////////////////
+    console.log(" ESte é o this.borderoPendentes.length ", this.borderoPendentes.length)
     this.formProcessaBordero.patchValue({ qtOs: String(this.borderoPendentes.length) });
 
     //// valor total os////////////////////////////
@@ -1348,7 +1363,7 @@ export class FormFinanceiroComponent {
       return acc + valorElemento;
     }, 0);
     const quantidadeBoletos = valorTotaCustoBoleto / Number(this.formProcessaBordero.value.custoPorBoleto)
-    this.formProcessaBordero.patchValue({ qtBoletos: String(quantidadeBoletos) });
+    this.formProcessaBordero.patchValue({ qtBoletos: (quantidadeBoletos).toFixed(0) });
 
     //////// VALOR DA TAXA UNICA BORDERÔ POR BOLETO/////////
     const taxaUnicaBorderoPorOS = Number(this.formProcessaBordero.value.taxaUnicaBordero) / this.borderoPendentes.length;
@@ -1476,7 +1491,7 @@ export class FormFinanceiroComponent {
     });
   }
 
-   limpar() {
+  limpar() {
     this.isClickEvent = false; // Reseta a flag após o clique
     this.router.navigate(['/home']).then(() => {
       this.router.navigate(['financeiro/consulta']);

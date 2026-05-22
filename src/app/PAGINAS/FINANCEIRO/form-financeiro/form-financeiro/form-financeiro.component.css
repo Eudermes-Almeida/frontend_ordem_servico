@@ -1,4 +1,4 @@
-/* Estilos do Formulário Centralizado */
+
 .centralizado-formulario {
     background-color: #1a1a1a;
     padding: 10px; /* Aumentei o padding para dar um espaço melhor */
@@ -8,7 +8,6 @@
     width: 100%; /* Largura total do container */
     box-shadow: 0 0 10px rgba(255, 165, 0, 0.5);
 }
-
 
 
 .btn-salvar-ordem-servico{
