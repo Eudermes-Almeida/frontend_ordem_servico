@@ -220,35 +220,25 @@
       <div class="d-flex flex-column gap-2 p-3"
         style="border: 2px solid orange; border-radius: 10px; width: fit-content;">
 
-        <!-- O h5 agora ocupa toda a largura do topo -->
         <h5 class="text-center w-100" style="color: orange; margin-bottom: 0;">Consulta Por Borderô</h5>
 
-        <!-- Esta nova div agrupa os inputs lado a lado -->
         <div class="d-flex align-items-end gap-3">
 
-          <!-- 1 - INPUT NUMERO OS -->
           <div class="form-group" style="flex: 0 0 auto;">
-            <div class="d-flex align-items-center">
-              <label for="numOs" class="mb-0 me-1 text-light small fw-bold">Nº O.S. :</label>
-              <input type="checkbox" id="ultimaOs" formControlName="ultimaOs" class="checkbox me-1"
-                (click)="buscaUltimaOs()">
-              <label for="ultimaOs" class="mb-0 text-muted small">última</label>
+            <label class="form-label fw-bold small text-light d-block mb-1">Data Borderô</label>
+            <div class="input-group" style="max-width: 160px;">
+              <input class="form-control" placeholder="aaaa-mm-dd" name="dp2" formControlName="dataBordero" ngbDatepicker
+                #d3="ngbDatepicker" (dateSelect)="onDateBordero($event)" container="body" />
+              <button class="btn btn-outline-primary d-flex align-items-center" (click)="d3.toggle()" type="button">
+                <i class="bi bi-calendar3"></i>
+              </button>
             </div>
-            <input type="text" id="numOs" #numOsInput formControlName="numOs" class="form-control mt-1"
-              style="max-width: 130px;">
           </div>
+          
 
-          <!-- 5 - INPUT ULTIMAS OS -->
+          <!-- BOTÃO BUSCAR BORDERO -->
           <div class="form-group" style="flex: 0 0 auto;">
-            <label for="ultimasOs" class="form-label fw-bold small text-light d-block mb-1">Últimas O.S
-              Fechadas:</label>
-            <input type="text" id="ultimasOs" #ultimasOsInput formControlName="ultimasOs" class="form-control"
-              style="max-width: 180px;">
-          </div>
-
-          <!-- BOTÃO BUSCAR O.S. -->
-          <div class="form-group" style="flex: 0 0 auto;">
-            <button type="button" class="btn btn-primary w-100" (click)="gerenciaAbuscaOsPorIdOuUltimasOs()">
+            <button type="button" class="btn btn-primary w-100" (click)="getBorderoPorData(this.dataBordero)">
               Buscar
             </button>
           </div>

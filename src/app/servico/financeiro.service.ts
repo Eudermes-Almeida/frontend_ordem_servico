@@ -82,6 +82,10 @@ getPendentesBordero(): Observable<Financeiro[]> {
   return this.http.get<Financeiro[]>(url);
 }
 
+  getBorderoPorData(codbordero: string): Observable<Financeiro[]> {
+  const url = `${this.urlServidor}financeiro/bordero?data=${codbordero}`;
+  return this.http.get<Financeiro[]>(url);
+}
 
 
   

@@ -40,6 +40,7 @@ export class FormFinanceiroComponent {
   dataInicialIntervalo: string = "2010-01-01";
   dataFinalIntervalo: string = "2099-05-30";
   dataFaturamento: string = "";
+  dataBordero: string = "";
   statusFinanceiro: string = "";
   private isClickEvent: boolean = false;
   modeloFinanceiro: Financeiro[] = [];
@@ -57,6 +58,7 @@ export class FormFinanceiroComponent {
   model: NgbDateStruct | undefined;
   model2: NgbDateStruct | undefined;
   model3: NgbDateStruct | undefined;
+  model4: NgbDateStruct | undefined;
 
   ///////////CONTROLE DE RENDERIZAÇÃO/////////
   exibirTabelaCliente: boolean = false;
@@ -74,7 +76,7 @@ export class FormFinanceiroComponent {
   exibirTabelaGeral: boolean = false;
   exibirFormularioConsulta: boolean = true;
 
-  // CONFIGURA FORMULÁRIO
+  // CONFIGURA FORMULÁRIO CONSULTA GERAL
   formulario = new FormGroup({
     ultimoCliente: new FormControl(''),
     codcli: new FormControl(''),
@@ -85,10 +87,11 @@ export class FormFinanceiroComponent {
     tipoData: new FormControl('entrada'),
     dataInicio: new FormControl(''),
     dataFim: new FormControl(''),
-    statusFinanceiro: new FormControl('')
+    statusFinanceiro: new FormControl(''),
+    dataBordero: new FormControl('')
   });
 
-  // CONFIGURA FORMULÁRIO
+  // CONFIGURA FORMULÁRIO REMESSA
   formProcessaRemessa = new FormGroup({
     dataFaturamento: new FormControl(''),
     tipoPagamento: new FormControl(''),
@@ -106,7 +109,7 @@ export class FormFinanceiroComponent {
     valorCadaBoleto: new FormControl(''),
   });
 
-  // CONFIGURA FORMULÁRIO
+  // CONFIGURA FORMULÁRIO BORDERO
   formProcessaBordero = new FormGroup({
     codBordero: new FormControl(''),
     qtOs: new FormControl(''),
@@ -133,8 +136,6 @@ export class FormFinanceiroComponent {
   ngAfterViewInit(): void {
     // Captura todos os elementos da tela que possuem o atributo de tooltip
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-
-    // Inicializa o comportamento visual do Bootstrap para cada um deles
     Array.from(tooltipTriggerList).map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
   }
 
@@ -148,6 +149,15 @@ export class FormFinanceiroComponent {
     });
     this.executaVerificacaoDeAtrasos();
   }
+
+
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////CONSULTAS///////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+  ///////////////////////////CONSULTAS POR CLIENTE/////////////////////////
 
   // Buscar clientes por nome fantasia
   buscarClientesPorNomeFantasia(): void {
@@ -215,6 +225,9 @@ export class FormFinanceiroComponent {
     });
   }
 
+
+///////////////////////////////CONSULTAS POR ORDEM DE SERVIÇO////////////////////////////
+
   buscaUltimaOs(): void {
     this.spinnerLoading = true; // Liga o indicador de processamento
 
@@ -249,7 +262,6 @@ export class FormFinanceiroComponent {
     });
   }
 
-
   escreveDadosClienteNosInputs(cliente: Cliente): void {
     console.log('Dados do cliente:', cliente);
     this.formulario.patchValue({
@@ -263,7 +275,6 @@ export class FormFinanceiroComponent {
     }, 1000);
   }
 
-  //////////////////////////////////////////METODOS PARA BUSCAR OS //////////////////////////////////
 
   // Escuta o input Cod Cliente APOS DIGITAR O ENTER
   onCodCliKey(event: KeyboardEvent): void {
@@ -414,13 +425,8 @@ export class FormFinanceiroComponent {
     );
   }
 
-  limpar() {
+//////////////////////////BUSCA POR STATUS FINNACEIRO////////////////////////////////////////
 
-    this.isClickEvent = false; // Reseta a flag após o clique
-    this.router.navigate(['/home']).then(() => {
-      this.router.navigate(['financeiro/consulta']);
-    });
-  }
 
   ////tratando clicks dos radios
   onButtonClick() {
@@ -508,6 +514,53 @@ export class FormFinanceiroComponent {
 
   codCliAceito: number = 0;
 
+  /////////////////////////////////BUSCA POR PORDERO///////////////////////////
+
+  // Função para converter o objeto em string
+  onDateBordero(date: NgbDateStruct) {
+    // Formato Brasileiro: DD/MM/AAAA
+    const dia = date.day.toString().padStart(2, '0');
+    const mes = date.month.toString().padStart(2, '0');
+    const ano = date.year;
+
+    console.log(" Este é dia ", dia)
+
+    this.dataBordero = `${ano}-${mes}-${dia}`;
+    console.log('Data salva como string:', this.dataBordero);
+  }
+
+  getBorderoPorData(codbordero: string): void {
+
+    this.exibirTabelaGeral = true;
+
+    this.modeloFinanceiro = [];
+    this.spinnerLoading = true;
+
+    this.financeiroService.getBorderoPorData(codbordero).subscribe(
+      (data: Financeiro[]) => { 
+        this.borderoPendentes = data; 
+
+        // 2. CORRIGIDO: Exibe no console a variável correta que acabou de receber os dados
+        console.log('Ordens financeiras obtidas:', this.modeloFinanceiro);
+        this.exibirTabela2 = true;
+        this.spinnerLoading = false;
+      },
+      (error) => {
+        this.spinnerLoading = false; // 3. CORRIGIDO: Desliga o spinner em caso de falha na requisição
+
+        if (error.status === 404) {
+          alert(`Não há ordens de serviço cadastradas com este código: ${codbordero}.`);
+        } else {
+          console.error('Erro ao buscar ordens financeiras:', error);
+          alert(`Erro ao buscar ordens com este código: ${codbordero}.`);
+        }
+      }
+    );
+  }
+
+
+
+  ////////////////////////////////  REMESSA ////////////////////////////////////////////////////////
   adicionaOsnoArrayDeRemessa(financeiro: Financeiro, event: Event): void {
     // Captura o estado real do checkbox (true/false) a partir do evento de mudança
     const inputCheckbox = event.target as HTMLInputElement;
@@ -1420,6 +1473,13 @@ export class FormFinanceiroComponent {
 
       // Se não encontrou, mantém o item original intacto
       return itemOriginal;
+    });
+  }
+
+   limpar() {
+    this.isClickEvent = false; // Reseta a flag após o clique
+    this.router.navigate(['/home']).then(() => {
+      this.router.navigate(['financeiro/consulta']);
     });
   }
 
