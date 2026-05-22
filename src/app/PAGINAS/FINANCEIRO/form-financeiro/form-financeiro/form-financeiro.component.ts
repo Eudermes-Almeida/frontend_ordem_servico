@@ -78,6 +78,7 @@ export class FormFinanceiroComponent {
   exibirFormularioConsulta: boolean = true;
   exibirBotaoProcessarBordero: boolean = true;
   exibirBotaoVoltar: boolean = true;
+  exibirTabelaAlterarStatusFinanceiro: boolean = false;
 
   // CONFIGURA FORMULÁRIO CONSULTA GERAL
   formulario = new FormGroup({
@@ -1503,6 +1504,8 @@ export class FormFinanceiroComponent {
   ////////////////////ALTERAR STATUS FINANCEIRO///////////////////////
 
   alterarStatusFinanceiro(dados: Financeiro){
+
+    this.arrayAlterarStatusFinanceiro = [];
     console.log("Estes são os dados para serem alterados ", dados)
 
     console.log("Este é o código da remessa ", dados.codRemessa)
@@ -1512,6 +1515,8 @@ export class FormFinanceiroComponent {
      this.financeiroService.getOsPorRemessa(dados.codRemessa).subscribe(
       (data: Financeiro[]) => {
         this.arrayAlterarStatusFinanceiro = data;
+        this.exibirTabelaAlterarStatusFinanceiro = true;
+        this.exibirTabelaGeral = false;
 
       },
       (error) => {

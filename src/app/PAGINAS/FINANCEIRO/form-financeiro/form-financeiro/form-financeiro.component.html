@@ -727,3 +727,56 @@
   <p>.</p>
   <p>.</p>
 </div>
+
+
+<!---------TABELA PARA ALTERAR STATUS FINANCEIRO ----------------->
+
+<P>.</P>
+<P>.</P>
+<div *ngIf="exibirTabelaAlterarStatusFinanceiro">
+  <table class="table table-dark table-hover text-center">
+    <thead>
+      <tr>
+        <th style="color: orange;">Os</th>
+        <th style="color: orange;">Nome</th>
+        <th style="color: orange;">Codigo Remessa</th>
+        <th style="color: orange;">Valor</th>
+        <th style="color: orange;">Data Faturamento</th>
+        <th style="color: orange;">Tipo Pagamento</th>
+        <th style="color: orange;">Vencimento 1</th>
+        <th style="color: orange;">Status Parcela 1</th>
+        <th style="color: orange;">Parcela 1</th>
+        <th style="color: orange;">Vencimento 2</th>
+        <th style="color: orange;">Status Parcela 2</th>
+        <th style="color: orange;">Parcela 2</th>
+        <th style="color: orange;">Vencimento 3</th>
+        <th style="color: orange;">Status Parcela 3</th>
+        <th style="color: orange;">Parcela 3</th>
+        
+
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let bordero of arrayAlterarStatusFinanceiro">
+        <td>{{bordero.os}}</td>
+        <td>{{bordero.fantasia}}</td>
+        <td>{{bordero.codRemessa}}</td>
+        <td>{{bordero.totaliq}}</td>
+        <td>{{bordero.dataFaturamento}}</td>
+        <td>{{bordero.tipoPagamento}}</td>
+        <td>{{bordero.vencimento1}}</td>
+        <td>{{bordero.statusParcela1}}</td>
+        <td>{{bordero.valorParcela1}}</td>
+        <td>{{bordero.vencimento2}}</td>
+        <td>{{bordero.statusParcela2}}</td>
+        <td>{{bordero.valorParcela2}}</td>
+        <td>{{bordero.vencimento3}}</td>
+        <td>{{bordero.statusParcela3}}</td>
+        <td>{{bordero.valorParcela3}}</td>
+       
+
+    </tbody>
+  </table>
+  <p>.</p>
+  <p>.</p>
+</div>
