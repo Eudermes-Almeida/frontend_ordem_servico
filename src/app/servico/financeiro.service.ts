@@ -87,6 +87,11 @@ getPendentesBordero(): Observable<Financeiro[]> {
   return this.http.get<Financeiro[]>(url);
 }
 
+getOsPorRemessa(codremesa: string): Observable<Financeiro[]> {
+  const url = `${this.urlServidor}financeiro/remessa?remessa=${codremesa}`;
+  return this.http.get<Financeiro[]>(url);
+}
+
 
   
 }

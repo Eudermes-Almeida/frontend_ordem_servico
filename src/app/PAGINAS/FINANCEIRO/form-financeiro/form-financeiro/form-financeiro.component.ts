@@ -46,6 +46,7 @@ export class FormFinanceiroComponent {
   modeloFinanceiro: Financeiro[] = [];
   borderoPendentes: Financeiro[] = [];
   osSelecionadasParaRemessa: Financeiro[] = []
+  arrayAlterarStatusFinanceiro: Financeiro[] = [];
   opcaoTipoPagamento: string = "";
   opcaoQuantidadeParcela: string = "";
   opcaoPrazo: string = "";
@@ -1501,8 +1502,31 @@ export class FormFinanceiroComponent {
 
   ////////////////////ALTERAR STATUS FINANCEIRO///////////////////////
 
-  alterarStatusFinanceiro(){
-    console.log("Alterar status financeiro")
+  alterarStatusFinanceiro(dados: Financeiro){
+    console.log("Estes são os dados para serem alterados ", dados)
+
+    console.log("Este é o código da remessa ", dados.codRemessa)
+
+    //////buscar as os desta remessa
+
+     this.financeiroService.getOsPorRemessa(dados.codRemessa).subscribe(
+      (data: Financeiro[]) => {
+        this.arrayAlterarStatusFinanceiro = data;
+
+      },
+      (error) => {
+        this.spinnerLoading = false; // 3. CORRIGIDO: Desliga o spinner em caso de falha na requisição
+
+        if (error.status === 404) {
+          alert(`Não há ordens de serviço cadastradas para esta remessa: ${dados.codRemessa}.`);
+        } else {
+          console.error('Erro ao buscar ordens financeiras:', error);
+          alert(`Erro ao buscar OS para esta remessa ${dados.codRemessa}.`);
+        }
+      }
+    );
+
+    console.log(" Estes são os dados do array ", this.arrayAlterarStatusFinanceiro)
   }
 
 
