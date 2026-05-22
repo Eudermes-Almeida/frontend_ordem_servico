@@ -321,7 +321,8 @@
         <th style="color: orange;">Taxa Bordero</th>
         <th style="color: orange;">Custo Total Bancário*</th>
         <th style="color: orange;">Valor Liquido</th>
-        <th style="color: orange;">Selecionar</th>
+        <th style="color: orange;">Gerar Remessa</th>
+        <th style="color: orange;">Alterar Status</th>
       </tr>
     </thead>
     <tbody>
@@ -351,6 +352,13 @@
         <td>
           <input type="checkbox" class="checkbox me-1" [checked]="isOsSelecionada(remessa)"
             (change)="adicionaOsnoArrayDeRemessa(remessa, $event)">
+        </td>
+        <td>
+          <!-- Alterado de (item) para (dados) -->
+          <button type="button" class="btn btn-sm btn-outline-primary" (click)="alterarStatusFinanceiro()"
+            title="Editar Despesa">
+            <i class="bi bi-pencil-square"></i>
+          </button>
         </td>
       </tr>
     </tbody>

@@ -1499,6 +1499,13 @@ export class FormFinanceiroComponent {
   }
 
 
+  ////////////////////ALTERAR STATUS FINANCEIRO///////////////////////
+
+  alterarStatusFinanceiro(){
+    console.log("Alterar status financeiro")
+  }
+
+
 
 }
 
