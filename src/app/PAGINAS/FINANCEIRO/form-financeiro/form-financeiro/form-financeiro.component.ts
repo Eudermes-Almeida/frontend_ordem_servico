@@ -518,6 +518,16 @@ export class FormFinanceiroComponent {
     }
 
     if (financeiro.codcli !== 0 && financeiro.codcli === this.codCliAceito && !financeiro.codRemessa) {
+
+      console.log(" Este é o tipo de pagamento ", financeiro.tipoPagamento)
+
+      if (financeiro.tipoPagamento === "DINHEIRO" || financeiro.tipoPagamento === "PIX") {
+        alert("Esta ordem de serviço já foi recebida por PIX ou Dinheiro.")
+        inputCheckbox.checked = false;
+        return
+      }
+
+
       if (isChecked) {
         this.osSelecionadasParaRemessa.push(financeiro);
         console.log(`OS ${financeiro.os} ADICIONADA. Total no lote:`, this.osSelecionadasParaRemessa.length);
@@ -534,16 +544,20 @@ export class FormFinanceiroComponent {
       console.log('Lista atual de OS para remessa:', this.osSelecionadasParaRemessa);
 
     } else {
-      if(financeiro.codRemessa){
+
+
+
+      if (financeiro.codRemessa) {
         alert("Já foi elaborada uma remessa para esta ordem de serviço!")
         inputCheckbox.checked = false;
         return
-      }else{// Força o checkbox que acabou de ser clicado a voltar para o estado desmarcado
-      inputCheckbox.checked = false;
+      } else {// Força o checkbox que acabou de ser clicado a voltar para o estado desmarcado
+        inputCheckbox.checked = false;
 
-      alert("Todas as OS de uma remessa, precisam ser de um mesmo cliente ");
-      return;}
-      
+        alert("Todas as OS de uma remessa, precisam ser de um mesmo cliente ");
+        return;
+      }
+
     }
   }
 
@@ -578,13 +592,13 @@ export class FormFinanceiroComponent {
 
     ////limpar formulário bordero////
 
-    this.formProcessaBordero.patchValue({codBordero: ""});
-    this.formProcessaBordero.patchValue({qtOs: ""});
-    this.formProcessaBordero.patchValue({valorTotalOs: ""});
-    this.formProcessaBordero.patchValue({qtClientes: ""});
-    this.formProcessaBordero.patchValue({qtBoletos: ""});
-    this.formProcessaBordero.patchValue({valorLiquidoCreditado: ""});
-    this.formProcessaBordero.patchValue({totalDespesasBancarias: ""});
+    this.formProcessaBordero.patchValue({ codBordero: "" });
+    this.formProcessaBordero.patchValue({ qtOs: "" });
+    this.formProcessaBordero.patchValue({ valorTotalOs: "" });
+    this.formProcessaBordero.patchValue({ qtClientes: "" });
+    this.formProcessaBordero.patchValue({ qtBoletos: "" });
+    this.formProcessaBordero.patchValue({ valorLiquidoCreditado: "" });
+    this.formProcessaBordero.patchValue({ totalDespesasBancarias: "" });
 
     this.borderoJaSalvo = "borderô AINDA NÃO salvo!";
 
@@ -1362,52 +1376,52 @@ export class FormFinanceiroComponent {
     this.exibirTabelaGeral = true;
 
     this.exibirBtnGerarRemessa = false;
-    if(this.flagIrRemessa){this.atualizarModeloFinanceiroComDadosRemessa();}/// atualiza a tabela consulta com os dados da remessa
-    if(this.flagIrBordero){this.atualizarModeloFinanceiroComDadosBordero();} 
+    if (this.flagIrRemessa) { this.atualizarModeloFinanceiroComDadosRemessa(); }/// atualiza a tabela consulta com os dados da remessa
+    if (this.flagIrBordero) { this.atualizarModeloFinanceiroComDadosBordero(); }
     this.osSelecionadasParaRemessa = [];
     this.flagIrBordero = false;
     this.flagIrRemessa = false;
   }
 
   atualizarModeloFinanceiroComDadosRemessa(): void {
-  // 1. Cria um mapa para busca rápida dos dados novos indexados pelo número da OS
-  const mapaNovosDados = new Map<number, Financeiro>(
-    this.osSelecionadasParaRemessa.map(item => [item.os, item])
-  );
+    // 1. Cria um mapa para busca rápida dos dados novos indexados pelo número da OS
+    const mapaNovosDados = new Map<number, Financeiro>(
+      this.osSelecionadasParaRemessa.map(item => [item.os, item])
+    );
 
-  // 2. Percorre o modeloFinanceiro e atualiza apenas os itens que estão no mapa
-  this.modeloFinanceiro = this.modeloFinanceiro.map(itemOriginal => {
-    const dadosAtualizados = mapaNovosDados.get(itemOriginal.os);
-    
-    // Se encontrou dados correspondentes no array de remessa, mescla/substitui
-    if (dadosAtualizados) {
-      return { ...itemOriginal, ...dadosAtualizados };
-    }
-    
-    // Se não encontrou, mantém o item original intacto
-    return itemOriginal;
-  });
-}
+    // 2. Percorre o modeloFinanceiro e atualiza apenas os itens que estão no mapa
+    this.modeloFinanceiro = this.modeloFinanceiro.map(itemOriginal => {
+      const dadosAtualizados = mapaNovosDados.get(itemOriginal.os);
 
-atualizarModeloFinanceiroComDadosBordero(): void {
-  // 1. Cria um mapa para busca rápida dos dados novos indexados pelo número da OS
-  const mapaNovosDados = new Map<number, Financeiro>(
-    this.borderoPendentes.map(item => [item.os, item])
-  );
+      // Se encontrou dados correspondentes no array de remessa, mescla/substitui
+      if (dadosAtualizados) {
+        return { ...itemOriginal, ...dadosAtualizados };
+      }
 
-  // 2. Percorre o modeloFinanceiro e atualiza apenas os itens que estão no mapa
-  this.modeloFinanceiro = this.modeloFinanceiro.map(itemOriginal => {
-    const dadosAtualizados = mapaNovosDados.get(itemOriginal.os);
-    
-    // Se encontrou dados correspondentes no array de remessa, mescla/substitui
-    if (dadosAtualizados) {
-      return { ...itemOriginal, ...dadosAtualizados };
-    }
-    
-    // Se não encontrou, mantém o item original intacto
-    return itemOriginal;
-  });
-}
+      // Se não encontrou, mantém o item original intacto
+      return itemOriginal;
+    });
+  }
+
+  atualizarModeloFinanceiroComDadosBordero(): void {
+    // 1. Cria um mapa para busca rápida dos dados novos indexados pelo número da OS
+    const mapaNovosDados = new Map<number, Financeiro>(
+      this.borderoPendentes.map(item => [item.os, item])
+    );
+
+    // 2. Percorre o modeloFinanceiro e atualiza apenas os itens que estão no mapa
+    this.modeloFinanceiro = this.modeloFinanceiro.map(itemOriginal => {
+      const dadosAtualizados = mapaNovosDados.get(itemOriginal.os);
+
+      // Se encontrou dados correspondentes no array de remessa, mescla/substitui
+      if (dadosAtualizados) {
+        return { ...itemOriginal, ...dadosAtualizados };
+      }
+
+      // Se não encontrou, mantém o item original intacto
+      return itemOriginal;
+    });
+  }
 
 
 
