@@ -744,7 +744,7 @@
   <form [formGroup]="formAlteraStatusParcela" id="formAlteraStatusParcela" class="d-flex justify-content-center align-items-end gap-3 w-100">
 
     <!-- Status Parcela 1 (ADICIONADO: min-width de 250px) -->
-    <div class="form-group" style="flex: 0 0 auto; min-width: 250px;">
+    <div  class="form-group" style="flex: 0 0 auto; min-width: 250px;" >
       <label class="form-label fw-bold small text-light d-block mb-1">Status Parcela 1</label>
       <select formControlName="statusParcela1" (change)="onStatusFinanceiro($event)" class="form-select" id="statusParcela1">
         <option [value]="''" disabled selected>Selecione...</option>
@@ -768,7 +768,7 @@
     <p>.</p>
 
     <!-- Status Parcela 2 (ADICIONADO: min-width de 250px) -->
-    <div class="form-group" style="flex: 0 0 auto; min-width: 250px;">
+    <div *ngIf="exibirSelectStatusParcela2" class="form-group" style="flex: 0 0 auto; min-width: 250px;">
       <label class="form-label fw-bold small text-light d-block mb-1">Status Parcela 2</label>
       <select formControlName="statusParcela2" (change)="onStatusFinanceiro($event)" class="form-select" id="statusParcela2">
         <option [value]="''" disabled selected>Selecione...</option>
@@ -777,7 +777,7 @@
     </div>
 
     <!-- Botão Alterar Status -->
-    <div class="form-group" style="flex: 0 0 auto;">
+    <div *ngIf="exibirSelectStatusParcela2" class="form-group" style="flex: 0 0 auto;">
       <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" (click)="alterarStatusParcela2()">
         Alterar Status Parcela 2
       </button>
@@ -792,7 +792,7 @@
     <p>.</p>
 
     <!-- Status Parcela 3 (ADICIONADO: min-width de 250px) -->
-    <div class="form-group" style="flex: 0 0 auto; min-width: 250px;">
+    <div *ngIf="exibirSelectStatusParcela3" class="form-group" style="flex: 0 0 auto; min-width: 250px;">
       <label class="form-label fw-bold small text-light d-block mb-1">Status Parcela 3</label>
       <select formControlName="statusParcela3" (change)="onStatusFinanceiro($event)" class="form-select" id="statusParcela3">
         <option [value]="''" disabled selected>Selecione...</option>
@@ -801,7 +801,7 @@
     </div>
 
     <!-- Botão Alterar Status -->
-    <div class="form-group" style="flex: 0 0 auto;">
+    <div *ngIf="exibirSelectStatusParcela3" class="form-group" style="flex: 0 0 auto;">
       <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" (click)="alterarStatusParcela3()">
         Alterar Status Parcela 3
       </button>

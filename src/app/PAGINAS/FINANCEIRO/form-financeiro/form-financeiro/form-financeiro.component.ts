@@ -80,6 +80,9 @@ export class FormFinanceiroComponent {
   exibirBotaoVoltar: boolean = true;
   exibirTabelaAlterarStatusFinanceiro: boolean = false;
   exibirFormularioAlteraStatusParcelas: boolean = false;
+  exibirSelectStatusParcela2: boolean = true;
+  exibirSelectStatusParcela3: boolean = true;
+
 
   // CONFIGURA FORMULÁRIO CONSULTA GERAL
   formulario = new FormGroup({
@@ -1447,6 +1450,8 @@ export class FormFinanceiroComponent {
   }
 
   voltar() {
+    this.exibirSelectStatusParcela3 = true
+    this.exibirSelectStatusParcela2 = true
     this.exibirFormularioBordero = false;
     this.exibirTabelaBordero = false;
     this.exibirTabelaRemessa = false;
@@ -1515,13 +1520,17 @@ export class FormFinanceiroComponent {
 
   alterarStatusFinanceiro(dados: Financeiro){
 
-    this.arrayAlterarStatusFinanceiro = [];
-    console.log("Estes são os dados para serem alterados ", dados)
+    if(!dados.statusParcela3){this.exibirSelectStatusParcela3 = false}
+    if(!dados.statusParcela2){this.exibirSelectStatusParcela2 = false}
 
-    console.log("Este é o código da remessa ", dados.codRemessa)
+
+
+    this.arrayAlterarStatusFinanceiro = [];
+    this.formAlteraStatusParcela.patchValue({statusParcela1: ""})
+    this.formAlteraStatusParcela.patchValue({statusParcela2: ""})
+    this.formAlteraStatusParcela.patchValue({statusParcela3: ""})
 
     //////buscar as os desta remessa
-
      this.financeiroService.getOsPorRemessa(dados.codRemessa).subscribe(
       (data: Financeiro[]) => {
         this.arrayAlterarStatusFinanceiro = data;
@@ -1556,6 +1565,7 @@ export class FormFinanceiroComponent {
     })
      this.atualizarStatusGeralDoArray();
     this.persisteAlteraStatus();
+    this.atualizarModeloFinanceiroComarrayAlterarStatusFinanceiro();
   }
 
   alterarStatusParcela2(){
@@ -1568,6 +1578,7 @@ export class FormFinanceiroComponent {
     })
      this.atualizarStatusGeralDoArray();
     this.persisteAlteraStatus();
+    this.atualizarModeloFinanceiroComarrayAlterarStatusFinanceiro();
   }
 
   alterarStatusParcela3(){
@@ -1580,6 +1591,7 @@ export class FormFinanceiroComponent {
     })
     this.atualizarStatusGeralDoArray();
     this.persisteAlteraStatus();
+    this.atualizarModeloFinanceiroComarrayAlterarStatusFinanceiro();
   }
 
 
@@ -1643,6 +1655,28 @@ export class FormFinanceiroComponent {
     }
   });
 }
+
+
+////clona o array arrayAlterarStatusFinanceiro no array modelo financeiro
+atualizarModeloFinanceiroComarrayAlterarStatusFinanceiro(): void {
+    // 1. Cria um mapa para busca rápida dos dados novos indexados pelo número da OS
+    const mapaNovosDados = new Map<number, Financeiro>(
+      this.arrayAlterarStatusFinanceiro.map(item => [item.os, item])
+    );
+
+    // 2. Percorre o modeloFinanceiro e atualiza apenas os itens que estão no mapa
+    this.modeloFinanceiro = this.modeloFinanceiro.map(itemOriginal => {
+      const dadosAtualizados = mapaNovosDados.get(itemOriginal.os);
+
+      // Se encontrou dados correspondentes no array de remessa, mescla/substitui
+      if (dadosAtualizados) {
+        return { ...itemOriginal, ...dadosAtualizados };
+      }
+
+      // Se não encontrou, mantém o item original intacto
+      return itemOriginal;
+    });
+  }
 
 
   }
