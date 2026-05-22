@@ -526,7 +526,7 @@ export class FormFinanceiroComponent {
 
   codCliAceito: number = 0;
 
-  /////////////////////////////////BUSCA POR PORDERO///////////////////////////
+  /////////////////////////////////BUSCA POR BORDERO///////////////////////////
 
   // Função para converter o objeto em string
   onDateBordero(date: NgbDateStruct) {
@@ -1546,8 +1546,112 @@ export class FormFinanceiroComponent {
     console.log(" Estes são os dados do array ", this.arrayAlterarStatusFinanceiro)
   }
 
+  alterarStatusParcela1(){
+    if(!this.formAlteraStatusParcela.value.statusParcela1){
+      alert("Você precisa selecionar o status da parcela 1")
+      return
+    }
+    this.arrayAlterarStatusFinanceiro.forEach((os) => {
+      os.statusParcela1 = this.formAlteraStatusParcela.value.statusParcela1
+    })
+     this.atualizarStatusGeralDoArray();
+    this.persisteAlteraStatus();
+  }
+
+  alterarStatusParcela2(){
+    if(!this.formAlteraStatusParcela.value.statusParcela2){
+      alert("Você precisa selecionar o status da parcela 2")
+      return
+    }
+    this.arrayAlterarStatusFinanceiro.forEach((os) => {
+      os.statusParcela2 = this.formAlteraStatusParcela.value.statusParcela2
+    })
+     this.atualizarStatusGeralDoArray();
+    this.persisteAlteraStatus();
+  }
+
+  alterarStatusParcela3(){
+    if(!this.formAlteraStatusParcela.value.statusParcela3){
+      alert("Você precisa selecionar o status da parcela 3")
+      return
+    }
+    this.arrayAlterarStatusFinanceiro.forEach((os) => {
+      os.statusParcela3 = this.formAlteraStatusParcela.value.statusParcela3
+    })
+    this.atualizarStatusGeralDoArray();
+    this.persisteAlteraStatus();
+  }
 
 
+  atualizarStatusGeralDoArray(): void {
+  this.arrayAlterarStatusFinanceiro.forEach((item: Financeiro) => {
+    // 1. Coleta os status apenas das parcelas que realmente existem (não nulas/vazias)
+    const statusExistentes: string[] = [];
+
+    if (item.statusParcela1 && item.statusParcela1.trim() !== '') {
+      statusExistentes.push(item.statusParcela1.toUpperCase());
+    }
+    if (item.statusParcela2 && item.statusParcela2.trim() !== '') {
+      statusExistentes.push(item.statusParcela2.toUpperCase());
+    }
+    if (item.statusParcela3 && item.statusParcela3.trim() !== '') {
+      statusExistentes.push(item.statusParcela3.toUpperCase());
+    }
+
+    // 2. Se o objeto não tiver nenhuma parcela preenchida, define como vazio ou pula
+    if (statusExistentes.length === 0) {
+      item.statusGeral = 'SEM PARCELAS';
+      return;
+    }
+
+    // 3. Aplica a hierarquia de decisão baseada na presença dos status
+    if (statusExistentes.includes('ATRAZADO')) {
+      item.statusGeral = 'ATRAZADO';
+    } else if (statusExistentes.includes('EM DIA')) {
+      item.statusGeral = 'EM DIA';
+    } else if (statusExistentes.includes('PAGO')) {
+      item.statusGeral = 'PAGO';
+    }
+  });
 }
+
+ persisteAlteraStatus() {
+  this.spinnerLoading = true; // Garante que o spinner ligue ao disparar
+
+  this.financeiroService.atualizarFinanceiroEmLote(this.arrayAlterarStatusFinanceiro).subscribe({
+    next: (retornoDoBanco: Financeiro[]) => {
+      this.spinnerLoading = false;
+      
+      if (!retornoDoBanco || retornoDoBanco.length === 0) {
+        alert('Ocorreu um problema: os registros não puderam ser gravados no banco.');
+        return;
+      }
+
+      // SOLUÇÃO: Atualiza o array local com os dados salvos e processados pelo banco/servidor
+      this.arrayAlterarStatusFinanceiro = retornoDoBanco;
+
+      // Opcional: Se a tabela da tela usar um array DIFERENTE deste (ex: borderoPendentes),
+      // você deve atualizar o array correto aqui também:
+      // this.borderoPendentes = retornoDoBanco;
+
+      alert(`${retornoDoBanco.length} registros foram salvos e atualizados com sucesso.`);
+    },
+    error: (erro) => {
+      this.spinnerLoading = false;
+      console.error('Falha catastrófica ao liquidar lote financeiro:', erro);
+      alert('Erro interno do servidor ao processar o pagamento em lote. Verifique o terminal do Quarkus.');
+    }
+  });
+}
+
+
+  }
+
+
+
+
+
+
+
 
 

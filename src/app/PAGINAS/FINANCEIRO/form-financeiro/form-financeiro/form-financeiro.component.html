@@ -739,6 +739,7 @@
 <div *ngIf="exibirFormularioAlteraStatusParcelas" style="border: 2px solid orange; border-radius: 10px; width: 90%; margin: 0 auto;" class="p-3">
   <!-- Correção de sintaxe no ponto e vírgula -->
   <h1 style="color: orange; text-align: center;">FORMULÁRIO ALTERA STATUS PARCELAS</h1>
+  <p>.</p>
   
   <form [formGroup]="formAlteraStatusParcela" id="formAlteraStatusParcela" class="d-flex justify-content-center align-items-end gap-3 w-100">
 
@@ -751,6 +752,21 @@
       </select>
     </div>
 
+    <!-- Botão Alterar Status -->
+    <div class="form-group" style="flex: 0 0 auto;">
+      <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" (click)="alterarStatusParcela1()">
+        Alterar Status Parcela 1
+      </button>
+    </div>
+
+    <p>.</p>
+    <p>.</p>
+    <p>.</p>
+    <p>.</p>
+    <p>.</p>
+    <p>.</p>
+    <p>.</p>
+
     <!-- Status Parcela 2 (ADICIONADO: min-width de 250px) -->
     <div class="form-group" style="flex: 0 0 auto; min-width: 250px;">
       <label class="form-label fw-bold small text-light d-block mb-1">Status Parcela 2</label>
@@ -759,6 +775,21 @@
         <option value="PAGO">PAGO</option>
       </select>
     </div>
+
+    <!-- Botão Alterar Status -->
+    <div class="form-group" style="flex: 0 0 auto;">
+      <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" (click)="alterarStatusParcela2()">
+        Alterar Status Parcela 2
+      </button>
+    </div>
+
+    <p>.</p>
+    <p>.</p>
+    <p>.</p>
+    <p>.</p>
+    <p>.</p>
+    <p>.</p>
+    <p>.</p>
 
     <!-- Status Parcela 3 (ADICIONADO: min-width de 250px) -->
     <div class="form-group" style="flex: 0 0 auto; min-width: 250px;">
@@ -771,8 +802,8 @@
 
     <!-- Botão Alterar Status -->
     <div class="form-group" style="flex: 0 0 auto;">
-      <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" (click)="limpar()">
-        Alterar Status
+      <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" (click)="alterarStatusParcela3()">
+        Alterar Status Parcela 3
       </button>
     </div>
 
@@ -803,6 +834,7 @@
         <th style="color: orange;">Vencimento 3</th>
         <th style="color: orange;">Status Parcela 3</th>
         <th style="color: orange;">Parcela 3</th>
+        <th style="color: orange;">Status Geral</th>
 
 
       </tr>
@@ -824,7 +856,7 @@
         <td>{{bordero.vencimento3}}</td>
         <td>{{bordero.statusParcela3}}</td>
         <td>{{bordero.valorParcela3}}</td>
-
+        <td>{{bordero.statusGeral}}</td>
 
     </tbody>
   </table>
