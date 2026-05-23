@@ -67,151 +67,145 @@
         <div class="col-md-6 px-2">
             <h3 style="color: aqua;">Total do Período</h3>
           <!-- AUMENTADO: font-size modificado e adicionada a classe tabela-espacada -->
-          <table class="table table-dark table-hover tabela-espacada" style="font-size: 1.15rem;">
-            <thead>
-              <tr>
-                <th>Selecione</th>
-                <th>Relatórios</th>
-                <th>Valor</th>
-                <th>Qt</th>
-                <th>%</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><a>
-                    <button type="button" class="btn btn-dark"
-                      >
-                      <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
-                    </button>
-                  </a></td>
-                <td>FECHAMENTO OS</td>
-                <td class="valor">{{ arrayFaturamentoTotal[0]?.somatoriaDTO?.somatotaliq | number:'1.2-2' }}</td>
-                <td class="qt">{{ arrayFaturamentoTotal[0]?.somatoriaDTO?.qtOs | number:'1.2-2'}}</td>
-                <td class="percentual">100%</td>
-              </tr>
+         <table class="table table-dark table-hover tabela-espacada" style="font-size: 1.15rem;">
+  <thead>
+    <tr>
+      <th>Selecione</th>
+      <th>Relatórios</th>
+      <th>Valor</th>
+      <th>Qt</th>
+      <th>%</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- 1. FECHAMENTO OS -->
+    <tr>
+      <td><a>
+          <button type="button" class="btn btn-dark">
+            <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+          </button>
+        </a></td>
+      <td>FECHAMENTO OS</td>
+      <td class="valor">{{ arrayFaturamentoTotal[0]?.somatoriaDTO?.somatotaliq | number:'1.2-2' }}</td>
+      <!-- CORRIGIDO: Removido pipe de decimal da quantidade, já que quantidade é número inteiro -->
+      <td class="qt">{{ arrayFaturamentoTotal[0]?.somatoriaDTO?.qtOs }}</td>
+      <td class="percentual">100%</td>
+    </tr>
 
-              <tr>
-                <td><a>
-                    <button type="button" class="btn btn-dark">
-                      <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
-                    </button>
-                  </a></td>
-                <td>DINHEIRO</td>
-                <td class="valor">{{teste}}</td>
-                <td class="qt">{{teste}}</td>
-                <td class="percentual">{{teste}}%</td>
-              </tr>
+    <!-- 2. DINHEIRO -->
+    <tr>
+      <td><a>
+          <button type="button" class="btn btn-dark">
+            <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+          </button>
+        </a></td>
+      <td>DINHEIRO</td>
+      <td class="valor">{{ totaisFinanceiros['DINHEIRO']?.total | number:'1.2-2' }}</td>
+      <td class="qt">{{ totaisFinanceiros['DINHEIRO']?.qt }}</td>
+      <td class="percentual">{{ totaisFinanceiros['DINHEIRO']?.percentual | number:'1.2-2' }}%</td>
+    </tr>
 
-              <tr>
-                <td><a>
-                    <button type="button" class="btn btn-dark">
-                      <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
-                    </button>
-                  </a></td>
-                <td>PIX</td>
-                <td class="valor">{{teste}}</td>
-                <td class="qt">{{teste}}</td>
-                <td class="percentual">{{teste}}%</td>
-              </tr>
+    <!-- 3. PIX -->
+    <tr>
+      <td><a>
+          <button type="button" class="btn btn-dark">
+            <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+          </button>
+        </a></td>
+      <td>PIX</td>
+      <td class="valor">{{ totaisFinanceiros['PIX']?.total | number:'1.2-2' }}</td>
+      <td class="qt">{{ totaisFinanceiros['PIX']?.qt }}</td>
+      <td class="percentual">{{ totaisFinanceiros['PIX']?.percentual | number:'1.2-2' }}%</td>
+    </tr>
 
-              <tr>
-                <td><a>
-                    <button type="button" class="btn btn-dark">
-                      <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
-                    </button>
-                  </a></td>
-                <td>BOLETO</td>
-                <td class="valor">{{teste}}</td>
-                <td class="qt">{{teste}}</td>
-                <td class="percentual">{{teste}}%</td>
-              </tr>
+    <!-- 4. BOLETO -->
+    <tr>
+      <td><a>
+          <button type="button" class="btn btn-dark">
+            <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+          </button>
+        </a></td>
+      <td>BOLETO</td>
+      <td class="valor">{{ totaisFinanceiros['BOLETO']?.total | number:'1.2-2' }}</td>
+      <td class="qt">{{ totaisFinanceiros['BOLETO']?.qt }}</td>
+      <td class="percentual">{{ totaisFinanceiros['BOLETO']?.percentual | number:'1.2-2' }}%</td>
+    </tr>
 
-              <tr>
-                <td><a>
-                    <button type="button" class="btn btn-dark"
-                      >
-                      <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
-                    </button>
-                  </a></td>
-                <td>BORDERÔ</td>
-                <td class="valor">{{teste}}</td>
-                <td class="qt">{{teste}}</td>
-                <td class="percentual">{{ teste }}%</td>
-              </tr>
+    <!-- 5. BORDERÔ -->
+    <tr>
+      <td><a>
+          <button type="button" class="btn btn-dark">
+            <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+          </button>
+        </a></td>
+      <td>BORDERÔ</td>
+      <td class="valor">{{ totaisFinanceiros['BORDERO']?.total | number:'1.2-2' }}</td>
+      <td class="qt">{{ totaisFinanceiros['BORDERO']?.qt }}</td>
+      <td class="percentual">{{ totaisFinanceiros['BORDERO']?.percentual | number:'1.2-2' }}%</td>
+    </tr>
 
-              <tr>
-                <td><a>
-                    <button type="button" class="btn btn-dark"
-                      >
-                      <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
-                    </button>
-                  </a></td>
-                <td>AINDA NÃO FATURADO</td>
-                <td class="valor">{{ teste }}</td>
-                <td class="qt">{{teste}}</td>
-                <td class="percentual">{{ teste }}%</td>
-              </tr>
+    <!-- 6. AINDA NÃO FATURADO -->
+    <tr>
+  <td><button type="button" class="btn btn-dark"><i class="bi bi-check-circle icone"></i></button></td>
+  <td>AINDA NÃO FATURADO</td>
+  <td class="valor">{{ totaisFinanceiros['NAO FATURADO']?.total | number:'1.2-2' }}</td>
+  <td class="qt">{{ totaisFinanceiros['NAO FATURADO']?.qt }}</td>
+  <td class="percentual">{{ totaisFinanceiros['NAO FATURADO']?.percentual | number:'1.2-2' }}%</td>
+</tr>
 
-              <tr>
-                <td><a>
-                    <button type="button" class="btn btn-dark"
-                      >
-                      <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
-                    </button>
-                  </a></td>
-                <td>EM CARTEIRA</td>
-                <td class="valor">{{ teste }}
-                </td>
-                <td class="qt">{{teste}}</td>
-                <td class="percentual">{{ teste }}%</td>
-              </tr>
+    <!-- 7. EM CARTEIRA -->
+   <!-- EM CARTEIRA -->
+<tr>
+  <td><button type="button" class="btn btn-dark"><i class="bi bi-check-circle icone"></i></button></td>
+  <td>EM CARTEIRA</td>
+  <!-- CORRIGIDO: Removida a duplicidade, buscando diretamente a chave 'CARTEIRA' -->
+  <td class="valor">{{ totaisFinanceiros['CARTEIRA']?.total | number:'1.2-2' }}</td>
+  <td class="qt">{{ totaisFinanceiros['CARTEIRA']?.qt }}</td>
+  <td class="percentual">{{ totaisFinanceiros['CARTEIRA']?.percentual | number:'1.2-2' }}%</td>
+</tr>
 
-              <tr>
-                <td><a>
-                    <button type="button" class="btn btn-dark"
-                     >
-                      <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
-                    </button>
-                  </a></td>
-                <td>PAGO</td>
-                <td class="valor">{{ teste}}
-                </td>
-                <td class="qt">{{teste}}</td>
-                <td class="percentual">{{ teste }}%</td>
-              </tr>
 
-              <tr>
-                <td><a>
-                    <button type="button" class="btn btn-dark">
-                    
-                      <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
-                    </button>
-                  </a></td>
-                <td>TOTAL DESPESA BANCÁRIA</td>
-                <td class="valor">{{ teste }}
-                </td>
-                <td class="qt">{{teste}}</td>
-                <td class="percentual">{{ teste }}%</td>
-              </tr>
+    <!-- 8. PAGO -->
+    <tr>
+      <td><a>
+          <button type="button" class="btn btn-dark">
+            <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+          </button>
+        </a></td>
+      <td>PAGO</td>
+      <td class="valor">{{ teste }}</td>
+      <td class="qt">{{ teste }}</td>
+      <td class="percentual">{{ teste }}%</td>
+    </tr>
 
-              <tr>
-                <td><a>
-                    <button type="button" class="btn btn-dark">
-                      
-                      <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
-                    </button>
-                  </a></td>
-                <td>FECHAMENTO MENOS CONTABILIZADO</td>
-                <td class="valor">{{ teste }}
-                </td>
-                <td class="qt">{{teste}}</td>
-                <td class="percentual">{{ teste }}%</td>
-              </tr>
+    <!-- 9. TOTAL DESPESA BANCÁRIA -->
+    <tr>
+      <td><a>
+          <button type="button" class="btn btn-dark">
+            <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+          </button>
+        </a></td>
+      <td>TOTAL DESPESA BANCÁRIA</td>
+      <td class="valor">{{ teste }}</td>
+      <td class="qt">{{ teste }}</td>
+      <td class="percentual">{{ teste }}%</td>
+    </tr>
 
-             
-            </tbody>
-          </table>
+    <!-- 10. FECHAMENTO MENOS CONTABILIZADO -->
+    <tr>
+      <td><a>
+          <button type="button" class="btn btn-dark">
+            <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+          </button>
+        </a></td>
+      <td>FECHAMENTO MENOS CONTABILIZADO</td>
+      <td class="valor">{{ teste }}</td>
+      <td class="qt">{{ teste }}</td>
+      <td class="percentual">{{ teste }}%</td>
+    </tr>
+  </tbody>
+</table>
+
         </div> <!-- Fim da Coluna da Esquerda -->
 
         <!------------------ COLUNA DA DIREITA / MEIO (50% da largura) ------------------>

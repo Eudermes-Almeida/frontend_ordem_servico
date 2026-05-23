@@ -116,14 +116,38 @@ arrayFaturamentoTotal: any[] = [];
   }
 
 
-  statusSelecionado: string = "TODOS"
-  tipoDataSelecionado: string = "fechamento"
+    statusSelecionado: string = "TODOS";
+  tipoDataSelecionado: string = "fechamento";
+
+  // DEFINIÇÃO DO DICIONÁRIO DE DADOS: Inicializa a estrutura para todos os tipos necessários
+  totaisFinanceiros: { [chave: string]: { total: number; qt: number; percentual: number } } = {
+    "DINHEIRO": { total: 0, qt: 0, percentual: 0 },
+    "PIX": { total: 0, qt: 0, percentual: 0 },
+    "BOLETO": { total: 0, qt: 0, percentual: 0 },
+    "BORDERO": { total: 0, qt: 0, percentual: 0 },
+    "NAO FATURADO": { total: 0, qt: 0, percentual: 0 },
+    "CARTEIRA": { total: 0, qt: 0, percentual: 0 } // Centralizado apenas aqui
+  };
+
 
   buscaDadosParaPopularArrayGeral() {
+    const dataInicio = this.converterDataParaFormatoLimpo(this.dataInicialIntervalo);
+    const dataFim = this.converterDataParaFormatoLimpo(this.dataFinalIntervalo);
+    const busca = "faturamentoTotal";
 
-    ////////BUSCA FATURAMENTO POR DATA DE FECHAMENTO///////////
-    this.buscaFaturamentoTotalEntreDatas();
+    this.servico.buscaRelatoriosEntreDatas(dataInicio, dataFim, busca).subscribe({
+      next: (data: any) => {
+        this.arrayFaturamentoTotal = data;
+        this.buscarDadosFinanceiros();
+      },
+      error: (error) => {
+        console.error(`Erro ao buscar relatório ${busca}:`, error);
+        this.buscarDadosFinanceiros();
+      }
+    });
+  }
 
+  private buscarDadosFinanceiros() {
     this.financeiroService.getRegistrosFiltrados(
       this.dataInicialIntervalo,
       this.dataFinalIntervalo,
@@ -131,12 +155,14 @@ arrayFaturamentoTotal: any[] = [];
       this.tipoDataSelecionado
     ).subscribe({
       next: (dados: Financeiro[]) => {
-        this.arrayGeral = dados; // Alimenta a sua tabela com os registros retornados
+        this.arrayGeral = dados;
         console.log('Filtro dinâmico carregado com sucesso:', this.arrayGeral);
+        
+        // CORRIGIDO: Agora chama a função genérica que processa tudo de uma vez só
+        this.calcularTotaisFinanceiros();
       },
       error: (erro) => {
         console.error('Erro na busca avançada:', erro);
-
         if (erro.status === 404) {
           alert('Nenhum registro financeiro localizado para os critérios informados.');
         } else {
@@ -144,7 +170,50 @@ arrayFaturamentoTotal: any[] = [];
         }
       }
     });
-
   }
-  onButtonClick(){console.log("Teste")}
+
+  // MÉTODO GENÉRICO ÚNICO: Processa todos os meios de pagamento sem duplicar código
+  calcularTotaisFinanceiros(): void {
+    // 1. Reseta o dicionário antes de recalcular
+    Object.keys(this.totaisFinanceiros).forEach(chave => {
+      this.totaisFinanceiros[chave] = { total: 0, qt: 0, percentual: 0 };
+    });
+
+    // 2. Loop único com prioridade correta
+    this.arrayGeral.forEach((os) => {
+      // REGRA: Se tiver tipoPagamento usa ele. Se não tiver (como no NAO FATURADO), usa o statusGeral
+      let tipoOriginal = os.tipoPagamento ? os.tipoPagamento : os.statusGeral;
+
+      const tipoTratado = tipoOriginal?.toUpperCase().trim();
+
+      // Soma uma única vez na chave correspondente
+      if (tipoTratado && this.totaisFinanceiros[tipoTratado] && os.totaliq) {
+        this.totaisFinanceiros[tipoTratado].total += Number(os.totaliq);
+        this.totaisFinanceiros[tipoTratado].qt++;
+      }
+    });
+
+    // 3. Captura o faturamento total com segurança
+    let totalFaturamentoPeriodo = 0;
+    if (this.arrayFaturamentoTotal) {
+      if (Array.isArray(this.arrayFaturamentoTotal) && this.arrayFaturamentoTotal[0].somatoriaDTO) {
+        totalFaturamentoPeriodo = Number(this.arrayFaturamentoTotal[0].somatoriaDTO.somatotaliq);
+      } else if (this.arrayFaturamentoTotal[0].somatoriaDTO) {
+        totalFaturamentoPeriodo = Number(this.arrayFaturamentoTotal[0].somatoriaDTO.somatotaliq);
+      }
+    }
+
+    // 4. Calcula os percentuais finais
+    if (totalFaturamentoPeriodo > 0) {
+      Object.keys(this.totaisFinanceiros).forEach((tipo) => {
+        const totalDoTipo = this.totaisFinanceiros[tipo].total;
+        this.totaisFinanceiros[tipo].percentual = (totalDoTipo / totalFaturamentoPeriodo) * 100;
+      });
+    }
+
+    console.log("Cálculos consolidados e sem duplicidade:", this.totaisFinanceiros);
+  }
+
+  onButtonClick(){}
+
 }
