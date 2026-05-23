@@ -1,4 +1,13 @@
 
+.text-lime {
+  color: #00ff00; /* Cor verde-limão pura, ou use #32CD32 para LimeGreen */
+}
+
+.text-yellow {
+  color: #f8f408; /* Um amarelo vivo e legível para texto */
+}
+
+
 .centralizado-formulario {
     background-color: #1a1a1a;
     padding: 10px; /* Aumentei o padding para dar um espaço melhor */
