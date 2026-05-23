@@ -7,11 +7,14 @@ import { OrdemservicoService } from '../../../../servico/ordemservico.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+import { Financeiro } from '../../../../modelo/Financeiro';
+import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-form-relatorios-financeiros',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, NgbDatepickerModule],
   templateUrl: './form-relatorios-financeiros.component.html',
   styleUrl: './form-relatorios-financeiros.component.css'
 })
@@ -48,6 +51,16 @@ export class FormRelatoriosFinanceirosComponent {
     currentColorNaoAprovadas: string = 'white';
     private intervalId: any;
     spinnerLoading: boolean = false
+
+    //////////////////////////////////NOVAS VARIÁVEIS///////////////////////////////////////////////////
+    arrayGeral: Financeiro[] = [];
+
+    ////DATEPICKER:
+  model: NgbDateStruct | undefined;
+  model2: NgbDateStruct | undefined;
+
+  dataFinalIntervalo: string = "";
+  dataInicialIntervalo: string = "";
   
   
   
@@ -112,8 +125,6 @@ export class FormRelatoriosFinanceirosComponent {
     intervalAprovadas: any;
     intervalNaoAprovadas: any;
   
-  
-  
     // CONFIGURA FORMULÁRIO
     formulario = new FormGroup({
       datainicial: new FormControl(''),
@@ -129,17 +140,7 @@ export class FormRelatoriosFinanceirosComponent {
   
     ) { }
   
-    // ///////ATIVA FULL SCREEN////
-    // ativarFullscreen(): void {
-    //   const elem = document.documentElement;
-    //   if (elem.requestFullscreen) {
-    //     elem.requestFullscreen();
-    //   } else if ((elem as any).webkitRequestFullscreen) { /* Safari */
-    //     (elem as any).webkitRequestFullscreen();
-    //   } else if ((elem as any).msRequestFullscreen) { /* IE11 */
-    //     (elem as any).msRequestFullscreen();
-    //   }
-    // }
+    
   
     // Função delay para aguardar 100 ms
     delay(ms: number): Promise<void> {
@@ -167,16 +168,8 @@ export class FormRelatoriosFinanceirosComponent {
   
       // Após o loop, chama as funções seguintes
       this.SelecionaRelatoriosStatus();
-      this.buscaCalculoComissaoTecnicos();
       this.buscaOsAprovadasOuReprovadasRemotamente()
-  
-      ////Se existir Alguma OS reprovada ou Aprovada Remotamente, irá ficar piscando o nome do relatório
-      //console.log(" Esta é a quantidade de os Aprovadas ou Reprovadas: " , this.arrayAprovadasOuReprovadasRemotamente[0]?.somatoriaDTO.qtOs )
-  
-      //this. spinnerLoading = false;
-  
     }
-  
   
     async SelecionaRelatoriosStatus(): Promise<void> {
       this.isLoading = true; // Mostra o spinner
@@ -199,7 +192,6 @@ export class FormRelatoriosFinanceirosComponent {
     memorizaRelatorio(array: any, variavelEnviada: string, controle: string): void {
       this.servico.setData(array);
       this.variavelEnviada = variavelEnviada;
-  
   
       if (controle === "INTERVALO") { // se for atributo com intervalo
         // Navegação programática para a rota com os parâmetros
@@ -226,8 +218,7 @@ export class FormRelatoriosFinanceirosComponent {
         this.dataFim = dataFimIntermediaria;
       }
     }
-  
-  
+
     buscaRelatoriosStatus(status: string): void {
       this.servico.buscaRelatoriosStatus(status).subscribe(
         (data: any) => {
@@ -289,17 +280,7 @@ export class FormRelatoriosFinanceirosComponent {
       );
   
     }
-    buscaCalculoComissaoTecnicos(): void {
-      this.servico.buscaCalculoComissaoTecnicos(this.dataInicio, this.dataFim, "comissaoTecnicos").subscribe(
-        (data: any) => {
-          // Transforma o objeto em um array
-          this.arrayComissaoTecnicos = [data];
-        }
-      );
-    }
-  
-  
-  
+    
     ////////////////////METODOS PARA BUSCAR RELATÓRIOS///////////////////
   
     // Para armazenar os resultados de todos os relatórios
@@ -407,8 +388,6 @@ export class FormRelatoriosFinanceirosComponent {
           }
         }
       );
-  
-      
     }
   
     // Método chamado ao perder o foco do input Data Inicial
@@ -454,7 +433,6 @@ export class FormRelatoriosFinanceirosComponent {
   
   
     ////BUSCA OS APROVADAS E REPROVADAS REMOTAMENTE:
-  
     buscaOsAprovadasOuReprovadasRemotamente() {
       this.servico.buscaOsPorStatusRemoto().subscribe({
         next: (data) => {
@@ -481,8 +459,6 @@ export class FormRelatoriosFinanceirosComponent {
     }
   
     //////FAZ O ELEMENTO RELATORIO OS APROVADA OU REPROVADA REMOTAMENTE PISCAR:
-  
-    
     startBlinking() {
       // Evita múltiplos intervalos ao clicar repetidamente
       if (this.intervalGeral) {
@@ -526,6 +502,41 @@ export class FormRelatoriosFinanceirosComponent {
     ngOnDestroy() {
       this.stopBlinking();
     }
+
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////BUSCA RELATÓRIOS FINANCEIROS PELO PERÍODO////////////////////////////
+
+// Função para converter o objeto em string
+  onDateInicial(date: NgbDateStruct) {
+    // Formato Brasileiro: DD/MM/AAAA
+    const dia = date.day.toString().padStart(2, '0');
+    const mes = date.month.toString().padStart(2, '0');
+    const ano = date.year;
+
+    console.log(" Este é dia ", dia)
+
+    this.dataInicialIntervalo = `${ano}-${mes}-${dia}`;
+    console.log('Data salva como string:', this.dataInicialIntervalo);
+  }
+
+  onDateFinal(date: NgbDateStruct) {
+    // Formato Brasileiro: DD/MM/AAAA
+    const dia = date.day.toString().padStart(2, '0');
+    const mes = date.month.toString().padStart(2, '0');
+    const ano = date.year;
+
+    this.dataFinalIntervalo = `${ano}-${mes}-${dia}`;
+    console.log('Data salva como string:', this.dataFinalIntervalo);
+  }
+
   
+    buscaDadosParaPopularArrayGeral(){
+
+
+    }
+
+
+
 
 }

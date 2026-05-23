@@ -17,17 +17,29 @@
 
     <p>.</p>
     <div class="datas">
-      <div class="form-group col-3">
-        <label for="datainicial">Data Inicial:</label>
-        <input type="text" id="datainicial" style="text-align: center;" #datainicial
-          (keydown)="gravaDataInicial($event)" formControlName="datainicial" maxlength="10" class="form-control">
-      </div>
+     <!-- 3 - DATEPICKER INÍCIO -->
+          <div class="form-group" style="flex: 0 0 auto;">
+            <label class="form-label fw-bold small text-light d-block mb-1">Início</label>
+            <div class="input-group" style="max-width: 160px;">
+              <input class="form-control" placeholder="aaaa-mm-dd" name="dp" formControlName="dataInicio" ngbDatepicker
+                #d1="ngbDatepicker" (dateSelect)="onDateInicial($event)" container="body" />
+              <button class="btn btn-outline-primary d-flex align-items-center" (click)="d1.toggle()" type="button">
+                <i class="bi bi-calendar3"></i>
+              </button>
+            </div>
+          </div>
 
-      <div class="form-group col-3">
-        <label for="datafinal">Data Final:</label>
-        <input type="text" id="datafinal" style="text-align: center;" #datafinal (keydown)="gravaDataFinal($event)"
-          formControlName="datafinal" maxlength="10" class="form-control">
-      </div>
+          <!-- 4 - DATEPICKER FIM -->
+          <div class="form-group" style="flex: 0 0 auto;">
+            <label class="form-label fw-bold small text-light d-block mb-1">Fim</label>
+            <div class="input-group" style="max-width: 160px;">
+              <input class="form-control" placeholder="aaaa-mm-dd" name="dp2" formControlName="dataFim" ngbDatepicker
+                #d2="ngbDatepicker" (dateSelect)="onDateFinal($event)" container="body" />
+              <button class="btn btn-outline-primary d-flex align-items-center" (click)="d2.toggle()" type="button">
+                <i class="bi bi-calendar3"></i>
+              </button>
+            </div>
+          </div>
 
       <div *ngIf="spinnerLoading">
         <p style="color: orange; margin: 10px;">processando...</p>
