@@ -285,112 +285,7 @@ export class FormRelatoriosFinanceirosComponent {
 
   ////////////////////METODOS PARA BUSCAR RELATÓRIOS///////////////////
 
-  // Para armazenar os resultados de todos os relatórios
-  resultadosRelatorios: { [key: string]: any } = {};
 
-  // Modificar buscaRelatorios para armazenar os resultados
-  buscaRelatorios(dataInicio: string, dataFim: string, busca: string): void {
-    this.servico.buscaRelatoriosEntreDatas(dataInicio, dataFim, busca).subscribe(
-      (data: any) => {
-        switch (busca) {
-          case "faturamentoTotal":
-            this.arrayFaturamentoTotal = data;
-            console.log(" array faturamento total ", this.arrayFaturamentoTotal)
-            const memoFaturamentoTotal = this.servico.getData();
-            console.log("memoria faturamento total ", memoFaturamentoTotal)
-            break;
-          case "faturamentoNobreak":
-            this.arrayFaturamentoNobreak = data;
-            break;
-          case "faturamentoManutencaoNobreak":
-            this.arrayFaturamentoManutencaoNobreak = data;
-            break;
-          case "faturamentoManutencaoNobreakAbaixo3kva":
-            this.arrayFaturamentoManutencaoNobreakAbaixo3kva = data;
-            break;
-          case "faturamentoManutencaoNobreakAcima3kva":
-            this.arrayFaturamentoManutencaoNobreakAcima3kva = data;
-            break;
-          case "vendaNobreakNovo":
-            this.arrayVendaNobreakNovo = data;
-            break;
-          case "vendaNobreakSemiNovo":
-            this.arrayVendaNobreakSemiNovo = data;
-            break;
-          case "nobreakInviavel":
-            this.arrayNobreakInviavel = data;
-            break;
-          case "nobreakOrcamentoNaoAprovado":
-            this.arrayNobreakOrcamentoNaoAprovado = data;
-            break;
-          case "nobreakGarantiaLoja":
-            this.arrayNobreakGarantiaLoja = data;
-            break;
-          case "nobreakGarantiaFabrica":
-            this.arrayNobreakGarantiaFabrica = data;
-            break;
-          case "vendaBateriaAvulsa":
-            this.arrayVendaBateriaAvulsa = data;
-            break;
-          case "vendaSucataBateria":
-            this.arrayVendaSucataBateria = data;
-            break;
-          case "faturamentoMonitor":
-            this.arrayFaturamentoMonitor = data;
-            break;
-          case "faturamentoManutencaoMonitor":
-            this.arrayFaturamentoManutencaoMonitor = data;
-            break;
-          case "vendaMonitorSemiNovo":
-            this.arrayVendaMonitorSemiNovo = data;
-            break;
-          case "monitorInviavel":
-            this.arrayMonitorInviavel = data;
-            break;
-          case "monitorOrcamentoNaoAprovado":
-            this.arrayMonitorOrcamentoNaoAprovado = data;
-            break;
-          case "monitorGarantiaLoja":
-            this.arrayMonitorGarantiaLoja = data;
-            break;
-          case "faturamentoOutroEquipamento":
-            this.arrayFaturamentoOutroEquipamento = data;
-            break;
-          case "entradaEquipamento":
-            this.arrayEntradaEquipamento = data;
-            break;
-          case "orcamentoNoPeriodo":
-            this.arrayOrcamentoNoPeriodo = data;
-            break;
-          case "tecnicoEudermes":
-            this.arrayTecnicoEudermes = data;
-            break;
-          case "tecnicoVinicius":
-            this.arrayTecnicoVinicius = data;
-            break;
-          case "tecnicoLeonardo":
-            this.arrayTecnicoLeonardo = data;
-            break;
-          case "tecnicoRafael":
-            this.arrayTecnicoRafael = data;
-            break;
-          case "tecnicoGabriel":
-            this.arrayTecnicoGabriel = data;
-            break;
-          default:
-            console.warn(`Relatório ${busca} não reconhecido.`);
-        }
-
-      },
-      (error) => {
-        if (error.status === 404) {
-          console.error(`Nenhum dado encontrado para o relatório ${busca}.`);
-        } else {
-          console.error(`Erro ao buscar relatório ${busca}:`, error);
-        }
-      }
-    );
-  }
 
   // Método chamado ao perder o foco do input Data Inicial
   gravaDataInicial(event: KeyboardEvent): void {
@@ -509,6 +404,54 @@ export class FormRelatoriosFinanceirosComponent {
   ///////////////////////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////BUSCA RELATÓRIOS FINANCEIROS PELO PERÍODO////////////////////////////
 
+//////////////////////////BUSCA FATURAMENTO POR DATA DE FECHAMENTO//////////////////
+
+buscaFaturamentoTotalEntreDatas(){
+const dataInicio = this.converterDataParaFormatoLimpo(this.dataInicialIntervalo)
+const dataFim = this.converterDataParaFormatoLimpo(this.dataFinalIntervalo)
+const busca = "faturamentoTotal"
+this.buscaRelatorios(dataInicio, dataFim, busca);
+}
+
+  converterDataParaFormatoLimpo(data: string): string {
+  if (data && data.includes('-')) {
+    const partes = data.split('-');
+    const ano = partes[0];
+    const mes = partes[1];
+    const dia = partes[2];
+    const dataFormatada = `${dia}${mes}${ano}`;
+    return dataFormatada
+  }
+}
+
+  buscaRelatorios(dataInicio: string, dataFim: string, busca: string): void {
+    console.log("Entrou em busca relatorio")
+    this.servico.buscaRelatoriosEntreDatas(dataInicio, dataFim, busca).subscribe(
+      (data: any) => {
+        switch (busca) {
+          case "faturamentoTotal":
+            this.arrayFaturamentoTotal = data;
+            console.log(" array faturamento total ", this.arrayFaturamentoTotal)
+            const memoFaturamentoTotal = this.servico.getData();
+            console.log("memoria faturamento total ", memoFaturamentoTotal)
+            break;
+          default:
+            console.warn(`Relatório ${busca} não reconhecido.`);
+        }
+
+      },
+      (error) => {
+        if (error.status === 404) {
+          console.error(`Nenhum dado encontrado para o relatório ${busca}.`);
+        } else {
+          console.error(`Erro ao buscar relatório ${busca}:`, error);
+        }
+      }
+    );
+  }
+
+
+
   // Função para converter o objeto em string
   onDateInicial(date: NgbDateStruct) {
     // Formato Brasileiro: DD/MM/AAAA
@@ -537,6 +480,9 @@ export class FormRelatoriosFinanceirosComponent {
   tipoDataSelecionado: string = "fechamento"
 
   buscaDadosParaPopularArrayGeral() {
+
+    ////////BUSCA FATURAMENTO POR DATA DE FECHAMENTO///////////
+    this.buscaFaturamentoTotalEntreDatas();
 
     this.financeiroService.getRegistrosFiltrados(
       this.dataInicialIntervalo,
