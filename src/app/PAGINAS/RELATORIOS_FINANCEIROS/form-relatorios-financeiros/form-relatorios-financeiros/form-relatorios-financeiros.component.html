@@ -51,6 +51,7 @@
     
         <!------------------ COLUNA DA ESQUERDA (50% da largura) ------------------>
         <div class="col-md-6 px-2">
+            <h1 style="color: aqua;">Total do Período</h1>
           <!-- AUMENTADO: font-size modificado e adicionada a classe tabela-espacada -->
           <table class="table table-dark table-hover tabela-espacada" style="font-size: 1.15rem;">
             <thead>
@@ -70,7 +71,7 @@
                       <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
                     </button>
                   </a></td>
-                <td>Faturamento Total</td>
+                <td>FECHAMENTO OS</td>
                 <td class="valor">{{ arrayFaturamentoTotal[0]?.somatoriaDTO.somatotaliq | number:'1.2-2' }}</td>
                 <td class="qt">{{arrayFaturamentoTotal[0]?.somatoriaDTO.qtOs}}</td>
                 <td class="percentual">{{ (arrayFaturamentoTotal[0]?.somatoriaDTO?.somatotaliq /
@@ -84,7 +85,7 @@
                       <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
                     </button>
                   </a></td>
-                <td>Faturamento Total</td>
+                <td>DINHEIRO</td>
                 <td class="valor">{{ arrayFaturamentoTotal[0]?.somatoriaDTO.somatotaliq | number:'1.2-2' }}</td>
                 <td class="qt">{{arrayFaturamentoTotal[0]?.somatoriaDTO.qtOs}}</td>
                 <td class="percentual">{{ (arrayFaturamentoTotal[0]?.somatoriaDTO?.somatotaliq /
@@ -98,7 +99,7 @@
                       <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
                     </button>
                   </a></td>
-                <td>Faturamento Total</td>
+                <td>PIX</td>
                 <td class="valor">{{ arrayFaturamentoTotal[0]?.somatoriaDTO.somatotaliq | number:'1.2-2' }}</td>
                 <td class="qt">{{arrayFaturamentoTotal[0]?.somatoriaDTO.qtOs}}</td>
                 <td class="percentual">{{ (arrayFaturamentoTotal[0]?.somatoriaDTO?.somatotaliq /
@@ -112,7 +113,7 @@
                       <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
                     </button>
                   </a></td>
-                <td>Faturamento Total</td>
+                <td>BOLETO</td>
                 <td class="valor">{{ arrayFaturamentoTotal[0]?.somatoriaDTO.somatotaliq | number:'1.2-2' }}</td>
                 <td class="qt">{{arrayFaturamentoTotal[0]?.somatoriaDTO.qtOs}}</td>
                 <td class="percentual">{{ (arrayFaturamentoTotal[0]?.somatoriaDTO?.somatotaliq /
@@ -126,21 +127,7 @@
                       <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
                     </button>
                   </a></td>
-                <td>Faturamento Total</td>
-                <td class="valor">{{ arrayFaturamentoTotal[0]?.somatoriaDTO.somatotaliq | number:'1.2-2' }}</td>
-                <td class="qt">{{arrayFaturamentoTotal[0]?.somatoriaDTO.qtOs}}</td>
-                <td class="percentual">{{ (arrayFaturamentoTotal[0]?.somatoriaDTO?.somatotaliq /
-                  arrayFaturamentoTotal[0]?.somatoriaDTO?.somatotaliq * 100) | number: '1.0-0' }}%</td>
-              </tr>
-
-              <tr>
-                <td><a>
-                    <button type="button" class="btn btn-dark"
-                      (click)="memorizaRelatorio(arrayFaturamentoTotal, 'FATURAMENTO TOTAL', 'INTERVALO')">
-                      <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
-                    </button>
-                  </a></td>
-                <td>Faturamento Total</td>
+                <td>BORDERÔ</td>
                 <td class="valor">{{ arrayFaturamentoTotal[0]?.somatoriaDTO.somatotaliq | number:'1.2-2' }}</td>
                 <td class="qt">{{arrayFaturamentoTotal[0]?.somatoriaDTO.qtOs}}</td>
                 <td class="percentual">{{ (arrayFaturamentoTotal[0]?.somatoriaDTO?.somatotaliq /
@@ -154,7 +141,7 @@
                       <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
                     </button>
                   </a></td>
-                <td>Faturamento Nobreaks</td>
+                <td>AINDA NÃO FATURADO</td>
                 <td class="valor">{{ arrayFaturamentoNobreak[0]?.somatoriaDTO.somatotaliq | number:'1.2-2' }}</td>
                 <td class="qt">{{arrayFaturamentoNobreak[0]?.somatoriaDTO.qtOs}}</td>
                 <td class="percentual">{{ (arrayFaturamentoNobreak[0]?.somatoriaDTO?.somatotaliq /
@@ -168,19 +155,67 @@
                       <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
                     </button>
                   </a></td>
-                <td>Manutenção Nobreaks Total</td>
+                <td>EM CARTEIRA</td>
                 <td class="valor">{{ arrayFaturamentoManutencaoNobreak[0]?.somatoriaDTO.somatotaliq | number:'1.2-2' }}
                 </td>
                 <td class="qt">{{arrayFaturamentoManutencaoNobreak[0]?.somatoriaDTO.qtOs}}</td>
                 <td class="percentual">{{ (arrayFaturamentoManutencaoNobreak[0]?.somatoriaDTO?.somatotaliq /
                   arrayFaturamentoTotal[0]?.somatoriaDTO?.somatotaliq * 100) | number: '1.0-0' }}%</td>
               </tr>
+
+              <tr>
+                <td><a>
+                    <button type="button" class="btn btn-dark"
+                      (click)="memorizaRelatorio(arrayFaturamentoManutencaoNobreak, 'MANUTENÇÃO NOBREAKS', 'INTERVALO')">
+                      <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+                    </button>
+                  </a></td>
+                <td>PAGO</td>
+                <td class="valor">{{ arrayFaturamentoManutencaoNobreak[0]?.somatoriaDTO.somatotaliq | number:'1.2-2' }}
+                </td>
+                <td class="qt">{{arrayFaturamentoManutencaoNobreak[0]?.somatoriaDTO.qtOs}}</td>
+                <td class="percentual">{{ (arrayFaturamentoManutencaoNobreak[0]?.somatoriaDTO?.somatotaliq /
+                  arrayFaturamentoTotal[0]?.somatoriaDTO?.somatotaliq * 100) | number: '1.0-0' }}%</td>
+              </tr>
+
+              <tr>
+                <td><a>
+                    <button type="button" class="btn btn-dark"
+                      (click)="memorizaRelatorio(arrayFaturamentoManutencaoNobreak, 'MANUTENÇÃO NOBREAKS', 'INTERVALO')">
+                      <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+                    </button>
+                  </a></td>
+                <td>TOTAL DESPESA BANCÁRIA</td>
+                <td class="valor">{{ arrayFaturamentoManutencaoNobreak[0]?.somatoriaDTO.somatotaliq | number:'1.2-2' }}
+                </td>
+                <td class="qt">{{arrayFaturamentoManutencaoNobreak[0]?.somatoriaDTO.qtOs}}</td>
+                <td class="percentual">{{ (arrayFaturamentoManutencaoNobreak[0]?.somatoriaDTO?.somatotaliq /
+                  arrayFaturamentoTotal[0]?.somatoriaDTO?.somatotaliq * 100) | number: '1.0-0' }}%</td>
+              </tr>
+
+              <tr>
+                <td><a>
+                    <button type="button" class="btn btn-dark"
+                      (click)="memorizaRelatorio(arrayFaturamentoManutencaoMonitor, 'MANUTENÇÃO MONITORES' , 'INTERVALO')">
+                      <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+                    </button>
+                  </a></td>
+                <td>FECHAMENTO MENOS CONTABILIZADO</td>
+                <td class="valor">{{ arrayFaturamentoManutencaoMonitor[0]?.somatoriaDTO.somatotaliq | number:'1.2-2' }}
+                </td>
+                <td class="qt">{{arrayFaturamentoManutencaoMonitor[0]?.somatoriaDTO.qtOs}}</td>
+                <td class="percentual">{{ (arrayFaturamentoManutencaoMonitor[0]?.somatoriaDTO?.somatotaliq /
+                  arrayFaturamentoTotal[0]?.somatoriaDTO?.somatotaliq * 100) | number: '1.0-0' }}%</td>
+              </tr>
+
+             
             </tbody>
           </table>
         </div> <!-- Fim da Coluna da Esquerda -->
 
         <!------------------ COLUNA DA DIREITA / MEIO (50% da largura) ------------------>
         <div class="col-md-6 px-2">
+            <h1 style="color: aqua;">Total Remanecente</h1>
           <!-- AUMENTADO: font-size modificado e adicionada a classe tabela-espacada -->
           <table class="table table-dark table-hover tabela-espacada" style="font-size: 1.15rem;">
             <thead>
@@ -193,20 +228,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td><a>
-                    <button type="button" class="btn btn-dark"
-                      (click)="memorizaRelatorio(arrayFaturamentoMonitor, 'FATURAMENTO MONITORES', 'INTERVALO')">
-                      <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
-                    </button>
-                  </a></td>
-                <td>Faturamento Monitores</td>
-                <td class="valor">{{ arrayFaturamentoMonitor[0]?.somatoriaDTO.somatotaliq | number:'1.2-2' }}</td>
-                <td class="qt">{{arrayFaturamentoMonitor[0]?.somatoriaDTO.qtOs}}</td>
-                <td class="percentual">{{ (arrayFaturamentoMonitor[0]?.somatoriaDTO?.somatotaliq /
-                  arrayFaturamentoTotal[0]?.somatoriaDTO?.somatotaliq * 100) | number: '1.0-0' }}%</td>
-              </tr>
-
+            
               <tr>
                 <td><a>
                     <button type="button" class="btn btn-dark"
@@ -214,7 +236,7 @@
                       <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
                     </button>
                   </a></td>
-                <td>Manutenção Monitores</td>
+                <td>BOLETO EM DIA</td>
                 <td class="valor">{{ arrayFaturamentoManutencaoMonitor[0]?.somatoriaDTO.somatotaliq | number:'1.2-2' }}
                 </td>
                 <td class="qt">{{arrayFaturamentoManutencaoMonitor[0]?.somatoriaDTO.qtOs}}</td>
@@ -229,7 +251,7 @@
                       <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
                     </button>
                   </a></td>
-                <td>Manutenção Monitores</td>
+                <td>BORDERO EM DIA</td>
                 <td class="valor">{{ arrayFaturamentoManutencaoMonitor[0]?.somatoriaDTO.somatotaliq | number:'1.2-2' }}
                 </td>
                 <td class="qt">{{arrayFaturamentoManutencaoMonitor[0]?.somatoriaDTO.qtOs}}</td>
@@ -244,7 +266,7 @@
                       <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
                     </button>
                   </a></td>
-                <td>Manutenção Monitores</td>
+                <td>BOLETO ATRAZADO</td>
                 <td class="valor">{{ arrayFaturamentoManutencaoMonitor[0]?.somatoriaDTO.somatotaliq | number:'1.2-2' }}
                 </td>
                 <td class="qt">{{arrayFaturamentoManutencaoMonitor[0]?.somatoriaDTO.qtOs}}</td>
@@ -259,7 +281,7 @@
                       <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
                     </button>
                   </a></td>
-                <td>Manutenção Monitores</td>
+                <td>BORDERO ATRAZADO</td>
                 <td class="valor">{{ arrayFaturamentoManutencaoMonitor[0]?.somatoriaDTO.somatotaliq | number:'1.2-2' }}
                 </td>
                 <td class="qt">{{arrayFaturamentoManutencaoMonitor[0]?.somatoriaDTO.qtOs}}</td>
@@ -274,7 +296,7 @@
                       <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
                     </button>
                   </a></td>
-                <td>Manutenção Monitores</td>
+                <td>NÃO FATURADO</td>
                 <td class="valor">{{ arrayFaturamentoManutencaoMonitor[0]?.somatoriaDTO.somatotaliq | number:'1.2-2' }}
                 </td>
                 <td class="qt">{{arrayFaturamentoManutencaoMonitor[0]?.somatoriaDTO.qtOs}}</td>
@@ -285,11 +307,26 @@
               <tr>
                 <td><a>
                     <button type="button" class="btn btn-dark"
+                      (click)="memorizaRelatorio(arrayFaturamentoManutencaoNobreak, 'MANUTENÇÃO NOBREAKS', 'INTERVALO')">
+                      <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+                    </button>
+                  </a></td>
+                <td>EM CARTEIRA</td>
+                <td class="valor">{{ arrayFaturamentoManutencaoNobreak[0]?.somatoriaDTO.somatotaliq | number:'1.2-2' }}
+                </td>
+                <td class="qt">{{arrayFaturamentoManutencaoNobreak[0]?.somatoriaDTO.qtOs}}</td>
+                <td class="percentual">{{ (arrayFaturamentoManutencaoNobreak[0]?.somatoriaDTO?.somatotaliq /
+                  arrayFaturamentoTotal[0]?.somatoriaDTO?.somatotaliq * 100) | number: '1.0-0' }}%</td>
+              </tr>
+
+              <tr>
+                <td><a>
+                    <button type="button" class="btn btn-dark"
                       (click)="memorizaRelatorio(arrayFaturamentoManutencaoMonitor, 'MANUTENÇÃO MONITORES' , 'INTERVALO')">
                       <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
                     </button>
                   </a></td>
-                <td>Manutenção Monitores</td>
+                <td>VALOR EM USO DE BORDERO</td>
                 <td class="valor">{{ arrayFaturamentoManutencaoMonitor[0]?.somatoriaDTO.somatotaliq | number:'1.2-2' }}
                 </td>
                 <td class="qt">{{arrayFaturamentoManutencaoMonitor[0]?.somatoriaDTO.qtOs}}</td>
@@ -297,19 +334,40 @@
                   arrayFaturamentoTotal[0]?.somatoriaDTO?.somatotaliq * 100) | number: '1.0-0' }}%</td>
               </tr>
 
-              <tr>
+               <tr>
                 <td><a>
-                    <button type="button" class="btn btn-dark">
+                    <button type="button" class="btn btn-dark"
+                      (click)="memorizaRelatorio(arrayFaturamentoManutencaoNobreak, 'MANUTENÇÃO NOBREAKS', 'INTERVALO')">
                       <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
                     </button>
                   </a></td>
-                <td>Valor Comissão</td>
-                <td class="valor">{{arrayComissaoTecnicos[0]?.comissao | number:'1.2-2' }}</td>
-                <td class="qt"> </td>
-                <td class="percentual"> </td>
+                <td>BOLETO EM DIA VENCIMENTO PRÓXIMO MÊS</td>
+                <td class="valor">{{ arrayFaturamentoManutencaoNobreak[0]?.somatoriaDTO.somatotaliq | number:'1.2-2' }}
+                </td>
+                <td class="qt">{{arrayFaturamentoManutencaoNobreak[0]?.somatoriaDTO.qtOs}}</td>
+                <td class="percentual">{{ (arrayFaturamentoManutencaoNobreak[0]?.somatoriaDTO?.somatotaliq /
+                  arrayFaturamentoTotal[0]?.somatoriaDTO?.somatotaliq * 100) | number: '1.0-0' }}%</td>
               </tr>
+
+              <tr>
+                <td><a>
+                    <button type="button" class="btn btn-dark"
+                      (click)="memorizaRelatorio(arrayFaturamentoManutencaoNobreak, 'MANUTENÇÃO NOBREAKS', 'INTERVALO')">
+                      <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+                    </button>
+                  </a></td>
+                <td>BORDERO EM DIA VENCIMENTO PRÓXIMO MÊS</td>
+                <td class="valor">{{ arrayFaturamentoManutencaoNobreak[0]?.somatoriaDTO.somatotaliq | number:'1.2-2' }}
+                </td>
+                <td class="qt">{{arrayFaturamentoManutencaoNobreak[0]?.somatoriaDTO.qtOs}}</td>
+                <td class="percentual">{{ (arrayFaturamentoManutencaoNobreak[0]?.somatoriaDTO?.somatotaliq /
+                  arrayFaturamentoTotal[0]?.somatoriaDTO?.somatotaliq * 100) | number: '1.0-0' }}%</td>
+              </tr>
+
             </tbody>
           </table>
+          <p>.</p>
+          <p>.</p>
         </div> <!-- Fim da Coluna da Direita -->
 
       </div> <!-- Fim da Row -->
