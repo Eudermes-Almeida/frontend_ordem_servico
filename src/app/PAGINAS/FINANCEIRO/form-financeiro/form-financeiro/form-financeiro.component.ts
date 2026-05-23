@@ -15,6 +15,8 @@ import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { Financeiro } from '../../../../modelo/Financeiro';
 import { Observable } from 'rxjs';
+import { DespesaService } from '../../../../servico/despesa.service';
+
 
 declare var bootstrap: any;
 
@@ -47,6 +49,7 @@ export class FormFinanceiroComponent {
   borderoPendentes: Financeiro[] = [];
   osSelecionadasParaRemessa: Financeiro[] = []
   arrayAlterarStatusFinanceiro: Financeiro[] = [];
+  arrayDespesaBancaria: Despesa[] = [];
   opcaoTipoPagamento: string = "";
   opcaoQuantidadeParcela: string = "";
   opcaoPrazo: string = "";
@@ -54,6 +57,7 @@ export class FormFinanceiroComponent {
   borderoJaSalvo: string = "borderô AINDA NÃO salvo"
   flagIrRemessa: boolean = false;
   flagIrBordero: boolean = false;
+  despesaBancaria: Despesa = {} as Despesa;
 
   ////DATEPICKER:
   model: NgbDateStruct | undefined;
@@ -143,7 +147,8 @@ export class FormFinanceiroComponent {
     private servico: OrdemservicoService,
     private cdr: ChangeDetectorRef,
     private financeiroService: FinanceiroService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private despesaService: DespesaService
   ) { }
 
 
@@ -1315,6 +1320,7 @@ export class FormFinanceiroComponent {
         this.borderoPendentes = data;
         this.populaInicialmenteTotalizadores();
         this.populaTotalizadoresGerarBordero();
+
       },
       (error) => {
         if (error.status === 204) {
@@ -1339,7 +1345,7 @@ export class FormFinanceiroComponent {
   populaTotalizadoresGerarBordero() {
 
     /////código borderô///////////
-    const hoje = new Date().toISOString().substring(0, 10);
+    const hoje = new Date().toLocaleDateString('sv-SE');
     this.formProcessaBordero.patchValue({ codBordero: hoje });
 
     ////INSERE O CÓDIGO DO BORDERO NO ARRAY (BANCO DE DADOS)
@@ -1419,15 +1425,13 @@ export class FormFinanceiroComponent {
     }, 0)
     this.formProcessaBordero.patchValue({ valorLiquidoCreditado: String(calculoValorLiquidoCreditado.toFixed(2)) });
 
-
-
   }
 
   processarBordero() {
     ///////PERSISTE OS DADOS:
     this.persisteBordero();
     this.borderoJaSalvo = "";
-
+    this.enviarCustosBancariosParaDespesas(this.borderoPendentes)
   }
 
   persisteBordero() {
@@ -1516,7 +1520,7 @@ export class FormFinanceiroComponent {
   }
 
 
-  ////////////////////ALTERAR STATUS FINANCEIRO///////////////////////
+  ////////////////////ALTERAR STATUS FINANCEIRO/////////////////////////////////////////////
 
   alterarStatusFinanceiro(dados: Financeiro){
 
@@ -1678,6 +1682,46 @@ atualizarModeloFinanceiroComarrayAlterarStatusFinanceiro(): void {
     });
   }
 
+
+  /////////////////// ENVIAR CUSTOS BANCÁRIOS PARA TABELA DESPESAS/////////////////
+  ////////////////////////////////////////////////////////////////////////////////
+
+  enviarCustosBancariosParaDespesas(dados: Financeiro[]){
+
+    console.log("Estes são os dados vindo de gerar Borderô ", dados)
+
+    const hoje = new Date().toLocaleDateString('sv-SE');
+
+    const totalDespesaBordero = dados.reduce((acc, os) => {
+      const total = acc + Number(os.custoBancarioTotal);
+      return total
+    }, 0)
+
+
+    this.despesaBancaria = {
+    descricao: `Bordero: ${dados[0].codBordero}`,
+    categoria: "BANCARIA",
+    vencimento: hoje,
+    valor: (totalDespesaBordero).toFixed(2),
+    status: "PAGO",
+    iniciomes: "NAO"
+    }
+
+    this.arrayDespesaBancaria.push(this.despesaBancaria);
+
+    this.despesaService.salvarDespesasEmLote(this.arrayDespesaBancaria).subscribe({
+    next: (response) => {
+      console.log('Lote salvo com sucesso:', response);
+      //alert("Todas as despesas  foram cadastradas com sucesso.");
+      this.arrayDespesaBancaria = [];
+    },
+    error: (error) => {
+      console.error('Erro ao salvar lote:', error);
+      alert("Erro ao salvar despesas: " + (error.error || "Erro desconhecido"));
+    }
+  });
+
+  }
 
   }
 
