@@ -1,0 +1,34 @@
+.todo {
+    background: black;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Garante que o container principal ocupe a altura total da tela */
+  }
+  
+  html, body {
+    height: 100%; /* Garante que o body ocupe a tela inteira */
+    margin: 0;
+  }
+  
+  app-cabecalho, app-menu-lateral, app-rodape {
+    flex-shrink: 0; /* Não permitem encolhimento */
+  }
+  
+  app-formcadcliente {
+    flex-grow: 1; /* Garante que o formulário ocupe o espaço restante */
+    margin-bottom: 20px; /* Adiciona espaço para o rodapé */
+  }
+  
+  app-rodape {
+    position: fixed; /* Fixa o rodapé na tela */
+    bottom: 0; /* Posiciona na parte inferior */
+    left: 0; /* Alinha à esquerda */
+    right: 0; /* Alinha à direita */
+    background-color: #333; /* Cor de fundo do rodapé (ajuste conforme necessário) */
+    color: white; /* Cor do texto no rodapé */
+    text-align: center; /* Centraliza o texto */
+    padding: 10px 0; /* Adiciona padding em cima e embaixo */
+}
+
+
+  

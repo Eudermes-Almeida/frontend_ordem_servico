@@ -21,6 +21,7 @@ import { PagDespesasComponent } from './PAGINAS/DESPESAS/pag-despesas/pag-despes
 import { PagConsultaDespesaComponent } from './PAGINAS/DESPESAS/pag-consulta-despesa/pag-consulta-despesa.component';
 import { PaginaAnaliseDespesaComponent } from './PAGINAS/ANALISE_DESPESA/pag-analise-despesa/pagina-analise-despesa/pagina-analise-despesa.component';
 import { PagFinanceiroComponent } from './PAGINAS/FINANCEIRO/pag-financeiro/pag-financeiro/pag-financeiro.component';
+import { PagRelatoriosFinanceirosComponent } from './PAGINAS/RELATORIOS_FINANCEIROS/pag-relatorios-financeiros/pag-relatorios-financeiros/pag-relatorios-financeiros.component';
 
 
 export const routes: Routes = [ 
@@ -47,5 +48,6 @@ export const routes: Routes = [
     { path: 'despesa/cadastro',component: PagDespesasComponent},
     { path: 'despesa/consulta',component: PagConsultaDespesaComponent},
     { path: 'financeiro/consulta',component: PagFinanceiroComponent},
+    { path: 'financeiro/relatorio',component: PagRelatoriosFinanceirosComponent},
     
 ];
