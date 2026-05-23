@@ -346,7 +346,8 @@
         <td [ngClass]="{
   'text-danger fw-bold': remessa.statusParcela1 === 'ATRAZADO',
   'text-yellow fw-bold': remessa.statusParcela1 === 'NAO FATURADO',
-  'text-lime fw-bold': remessa.statusParcela1 === 'PAGO'
+  'text-lime fw-bold': remessa.statusParcela1 === 'PAGO',
+  'text-blue fw-bold': remessa.statusParcela1 === 'EM DIA'
 }">{{remessa.statusParcela1}}</td>
 
         <td>{{remessa.vencimento2}}</td>
@@ -356,7 +357,8 @@
         <td [ngClass]="{
   'text-danger fw-bold': remessa.statusParcela2 === 'ATRAZADO',
   'text-yellow fw-bold': remessa.statusParcela2 === 'NAO FATURADO',
-  'text-lime fw-bold': remessa.statusParcela2 === 'PAGO'
+  'text-lime fw-bold': remessa.statusParcela2 === 'PAGO',
+  'text-blue fw-bold': remessa.statusParcela2 === 'EM DIA'
 }">{{remessa.statusParcela2}}</td>
         <td>{{remessa.vencimento3}}</td>
         <td>{{remessa.valorParcela3}}</td>
@@ -365,14 +367,16 @@
         <td [ngClass]="{
   'text-danger fw-bold': remessa.statusParcela3 === 'ATRAZADO',
   'text-yellow fw-bold': remessa.statusParcela3 === 'NAO FATURADO',
-  'text-lime fw-bold': remessa.statusParcela3 === 'PAGO'
+  'text-lime fw-bold': remessa.statusParcela3 === 'PAGO',
+  'text-blue fw-bold': remessa.statusParcela3 === 'EM DIA'
 }">{{remessa.statusParcela3}}</td>
 
         <!-- Status Geral -->
         <td [ngClass]="{
   'text-danger fw-bold': remessa.statusGeral === 'ATRAZADO',
   'text-yellow fw-bold': remessa.statusGeral === 'NAO FATURADO',
-  'text-lime fw-bold': remessa.statusGeral === 'PAGO'
+  'text-lime fw-bold': remessa.statusGeral === 'PAGO',
+  'text-blue fw-bold': remessa.statusGeral === 'EM DIA'
 }">{{remessa.statusGeral}}</td>
         <td>{{remessa.jurosBordero}}</td>
         <td>{{remessa.iofDiario}}</td>
@@ -603,26 +607,30 @@
         <td [ngClass]="{
   'text-danger fw-bold': remessa.statusParcela1 === 'ATRAZADO',
   'text-yellow fw-bold': remessa.statusParcela1 === 'NAO FATURADO',
-  'text-lime fw-bold': remessa.statusParcela1 === 'PAGO'
+  'text-lime fw-bold': remessa.statusParcela1 === 'PAGO',
+  'text-blue fw-bold': remessa.statusParcela1 === 'EM DIA'
 }">{{remessa.statusParcela1}}</td>
         <td>{{remessa.vencimento2}}</td>
         <td>{{remessa.valorParcela2}}</td>
         <td [ngClass]="{
   'text-danger fw-bold': remessa.statusParcela2 === 'ATRAZADO',
   'text-yellow fw-bold': remessa.statusParcela2 === 'NAO FATURADO',
-  'text-lime fw-bold': remessa.statusParcela2 === 'PAGO'
+  'text-lime fw-bold': remessa.statusParcela2 === 'PAGO',
+  'text-blue fw-bold': remessa.statusParcela2 === 'EM DIA'
 }">{{remessa.statusParcela2}}</td>
         <td>{{remessa.vencimento3}}</td>
         <td>{{remessa.valorParcela3}}</td>
         <td [ngClass]="{
   'text-danger fw-bold': remessa.statusParcela3 === 'ATRAZADO',
   'text-yellow fw-bold': remessa.statusParcela3 === 'NAO FATURADO',
-  'text-lime fw-bold': remessa.statusParcela3 === 'PAGO'
+  'text-lime fw-bold': remessa.statusParcela3 === 'PAGO',
+  'text-blue fw-bold': remessa.statusParcela3 === 'EM DIA'
 }">{{remessa.statusParcela3}}</td>
         <td [ngClass]="{
   'text-danger fw-bold': remessa.statusGeral === 'ATRAZADO',
   'text-yellow fw-bold': remessa.statusGeral === 'NAO FATURADO',
-  'text-lime fw-bold': remessa.statusGeral === 'PAGO'
+  'text-lime fw-bold': remessa.statusGeral === 'PAGO',
+  'text-blue fw-bold': remessa.statusGeral === 'EM DIA'
 }">{{remessa.statusGeral}}</td>
         <td>{{remessa.jurosBordero}}</td>
         <td>{{remessa.iofDiario}}</td>
@@ -906,27 +914,31 @@
         <td [ngClass]="{
   'text-danger fw-bold': bordero.statusParcela1 === 'ATRAZADO',
   'text-yellow fw-bold': bordero.statusParcela1 === 'NAO FATURADO',
-  'text-lime fw-bold': bordero.statusParcela1 === 'PAGO'
+  'text-lime fw-bold': bordero.statusParcela1 === 'PAGO',
+  'text-blue fw-bold': bordero.statusParcela1 === 'EM DIA'
 }">{{bordero.statusParcela1}}</td>
         <td>{{bordero.valorParcela1}}</td>
         <td>{{bordero.vencimento2}}</td>
         <td [ngClass]="{
   'text-danger fw-bold': bordero.statusParcela2 === 'ATRAZADO',
   'text-yellow fw-bold': bordero.statusParcela2 === 'NAO FATURADO',
-  'text-lime fw-bold': bordero.statusParcela2 === 'PAGO'
+  'text-lime fw-bold': bordero.statusParcela2 === 'PAGO',
+  'text-blue fw-bold': bordero.statusParcela2 === 'EM DIA'
 }">{{bordero.statusParcela2}}</td>
         <td>{{bordero.valorParcela2}}</td>
         <td>{{bordero.vencimento3}}</td>
         <td [ngClass]="{
   'text-danger fw-bold': bordero.statusParcela3 === 'ATRAZADO',
   'text-yellow fw-bold': bordero.statusParcela3 === 'NAO FATURADO',
-  'text-lime fw-bold': bordero.statusParcela3 === 'PAGO'
+  'text-lime fw-bold': bordero.statusParcela3 === 'PAGO',
+  'text-blue fw-bold': bordero.statusParcela3 === 'EM DIA'
 }">{{bordero.statusParcela3}}</td>
         <td>{{bordero.valorParcela3}}</td>
         <td [ngClass]="{
   'text-danger fw-bold': bordero.statusGeral === 'ATRAZADO',
   'text-yellow fw-bold': bordero.statusGeral === 'NAO FATURADO',
-  'text-lime fw-bold': bordero.statusGeral === 'PAGO'
+  'text-lime fw-bold': bordero.statusGeral === 'PAGO',
+  'text-blue fw-bold': bordero.statusGeral === 'EM DIA'
 }">{{bordero.statusGeral}}</td>
 
     </tbody>
