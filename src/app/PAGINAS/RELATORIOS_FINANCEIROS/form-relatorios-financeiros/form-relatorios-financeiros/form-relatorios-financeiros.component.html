@@ -199,9 +199,9 @@
           </button>
         </a></td>
       <td>FECHAMENTO MENOS CONTABILIZADO</td>
-      <td class="valor">{{ teste }}</td>
-      <td class="qt">{{ teste }}</td>
-      <td class="percentual">{{ teste }}%</td>
+      <td class="valor">{{fechamentoMenosContatilizado | number:'1.2-2' }}</td>
+      <td class="qt">{{qtContabilizado}}</td>
+      <td class="percentual">{{percentualContabizadoDeFaturamentoTotal}}%</td>
     </tr>
   </tbody>
 </table>

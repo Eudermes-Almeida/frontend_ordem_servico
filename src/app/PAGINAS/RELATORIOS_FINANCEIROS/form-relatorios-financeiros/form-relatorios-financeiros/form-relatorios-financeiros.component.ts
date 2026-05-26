@@ -164,6 +164,7 @@ export class FormRelatoriosFinanceirosComponent {
         this.calcularTotaisFinanceiros();
         this.calculaTotalPago();
         this.calculaCustoBancarioTotal();
+        this.calculoFechamentoMenosContabilizado();
       },
       error: (erro) => {
         console.error('Erro na busca avançada:', erro);
@@ -244,30 +245,6 @@ export class FormRelatoriosFinanceirosComponent {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   totalCustoBancario: number = 0;
   qtCustoBancario: number = 0;
   percentualCustoBancario: number = 0;
@@ -288,6 +265,23 @@ export class FormRelatoriosFinanceirosComponent {
    console.log(" Este é o custo bancario total ", this.totalCustoBancario)
    const faturamentoTotalGeral = this.arrayFaturamentoTotal?.[0]?.somatoriaDTO?.somatotaliq;
     this.percentualCustoBancario = (this.totalCustoBancario / +faturamentoTotalGeral) * 100;
+  }
+
+  totalContabilizado: number = 0;
+  fechamentoMenosContatilizado: number = 0;
+  qtContabilizado: number = 0;
+  percentualContabizadoDeFaturamentoTotal: string = ""
+  calculoFechamentoMenosContabilizado(){
+    this.qtContabilizado = 0;
+    this.totalContabilizado = this.arrayGeral.reduce((acc, os) => {
+      acc = acc + (+os.totaliq)
+      return acc
+    },0)
+
+    this.qtContabilizado = this.arrayFaturamentoTotal.length - this.arrayGeral.length
+    const faturamentoTotalGeral = this.arrayFaturamentoTotal?.[0]?.somatoriaDTO?.somatotaliq;
+    this.fechamentoMenosContatilizado = faturamentoTotalGeral - this.totalContabilizado
+    this.percentualContabizadoDeFaturamentoTotal = ((this.arrayGeral.length / this.arrayFaturamentoTotal.length)*100).toFixed(2)
   }
 
 
