@@ -317,16 +317,39 @@ export class FormRelatoriosFinanceirosComponent {
 
   boletoEmDia(){
     this.qtBoletoEmDia = 0;
-    this.totalBoletoEmDia = this.arrayTudao.reduce((acc, os) => {
 
-      if(os.statusGeral === "EM DIA" && os.tipoPagamento === "BOLETO"){
+  this.totalBoletoEmDia = this.arrayGeral.reduce((acc, os) => {
+    
+    if (os.tipoPagamento !== "BOLETO") {
+      return acc; 
+    }
 
-        this.qtBoletoEmDia ++
-        acc = acc + (+os.totaliq)
-        return acc
-      }
-      return acc
-    },0)
+    // Parcela 1
+    if (os.valorParcela1 && (os.statusParcela1 === "EM DIA")) {
+      acc = acc + (+os.valorParcela1 || 0);
+      this.qtBoletoEmDia++;
+      console.log(`OS: ${os.os} | Parcela 1: ${os.statusParcela1} | Valor: ${os.valorParcela1}`);
+    }
+
+    // Parcela 2
+    if (os.valorParcela2 && (os.statusParcela2 === "EM DIA")) {
+      acc = acc + (+os.valorParcela2 || 0);
+      this.qtBoletoEmDia++;
+      console.log(`OS: ${os.os} | Parcela 2: ${os.statusParcela2} | Valor: ${os.valorParcela2}`);
+    }
+
+    // Parcela 3
+    if (os.valorParcela3 && (os.statusParcela3 === "EM DIA")) {
+      acc = acc + (+os.valorParcela3 || 0);
+      this.qtBoletoEmDia++;
+      console.log(`OS: ${os.os} | Parcela 3: ${os.statusParcela3} | Valor: ${os.valorParcela3}`);
+    }
+
+    return acc;
+  }, 0);
+
+  this.cdr.detectChanges(); // Garante a atualização imediata no HTML do Angular
+
   }
 
 
@@ -335,29 +358,78 @@ export class FormRelatoriosFinanceirosComponent {
 
   borderoEmDia(){
     this.qtBorderoEmDia = 0;
-    this.totalBorderoEmDia = this.arrayTudao.reduce((acc, os) => {
-      if(os.statusGeral === "EM DIA" && os.tipoPagamento === "BORDERO"){
-        this.qtBorderoEmDia ++
-        acc = acc + (+os.totaliq)
-        return acc
-      }
-      return acc
-    },0)
+
+  this.totalBorderoEmDia = this.arrayGeral.reduce((acc, os) => {
+    
+    if (os.tipoPagamento !== "BORDERO") {
+      return acc; 
+    }
+
+    // Parcela 1
+    if (os.valorParcela1 && (os.statusParcela1 === "EM DIA")) {
+      acc = acc + (+os.valorParcela1 || 0);
+      this.qtBorderoEmDia++;
+      console.log(`OS: ${os.os} | Parcela 1: ${os.statusParcela1} | Valor: ${os.valorParcela1}`);
+    }
+
+    // Parcela 2
+    if (os.valorParcela2 && (os.statusParcela2 === "EM DIA")) {
+      acc = acc + (+os.valorParcela2 || 0);
+      this.qtBorderoEmDia++;
+      console.log(`OS: ${os.os} | Parcela 2: ${os.statusParcela2} | Valor: ${os.valorParcela2}`);
+    }
+
+    // Parcela 3
+    if (os.valorParcela3 && (os.statusParcela3 === "EM DIA")) {
+      acc = acc + (+os.valorParcela3 || 0);
+      this.qtBorderoEmDia++;
+      console.log(`OS: ${os.os} | Parcela 3: ${os.statusParcela3} | Valor: ${os.valorParcela3}`);
+    }
+
+    return acc;
+  }, 0);
+
+  this.cdr.detectChanges(); // Garante a atualização imediata no HTML do Angular
+
   }
 
   totalBoletoAtrazado: number = 0;
   qtBoletoAtrazado: number = 0;
 
   boletoAtrazado(){
-    this.qtBoletoAtrazado = 0;
-    this.totalBoletoAtrazado = this.arrayTudao.reduce((acc, os) => {
-      if(os.statusGeral === "ATRAZADO" && os.tipoPagamento === "BOLETO"){
-        this.qtBoletoAtrazado ++
-        acc = acc + (+os.totaliq)
-        return acc
-      }
-      return acc
-    },0)
+   this.qtBoletoAtrazado = 0;
+
+  this.totalBoletoAtrazado = this.arrayGeral.reduce((acc, os) => {
+    
+    if (os.tipoPagamento !== "BOLETO") {
+      return acc; 
+    }
+
+    // Parcela 1
+    if (os.valorParcela1 && (os.statusParcela1 === "ATRAZADO")) {
+      acc = acc + (+os.valorParcela1 || 0);
+      this.qtBoletoAtrazado++;
+      console.log(`OS: ${os.os} | Parcela 1: ${os.statusParcela1} | Valor: ${os.valorParcela1}`);
+    }
+
+    // Parcela 2
+    if (os.valorParcela2 && (os.statusParcela2 === "ATRAZADO")) {
+      acc = acc + (+os.valorParcela2 || 0);
+      this.qtBoletoAtrazado++;
+      console.log(`OS: ${os.os} | Parcela 2: ${os.statusParcela2} | Valor: ${os.valorParcela2}`);
+    }
+
+    // Parcela 3
+    if (os.valorParcela3 && (os.statusParcela3 === "ATRAZADO")) {
+      acc = acc + (+os.valorParcela3 || 0);
+      this.qtBoletoAtrazado++;
+      console.log(`OS: ${os.os} | Parcela 3: ${os.statusParcela3} | Valor: ${os.valorParcela3}`);
+    }
+
+    return acc;
+  }, 0);
+
+  this.cdr.detectChanges(); // Garante a atualização imediata no HTML do Angular
   }
 
   totalBorderoAtrazado: number = 0;
@@ -365,14 +437,38 @@ export class FormRelatoriosFinanceirosComponent {
 
    borderoAtrazado(){
     this.qtBorderoAtrazado = 0;
-    this.totalBorderoAtrazado = this.arrayTudao.reduce((acc, os) => {
-      if(os.statusGeral === "ATRAZADO" && os.tipoPagamento === "BORDERO"){
-        this.qtBorderoAtrazado ++
-        acc = acc + (+os.totaliq)
-        return acc
-      }
-      return acc
-    },0)
+
+  this.totalBorderoAtrazado = this.arrayGeral.reduce((acc, os) => {
+    
+    if (os.tipoPagamento !== "BORDERO") {
+      return acc; 
+    }
+
+    // Parcela 1
+    if (os.valorParcela1 && (os.statusParcela1 === "ATRAZADO")) {
+      acc = acc + (+os.valorParcela1 || 0);
+      this.qtBorderoAtrazado++;
+      console.log(`OS: ${os.os} | Parcela 1: ${os.statusParcela1} | Valor: ${os.valorParcela1}`);
+    }
+
+    // Parcela 2
+    if (os.valorParcela2 && (os.statusParcela2 === "ATRAZADO")) {
+      acc = acc + (+os.valorParcela2 || 0);
+      this.qtBorderoAtrazado++;
+      console.log(`OS: ${os.os} | Parcela 2: ${os.statusParcela2} | Valor: ${os.valorParcela2}`);
+    }
+
+    // Parcela 3
+    if (os.valorParcela3 && (os.statusParcela3 === "ATRAZADO")) {
+      acc = acc + (+os.valorParcela3 || 0);
+      this.qtBorderoAtrazado++;
+      console.log(`OS: ${os.os} | Parcela 3: ${os.statusParcela3} | Valor: ${os.valorParcela3}`);
+    }
+
+    return acc;
+  }, 0);
+
+  this.cdr.detectChanges(); // Garante a atualização imediata no HTML do Angular
   }
 
   totalNaoFaturado: number = 0;
@@ -414,7 +510,6 @@ totalBorderoGeral() {
 
   this.totalBorderoTudo = this.arrayTudao.reduce((acc, os) => {
     
-    // CORREÇÃO: Se não for BORDERO, apenas pula o item atual retornando o 'acc' intacto
     if (os.tipoPagamento !== "BORDERO") {
       return acc; 
     }
