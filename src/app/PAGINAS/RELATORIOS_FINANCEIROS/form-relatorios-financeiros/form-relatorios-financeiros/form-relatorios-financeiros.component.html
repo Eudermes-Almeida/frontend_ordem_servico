@@ -21,7 +21,7 @@
     <div class="datas">
      <!-- 3 - DATEPICKER INÍCIO -->
           <div class="form-group" style="flex: 0 0 auto;">
-            <label class="form-label fw-bold small text-light d-block mb-1">Início</label>
+            <label class="form-label fw-bold small text-light d-block mb-1">Início - data fechamento</label>
             <div class="input-group" style="max-width: 160px;">
               <input class="form-control" placeholder="aaaa-mm-dd" name="dp" ngbDatepicker
                 #d1="ngbDatepicker" (dateSelect)="onDateInicial($event)" container="body" />
@@ -33,7 +33,7 @@
 
           <!-- 4 - DATEPICKER FIM -->
           <div class="form-group" style="flex: 0 0 auto;">
-            <label class="form-label fw-bold small text-light d-block mb-1">Fim</label>
+            <label class="form-label fw-bold small text-light d-block mb-1">Fim - data fechamento</label>
             <div class="input-group" style="max-width: 160px;">
               <input class="form-control" placeholder="aaaa-mm-dd" name="dp2" ngbDatepicker
                 #d2="ngbDatepicker" (dateSelect)="onDateFinal($event)" container="body" />
@@ -232,9 +232,9 @@
                     </button>
                   </a></td>
                 <td>BOLETO EM DIA</td>
-                <td class="valor">{{teste}}
+                <td class="valor">{{totalBoletoEmDia  | number:'1.2-2' }}
                 </td>
-                <td class="qt">{{teste}}</td>
+                <td class="qt">{{qtBoletoEmDia}}</td>
                 <td class="percentual">{{ teste }}%</td>
               </tr>
 
@@ -246,9 +246,9 @@
                     </button>
                   </a></td>
                 <td>BORDERO EM DIA</td>
-                <td class="valor">{{teste}}
+                <td class="valor">{{totalBorderoEmDia | number:'1.2-2' }}
                 </td>
-                <td class="qt">{{teste}}</td>
+                <td class="qt">{{qtBorderoEmDia}}</td>
                 <td class="percentual">{{teste }}%</td>
               </tr>
 
@@ -260,9 +260,9 @@
                     </button>
                   </a></td>
                 <td>BOLETO ATRAZADO</td>
-                <td class="valor">{{ teste}}
+                <td class="valor">{{totalBoletoAtrazado | number:'1.2-2'}}
                 </td>
-                <td class="qt">{{teste}}</td>
+                <td class="qt">{{qtBoletoAtrazado}}</td>
                 <td class="percentual">{{ teste}}%</td>
               </tr>
 
@@ -274,9 +274,9 @@
                     </button>
                   </a></td>
                 <td>BORDERO ATRAZADO</td>
-                <td class="valor">{{ teste}}
+                <td class="valor">{{totalBorderoAtrazado | number:'1.2-2'}}
                 </td>
-                <td class="qt">{{teste}}</td>
+                <td class="qt">{{qtBorderoAtrazado}}</td>
                 <td class="percentual">{{ teste }}%</td>
               </tr>
 
@@ -288,9 +288,9 @@
                     </button>
                   </a></td>
                 <td>NÃO FATURADO</td>
-                <td class="valor">{{ teste}}
+                <td class="valor">{{totalNaoFaturado | number:'1.2-2'}}
                 </td>
-                <td class="qt">{{teste}}</td>
+                <td class="qt">{{qtNaoFaturado}}</td>
                 <td class="percentual">{{ teste }}%</td>
               </tr>
 
@@ -302,9 +302,9 @@
                     </button>
                   </a></td>
                 <td>EM CARTEIRA</td>
-                <td class="valor">{{teste }}
+                <td class="valor">{{totalCarteira | number:'1.2-2'}}
                 </td>
-                <td class="qt">{{teste}}</td>
+                <td class="qt">{{qtCarteira}}</td>
                 <td class="percentual">{{ teste }}%</td>
               </tr>
 
@@ -315,11 +315,11 @@
                       <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
                     </button>
                   </a></td>
-                <td>VALOR EM USO DE BORDERO</td>
-                <td class="valor">{{teste}}
+                <td>VALOR EM USO DE TÍTULOS TROCADOS</td>
+                <td class="valor">{{totalBorderoTudo | number:'1.2-2' }}
                 </td>
-                <td class="qt">{{teste}}</td>
-                <td class="percentual">{{ teste}}%</td>
+                <td class="qt">{{qtBorderoTudo}}</td>
+                <td class="percentual">{{teste}}%</td>
               </tr>
 
                <tr>
@@ -344,6 +344,20 @@
                     </button>
                   </a></td>
                 <td>BORDERO EM DIA VENCIMENTO PRÓXIMO MÊS</td>
+                <td class="valor">{{teste }}
+                </td>
+                <td class="qt">{{teste}}</td>
+                <td class="percentual">{{teste}}%</td>
+              </tr>
+
+              <tr>
+                <td><a>
+                    <button type="button" class="btn btn-dark"
+                      >
+                      <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+                    </button>
+                  </a></td>
+                <td>CRÉDITOS PARA RECEBER</td>
                 <td class="valor">{{teste }}
                 </td>
                 <td class="qt">{{teste}}</td>

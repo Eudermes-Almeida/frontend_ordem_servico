@@ -92,7 +92,10 @@ getOsPorRemessa(codremesa: string): Observable<Financeiro[]> {
   return this.http.get<Financeiro[]>(url);
 }
 
+buscaTudoMenosPago(): Observable<number> {
+  const url = `${this.urlServidor}financeiro/tudomenospago`; 
+  return this.http.get<number>(url);
+}
 
-  
 }
 

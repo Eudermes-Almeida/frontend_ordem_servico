@@ -118,8 +118,7 @@ export class FormRelatoriosFinanceirosComponent {
   }
 
 
-  statusSelecionado: string = "TODOS";
-  tipoDataSelecionado: string = "fechamento";
+
 
   // DEFINIÇÃO DO DICIONÁRIO DE DADOS: Inicializa a estrutura para todos os tipos necessários
   totaisFinanceiros: { [chave: string]: { total: number; qt: number; percentual: number } } = {
@@ -149,6 +148,9 @@ export class FormRelatoriosFinanceirosComponent {
     });
   }
 
+  statusSelecionado: string = "TODOS";
+  tipoDataSelecionado: string = "fechamento";
+
   private buscarDadosFinanceiros() {
     this.financeiroService.getRegistrosFiltrados(
       this.dataInicialIntervalo,
@@ -165,6 +167,7 @@ export class FormRelatoriosFinanceirosComponent {
         this.calculaTotalPago();
         this.calculaCustoBancarioTotal();
         this.calculoFechamentoMenosContabilizado();
+        this.buscaTudoMenosPago();
       },
       error: (erro) => {
         console.error('Erro na busca avançada:', erro);
@@ -248,22 +251,22 @@ export class FormRelatoriosFinanceirosComponent {
   totalCustoBancario: number = 0;
   qtCustoBancario: number = 0;
   percentualCustoBancario: number = 0;
-  calculaCustoBancarioTotal(){
+  calculaCustoBancarioTotal() {
 
-  this.qtCustoBancario = 0;
-   this.totalCustoBancario =this.arrayGeral.reduce((acc, os) => {
+    this.qtCustoBancario = 0;
+    this.totalCustoBancario = this.arrayGeral.reduce((acc, os) => {
 
-    if(os.custoBancarioTotal){
-      acc = acc + (+os.custoBancarioTotal)
+      if (os.custoBancarioTotal) {
+        acc = acc + (+os.custoBancarioTotal)
 
-      if(os.custoBancarioTotal !== "0.00") {this.qtCustoBancario ++}
-      return acc
-    }return acc
+        if (os.custoBancarioTotal !== "0.00") { this.qtCustoBancario++ }
+        return acc
+      } return acc
 
-   },0)
+    }, 0)
 
-   console.log(" Este é o custo bancario total ", this.totalCustoBancario)
-   const faturamentoTotalGeral = this.arrayFaturamentoTotal?.[0]?.somatoriaDTO?.somatotaliq;
+    console.log(" Este é o custo bancario total ", this.totalCustoBancario)
+    const faturamentoTotalGeral = this.arrayFaturamentoTotal?.[0]?.somatoriaDTO?.somatotaliq;
     this.percentualCustoBancario = (this.totalCustoBancario / +faturamentoTotalGeral) * 100;
   }
 
@@ -271,18 +274,181 @@ export class FormRelatoriosFinanceirosComponent {
   fechamentoMenosContatilizado: number = 0;
   qtContabilizado: number = 0;
   percentualContabizadoDeFaturamentoTotal: string = ""
-  calculoFechamentoMenosContabilizado(){
+  calculoFechamentoMenosContabilizado() {
     this.qtContabilizado = 0;
     this.totalContabilizado = this.arrayGeral.reduce((acc, os) => {
       acc = acc + (+os.totaliq)
       return acc
-    },0)
+    }, 0)
 
     this.qtContabilizado = this.arrayFaturamentoTotal.length - this.arrayGeral.length
     const faturamentoTotalGeral = this.arrayFaturamentoTotal?.[0]?.somatoriaDTO?.somatotaliq;
     this.fechamentoMenosContatilizado = faturamentoTotalGeral - this.totalContabilizado
-    this.percentualContabizadoDeFaturamentoTotal = ((this.arrayGeral.length / this.arrayFaturamentoTotal.length)*100).toFixed(2)
+    this.percentualContabizadoDeFaturamentoTotal = ((this.arrayGeral.length / this.arrayFaturamentoTotal.length) * 100).toFixed(2)
   }
+
+
+  ////////////////////////////TOTAL REMANECENTES////////////////////////////////////////
+
+  arrayTudao: Financeiro[] =  [];
+
+  buscaTudoMenosPago(){
+    this.financeiroService.buscaTudoMenosPago().subscribe({
+      next: (data: any) => {
+        this.arrayTudao = data;
+        console.log(" Este é o tudão ", this.arrayTudao)
+        this.boletoEmDia();
+        this.borderoEmDia();
+        this.boletoAtrazado();
+        this.borderoAtrazado();
+        this.naoFaturado();
+        this.Carteira();
+        this.totalBorderoGeral();
+      },
+      error: (error) => {
+        console.error(`Erro ao buscar tudão`, error);
+      }
+    });
+  }
+
+
+  totalBoletoEmDia: number = 0;
+  qtBoletoEmDia: number = 0;
+
+  boletoEmDia(){
+    this.qtBoletoEmDia = 0;
+    this.totalBoletoEmDia = this.arrayTudao.reduce((acc, os) => {
+
+      if(os.statusGeral === "EM DIA" && os.tipoPagamento === "BOLETO"){
+
+        this.qtBoletoEmDia ++
+        acc = acc + (+os.totaliq)
+        return acc
+      }
+      return acc
+    },0)
+  }
+
+
+  totalBorderoEmDia: number = 0;
+  qtBorderoEmDia: number = 0;
+
+  borderoEmDia(){
+    this.qtBorderoEmDia = 0;
+    this.totalBorderoEmDia = this.arrayTudao.reduce((acc, os) => {
+      if(os.statusGeral === "EM DIA" && os.tipoPagamento === "BORDERO"){
+        this.qtBorderoEmDia ++
+        acc = acc + (+os.totaliq)
+        return acc
+      }
+      return acc
+    },0)
+  }
+
+  totalBoletoAtrazado: number = 0;
+  qtBoletoAtrazado: number = 0;
+
+  boletoAtrazado(){
+    this.qtBoletoAtrazado = 0;
+    this.totalBoletoAtrazado = this.arrayTudao.reduce((acc, os) => {
+      if(os.statusGeral === "ATRAZADO" && os.tipoPagamento === "BOLETO"){
+        this.qtBoletoAtrazado ++
+        acc = acc + (+os.totaliq)
+        return acc
+      }
+      return acc
+    },0)
+  }
+
+  totalBorderoAtrazado: number = 0;
+  qtBorderoAtrazado: number = 0;
+
+   borderoAtrazado(){
+    this.qtBorderoAtrazado = 0;
+    this.totalBorderoAtrazado = this.arrayTudao.reduce((acc, os) => {
+      if(os.statusGeral === "ATRAZADO" && os.tipoPagamento === "BORDERO"){
+        this.qtBorderoAtrazado ++
+        acc = acc + (+os.totaliq)
+        return acc
+      }
+      return acc
+    },0)
+  }
+
+  totalNaoFaturado: number = 0;
+  qtNaoFaturado: number = 0;
+
+   naoFaturado(){
+    this.qtNaoFaturado= 0;
+    this.totalNaoFaturado = this.arrayTudao.reduce((acc, os) => {
+      if(os.statusGeral === "NAO FATURADO"){
+        this.qtNaoFaturado ++
+        acc = acc + (+os.totaliq)
+        return acc
+      }
+      return acc
+    },0)
+  }
+
+  totalCarteira: number = 0;
+  qtCarteira: number = 0;
+
+   Carteira(){
+    this.qtCarteira= 0;
+    this.totalCarteira = this.arrayTudao.reduce((acc, os) => {
+      if(os.statusGeral === "CARTEIRA"){
+        this.qtCarteira ++
+        acc = acc + (+os.totaliq)
+        return acc
+      }
+      return acc
+    },0)
+  }
+
+
+totalBorderoTudo: number = 0;
+qtBorderoTudo: number = 0;
+
+totalBorderoGeral() {
+  this.qtBorderoTudo = 0;
+
+  this.totalBorderoTudo = this.arrayTudao.reduce((acc, os) => {
+    
+    // CORREÇÃO: Se não for BORDERO, apenas pula o item atual retornando o 'acc' intacto
+    if (os.tipoPagamento !== "BORDERO") {
+      return acc; 
+    }
+
+    // Parcela 1
+    if (os.valorParcela1 && (os.statusParcela1 === "EM DIA" || os.statusParcela1 === "ATRAZADO")) {
+      acc = acc + (+os.valorParcela1 || 0);
+      this.qtBorderoTudo++;
+      console.log(`OS: ${os.os} | Parcela 1: ${os.statusParcela1} | Valor: ${os.valorParcela1}`);
+    }
+
+    // Parcela 2
+    if (os.valorParcela2 && (os.statusParcela2 === "EM DIA" || os.statusParcela2 === "ATRAZADO")) {
+      acc = acc + (+os.valorParcela2 || 0);
+      this.qtBorderoTudo++;
+      console.log(`OS: ${os.os} | Parcela 2: ${os.statusParcela2} | Valor: ${os.valorParcela2}`);
+    }
+
+    // Parcela 3
+    if (os.valorParcela3 && (os.statusParcela3 === "EM DIA" || os.statusParcela3 === "ATRAZADO")) {
+      acc = acc + (+os.valorParcela3 || 0);
+      this.qtBorderoTudo++;
+      console.log(`OS: ${os.os} | Parcela 3: ${os.statusParcela3} | Valor: ${os.valorParcela3}`);
+    }
+
+    return acc;
+  }, 0);
+
+  this.cdr.detectChanges(); // Garante a atualização imediata no HTML do Angular
+
+  console.log("ESte é o valor total de bordero final: ", this.totalBorderoTudo);
+  console.log("Quantidade total de parcelas válidas: ", this.qtBorderoTudo);
+}
+
 
 
 }
