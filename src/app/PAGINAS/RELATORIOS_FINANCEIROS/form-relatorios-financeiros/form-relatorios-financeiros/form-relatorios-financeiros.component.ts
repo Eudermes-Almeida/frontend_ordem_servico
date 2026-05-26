@@ -163,6 +163,7 @@ export class FormRelatoriosFinanceirosComponent {
         // CORRIGIDO: Agora chama a função genérica que processa tudo de uma vez só
         this.calcularTotaisFinanceiros();
         this.calculaTotalPago();
+        this.calculaCustoBancarioTotal();
       },
       error: (erro) => {
         console.error('Erro na busca avançada:', erro);
@@ -240,4 +241,54 @@ export class FormRelatoriosFinanceirosComponent {
     }
     this.cdr.detectChanges();
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  totalCustoBancario: number = 0;
+  qtCustoBancario: number = 0;
+  percentualCustoBancario: number = 0;
+  calculaCustoBancarioTotal(){
+
+  this.qtCustoBancario = 0;
+   this.totalCustoBancario =this.arrayGeral.reduce((acc, os) => {
+
+    if(os.custoBancarioTotal){
+      acc = acc + (+os.custoBancarioTotal)
+
+      if(os.custoBancarioTotal !== "0.00") {this.qtCustoBancario ++}
+      return acc
+    }return acc
+
+   },0)
+
+   console.log(" Este é o custo bancario total ", this.totalCustoBancario)
+   const faturamentoTotalGeral = this.arrayFaturamentoTotal?.[0]?.somatoriaDTO?.somatotaliq;
+    this.percentualCustoBancario = (this.totalCustoBancario / +faturamentoTotalGeral) * 100;
+  }
+
+
 }

@@ -186,9 +186,9 @@
           </button>
         </a></td>
       <td>TOTAL DESPESA BANCÁRIA</td>
-      <td class="valor">{{ teste }}</td>
-      <td class="qt">{{ teste }}</td>
-      <td class="percentual">{{ teste }}%</td>
+      <td class="valor">{{totalCustoBancario | number:'1.2-2'}}</td>
+      <td class="qt">{{qtCustoBancario}}</td>
+      <td class="percentual">{{percentualCustoBancario | number:'1.2-2'}}%</td>
     </tr>
 
     <!-- 10. FECHAMENTO MENOS CONTABILIZADO -->
