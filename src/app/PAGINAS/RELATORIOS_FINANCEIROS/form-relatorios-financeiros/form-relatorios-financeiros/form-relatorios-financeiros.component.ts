@@ -1,3 +1,4 @@
+import { SomatorioOs } from './../../../../modelo/SomatorioOs';
 import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
 import { Cliente } from '../../../../modelo/Cliente';
 import { Os } from '../../../../modelo/Os';
@@ -22,7 +23,7 @@ import { FinanceiroService } from '../../../../servico/financeiro.service';
 export class FormRelatoriosFinanceirosComponent {
   // CONFIGURA AS FUNÇÕES QUE SERÃO EXECUTADAS NA INICIALIZAÇÃO DA PÁGINA
   ngOnInit(): void {
-    
+
   }
 
 
@@ -39,35 +40,36 @@ export class FormRelatoriosFinanceirosComponent {
   teste: string = "teste";
   spinnerLoading: boolean = false;
 
-  
+
   constructor(
     private servico: OrdemservicoService,
-    private financeiroService: FinanceiroService
+    private financeiroService: FinanceiroService,
+    private cdr: ChangeDetectorRef
   ) { }
 
 
-//////////////////////////BUSCA FATURAMENTO POR DATA DE FECHAMENTO//////////////////
+  //////////////////////////BUSCA FATURAMENTO POR DATA DE FECHAMENTO//////////////////
 
-buscaFaturamentoTotalEntreDatas(){
-const dataInicio = this.converterDataParaFormatoLimpo(this.dataInicialIntervalo)
-const dataFim = this.converterDataParaFormatoLimpo(this.dataFinalIntervalo)
-const busca = "faturamentoTotal"
-this.buscaFechamentoOs(dataInicio, dataFim, busca);
-}
-
- converterDataParaFormatoLimpo(data: string): string {
-  if (data && data.includes('-')) {
-    const partes = data.split('-');
-    const ano = partes[0];
-    const mes = partes[1];
-    const dia = partes[2];
-    const dataFormatada = `${dia}${mes}${ano}`;
-    return dataFormatada;
+  buscaFaturamentoTotalEntreDatas() {
+    const dataInicio = this.converterDataParaFormatoLimpo(this.dataInicialIntervalo)
+    const dataFim = this.converterDataParaFormatoLimpo(this.dataFinalIntervalo)
+    const busca = "faturamentoTotal"
+    this.buscaFechamentoOs(dataInicio, dataFim, busca);
   }
-  return ''; 
-}
 
-arrayFaturamentoTotal: any[] = [];
+  converterDataParaFormatoLimpo(data: string): string {
+    if (data && data.includes('-')) {
+      const partes = data.split('-');
+      const ano = partes[0];
+      const mes = partes[1];
+      const dia = partes[2];
+      const dataFormatada = `${dia}${mes}${ano}`;
+      return dataFormatada;
+    }
+    return '';
+  }
+
+  arrayFaturamentoTotal: any[] = [];
 
   buscaFechamentoOs(dataInicio: string, dataFim: string, busca: string): void {
     console.log("Entrou em busca relatorio")
@@ -116,7 +118,7 @@ arrayFaturamentoTotal: any[] = [];
   }
 
 
-    statusSelecionado: string = "TODOS";
+  statusSelecionado: string = "TODOS";
   tipoDataSelecionado: string = "fechamento";
 
   // DEFINIÇÃO DO DICIONÁRIO DE DADOS: Inicializa a estrutura para todos os tipos necessários
@@ -157,9 +159,10 @@ arrayFaturamentoTotal: any[] = [];
       next: (dados: Financeiro[]) => {
         this.arrayGeral = dados;
         console.log('Filtro dinâmico carregado com sucesso:', this.arrayGeral);
-        
+
         // CORRIGIDO: Agora chama a função genérica que processa tudo de uma vez só
         this.calcularTotaisFinanceiros();
+        this.calculaTotalPago();
       },
       error: (erro) => {
         console.error('Erro na busca avançada:', erro);
@@ -214,6 +217,27 @@ arrayFaturamentoTotal: any[] = [];
     console.log("Cálculos consolidados e sem duplicidade:", this.totaisFinanceiros);
   }
 
-  onButtonClick(){}
+  onButtonClick() { }
 
+  totalPago: number = 0;
+  qttotalPago: number = 0;
+  percentualTotalPago: number = 0;
+  calculaTotalPago() {
+    this.qttotalPago = 0;
+    this.totalPago = this.arrayGeral.reduce((acc, os) => {
+      if (os.statusGeral === "PAGO") {
+        this.qttotalPago++;
+        return acc + (+os.totaliq || 0);
+      }
+      return acc;
+    }, 0);
+
+    const faturamentoTotalGeral = this.arrayFaturamentoTotal?.[0]?.somatoriaDTO?.somatotaliq;
+    if (faturamentoTotalGeral && +faturamentoTotalGeral > 0) {
+      this.percentualTotalPago = (this.totalPago / +faturamentoTotalGeral) * 100;
+    } else {
+      this.percentualTotalPago = 0;
+    }
+    this.cdr.detectChanges();
+  }
 }

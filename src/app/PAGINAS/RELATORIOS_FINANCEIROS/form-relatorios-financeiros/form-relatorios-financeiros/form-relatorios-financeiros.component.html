@@ -173,9 +173,9 @@
           </button>
         </a></td>
       <td>PAGO</td>
-      <td class="valor">{{ teste }}</td>
-      <td class="qt">{{ teste }}</td>
-      <td class="percentual">{{ teste }}%</td>
+      <td class="valor">{{ totalPago | number:'1.2-2' }}</td>
+      <td class="qt">{{ qttotalPago }}</td>
+      <td class="percentual">{{ percentualTotalPago | number:'1.2-2'}}%</td>
     </tr>
 
     <!-- 9. TOTAL DESPESA BANCÁRIA -->
