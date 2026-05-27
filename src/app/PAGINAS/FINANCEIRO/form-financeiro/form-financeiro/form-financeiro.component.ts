@@ -602,12 +602,12 @@ export class FormFinanceiroComponent {
       this.codCliAceito = financeiro.codcli;
     }
 
-    if (financeiro.codcli !== 0 && financeiro.codcli === this.codCliAceito && !financeiro.codRemessa) {
+    if (financeiro.codcli !== 0 && financeiro.codcli === this.codCliAceito) {
 
       console.log(" Este é o tipo de pagamento ", financeiro.tipoPagamento)
 
-      if (financeiro.tipoPagamento === "DINHEIRO" || financeiro.tipoPagamento === "PIX") {
-        alert("Esta ordem de serviço já foi recebida por PIX ou Dinheiro.")
+      if (financeiro.tipoPagamento === "DINHEIRO" || financeiro.tipoPagamento === "PIX" || financeiro.tipoPagamento === "CARTAO DEBITO" || financeiro.tipoPagamento === "CARTAO CREDITO") {
+        alert("Esta ordem de serviço já foi recebida por PIX, Dinheiro OU Cartão")
         inputCheckbox.checked = false;
         return
       }
