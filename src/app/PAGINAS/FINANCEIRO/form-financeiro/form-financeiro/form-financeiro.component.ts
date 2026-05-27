@@ -789,10 +789,12 @@ export class FormFinanceiroComponent {
   }
 
   cartaoDebito(){
-    this.pagamentoCartaoDebito();
+    this.pagamentoComCartao(this.formProcessaRemessa.value.tipoPagamento);
   }
 
-  cartaoCredito(){}
+  cartaoCredito(){this.pagamentoComCartao(this.formProcessaRemessa.value.tipoPagamento);
+    
+  }
 
   pagamentoPorBoleto() {
     this.atualizarDadosDasOrdensSelecionadas('BOLETO');
@@ -909,7 +911,12 @@ export class FormFinanceiroComponent {
     this.persisteRemessa();
   }
 
-   pagamentoCartaoDebito(): void {
+   pagamentoComCartao(tipoCartao: string): void {
+
+    const taxaCartaoDebito = 0.02;
+    const taxaCartaoCredito = 0.06;
+    const taxaCartao = tipoCartao === "CARTAO DEBITO" ? taxaCartaoDebito : taxaCartaoCredito;
+
     this.exibeOpcoesParcelamento = false;
     // Percorre todo o array atualizando os campos solicitados com os novos valores à vista
     this.osSelecionadasParaRemessa = this.osSelecionadasParaRemessa.map(item => {
@@ -919,7 +926,7 @@ export class FormFinanceiroComponent {
         tipoPagamento: this.formProcessaRemessa.value.tipoPagamento,
         valorJaPago: item.totaliq, // Copia o valor atual do total líquido
         statusGeral: 'PAGO',
-        jurosBordero: (Number(item.totaliq) * 0.02).toFixed(2),
+        jurosBordero: (Number(item.totaliq) * taxaCartao).toFixed(2),
         iofDiario: '0.00',
         tarifaBordero: '0.00',
         custoBancarioTotal: (Number(item.totaliq) * 0.02).toFixed(2), // Mapeia custoBancario para a propriedade correta da interface
