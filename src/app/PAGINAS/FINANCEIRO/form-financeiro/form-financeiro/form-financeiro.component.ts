@@ -793,7 +793,7 @@ export class FormFinanceiroComponent {
   }
 
   cartaoCredito(){this.pagamentoComCartao(this.formProcessaRemessa.value.tipoPagamento);
-    
+
   }
 
   pagamentoPorBoleto() {
@@ -929,8 +929,8 @@ export class FormFinanceiroComponent {
         jurosBordero: (Number(item.totaliq) * taxaCartao).toFixed(2),
         iofDiario: '0.00',
         tarifaBordero: '0.00',
-        custoBancarioTotal: (Number(item.totaliq) * 0.02).toFixed(2), // Mapeia custoBancario para a propriedade correta da interface
-        valorLiquidoCreditado: (Number(item.totaliq) - (Number(item.totaliq) * 0.02)).toFixed(2)
+        custoBancarioTotal: (Number(item.totaliq) * taxaCartao).toFixed(2), // Mapeia custoBancario para a propriedade correta da interface
+        valorLiquidoCreditado: (Number(item.totaliq) - (Number(item.totaliq) * taxaCartao)).toFixed(2)
       };
     });
 
@@ -964,8 +964,8 @@ export class FormFinanceiroComponent {
       codCli: this.osSelecionadasParaRemessa[0].codcli ? String(this.osSelecionadasParaRemessa[0].codcli) : '',
       quantidadeBoletos: this.formProcessaRemessa.value.quantidadeParcelas || '0',
       valorTotalOs: this.totalOs.toFixed(2),
-      valorTotalDespesaBancaria: '0.00',
-      valorTotalLiquido: this.totalOs.toFixed(2),
+      valorTotalDespesaBancaria: (this.totalDespesasBancarias).toFixed(2),
+      valorTotalLiquido: (this.somatoriaTotaliq).toFixed(2),
     });
     this.persisteRemessa();
   }
