@@ -88,7 +88,7 @@
       <td>FECHAMENTO OS</td>
       <td class="valor">{{ arrayFaturamentoTotal[0]?.somatoriaDTO?.somatotaliq | number:'1.2-2' }}</td>
       <!-- CORRIGIDO: Removido pipe de decimal da quantidade, já que quantidade é número inteiro -->
-      <td class="qt">{{ arrayFaturamentoTotal[0]?.somatoriaDTO?.qtOs }}</td>
+      <td class="qt">{{qtOsfechadas}}</td>
       <td class="percentual">100%</td>
     </tr>
 
@@ -169,26 +169,6 @@
       <td class="qt">{{ totaisFinanceiros['BORDERO']?.qt }}</td>
       <td class="percentual">{{ totaisFinanceiros['BORDERO']?.percentual | number:'1.2-2' }}%</td>
     </tr>
-
-    <!-- 6. AINDA NÃO FATURADO -->
-    <tr>
-  <td><button type="button" class="btn btn-dark"><i class="bi bi-check-circle icone"></i></button></td>
-  <td>AINDA NÃO FATURADO</td>
-  <td class="valor">{{ totaisFinanceiros['NAO FATURADO']?.total | number:'1.2-2' }}</td>
-  <td class="qt">{{ totaisFinanceiros['NAO FATURADO']?.qt }}</td>
-  <td class="percentual">{{ totaisFinanceiros['NAO FATURADO']?.percentual | number:'1.2-2' }}%</td>
-</tr>
-
-    <!-- 7. EM CARTEIRA -->
-   <!-- EM CARTEIRA -->
-<tr>
-  <td><button type="button" class="btn btn-dark"><i class="bi bi-check-circle icone"></i></button></td>
-  <td>EM CARTEIRA</td>
-  <!-- CORRIGIDO: Removida a duplicidade, buscando diretamente a chave 'CARTEIRA' -->
-  <td class="valor">{{ totaisFinanceiros['CARTEIRA']?.total | number:'1.2-2' }}</td>
-  <td class="qt">{{ totaisFinanceiros['CARTEIRA']?.qt }}</td>
-  <td class="percentual">{{ totaisFinanceiros['CARTEIRA']?.percentual | number:'1.2-2' }}%</td>
-</tr>
 
 
     <!-- 8. PAGO -->

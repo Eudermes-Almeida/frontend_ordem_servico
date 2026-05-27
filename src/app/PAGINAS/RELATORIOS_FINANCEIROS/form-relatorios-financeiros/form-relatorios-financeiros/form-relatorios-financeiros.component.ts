@@ -1,11 +1,6 @@
-import { SomatorioOs } from './../../../../modelo/SomatorioOs';
+
 import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
-import { Cliente } from '../../../../modelo/Cliente';
-import { Os } from '../../../../modelo/Os';
-import { FormControl, FormGroup } from '@angular/forms';
-import { ParametrosService } from '../../../../servico/parametros.service';
 import { OrdemservicoService } from '../../../../servico/ordemservico.service';
-import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Financeiro } from '../../../../modelo/Financeiro';
@@ -21,11 +16,7 @@ import { FinanceiroService } from '../../../../servico/financeiro.service';
   styleUrl: './form-relatorios-financeiros.component.css'
 })
 export class FormRelatoriosFinanceirosComponent {
-  // CONFIGURA AS FUNÇÕES QUE SERÃO EXECUTADAS NA INICIALIZAÇÃO DA PÁGINA
-  ngOnInit(): void {
-
-  }
-
+  ngOnInit(): void { }
 
   //////////////////////////////////NOVAS VARIÁVEIS///////////////////////////////////////////////////
   arrayGeral: Financeiro[] = [];
@@ -40,13 +31,11 @@ export class FormRelatoriosFinanceirosComponent {
   teste: string = "teste";
   spinnerLoading: boolean = false;
 
-
   constructor(
     private servico: OrdemservicoService,
     private financeiroService: FinanceiroService,
     private cdr: ChangeDetectorRef
   ) { }
-
 
   //////////////////////////BUSCA FATURAMENTO POR DATA DE FECHAMENTO//////////////////
 
@@ -54,7 +43,6 @@ export class FormRelatoriosFinanceirosComponent {
     const dataInicio = this.converterDataParaFormatoLimpo(this.dataInicialIntervalo)
     const dataFim = this.converterDataParaFormatoLimpo(this.dataFinalIntervalo)
     const busca = "faturamentoTotal"
-    this.buscaFechamentoOs(dataInicio, dataFim, busca);
   }
 
   converterDataParaFormatoLimpo(data: string): string {
@@ -69,33 +57,8 @@ export class FormRelatoriosFinanceirosComponent {
     return '';
   }
 
+  qtOsfechadas: number = 0;
   arrayFaturamentoTotal: any[] = [];
-
-  buscaFechamentoOs(dataInicio: string, dataFim: string, busca: string): void {
-    console.log("Entrou em busca relatorio")
-    this.servico.buscaRelatoriosEntreDatas(dataInicio, dataFim, busca).subscribe(
-      (data: any) => {
-        switch (busca) {
-          case "faturamentoTotal":
-            this.arrayFaturamentoTotal = data;
-            console.log(" array faturamento total ", this.arrayFaturamentoTotal)
-            const memoFaturamentoTotal = this.servico.getData();
-            console.log("memoria faturamento total ", memoFaturamentoTotal)
-            break;
-          default:
-            console.warn(`Relatório ${busca} não reconhecido.`);
-        }
-
-      },
-      (error) => {
-        if (error.status === 404) {
-          console.error(`Nenhum dado encontrado para o relatório ${busca}.`);
-        } else {
-          console.error(`Erro ao buscar relatório ${busca}:`, error);
-        }
-      }
-    );
-  }
 
   // Função para converter o objeto em string
   onDateInicial(date: NgbDateStruct) {
@@ -103,9 +66,9 @@ export class FormRelatoriosFinanceirosComponent {
     const dia = date.day.toString().padStart(2, '0');
     const mes = date.month.toString().padStart(2, '0');
     const ano = date.year;
-    console.log(" Este é dia ", dia)
+
     this.dataInicialIntervalo = `${ano}-${mes}-${dia}`;
-    console.log('Data salva como string:', this.dataInicialIntervalo);
+
   }
 
   onDateFinal(date: NgbDateStruct) {
@@ -114,11 +77,8 @@ export class FormRelatoriosFinanceirosComponent {
     const mes = date.month.toString().padStart(2, '0');
     const ano = date.year;
     this.dataFinalIntervalo = `${ano}-${mes}-${dia}`;
-    console.log('Data salva como string:', this.dataFinalIntervalo);
+
   }
-
-
-
 
   // DEFINIÇÃO DO DICIONÁRIO DE DADOS: Inicializa a estrutura para todos os tipos necessários
   totaisFinanceiros: { [chave: string]: { total: number; qt: number; percentual: number } } = {
@@ -141,6 +101,13 @@ export class FormRelatoriosFinanceirosComponent {
     this.servico.buscaRelatoriosEntreDatas(dataInicio, dataFim, busca).subscribe({
       next: (data: any) => {
         this.arrayFaturamentoTotal = data;
+
+        //////pega só a quantidade de os com valor:
+        this.arrayFaturamentoTotal.forEach((os) => {
+          if (Number(os.totaliq) > 0) {
+            this.qtOsfechadas++
+          }
+        })
         this.buscarDadosFinanceiros();
       },
       error: (error) => {
@@ -162,7 +129,7 @@ export class FormRelatoriosFinanceirosComponent {
     ).subscribe({
       next: (dados: Financeiro[]) => {
         this.arrayGeral = dados;
-        console.log('Filtro dinâmico carregado com sucesso:', this.arrayGeral);
+
 
         // CORRIGIDO: Agora chama a função genérica que processa tudo de uma vez só
         this.calcularTotaisFinanceiros();
@@ -221,7 +188,7 @@ export class FormRelatoriosFinanceirosComponent {
       });
     }
 
-    console.log("Cálculos consolidados e sem duplicidade:", this.totaisFinanceiros);
+
   }
 
   onButtonClick() { }
@@ -267,7 +234,7 @@ export class FormRelatoriosFinanceirosComponent {
 
     }, 0)
 
-    console.log(" Este é o custo bancario total ", this.totalCustoBancario)
+
     const faturamentoTotalGeral = this.arrayFaturamentoTotal?.[0]?.somatoriaDTO?.somatotaliq;
     this.percentualCustoBancario = (this.totalCustoBancario / +faturamentoTotalGeral) * 100;
   }
@@ -284,7 +251,7 @@ export class FormRelatoriosFinanceirosComponent {
 
     this.qtContabilizado = this.arrayGeral.length
     const faturamentoTotalGeral = this.arrayFaturamentoTotal?.[0]?.somatoriaDTO?.somatotaliq;
-   
+
     this.percentualContabizadoDeFaturamentoTotal = ((this.arrayGeral.length / this.arrayFaturamentoTotal.length) * 100).toFixed(2)
   }
 
@@ -297,7 +264,7 @@ export class FormRelatoriosFinanceirosComponent {
     this.financeiroService.buscaTudoMenosPago().subscribe({
       next: (data: any) => {
         this.arrayTudao = data;
-        console.log(" Este é o tudão ", this.arrayTudao)
+
         this.boletoEmDia();
         this.borderoEmDia();
         this.boletoAtrazado();
@@ -332,21 +299,21 @@ export class FormRelatoriosFinanceirosComponent {
       if (os.valorParcela1 && (os.statusParcela1 === "EM DIA")) {
         acc = acc + (+os.valorParcela1 || 0);
         this.qtBoletoEmDia++;
-        console.log(`OS: ${os.os} | Parcela 1: ${os.statusParcela1} | Valor: ${os.valorParcela1}`);
+
       }
 
       // Parcela 2
       if (os.valorParcela2 && (os.statusParcela2 === "EM DIA")) {
         acc = acc + (+os.valorParcela2 || 0);
         this.qtBoletoEmDia++;
-        console.log(`OS: ${os.os} | Parcela 2: ${os.statusParcela2} | Valor: ${os.valorParcela2}`);
+
       }
 
       // Parcela 3
       if (os.valorParcela3 && (os.statusParcela3 === "EM DIA")) {
         acc = acc + (+os.valorParcela3 || 0);
         this.qtBoletoEmDia++;
-        console.log(`OS: ${os.os} | Parcela 3: ${os.statusParcela3} | Valor: ${os.valorParcela3}`);
+
       }
 
       return acc;
@@ -373,21 +340,21 @@ export class FormRelatoriosFinanceirosComponent {
       if (os.valorParcela1 && (os.statusParcela1 === "EM DIA")) {
         acc = acc + (+os.valorParcela1 || 0);
         this.qtBorderoEmDia++;
-        console.log(`OS: ${os.os} | Parcela 1: ${os.statusParcela1} | Valor: ${os.valorParcela1}`);
+
       }
 
       // Parcela 2
       if (os.valorParcela2 && (os.statusParcela2 === "EM DIA")) {
         acc = acc + (+os.valorParcela2 || 0);
         this.qtBorderoEmDia++;
-        console.log(`OS: ${os.os} | Parcela 2: ${os.statusParcela2} | Valor: ${os.valorParcela2}`);
+
       }
 
       // Parcela 3
       if (os.valorParcela3 && (os.statusParcela3 === "EM DIA")) {
         acc = acc + (+os.valorParcela3 || 0);
         this.qtBorderoEmDia++;
-        console.log(`OS: ${os.os} | Parcela 3: ${os.statusParcela3} | Valor: ${os.valorParcela3}`);
+
       }
 
       return acc;
@@ -413,21 +380,21 @@ export class FormRelatoriosFinanceirosComponent {
       if (os.valorParcela1 && (os.statusParcela1 === "ATRAZADO")) {
         acc = acc + (+os.valorParcela1 || 0);
         this.qtBoletoAtrazado++;
-        console.log(`OS: ${os.os} | Parcela 1: ${os.statusParcela1} | Valor: ${os.valorParcela1}`);
+
       }
 
       // Parcela 2
       if (os.valorParcela2 && (os.statusParcela2 === "ATRAZADO")) {
         acc = acc + (+os.valorParcela2 || 0);
         this.qtBoletoAtrazado++;
-        console.log(`OS: ${os.os} | Parcela 2: ${os.statusParcela2} | Valor: ${os.valorParcela2}`);
+
       }
 
       // Parcela 3
       if (os.valorParcela3 && (os.statusParcela3 === "ATRAZADO")) {
         acc = acc + (+os.valorParcela3 || 0);
         this.qtBoletoAtrazado++;
-        console.log(`OS: ${os.os} | Parcela 3: ${os.statusParcela3} | Valor: ${os.valorParcela3}`);
+
       }
 
       return acc;
@@ -452,21 +419,21 @@ export class FormRelatoriosFinanceirosComponent {
       if (os.valorParcela1 && (os.statusParcela1 === "ATRAZADO")) {
         acc = acc + (+os.valorParcela1 || 0);
         this.qtBorderoAtrazado++;
-        console.log(`OS: ${os.os} | Parcela 1: ${os.statusParcela1} | Valor: ${os.valorParcela1}`);
+
       }
 
       // Parcela 2
       if (os.valorParcela2 && (os.statusParcela2 === "ATRAZADO")) {
         acc = acc + (+os.valorParcela2 || 0);
         this.qtBorderoAtrazado++;
-        console.log(`OS: ${os.os} | Parcela 2: ${os.statusParcela2} | Valor: ${os.valorParcela2}`);
+
       }
 
       // Parcela 3
       if (os.valorParcela3 && (os.statusParcela3 === "ATRAZADO")) {
         acc = acc + (+os.valorParcela3 || 0);
         this.qtBorderoAtrazado++;
-        console.log(`OS: ${os.os} | Parcela 3: ${os.statusParcela3} | Valor: ${os.valorParcela3}`);
+
       }
 
       return acc;
@@ -522,21 +489,21 @@ export class FormRelatoriosFinanceirosComponent {
       if (os.valorParcela1 && (os.statusParcela1 === "EM DIA" || os.statusParcela1 === "ATRAZADO")) {
         acc = acc + (+os.valorParcela1 || 0);
         this.qtBorderoTudo++;
-        console.log(`OS: ${os.os} | Parcela 1: ${os.statusParcela1} | Valor: ${os.valorParcela1}`);
+
       }
 
       // Parcela 2
       if (os.valorParcela2 && (os.statusParcela2 === "EM DIA" || os.statusParcela2 === "ATRAZADO")) {
         acc = acc + (+os.valorParcela2 || 0);
         this.qtBorderoTudo++;
-        console.log(`OS: ${os.os} | Parcela 2: ${os.statusParcela2} | Valor: ${os.valorParcela2}`);
+
       }
 
       // Parcela 3
       if (os.valorParcela3 && (os.statusParcela3 === "EM DIA" || os.statusParcela3 === "ATRAZADO")) {
         acc = acc + (+os.valorParcela3 || 0);
         this.qtBorderoTudo++;
-        console.log(`OS: ${os.os} | Parcela 3: ${os.statusParcela3} | Valor: ${os.valorParcela3}`);
+
       }
 
       return acc;
@@ -602,19 +569,19 @@ export class FormRelatoriosFinanceirosComponent {
 
       if (os.tipoPagamento === "BORDERO" && os.vencimento1 && os.vencimento1 <= dataFutura) {
         this.qtBorderoVencimento30Dias++
-        console.log(" ESte é o valor da parcela 1************* ", os.valorParcela1)
+
         return acc + (+os.valorParcela1)
       }
 
       if (os.tipoPagamento === "BORDERO" && os.vencimento2 && os.vencimento2 <= dataFutura) {
         this.qtBorderoVencimento30Dias++
-        console.log(" ESte é o valor da parcela 2************* ", os.valorParcela2)
+
         return acc + (+os.valorParcela2)
       }
 
       if (os.tipoPagamento === "BORDERO" && os.vencimento3 && os.vencimento3 <= dataFutura) {
         this.qtBorderoVencimento30Dias++
-        console.log(" ESte é o valor da parcela 3************* ", os.valorParcela3)
+
         return acc + (+os.valorParcela3)
       }
       return acc
@@ -622,7 +589,7 @@ export class FormRelatoriosFinanceirosComponent {
 
   }
 
-  
+
   totalAreceber: number = 0;
   qtTotalAreceber: number = 0;
 
@@ -639,24 +606,24 @@ export class FormRelatoriosFinanceirosComponent {
       if (os.valorParcela1) {
         acc = acc + (+os.valorParcela1 || 0);
         this.qtTotalAreceber++;
-        console.log(`OS: ${os.os} | Parcela 1: ${os.statusParcela1} | Valor: ${os.valorParcela1}`);
+
       }
 
       // Parcela 2
       if (os.valorParcela2) {
         acc = acc + (+os.valorParcela2 || 0);
         this.qtTotalAreceber++;
-        console.log(`OS: ${os.os} | Parcela 2: ${os.statusParcela2} | Valor: ${os.valorParcela2}`);
+
       }
 
       // Parcela 3
       if (os.valorParcela3) {
         acc = acc + (+os.valorParcela3 || 0);
         this.qtTotalAreceber++;
-        console.log(`OS: ${os.os} | Parcela 3: ${os.statusParcela3} | Valor: ${os.valorParcela3}`);
+
       }
 
-      if(os.tipoPagamento !== "BOLETO" && os.tipoPagamento !== "BORDERO"){
+      if (os.tipoPagamento !== "BOLETO" && os.tipoPagamento !== "BORDERO") {
         this.qtTotalAreceber++;
         acc = acc + (+os.totaliq || 0)
         return acc
