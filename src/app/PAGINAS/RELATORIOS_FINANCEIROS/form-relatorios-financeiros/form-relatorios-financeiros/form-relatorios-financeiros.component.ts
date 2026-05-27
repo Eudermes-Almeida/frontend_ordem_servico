@@ -290,9 +290,9 @@ export class FormRelatoriosFinanceirosComponent {
 
   ////////////////////////////TOTAL REMANECENTES////////////////////////////////////////
 
-  arrayTudao: Financeiro[] =  [];
+  arrayTudao: Financeiro[] = [];
 
-  buscaTudoMenosPago(){
+  buscaTudoMenosPago() {
     this.financeiroService.buscaTudoMenosPago().subscribe({
       next: (data: any) => {
         this.arrayTudao = data;
@@ -304,6 +304,7 @@ export class FormRelatoriosFinanceirosComponent {
         this.naoFaturado();
         this.Carteira();
         this.totalBorderoGeral();
+        this.boletoVencimentoProximos30Dias();
       },
       error: (error) => {
         console.error(`Erro ao buscar tudão`, error);
@@ -315,40 +316,40 @@ export class FormRelatoriosFinanceirosComponent {
   totalBoletoEmDia: number = 0;
   qtBoletoEmDia: number = 0;
 
-  boletoEmDia(){
+  boletoEmDia() {
     this.qtBoletoEmDia = 0;
 
-  this.totalBoletoEmDia = this.arrayGeral.reduce((acc, os) => {
-    
-    if (os.tipoPagamento !== "BOLETO") {
-      return acc; 
-    }
+    this.totalBoletoEmDia = this.arrayGeral.reduce((acc, os) => {
 
-    // Parcela 1
-    if (os.valorParcela1 && (os.statusParcela1 === "EM DIA")) {
-      acc = acc + (+os.valorParcela1 || 0);
-      this.qtBoletoEmDia++;
-      console.log(`OS: ${os.os} | Parcela 1: ${os.statusParcela1} | Valor: ${os.valorParcela1}`);
-    }
+      if (os.tipoPagamento !== "BOLETO") {
+        return acc;
+      }
 
-    // Parcela 2
-    if (os.valorParcela2 && (os.statusParcela2 === "EM DIA")) {
-      acc = acc + (+os.valorParcela2 || 0);
-      this.qtBoletoEmDia++;
-      console.log(`OS: ${os.os} | Parcela 2: ${os.statusParcela2} | Valor: ${os.valorParcela2}`);
-    }
+      // Parcela 1
+      if (os.valorParcela1 && (os.statusParcela1 === "EM DIA")) {
+        acc = acc + (+os.valorParcela1 || 0);
+        this.qtBoletoEmDia++;
+        console.log(`OS: ${os.os} | Parcela 1: ${os.statusParcela1} | Valor: ${os.valorParcela1}`);
+      }
 
-    // Parcela 3
-    if (os.valorParcela3 && (os.statusParcela3 === "EM DIA")) {
-      acc = acc + (+os.valorParcela3 || 0);
-      this.qtBoletoEmDia++;
-      console.log(`OS: ${os.os} | Parcela 3: ${os.statusParcela3} | Valor: ${os.valorParcela3}`);
-    }
+      // Parcela 2
+      if (os.valorParcela2 && (os.statusParcela2 === "EM DIA")) {
+        acc = acc + (+os.valorParcela2 || 0);
+        this.qtBoletoEmDia++;
+        console.log(`OS: ${os.os} | Parcela 2: ${os.statusParcela2} | Valor: ${os.valorParcela2}`);
+      }
 
-    return acc;
-  }, 0);
+      // Parcela 3
+      if (os.valorParcela3 && (os.statusParcela3 === "EM DIA")) {
+        acc = acc + (+os.valorParcela3 || 0);
+        this.qtBoletoEmDia++;
+        console.log(`OS: ${os.os} | Parcela 3: ${os.statusParcela3} | Valor: ${os.valorParcela3}`);
+      }
 
-  this.cdr.detectChanges(); // Garante a atualização imediata no HTML do Angular
+      return acc;
+    }, 0);
+
+    this.cdr.detectChanges(); // Garante a atualização imediata no HTML do Angular
 
   }
 
@@ -356,193 +357,239 @@ export class FormRelatoriosFinanceirosComponent {
   totalBorderoEmDia: number = 0;
   qtBorderoEmDia: number = 0;
 
-  borderoEmDia(){
+  borderoEmDia() {
     this.qtBorderoEmDia = 0;
 
-  this.totalBorderoEmDia = this.arrayGeral.reduce((acc, os) => {
-    
-    if (os.tipoPagamento !== "BORDERO") {
-      return acc; 
-    }
+    this.totalBorderoEmDia = this.arrayGeral.reduce((acc, os) => {
 
-    // Parcela 1
-    if (os.valorParcela1 && (os.statusParcela1 === "EM DIA")) {
-      acc = acc + (+os.valorParcela1 || 0);
-      this.qtBorderoEmDia++;
-      console.log(`OS: ${os.os} | Parcela 1: ${os.statusParcela1} | Valor: ${os.valorParcela1}`);
-    }
+      if (os.tipoPagamento !== "BORDERO") {
+        return acc;
+      }
 
-    // Parcela 2
-    if (os.valorParcela2 && (os.statusParcela2 === "EM DIA")) {
-      acc = acc + (+os.valorParcela2 || 0);
-      this.qtBorderoEmDia++;
-      console.log(`OS: ${os.os} | Parcela 2: ${os.statusParcela2} | Valor: ${os.valorParcela2}`);
-    }
+      // Parcela 1
+      if (os.valorParcela1 && (os.statusParcela1 === "EM DIA")) {
+        acc = acc + (+os.valorParcela1 || 0);
+        this.qtBorderoEmDia++;
+        console.log(`OS: ${os.os} | Parcela 1: ${os.statusParcela1} | Valor: ${os.valorParcela1}`);
+      }
 
-    // Parcela 3
-    if (os.valorParcela3 && (os.statusParcela3 === "EM DIA")) {
-      acc = acc + (+os.valorParcela3 || 0);
-      this.qtBorderoEmDia++;
-      console.log(`OS: ${os.os} | Parcela 3: ${os.statusParcela3} | Valor: ${os.valorParcela3}`);
-    }
+      // Parcela 2
+      if (os.valorParcela2 && (os.statusParcela2 === "EM DIA")) {
+        acc = acc + (+os.valorParcela2 || 0);
+        this.qtBorderoEmDia++;
+        console.log(`OS: ${os.os} | Parcela 2: ${os.statusParcela2} | Valor: ${os.valorParcela2}`);
+      }
 
-    return acc;
-  }, 0);
+      // Parcela 3
+      if (os.valorParcela3 && (os.statusParcela3 === "EM DIA")) {
+        acc = acc + (+os.valorParcela3 || 0);
+        this.qtBorderoEmDia++;
+        console.log(`OS: ${os.os} | Parcela 3: ${os.statusParcela3} | Valor: ${os.valorParcela3}`);
+      }
 
-  this.cdr.detectChanges(); // Garante a atualização imediata no HTML do Angular
+      return acc;
+    }, 0);
+
+    this.cdr.detectChanges(); // Garante a atualização imediata no HTML do Angular
 
   }
 
   totalBoletoAtrazado: number = 0;
   qtBoletoAtrazado: number = 0;
 
-  boletoAtrazado(){
-   this.qtBoletoAtrazado = 0;
+  boletoAtrazado() {
+    this.qtBoletoAtrazado = 0;
 
-  this.totalBoletoAtrazado = this.arrayGeral.reduce((acc, os) => {
-    
-    if (os.tipoPagamento !== "BOLETO") {
-      return acc; 
-    }
+    this.totalBoletoAtrazado = this.arrayGeral.reduce((acc, os) => {
 
-    // Parcela 1
-    if (os.valorParcela1 && (os.statusParcela1 === "ATRAZADO")) {
-      acc = acc + (+os.valorParcela1 || 0);
-      this.qtBoletoAtrazado++;
-      console.log(`OS: ${os.os} | Parcela 1: ${os.statusParcela1} | Valor: ${os.valorParcela1}`);
-    }
+      if (os.tipoPagamento !== "BOLETO") {
+        return acc;
+      }
 
-    // Parcela 2
-    if (os.valorParcela2 && (os.statusParcela2 === "ATRAZADO")) {
-      acc = acc + (+os.valorParcela2 || 0);
-      this.qtBoletoAtrazado++;
-      console.log(`OS: ${os.os} | Parcela 2: ${os.statusParcela2} | Valor: ${os.valorParcela2}`);
-    }
+      // Parcela 1
+      if (os.valorParcela1 && (os.statusParcela1 === "ATRAZADO")) {
+        acc = acc + (+os.valorParcela1 || 0);
+        this.qtBoletoAtrazado++;
+        console.log(`OS: ${os.os} | Parcela 1: ${os.statusParcela1} | Valor: ${os.valorParcela1}`);
+      }
 
-    // Parcela 3
-    if (os.valorParcela3 && (os.statusParcela3 === "ATRAZADO")) {
-      acc = acc + (+os.valorParcela3 || 0);
-      this.qtBoletoAtrazado++;
-      console.log(`OS: ${os.os} | Parcela 3: ${os.statusParcela3} | Valor: ${os.valorParcela3}`);
-    }
+      // Parcela 2
+      if (os.valorParcela2 && (os.statusParcela2 === "ATRAZADO")) {
+        acc = acc + (+os.valorParcela2 || 0);
+        this.qtBoletoAtrazado++;
+        console.log(`OS: ${os.os} | Parcela 2: ${os.statusParcela2} | Valor: ${os.valorParcela2}`);
+      }
 
-    return acc;
-  }, 0);
+      // Parcela 3
+      if (os.valorParcela3 && (os.statusParcela3 === "ATRAZADO")) {
+        acc = acc + (+os.valorParcela3 || 0);
+        this.qtBoletoAtrazado++;
+        console.log(`OS: ${os.os} | Parcela 3: ${os.statusParcela3} | Valor: ${os.valorParcela3}`);
+      }
 
-  this.cdr.detectChanges(); // Garante a atualização imediata no HTML do Angular
+      return acc;
+    }, 0);
+
+    this.cdr.detectChanges(); // Garante a atualização imediata no HTML do Angular
   }
 
   totalBorderoAtrazado: number = 0;
   qtBorderoAtrazado: number = 0;
 
-   borderoAtrazado(){
+  borderoAtrazado() {
     this.qtBorderoAtrazado = 0;
 
-  this.totalBorderoAtrazado = this.arrayGeral.reduce((acc, os) => {
-    
-    if (os.tipoPagamento !== "BORDERO") {
-      return acc; 
-    }
+    this.totalBorderoAtrazado = this.arrayGeral.reduce((acc, os) => {
 
-    // Parcela 1
-    if (os.valorParcela1 && (os.statusParcela1 === "ATRAZADO")) {
-      acc = acc + (+os.valorParcela1 || 0);
-      this.qtBorderoAtrazado++;
-      console.log(`OS: ${os.os} | Parcela 1: ${os.statusParcela1} | Valor: ${os.valorParcela1}`);
-    }
+      if (os.tipoPagamento !== "BORDERO") {
+        return acc;
+      }
 
-    // Parcela 2
-    if (os.valorParcela2 && (os.statusParcela2 === "ATRAZADO")) {
-      acc = acc + (+os.valorParcela2 || 0);
-      this.qtBorderoAtrazado++;
-      console.log(`OS: ${os.os} | Parcela 2: ${os.statusParcela2} | Valor: ${os.valorParcela2}`);
-    }
+      // Parcela 1
+      if (os.valorParcela1 && (os.statusParcela1 === "ATRAZADO")) {
+        acc = acc + (+os.valorParcela1 || 0);
+        this.qtBorderoAtrazado++;
+        console.log(`OS: ${os.os} | Parcela 1: ${os.statusParcela1} | Valor: ${os.valorParcela1}`);
+      }
 
-    // Parcela 3
-    if (os.valorParcela3 && (os.statusParcela3 === "ATRAZADO")) {
-      acc = acc + (+os.valorParcela3 || 0);
-      this.qtBorderoAtrazado++;
-      console.log(`OS: ${os.os} | Parcela 3: ${os.statusParcela3} | Valor: ${os.valorParcela3}`);
-    }
+      // Parcela 2
+      if (os.valorParcela2 && (os.statusParcela2 === "ATRAZADO")) {
+        acc = acc + (+os.valorParcela2 || 0);
+        this.qtBorderoAtrazado++;
+        console.log(`OS: ${os.os} | Parcela 2: ${os.statusParcela2} | Valor: ${os.valorParcela2}`);
+      }
 
-    return acc;
-  }, 0);
+      // Parcela 3
+      if (os.valorParcela3 && (os.statusParcela3 === "ATRAZADO")) {
+        acc = acc + (+os.valorParcela3 || 0);
+        this.qtBorderoAtrazado++;
+        console.log(`OS: ${os.os} | Parcela 3: ${os.statusParcela3} | Valor: ${os.valorParcela3}`);
+      }
 
-  this.cdr.detectChanges(); // Garante a atualização imediata no HTML do Angular
+      return acc;
+    }, 0);
+
+    this.cdr.detectChanges(); // Garante a atualização imediata no HTML do Angular
   }
 
   totalNaoFaturado: number = 0;
   qtNaoFaturado: number = 0;
 
-   naoFaturado(){
-    this.qtNaoFaturado= 0;
+  naoFaturado() {
+    this.qtNaoFaturado = 0;
     this.totalNaoFaturado = this.arrayTudao.reduce((acc, os) => {
-      if(os.statusGeral === "NAO FATURADO"){
-        this.qtNaoFaturado ++
+      if (os.statusGeral === "NAO FATURADO") {
+        this.qtNaoFaturado++
         acc = acc + (+os.totaliq)
         return acc
       }
       return acc
-    },0)
+    }, 0)
   }
 
   totalCarteira: number = 0;
   qtCarteira: number = 0;
 
-   Carteira(){
-    this.qtCarteira= 0;
+  Carteira() {
+    this.qtCarteira = 0;
     this.totalCarteira = this.arrayTudao.reduce((acc, os) => {
-      if(os.statusGeral === "CARTEIRA"){
-        this.qtCarteira ++
+      if (os.statusGeral === "CARTEIRA") {
+        this.qtCarteira++
         acc = acc + (+os.totaliq)
         return acc
       }
       return acc
-    },0)
+    }, 0)
   }
 
 
-totalBorderoTudo: number = 0;
-qtBorderoTudo: number = 0;
+  totalBorderoTudo: number = 0;
+  qtBorderoTudo: number = 0;
 
-totalBorderoGeral() {
-  this.qtBorderoTudo = 0;
+  totalBorderoGeral() {
+    this.qtBorderoTudo = 0;
 
-  this.totalBorderoTudo = this.arrayTudao.reduce((acc, os) => {
-    
-    if (os.tipoPagamento !== "BORDERO") {
-      return acc; 
-    }
+    this.totalBorderoTudo = this.arrayTudao.reduce((acc, os) => {
 
-    // Parcela 1
-    if (os.valorParcela1 && (os.statusParcela1 === "EM DIA" || os.statusParcela1 === "ATRAZADO")) {
-      acc = acc + (+os.valorParcela1 || 0);
-      this.qtBorderoTudo++;
-      console.log(`OS: ${os.os} | Parcela 1: ${os.statusParcela1} | Valor: ${os.valorParcela1}`);
-    }
+      if (os.tipoPagamento !== "BORDERO") {
+        return acc;
+      }
 
-    // Parcela 2
-    if (os.valorParcela2 && (os.statusParcela2 === "EM DIA" || os.statusParcela2 === "ATRAZADO")) {
-      acc = acc + (+os.valorParcela2 || 0);
-      this.qtBorderoTudo++;
-      console.log(`OS: ${os.os} | Parcela 2: ${os.statusParcela2} | Valor: ${os.valorParcela2}`);
-    }
+      // Parcela 1
+      if (os.valorParcela1 && (os.statusParcela1 === "EM DIA" || os.statusParcela1 === "ATRAZADO")) {
+        acc = acc + (+os.valorParcela1 || 0);
+        this.qtBorderoTudo++;
+        console.log(`OS: ${os.os} | Parcela 1: ${os.statusParcela1} | Valor: ${os.valorParcela1}`);
+      }
 
-    // Parcela 3
-    if (os.valorParcela3 && (os.statusParcela3 === "EM DIA" || os.statusParcela3 === "ATRAZADO")) {
-      acc = acc + (+os.valorParcela3 || 0);
-      this.qtBorderoTudo++;
-      console.log(`OS: ${os.os} | Parcela 3: ${os.statusParcela3} | Valor: ${os.valorParcela3}`);
-    }
+      // Parcela 2
+      if (os.valorParcela2 && (os.statusParcela2 === "EM DIA" || os.statusParcela2 === "ATRAZADO")) {
+        acc = acc + (+os.valorParcela2 || 0);
+        this.qtBorderoTudo++;
+        console.log(`OS: ${os.os} | Parcela 2: ${os.statusParcela2} | Valor: ${os.valorParcela2}`);
+      }
 
-    return acc;
-  }, 0);
+      // Parcela 3
+      if (os.valorParcela3 && (os.statusParcela3 === "EM DIA" || os.statusParcela3 === "ATRAZADO")) {
+        acc = acc + (+os.valorParcela3 || 0);
+        this.qtBorderoTudo++;
+        console.log(`OS: ${os.os} | Parcela 3: ${os.statusParcela3} | Valor: ${os.valorParcela3}`);
+      }
 
-  this.cdr.detectChanges(); // Garante a atualização imediata no HTML do Angular
+      return acc;
+    }, 0);
 
-  console.log("ESte é o valor total de bordero final: ", this.totalBorderoTudo);
-  console.log("Quantidade total de parcelas válidas: ", this.qtBorderoTudo);
-}
+    this.cdr.detectChanges(); // Garante a atualização imediata no HTML do Angular
+
+    console.log("ESte é o valor total de bordero final: ", this.totalBorderoTudo);
+    console.log("Quantidade total de parcelas válidas: ", this.qtBorderoTudo);
+  }
+
+
+  boletoVencimento30Dias: number = 0;
+  qtBoletosVencimento30Dias: number = 0;
+
+  boletoVencimentoProximos30Dias() {
+
+    this.qtBoletosVencimento30Dias = 0;
+    //////DATA FUTURA = HOJE + 30 DIAS:
+    const data = new Date();
+    data.setDate(data.getDate() + 30);
+    const ano = data.getFullYear();
+    const mes = String(data.getMonth() + 1).padStart(2, '0');
+    const dia = String(data.getDate()).padStart(2, '0');
+    const dataFutura = `${ano}-${mes}-${dia}`;
+
+    console.log(" Esta é a data futura ", dataFutura)
+
+    this.boletoVencimento30Dias = this.arrayTudao.reduce((acc, os) => {
+
+
+      if (os.tipoPagamento === "BOLETO" && os.vencimento1 && os.vencimento1 <= dataFutura){
+        this.qtBoletosVencimento30Dias ++
+        console.log(" ESte é o valor da parcela 1************* ", os.valorParcela1)
+        return acc + (+os.valorParcela1)
+      }
+
+      if (os.tipoPagamento === "BOLETO" && os.vencimento2 && os.vencimento2 <= dataFutura){
+        this.qtBoletosVencimento30Dias ++
+        console.log(" ESte é o valor da parcela 2************* ", os.valorParcela2)
+        return acc + (+os.valorParcela2)
+      }
+
+      if (os.tipoPagamento === "BOLETO" && os.vencimento3 && os.vencimento3 <= dataFutura){
+        this.qtBoletosVencimento30Dias ++
+        console.log(" ESte é o valor da parcela 3************* ", os.valorParcela3)
+        return acc + (+os.valorParcela3)
+      }
+
+      return acc
+    }, 0)
+
+    console.log(" Este é valor que irá vencer no próximo 30 dias ", this.boletoVencimento30Dias)
+
+  }
+
 
 
 

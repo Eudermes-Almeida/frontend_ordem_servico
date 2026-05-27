@@ -329,10 +329,10 @@
                       <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
                     </button>
                   </a></td>
-                <td>BOLETO EM DIA VENCIMENTO PRÓXIMO MÊS</td>
-                <td class="valor">{{ teste}}
+                <td>BOLETO A RECEBER NOS PRÓXIMOS 30 DIAS</td>
+                <td class="valor">{{ boletoVencimento30Dias | number:'1.2-2'}}
                 </td>
-                <td class="qt">{{teste}}</td>
+                <td class="qt">{{qtBoletosVencimento30Dias}}</td>
                 <td class="percentual">{{ teste }}%</td>
               </tr>
 
@@ -343,7 +343,7 @@
                       <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
                     </button>
                   </a></td>
-                <td>BORDERO EM DIA VENCIMENTO PRÓXIMO MÊS</td>
+                <td>BORDERO VENCIMENTO PRÓXIMO MÊS</td>
                 <td class="valor">{{teste }}
                 </td>
                 <td class="qt">{{teste}}</td>
@@ -357,7 +357,7 @@
                       <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
                     </button>
                   </a></td>
-                <td>CRÉDITOS PARA RECEBER</td>
+                <td>TOTAL EM CRÉDITOS PARA RECEBER / exeto bordero</td>
                 <td class="valor">{{teste }}
                 </td>
                 <td class="qt">{{teste}}</td>
