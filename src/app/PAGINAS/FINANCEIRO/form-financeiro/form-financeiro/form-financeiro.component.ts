@@ -745,7 +745,7 @@ export class FormFinanceiroComponent {
       return
     }
 
-    if (this.opcaoTipoPagamento !== "DINHEIRO" && this.opcaoTipoPagamento !== "PIX" && this.opcaoTipoPagamento !== "CARTEIRA") {
+    if (this.opcaoTipoPagamento !== "DINHEIRO" && this.opcaoTipoPagamento !== "PIX" && this.opcaoTipoPagamento !== "CARTEIRA"   && this.opcaoTipoPagamento !== "CARTAO DEBITO"  && this.opcaoTipoPagamento !== "CARTAO CREDITO") {
       if (!this.opcaoQuantidadeParcela && !this.opcaoPrazo) {
         alert("Você precisa preencher todos os campos do formulário")
         return
@@ -788,7 +788,9 @@ export class FormFinanceiroComponent {
     }
   }
 
-  cartaoDebito(){}
+  cartaoDebito(){
+    this.pagamentoCartaoDebito();
+  }
 
   cartaoCredito(){}
 
@@ -868,6 +870,60 @@ export class FormFinanceiroComponent {
         tarifaBordero: '0.00',
         custoBancarioTotal: '0.00', // Mapeia custoBancario para a propriedade correta da interface
         valorLiquidoCreditado: item.totaliq  // Copia o valor atual do total líquido para o líquido final
+      };
+    });
+
+    this.totalOs = 0;
+    this.totalDespesasBancarias = 0;
+    this.somatoriaTotaliq = 0;
+
+    // Validação de segurança se a lista estiver vazia
+    if (!this.osSelecionadasParaRemessa || this.osSelecionadasParaRemessa.length === 0) {
+      this.formProcessaRemessa.patchValue({
+        fantasia: '',
+        codCli: '',
+        quantidadeBoletos: '0',
+        valorTotalOs: '0.00',
+        valorTotalDespesaBancaria: '0.00',
+        valorTotalLiquido: '0.00'
+      });
+      return;
+    }
+
+    // 2. APENAS CALCULA: Passa pelos itens acumulando os valores sem alterar nada no array original
+    this.osSelecionadasParaRemessa.forEach(item => {
+      this.totalOs += Number(item.totaliq || 0);
+      this.totalDespesasBancarias += Number(item.custoBancarioTotal || 0);
+      this.somatoriaTotaliq += Number(item.valorLiquidoCreditado || 0);
+    });
+
+    // 3. ATUALIZA A TELA: Envia os resultados diretamente para os inputs do formulário
+    this.formProcessaRemessa.patchValue({
+      fantasia: this.osSelecionadasParaRemessa[0].fantasia,
+      codCli: this.osSelecionadasParaRemessa[0].codcli ? String(this.osSelecionadasParaRemessa[0].codcli) : '',
+      quantidadeBoletos: this.formProcessaRemessa.value.quantidadeParcelas || '0',
+      valorTotalOs: this.totalOs.toFixed(2),
+      valorTotalDespesaBancaria: '0.00',
+      valorTotalLiquido: this.totalOs.toFixed(2),
+    });
+    this.persisteRemessa();
+  }
+
+   pagamentoCartaoDebito(): void {
+    this.exibeOpcoesParcelamento = false;
+    // Percorre todo o array atualizando os campos solicitados com os novos valores à vista
+    this.osSelecionadasParaRemessa = this.osSelecionadasParaRemessa.map(item => {
+      return {
+        ...item, // Mantém todas as colunas que não foram citadas (como os, fantasia, codcli, etc.)
+        dataFaturamento: this.dataFaturamento,
+        tipoPagamento: this.formProcessaRemessa.value.tipoPagamento,
+        valorJaPago: item.totaliq, // Copia o valor atual do total líquido
+        statusGeral: 'PAGO',
+        jurosBordero: (Number(item.totaliq) * 0.02).toFixed(2),
+        iofDiario: '0.00',
+        tarifaBordero: '0.00',
+        custoBancarioTotal: (Number(item.totaliq) * 0.02).toFixed(2), // Mapeia custoBancario para a propriedade correta da interface
+        valorLiquidoCreditado: (Number(item.totaliq) - (Number(item.totaliq) * 0.02)).toFixed(2)
       };
     });
 
