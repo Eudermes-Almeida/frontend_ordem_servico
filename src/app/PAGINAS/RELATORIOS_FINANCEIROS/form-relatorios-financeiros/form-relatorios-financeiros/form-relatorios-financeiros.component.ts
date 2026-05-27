@@ -127,7 +127,9 @@ export class FormRelatoriosFinanceirosComponent {
     "BOLETO": { total: 0, qt: 0, percentual: 0 },
     "BORDERO": { total: 0, qt: 0, percentual: 0 },
     "NAO FATURADO": { total: 0, qt: 0, percentual: 0 },
-    "CARTEIRA": { total: 0, qt: 0, percentual: 0 } // Centralizado apenas aqui
+    "CARTEIRA": { total: 0, qt: 0, percentual: 0 },
+    "CARTAO DEBITO": { total: 0, qt: 0, percentual: 0 },
+    "CARTAO CREDITO": { total: 0, qt: 0, percentual: 0 }
   };
 
 
@@ -271,7 +273,6 @@ export class FormRelatoriosFinanceirosComponent {
   }
 
   totalContabilizado: number = 0;
-  fechamentoMenosContatilizado: number = 0;
   qtContabilizado: number = 0;
   percentualContabizadoDeFaturamentoTotal: string = ""
   calculoFechamentoMenosContabilizado() {
@@ -281,9 +282,9 @@ export class FormRelatoriosFinanceirosComponent {
       return acc
     }, 0)
 
-    this.qtContabilizado = this.arrayFaturamentoTotal.length - this.arrayGeral.length
+    this.qtContabilizado = this.arrayGeral.length
     const faturamentoTotalGeral = this.arrayFaturamentoTotal?.[0]?.somatoriaDTO?.somatotaliq;
-    this.fechamentoMenosContatilizado = faturamentoTotalGeral - this.totalContabilizado
+   
     this.percentualContabizadoDeFaturamentoTotal = ((this.arrayGeral.length / this.arrayFaturamentoTotal.length) * 100).toFixed(2)
   }
 
