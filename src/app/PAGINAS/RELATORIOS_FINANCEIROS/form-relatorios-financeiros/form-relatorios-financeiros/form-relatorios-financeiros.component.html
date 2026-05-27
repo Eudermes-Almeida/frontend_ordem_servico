@@ -219,7 +219,6 @@
                 <th>Relatórios</th>
                 <th>Valor</th>
                 <th>Qt</th>
-                <th>%</th>
               </tr>
             </thead>
             <tbody>
@@ -235,7 +234,6 @@
                 <td class="valor">{{totalBoletoEmDia  | number:'1.2-2' }}
                 </td>
                 <td class="qt">{{qtBoletoEmDia}}</td>
-                <td class="percentual">{{ teste }}%</td>
               </tr>
 
               <tr>
@@ -249,7 +247,6 @@
                 <td class="valor">{{totalBorderoEmDia | number:'1.2-2' }}
                 </td>
                 <td class="qt">{{qtBorderoEmDia}}</td>
-                <td class="percentual">{{teste }}%</td>
               </tr>
 
               <tr>
@@ -263,7 +260,6 @@
                 <td class="valor">{{totalBoletoAtrazado | number:'1.2-2'}}
                 </td>
                 <td class="qt">{{qtBoletoAtrazado}}</td>
-                <td class="percentual">{{ teste}}%</td>
               </tr>
 
               <tr>
@@ -277,7 +273,6 @@
                 <td class="valor">{{totalBorderoAtrazado | number:'1.2-2'}}
                 </td>
                 <td class="qt">{{qtBorderoAtrazado}}</td>
-                <td class="percentual">{{ teste }}%</td>
               </tr>
 
               <tr>
@@ -291,7 +286,6 @@
                 <td class="valor">{{totalNaoFaturado | number:'1.2-2'}}
                 </td>
                 <td class="qt">{{qtNaoFaturado}}</td>
-                <td class="percentual">{{ teste }}%</td>
               </tr>
 
               <tr>
@@ -305,7 +299,6 @@
                 <td class="valor">{{totalCarteira | number:'1.2-2'}}
                 </td>
                 <td class="qt">{{qtCarteira}}</td>
-                <td class="percentual">{{ teste }}%</td>
               </tr>
 
               <tr>
@@ -319,7 +312,6 @@
                 <td class="valor">{{totalBorderoTudo | number:'1.2-2' }}
                 </td>
                 <td class="qt">{{qtBorderoTudo}}</td>
-                <td class="percentual">{{teste}}%</td>
               </tr>
 
                <tr>
@@ -333,7 +325,6 @@
                 <td class="valor">{{ boletoVencimento30Dias | number:'1.2-2'}}
                 </td>
                 <td class="qt">{{qtBoletosVencimento30Dias}}</td>
-                <td class="percentual">{{ teste }}%</td>
               </tr>
 
               <tr>
@@ -343,11 +334,10 @@
                       <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
                     </button>
                   </a></td>
-                <td>BORDERO VENCIMENTO PRÓXIMO MÊS</td>
-                <td class="valor">{{teste }}
+                <td>BORDERO VENCIMENTO PRÓXIMO 30 DIAS</td>
+                <td class="valor">{{borderoVencimento30Dias | number:'1.2-2' }}
                 </td>
-                <td class="qt">{{teste}}</td>
-                <td class="percentual">{{teste}}%</td>
+                <td class="qt">{{qtBorderoVencimento30Dias}}</td>
               </tr>
 
               <tr>
@@ -358,10 +348,9 @@
                     </button>
                   </a></td>
                 <td>TOTAL EM CRÉDITOS PARA RECEBER / exeto bordero</td>
-                <td class="valor">{{teste }}
+                <td class="valor">{{totalAreceber | number:'1.2-2' }}
                 </td>
-                <td class="qt">{{teste}}</td>
-                <td class="percentual">{{teste}}%</td>
+                <td class="qt">{{qtTotalAreceber}}</td>
               </tr>
 
             </tbody>

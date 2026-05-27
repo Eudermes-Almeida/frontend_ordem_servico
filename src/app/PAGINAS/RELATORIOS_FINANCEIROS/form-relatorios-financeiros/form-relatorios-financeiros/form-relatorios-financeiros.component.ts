@@ -305,6 +305,8 @@ export class FormRelatoriosFinanceirosComponent {
         this.Carteira();
         this.totalBorderoGeral();
         this.boletoVencimentoProximos30Dias();
+        this.borderoVencimentoProximos30Dias();
+        this.totalAindaAreceber();
       },
       error: (error) => {
         console.error(`Erro ao buscar tudão`, error);
@@ -540,9 +542,6 @@ export class FormRelatoriosFinanceirosComponent {
     }, 0);
 
     this.cdr.detectChanges(); // Garante a atualização imediata no HTML do Angular
-
-    console.log("ESte é o valor total de bordero final: ", this.totalBorderoTudo);
-    console.log("Quantidade total de parcelas válidas: ", this.qtBorderoTudo);
   }
 
 
@@ -560,37 +559,114 @@ export class FormRelatoriosFinanceirosComponent {
     const dia = String(data.getDate()).padStart(2, '0');
     const dataFutura = `${ano}-${mes}-${dia}`;
 
-    console.log(" Esta é a data futura ", dataFutura)
-
     this.boletoVencimento30Dias = this.arrayTudao.reduce((acc, os) => {
 
-
-      if (os.tipoPagamento === "BOLETO" && os.vencimento1 && os.vencimento1 <= dataFutura){
-        this.qtBoletosVencimento30Dias ++
-        console.log(" ESte é o valor da parcela 1************* ", os.valorParcela1)
+      if (os.tipoPagamento === "BOLETO" && os.vencimento1 && os.vencimento1 <= dataFutura) {
+        this.qtBoletosVencimento30Dias++
         return acc + (+os.valorParcela1)
       }
 
-      if (os.tipoPagamento === "BOLETO" && os.vencimento2 && os.vencimento2 <= dataFutura){
-        this.qtBoletosVencimento30Dias ++
-        console.log(" ESte é o valor da parcela 2************* ", os.valorParcela2)
+      if (os.tipoPagamento === "BOLETO" && os.vencimento2 && os.vencimento2 <= dataFutura) {
+        this.qtBoletosVencimento30Dias++
         return acc + (+os.valorParcela2)
       }
 
-      if (os.tipoPagamento === "BOLETO" && os.vencimento3 && os.vencimento3 <= dataFutura){
-        this.qtBoletosVencimento30Dias ++
-        console.log(" ESte é o valor da parcela 3************* ", os.valorParcela3)
+      if (os.tipoPagamento === "BOLETO" && os.vencimento3 && os.vencimento3 <= dataFutura) {
+        this.qtBoletosVencimento30Dias++
         return acc + (+os.valorParcela3)
       }
 
       return acc
     }, 0)
 
-    console.log(" Este é valor que irá vencer no próximo 30 dias ", this.boletoVencimento30Dias)
 
   }
 
 
+  borderoVencimento30Dias: number = 0;
+  qtBorderoVencimento30Dias: number = 0;
+
+  borderoVencimentoProximos30Dias() {
+
+    this.qtBorderoVencimento30Dias = 0;
+    //////DATA FUTURA = HOJE + 30 DIAS:
+    const data = new Date();
+    data.setDate(data.getDate() + 30);
+    const ano = data.getFullYear();
+    const mes = String(data.getMonth() + 1).padStart(2, '0');
+    const dia = String(data.getDate()).padStart(2, '0');
+    const dataFutura = `${ano}-${mes}-${dia}`;
+
+    this.borderoVencimento30Dias = this.arrayTudao.reduce((acc, os) => {
+
+      if (os.tipoPagamento === "BORDERO" && os.vencimento1 && os.vencimento1 <= dataFutura) {
+        this.qtBorderoVencimento30Dias++
+        console.log(" ESte é o valor da parcela 1************* ", os.valorParcela1)
+        return acc + (+os.valorParcela1)
+      }
+
+      if (os.tipoPagamento === "BORDERO" && os.vencimento2 && os.vencimento2 <= dataFutura) {
+        this.qtBorderoVencimento30Dias++
+        console.log(" ESte é o valor da parcela 2************* ", os.valorParcela2)
+        return acc + (+os.valorParcela2)
+      }
+
+      if (os.tipoPagamento === "BORDERO" && os.vencimento3 && os.vencimento3 <= dataFutura) {
+        this.qtBorderoVencimento30Dias++
+        console.log(" ESte é o valor da parcela 3************* ", os.valorParcela3)
+        return acc + (+os.valorParcela3)
+      }
+      return acc
+    }, 0)
+
+  }
+
+  
+  totalAreceber: number = 0;
+  qtTotalAreceber: number = 0;
+
+  totalAindaAreceber() {
+    this.qtTotalAreceber = 0;
+
+    this.totalAreceber = this.arrayTudao.reduce((acc, os) => {
+
+      if (os.tipoPagamento === "BORDERO") {
+        return acc;
+      }
+
+      // Parcela 1
+      if (os.valorParcela1) {
+        acc = acc + (+os.valorParcela1 || 0);
+        this.qtTotalAreceber++;
+        console.log(`OS: ${os.os} | Parcela 1: ${os.statusParcela1} | Valor: ${os.valorParcela1}`);
+      }
+
+      // Parcela 2
+      if (os.valorParcela2) {
+        acc = acc + (+os.valorParcela2 || 0);
+        this.qtTotalAreceber++;
+        console.log(`OS: ${os.os} | Parcela 2: ${os.statusParcela2} | Valor: ${os.valorParcela2}`);
+      }
+
+      // Parcela 3
+      if (os.valorParcela3) {
+        acc = acc + (+os.valorParcela3 || 0);
+        this.qtTotalAreceber++;
+        console.log(`OS: ${os.os} | Parcela 3: ${os.statusParcela3} | Valor: ${os.valorParcela3}`);
+      }
+
+      if(os.tipoPagamento !== "BOLETO" && os.tipoPagamento !== "BORDERO"){
+        this.qtTotalAreceber++;
+        acc = acc + (+os.totaliq || 0)
+        return acc
+      }
+
+      return acc;
+    }, 0);
+
+    this.cdr.detectChanges(); // Garante a atualização imediata no HTML do Angular
+
+  }
 
 
 }

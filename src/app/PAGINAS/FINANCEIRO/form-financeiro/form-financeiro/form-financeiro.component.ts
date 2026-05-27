@@ -720,7 +720,7 @@ export class FormFinanceiroComponent {
   onTipoPagamento(event: Event): void {
     const target = event.target as HTMLSelectElement;
     this.opcaoTipoPagamento = target.value;
-    if (this.opcaoTipoPagamento === "DINHEIRO" || this.opcaoTipoPagamento === "PIX" || this.opcaoTipoPagamento === "CARTEIRA") {
+    if (this.opcaoTipoPagamento === "DINHEIRO" || this.opcaoTipoPagamento === "PIX" || this.opcaoTipoPagamento === "CARTEIRA" || this.opcaoTipoPagamento === "CARTAO DEBITO" || this.opcaoTipoPagamento === "CARTAO CREDITO") {
       this.exibeOpcoesParcelamento = false;
       //this.processaRemessa();
     }
@@ -773,12 +773,24 @@ export class FormFinanceiroComponent {
         this.carteira();
         break;
 
+      case "CARTAO DEBITO":
+        this.cartaoDebito();
+        break;
+
+      case "CARTAO CREDITO":
+        this.cartaoCredito();
+        break;
+
       default:
         console.warn("Tipo de pagamento inválido")
         break;
 
     }
   }
+
+  cartaoDebito(){}
+
+  cartaoCredito(){}
 
   pagamentoPorBoleto() {
     this.atualizarDadosDasOrdensSelecionadas('BOLETO');
