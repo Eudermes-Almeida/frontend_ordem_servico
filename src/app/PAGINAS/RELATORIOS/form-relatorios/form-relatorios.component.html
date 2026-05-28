@@ -37,7 +37,7 @@
         <table class="table table-dark table-hover">
           <thead>
             <tr>
-              <th>Selecione</th>
+              <th>Sel</th>
               <th>Relatórios</th>
               <th>Valor</th>
               <th>Qt</th>
@@ -49,7 +49,7 @@
               <td><a>
                   <button type="button" class="btn btn-dark"
                     (click)="memorizaRelatorio(arrayFaturamentoTotal, 'FATURAMENTO TOTAL', 'INTERVALO')">
-                    <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+                    <i class="bi bi-check-circle icone" style="font-size: 25px;"></i>
                   </button>
                 </a></td>
               <td>Faturamento Total</td>
@@ -63,7 +63,7 @@
               <td><a>
                   <button type="button" class="btn btn-dark"
                     (click)="memorizaRelatorio(arrayFaturamentoNobreak, 'FATURAMENTO NOBREAKS', 'INTERVALO')">
-                    <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+                    <i class="bi bi-check-circle icone" style="font-size: 25px;"></i>
                   </button>
                 </a></td>
               <td>Faturamento Nobreaks</td>
@@ -77,7 +77,7 @@
               <td><a>
                   <button type="button" class="btn btn-dark"
                     (click)="memorizaRelatorio(arrayFaturamentoManutencaoNobreak, 'MANUTENÇÃO NOBREAKS', 'INTERVALO')">
-                    <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+                    <i class="bi bi-check-circle icone" style="font-size: 25px;"></i>
                   </button>
                 </a></td>
               <td>Manutenção Nobreaks Total</td>
@@ -91,10 +91,10 @@
               <td><a>
                   <button type="button" class="btn btn-dark"
                     (click)="memorizaRelatorio(arrayFaturamentoManutencaoNobreakAbaixo3kva, 'MANUTENÇÃO NOBREAKS ABAIXO 3KVA', 'INTERVALO')">
-                    <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+                    <i class="bi bi-check-circle icone" style="font-size: 25px;"></i>
                   </button>
                 </a></td>
-              <td>Manutenção Nobreaks Abaixo 3kva</td>
+              <td>Manutenção Nob Abaixo 3kva</td>
               <td class="valor">{{ arrayFaturamentoManutencaoNobreakAbaixo3kva[0]?.somatoriaDTO.somatotaliq |
                 number:'1.2-2' }}</td>
               <td class="qt">{{arrayFaturamentoManutencaoNobreakAbaixo3kva[0]?.somatoriaDTO.qtOs}}</td>
@@ -105,10 +105,10 @@
               <td><a>
                   <button type="button" class="btn btn-dark"
                     (click)="memorizaRelatorio(arrayFaturamentoManutencaoNobreakAcima3kva, 'MANUTENÇÃO NOBREAKS ACIMA 3KVA', 'INTERVALO')">
-                    <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+                    <i class="bi bi-check-circle icone" style="font-size: 25px;"></i>
                   </button>
                 </a></td>
-              <td>Manutenção Nobreaks Acima 3kva</td>
+              <td>Manutenção Nob Acima 3kva</td>
               <td class="valor">{{ arrayFaturamentoManutencaoNobreakAcima3kva[0]?.somatoriaDTO.somatotaliq |
                 number:'1.2-2' }}</td>
               <td class="qt">{{arrayFaturamentoManutencaoNobreakAcima3kva[0]?.somatoriaDTO.qtOs}}</td>
@@ -119,7 +119,7 @@
               <td><a>
                   <button type="button" class="btn btn-dark"
                     (click)="memorizaRelatorio(arrayVendaNobreakNovo, 'VENDAS NOBREAKS NOVOS', 'INTERVALO')">
-                    <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+                    <i class="bi bi-check-circle icone" style="font-size: 25px;"></i>
                   </button>
                 </a></td>
               <td>Venda Nobreaks Novos</td>
@@ -132,7 +132,7 @@
               <td><a>
                   <button type="button" class="btn btn-dark"
                     (click)="memorizaRelatorio(arrayVendaNobreakSemiNovo, 'VENDA NOBREAKS SEMI-NOVOS', 'INTERVALO')">
-                    <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+                    <i class="bi bi-check-circle icone" style="font-size: 25px;"></i>
                   </button>
                 </a></td>
               <td>Venda Nobreaks Semi-novos</td>
@@ -145,7 +145,7 @@
               <td><a>
                   <button type="button" class="btn btn-dark"
                     (click)="memorizaRelatorio(arrayNobreakInviavel, 'NOBREAKS INVIAVEIS', 'INTERVALO')">
-                    <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+                    <i class="bi bi-check-circle icone" style="font-size: 25px;"></i>
                   </button>
                 </a></td>
               <td>Nobreaks Inviáveis</td>
@@ -158,10 +158,10 @@
               <td><a>
                   <button type="button" class="btn btn-dark"
                     (click)="memorizaRelatorio(arrayNobreakOrcamentoNaoAprovado, 'ORÇAMENTO NOBREAKS NÃO APROVADOS', 'INTERVALO')">
-                    <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+                    <i class="bi bi-check-circle icone" style="font-size: 25px;"></i>
                   </button>
                 </a></td>
-              <td>Nobreaks Orçamento Não Aprovado</td>
+              <td>Nobreaks Orç Não Aprovado</td>
               <td class="valor">{{ arrayNobreakOrcamentoNaoAprovado[0]?.somatoriaDTO.somatotaliq | number:'1.2-2' }}
               </td>
               <td class="qt">{{arrayNobreakOrcamentoNaoAprovado[0]?.somatoriaDTO.qtOs}}</td>
@@ -172,10 +172,10 @@
               <td><a>
                   <button type="button" class="btn btn-dark"
                     (click)="memorizaRelatorio(arrayNobreakGarantiaLoja, 'NOBREAKS GARANTIA LOJA' , 'INTERVALO')">
-                    <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+                    <i class="bi bi-check-circle icone" style="font-size: 25px;"></i>
                   </button>
                 </a></td>
-              <td>Nobreaks em garantia loja</td>
+              <td>Nobreaks garantia loja</td>
               <td class="valor">{{ arrayNobreakGarantiaLoja[0]?.somatoriaDTO.somatotaliq | number:'1.2-2' }}</td>
               <td class="qt">{{arrayNobreakGarantiaLoja[0]?.somatoriaDTO.qtOs}}</td>
               <td class="percentual">{{ (arrayNobreakGarantiaLoja[0]?.somatoriaDTO?.somatotaliq /
@@ -185,7 +185,7 @@
               <td><a>
                   <button type="button" class="btn btn-dark"
                     (click)="memorizaRelatorio(arrayNobreakGarantiaFabrica, 'NOBREAKS GARANTIA FÁBRICA' , 'INTERVALO')">
-                    <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+                    <i class="bi bi-check-circle icone" style="font-size: 25px;"></i>
                   </button>
                 </a></td>
               <td>Nobreaks em garantia fábrica</td>
@@ -198,7 +198,7 @@
               <td><a>
                   <button type="button" class="btn btn-dark"
                     (click)="memorizaRelatorio(arrayVendaBateriaAvulsa, 'VENDAS BATERIAS AVULSAS' , 'INTERVALO')">
-                    <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+                    <i class="bi bi-check-circle icone" style="font-size: 25px;"></i>
                   </button>
                 </a></td>
               <td>Venda baterias avulsa</td>
@@ -211,7 +211,7 @@
               <td><a>
                   <button type="button" class="btn btn-dark"
                     (click)="memorizaRelatorio(arrayVendaSucataBateria, 'VENDA SUCATA BATERIAS' , 'INTERVALO')">
-                    <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+                    <i class="bi bi-check-circle icone" style="font-size: 25px;"></i>
                   </button>
                 </a></td>
               <td>venda sucata baterias</td>
@@ -228,7 +228,7 @@
         <table class="table table-dark table-hover">
           <thead>
             <tr>
-              <th>Selecione</th>
+              <th>Sel</th>
               <th>Relatórios</th>
               <th>Valor</th>
               <th>Qt</th>
@@ -240,7 +240,7 @@
               <td><a>
                   <button type="button" class="btn btn-dark"
                     (click)="memorizaRelatorio(arrayFaturamentoMonitor, 'FATURAMENTO MONITORES', 'INTERVALO')">
-                    <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+                    <i class="bi bi-check-circle icone" style="font-size: 25px;"></i>
                   </button>
                 </a></td>
               <td>Faturamento Monitores</td>
@@ -254,7 +254,7 @@
               <td><a>
                   <button type="button" class="btn btn-dark"
                     (click)="memorizaRelatorio(arrayFaturamentoManutencaoMonitor, 'MANUTENÇÃO MONITORES' , 'INTERVALO')">
-                    <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+                    <i class="bi bi-check-circle icone" style="font-size: 25px;"></i>
                   </button>
                 </a></td>
               <td>Manutenção Monitores</td>
@@ -269,7 +269,7 @@
               <td><a>
                   <button type="button" class="btn btn-dark"
                     (click)="memorizaRelatorio(arrayVendaMonitorSemiNovo, 'VENDA MONITORES SEMI-NOVOS' , 'INTERVALO')">
-                    <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+                    <i class="bi bi-check-circle icone" style="font-size: 25px;"></i>
                   </button>
                 </a></td>
               <td>Venda Monitores Semi-novos</td>
@@ -282,7 +282,7 @@
               <td><a>
                   <button type="button" class="btn btn-dark"
                     (click)="memorizaRelatorio(arrayMonitorInviavel, 'MONITORES INVIÁVEIS' , 'INTERVALO')">
-                    <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+                    <i class="bi bi-check-circle icone" style="font-size: 25px;"></i>
                   </button>
                 </a></td>
               <td>Monitores Inviáveis</td>
@@ -295,10 +295,10 @@
               <td><a>
                   <button type="button" class="btn btn-dark"
                     (click)="memorizaRelatorio(arrayMonitorOrcamentoNaoAprovado, 'MONITORES ORÇAMENTO NÃO APROVADOS' , 'INTERVALO')">
-                    <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+                    <i class="bi bi-check-circle icone" style="font-size: 25px;"></i>
                   </button>
                 </a></td>
-              <td>Monitores Orçamento Não aprovados</td>
+              <td>Monitores Orç Não aprovado</td>
               <td class="valor">{{ arrayMonitorOrcamentoNaoAprovado[0]?.somatoriaDTO.somatotaliq | number:'1.2-2' }}
               </td>
               <td class="qt">{{arrayMonitorOrcamentoNaoAprovado[0]?.somatoriaDTO.qtOs}}</td>
@@ -309,7 +309,7 @@
               <td><a>
                   <button type="button" class="btn btn-dark"
                     (click)="memorizaRelatorio(arrayMonitorGarantiaLoja, 'MONITORES GARANTIA LOJA' , 'INTERVALO')">
-                    <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+                    <i class="bi bi-check-circle icone" style="font-size: 25px;"></i>
                   </button>
                 </a></td>
               <td>Monitores Garantia Loja</td>
@@ -322,10 +322,12 @@
               <td><a>
                   <button type="button" class="btn btn-dark"
                     (click)="memorizaRelatorio(arrayFaturamentoOutroEquipamento, 'FATURAMENTO OUTROS EQUIPAMENTOS' , 'INTERVALO')">
-                    <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+                    <i class="bi bi-check-circle icone" style="font-size: 25px;"></i>
                   </button>
                 </a></td>
-              <td>Manutenção Outros Equipamentos</td>
+              <td>Manutenção Outros Equip
+
+              </td>
               <td class="valor">{{ arrayFaturamentoOutroEquipamento[0]?.somatoriaDTO.somatotaliq | number:'1.2-2' }}
               </td>
               <td class="qt">{{arrayFaturamentoOutroEquipamento[0]?.somatoriaDTO.qtOs}}</td>
@@ -336,7 +338,7 @@
               <td><a>
                   <button type="button" class="btn btn-dark"
                     (click)="memorizaRelatorio(arrayEntradaEquipamento, 'ENTRADA DE EQUIPAMENTOS' , 'INTERVALO')">
-                    <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+                    <i class="bi bi-check-circle icone" style="font-size: 25px;"></i>
                   </button>
                 </a></td>
               <td>Entrada de equipamentos</td>
@@ -349,7 +351,7 @@
               <td><a>
                   <button type="button" class="btn btn-dark"
                     (click)="memorizaRelatorio(arrayOrcamentoNoPeriodo, 'ORÇAMENTOS NO PERÍODO' , 'INTERVALO')">
-                    <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+                    <i class="bi bi-check-circle icone" style="font-size: 25px;"></i>
                   </button>
                 </a></td>
               <td>Orçamentos no período</td>
@@ -362,7 +364,7 @@
               <td><a>
                   <button type="button" class="btn btn-dark"
                     (click)="memorizaRelatorio(arrayFaturamentoTotal, 'FECHAMENTO TOTAL NO PERÍODO' , 'INTERVALO')">
-                    <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+                    <i class="bi bi-check-circle icone" style="font-size: 25px;"></i>
                   </button>
                 </a></td>
               <td>Fechamento total no período</td>
@@ -374,7 +376,7 @@
             <tr>
               <td><a>
                   <button type="button" class="btn btn-dark">
-                    <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+                    <i class="bi bi-check-circle icone" style="font-size: 25px;"></i>
                   </button>
                 </a></td>
               <td>Percentual Comissão</td>
@@ -386,7 +388,7 @@
             <tr>
               <td><a>
                   <button type="button" class="btn btn-dark">
-                    <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+                    <i class="bi bi-check-circle icone" style="font-size: 25px;"></i>
                   </button>
                 </a></td>
               <td>Valor Comissional</td>
@@ -397,7 +399,7 @@
             <tr>
               <td><a>
                   <button type="button" class="btn btn-dark">
-                    <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+                    <i class="bi bi-check-circle icone" style="font-size: 25px;"></i>
                   </button>
                 </a></td>
               <td>Valor Comissão</td>
@@ -413,7 +415,7 @@
         <table class="table table-dark table-hover">
           <thead>
             <tr>
-              <th>Selecione</th>
+              <th>Sel</th>
               <th>Relatórios</th>
               <th>Valor</th>
               <th>Qt</th>
@@ -425,7 +427,7 @@
               <td><a>
                   <button type="button" class="btn btn-dark"
                     (click)="memorizaRelatorio(arrayTecnicoEudermes, 'ORDENS SERVIÇOS FECHADAS PELO TÉCNICO EUDERMES' , 'INTERVALO')">
-                    <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+                    <i class="bi bi-check-circle icone" style="font-size: 25px;"></i>
                   </button>
                 </a></td>
               <td>Eudermes-Fechamento OS</td>
@@ -439,7 +441,7 @@
               <td><a>
                   <button type="button" class="btn btn-dark"
                     (click)="memorizaRelatorio(arrayTecnicoRafael, 'ORDENS SERVIÇOS FECHADAS PELO TÉCNICO RAFAEL' , 'INTERVALO')">
-                    <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+                    <i class="bi bi-check-circle icone" style="font-size: 25px;"></i>
                   </button>
                 </a></td>
               <td>Rafael-Fechamento OS</td>
@@ -453,7 +455,7 @@
               <td><a>
                   <button type="button" class="btn btn-dark"
                     (click)="memorizaRelatorio(arrayTecnicoGabriel, 'ORDENS SERVIÇOS FECHADAS PELO TÉCNICO GABRIEL' , 'INTERVALO')">
-                    <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+                    <i class="bi bi-check-circle icone" style="font-size: 25px;"></i>
                   </button>
                 </a></td>
               <td>Gabriel-Fechamento OS</td>
@@ -467,7 +469,7 @@
               <td><a>
                   <button type="button" class="btn btn-dark"
                     (click)="memorizaRelatorio(arrayTecnicoSophia, 'ORDENS SERVIÇOS FECHADAS PELA TECNICA SOPHIA' , 'INTERVALO')">
-                    <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+                    <i class="bi bi-check-circle icone" style="font-size: 25px;"></i>
                   </button>
                 </a></td>
               <td>Sophia-Fechamento OS</td>
@@ -481,7 +483,7 @@
               <td><a>
                   <button type="button" class="btn btn-dark"
                     (click)="memorizaRelatorio(arrayStatusaberta, 'ORDENS SERVIÇOS ABERTAS' , 'STATUS')">
-                    <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+                    <i class="bi bi-check-circle icone" style="font-size: 25px;"></i>
                   </button>
                 </a></td>
               <td>OS Abertas</td>
@@ -494,7 +496,7 @@
               <td><a>
                   <button type="button" class="btn btn-dark"
                     (click)="memorizaRelatorio(arrayStatusPronta, 'ORDENS SERVIÇOS PRONTAS' , 'STATUS')">
-                    <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+                    <i class="bi bi-check-circle icone" style="font-size: 25px;"></i>
                   </button>
                 </a></td>
               <td>OS Prontas</td>
@@ -507,7 +509,7 @@
               <td><a>
                   <button type="button" class="btn btn-dark"
                     (click)="memorizaRelatorio(arrayStatusPassarOrcamento, 'ORDENS SERVIÇOS PASSAR ORÇAMENTO' , 'STATUS')">
-                    <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+                    <i class="bi bi-check-circle icone" style="font-size: 25px;"></i>
                   </button>
                 </a></td>
               <td>OS Passar Orçamento</td>
@@ -520,7 +522,7 @@
               <td><a>
                   <button type="button" class="btn btn-dark"
                     (click)="memorizaRelatorio(arrayStatusAguardandoAprovacao, 'ORDENS SERVIÇOS AGUARDANDO APROVAÇÃO' , 'STATUS')">
-                    <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+                    <i class="bi bi-check-circle icone" style="font-size: 25px;"></i>
                   </button>
                 </a></td>
               <td>OS Aguardando Aprovação</td>
@@ -533,7 +535,7 @@
               <td><a>
                   <button type="button" class="btn btn-dark"
                     (click)="memorizaRelatorio(arrayStatusAprovadas, 'ORDENS SERVIÇOS APROVADAS' , 'STATUS')">
-                    <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+                    <i class="bi bi-check-circle icone" style="font-size: 25px;"></i>
                   </button>
                 </a></td>
               <td [ngStyle]="{'color': currentColorAprovadas}">
@@ -551,7 +553,7 @@
               <td><a>
                   <button type="button" class="btn btn-dark"
                     (click)="memorizaRelatorio(arrayStatusNaoAprovadas, 'ORDENS SERVIÇOS NAO APROVADAS' , 'STATUS')">
-                    <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+                    <i class="bi bi-check-circle icone" style="font-size: 25px;"></i>
                   </button>
                 </a></td>
               <td [ngStyle]="{'color': currentColorNaoAprovadas}">
@@ -568,7 +570,7 @@
               <td><a>
                   <button type="button" class="btn btn-dark"
                     (click)="memorizaRelatorio(arrayStatusBaixadas, 'ORDENS SERVIÇOS BAIXADAS' , 'STATUS')">
-                    <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+                    <i class="bi bi-check-circle icone" style="font-size: 25px;"></i>
                   </button>
                 </a></td>
               <td>OS Baixadas</td>
@@ -580,25 +582,12 @@
             <tr>
               <td><a>
                   <button type="button" class="btn btn-dark"
-                    (click)="memorizaRelatorio(arrayStatusEmAnalise, 'ORDENS SERVIÇOS EM ANÁLISE' , 'STATUS')">
-                    <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
-                  </button>
-                </a></td>
-              <td>OS em análise</td>
-              <td class="valor">{{ arrayStatusEmAnalise[0]?.somatoriaDTO.somatotaliq | number:'1.2-2' }}</td>
-              <td class="qt">{{arrayStatusEmAnalise[0]?.somatoriaDTO.qtOs}}</td>
-              <td class="qt"> </td>
-
-            </tr>
-            <tr>
-              <td><a>
-                  <button type="button" class="btn btn-dark"
                     (click)="memorizaRelatorio(arrayAprovadasOuReprovadasRemotamente, 'ORDENS SERVIÇOS APROVADAS OU REPROVADAS REMOTAMENTE' , 'STATUS')">
-                    <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+                    <i class="bi bi-check-circle icone" style="font-size: 25px;"></i>
                   </button>
                 </a></td>
               <td [ngStyle]="{'color': currentColor}">
-                OS Aprovadas ou Reprovadas Remotamente
+                OS Aprovadas Remotamente
               </td>
 
               <td class="valor" [ngStyle]="{'color': currentColor}">{{
@@ -612,10 +601,10 @@
               <td><a>
                   <button type="button" class="btn btn-dark"
                     (click)="memorizaRelatorio(arrayStatusGarantiaLojaAindaNoLaboratorio, 'ORDENS SERVIÇOS GARANTIA LOJA AINDA NO LABORATÓRIO' , 'STATUS')">
-                    <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+                    <i class="bi bi-check-circle icone" style="font-size: 25px;"></i>
                   </button>
                 </a></td>
-              <td>Garantia Loja - ainda laboratório</td>
+              <td>Garantia Loja no laboratório</td>
               <td class="valor">{{ arrayStatusGarantiaLojaAindaNoLaboratorio[0]?.somatoriaDTO.somatotaliq |
                 number:'1.2-2' }}</td>
               <td class="qt">{{arrayStatusGarantiaLojaAindaNoLaboratorio[0]?.somatoriaDTO.qtOs}}</td>
@@ -626,10 +615,10 @@
               <td><a>
                   <button type="button" class="btn btn-dark"
                     (click)="memorizaRelatorio(arrayStatusGarantiaFabricaAindaNoLaboratorio, 'ORDENS SERVIÇOS GARANTIA FABRICA AINDA NO LABORATÓRIO' , 'STATUS')">
-                    <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+                    <i class="bi bi-check-circle icone" style="font-size: 25px;"></i>
                   </button>
                 </a></td>
-              <td>Garantia Fábrica - ainda laboratório</td>
+              <td>Garantia Fábrica no laboratório</td>
               <td class="valor">{{ arrayStatusGarantiaFabricaAindaNoLaboratorio[0]?.somatoriaDTO.somatotaliq |
                 number:'1.2-2' }}</td>
               <td class="qt">{{arrayStatusGarantiaFabricaAindaNoLaboratorio[0]?.somatoriaDTO.qtOs}}</td>

@@ -93,18 +93,22 @@ input, select {
   
 
 table th {
-    font-size: 15px; /* Tamanho da fonte do cabeçalho */
-    padding: 1px;    /* Reduz o espaçamento do cabeçalho */
+    font-size: 25px;
+    padding: 6px 4px;
     text-align: left;
-    line-height: 2; /* Ajusta o espaçamento entre as linhas do cabeçalho */
+    line-height: 1.5;
     color: orange;
+    vertical-align: middle !important; /* Centraliza o cabeçalho verticalmente */
 }
 
 table td {
-    font-size: 13px; /* Tamanho da fonte para as células de dados */
-    padding: 1px;    /* Reduz o espaçamento nas células */
-    line-height: 1 !important; /* Ajusta o espaçamento entre as linhas do conteúdo */
+    font-size: 22px;
+    padding: 6px 4px;
+    line-height: 1.2 !important;
+    vertical-align: middle !important; /* Centraliza o conteúdo das linhas verticalmente */
 }
+
+
 
 .tabelas_flex {
     display: flex;
