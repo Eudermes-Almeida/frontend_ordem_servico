@@ -274,12 +274,13 @@
 
   <!-- Adicionado 'd-flex' para ativar o flexbox e 'gap-2' para o espaçamento de ~10px -->
   <div class="form-group d-flex gap-2" style="flex: 0 0 auto;">
-    <!-- Adicionados os atributos para o Tooltip na parte superior -->
-    <!-- Alternativa caso use Ng-Bootstrap pura (Sem precisar mexer no TS) -->
-    <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top"
-      data-bs-title="Gera um borderô com as remessas (boletos) criados" (click)="buscaPendentesBordero()">
-      Gerar Novo Borderô
-    </button>
+    <div>
+  <button *ngIf="exibirBotaoGerarNovoBordero" type="button" class="btn btn-piscar" data-bs-toggle="tooltip" data-bs-placement="top"
+    data-bs-title="Gera um borderô com as remessas (boletos) criados" (click)="buscaPendentesBordero()">
+    Gerar Novo Borderô
+  </button>
+</div>
+
 
     <button type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" (click)="limpar()">
       Limpar

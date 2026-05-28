@@ -1,3 +1,28 @@
+/* Configuração inicial do botão e chamada da animação */
+.btn-piscar {
+  color: white; /* Cor do texto */
+  animation: alternarCores 2s infinite ease-in-out;
+}
+
+/* Efeito de hover para manter o botão bonito ao passar o mouse */
+.btn-piscar:hover {
+  color: white;
+  opacity: 0.9;
+}
+
+/* Regra da animação que alterna as cores de fundo */
+@keyframes alternarCores {
+  0%, 100% {
+    background-color: #0d6efd; /* Azul padrão do Bootstrap */
+    border-color: #0d6efd;
+  }
+  50% {
+    background-color: #dc3545; /* Vermelho padrão do Bootstrap */
+    border-color: #dc3545;
+  }
+}
+
+
 
 .text-lime {
   color: #00ff00; /* Cor verde-limão pura, ou use #32CD32 para LimeGreen */

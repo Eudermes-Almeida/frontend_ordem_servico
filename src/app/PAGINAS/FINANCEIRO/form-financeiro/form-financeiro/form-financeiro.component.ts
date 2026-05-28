@@ -16,6 +16,7 @@ import { FormsModule } from '@angular/forms';
 import { Financeiro } from '../../../../modelo/Financeiro';
 import { Observable } from 'rxjs';
 import { DespesaService } from '../../../../servico/despesa.service';
+import { signal, effect } from '@angular/core';
 
 
 declare var bootstrap: any;
@@ -45,7 +46,7 @@ export class FormFinanceiroComponent {
   dataBordero: string = "";
   statusFinanceiro: string = "";
   private isClickEvent: boolean = false;
-  modeloFinanceiro: Financeiro[] = [];
+  //modeloFinanceiro: Financeiro[] = [];
   borderoPendentes: Financeiro[] = [];
   osSelecionadasParaRemessa: Financeiro[] = []
   arrayAlterarStatusFinanceiro: Financeiro[] = [];
@@ -58,6 +59,20 @@ export class FormFinanceiroComponent {
   flagIrRemessa: boolean = false;
   flagIrBordero: boolean = false;
   despesaBancaria: Despesa = {} as Despesa;
+
+  
+///////TODA VEZ QUE O ARRAY MODELO FINANCEIRO FOR MODIFICADO, O METODO PARA EXIBIR O BOTÃO SERÁ CHAMADO  
+private _modeloFinanceiro: Financeiro[] = [];
+
+get modeloFinanceiro(): Financeiro[] {
+  return this._modeloFinanceiro;
+}
+
+set modeloFinanceiro(novosDados: Financeiro[]) {
+  this._modeloFinanceiro = novosDados; // Salva os dados novos
+  this.confereSeExisteBorderoSemEnviar(); // Roda a sua verificação na hora!
+}
+
 
   ////DATEPICKER:
   model: NgbDateStruct | undefined;
@@ -86,6 +101,7 @@ export class FormFinanceiroComponent {
   exibirFormularioAlteraStatusParcelas: boolean = false;
   exibirSelectStatusParcela2: boolean = true;
   exibirSelectStatusParcela3: boolean = true;
+  exibirBotaoGerarNovoBordero: boolean = false;
 
 
   // CONFIGURA FORMULÁRIO CONSULTA GERAL
@@ -168,6 +184,7 @@ export class FormFinanceiroComponent {
       }
     });
     this.executaVerificacaoDeAtrasos();
+    this.confereSeExisteBorderoSemEnviar();
   }
 
 
@@ -321,19 +338,22 @@ export class FormFinanceiroComponent {
   // Busca ORDENS DE SERVIÇO PELO CODIGO DO CLIENTE
   getOsPorCodCli(codcli: number): void {
 
+    
+
     this.exibirTabelaGeral = true;
 
     this.modeloFinanceiro = [];
     this.spinnerLoading = true;
 
     this.financeiroService.getOsPorCodCli(codcli).subscribe(
-      (data: Financeiro[]) => { // 1. CORRIGIDO: Adicionado os colchetes [] para indicar que é um Array
-        this.modeloFinanceiro = data; // Armazena a lista de registros retornada
+      (data: Financeiro[]) => { 
+        this.modeloFinanceiro = data;
 
         // 2. CORRIGIDO: Exibe no console a variável correta que acabou de receber os dados
         console.log('Ordens financeiras obtidas:', this.modeloFinanceiro);
         this.exibirTabela2 = true;
         this.spinnerLoading = false;
+        this.confereSeExisteBorderoSemEnviar();
       },
       (error) => {
         this.spinnerLoading = false; // 3. CORRIGIDO: Desliga o spinner em caso de falha na requisição
@@ -382,6 +402,8 @@ export class FormFinanceiroComponent {
 
   gerenciaAbuscaOsPorIdOuUltimasOs(): void {
 
+    
+
     this.exibirTabelaGeral = true;
 
     this.modeloFinanceiro = [];
@@ -412,6 +434,7 @@ export class FormFinanceiroComponent {
         this.modeloFinanceiro = [data]; // Coloca o cliente dentro de um array
         console.log('O.S. obtida:', this.modeloFinanceiro);
         this.exibirTabela2 = true;
+        this.confereSeExisteBorderoSemEnviar();
       },
       (error) => {
         if (error.status === 404) {
@@ -433,6 +456,7 @@ export class FormFinanceiroComponent {
         this.modeloFinanceiro = data; // Armazena todos os clientes retornados
         console.log('Ultimas os delimitadas:', this.modeloFinanceiro);
         this.exibirTabela2 = true;
+        this.confereSeExisteBorderoSemEnviar();
       },
       (error) => {
         if (error.status === 404) {
@@ -491,6 +515,8 @@ export class FormFinanceiroComponent {
 
   onBuscarFiltros(): void {
 
+    
+
     this.exibirTabelaGeral = true;
 
     this.modeloFinanceiro = [];
@@ -518,6 +544,7 @@ export class FormFinanceiroComponent {
         this.exibirTabela2 = true;
         this.spinnerLoading = false;
         console.log('Filtro dinâmico carregado com sucesso:', this.modeloFinanceiro);
+        this.confereSeExisteBorderoSemEnviar();
       },
       error: (erro) => {
         this.spinnerLoading = false; // Desliga o spinner em caso de falha
@@ -550,6 +577,8 @@ export class FormFinanceiroComponent {
   }
 
   getBorderoPorData(codbordero: string): void {
+
+    
 
     this.exibirTabelaGeral = false;
     this.exibirTabelaBordero = true;
@@ -739,6 +768,8 @@ export class FormFinanceiroComponent {
 
 
   processaRemessa() {
+
+    this.confereSeExisteBorderoSemEnviar();
 
     if (!this.dataFaturamento || !this.opcaoTipoPagamento) {
       alert("Você precisa preencher todos os campos do formulário")
@@ -1507,6 +1538,7 @@ export class FormFinanceiroComponent {
     this.persisteBordero();
     this.borderoJaSalvo = "";
     this.enviarCustosBancariosParaDespesas(this.borderoPendentes)
+    this.confereSeExisteBorderoSemEnviar();
   }
 
   persisteBordero() {
@@ -1529,6 +1561,7 @@ export class FormFinanceiroComponent {
   }
 
   voltar() {
+    
     this.exibirSelectStatusParcela3 = true
     this.exibirSelectStatusParcela2 = true
     this.exibirFormularioBordero = false;
@@ -1545,6 +1578,7 @@ export class FormFinanceiroComponent {
     this.osSelecionadasParaRemessa = [];
     this.flagIrBordero = false;
     this.flagIrRemessa = false;
+    this.confereSeExisteBorderoSemEnviar();
   }
 
   atualizarModeloFinanceiroComDadosRemessa(): void {
@@ -1556,7 +1590,7 @@ export class FormFinanceiroComponent {
     // 2. Percorre o modeloFinanceiro e atualiza apenas os itens que estão no mapa
     this.modeloFinanceiro = this.modeloFinanceiro.map(itemOriginal => {
       const dadosAtualizados = mapaNovosDados.get(itemOriginal.os);
-
+      this.confereSeExisteBorderoSemEnviar();
       // Se encontrou dados correspondentes no array de remessa, mescla/substitui
       if (dadosAtualizados) {
         return { ...itemOriginal, ...dadosAtualizados };
@@ -1576,7 +1610,7 @@ export class FormFinanceiroComponent {
     // 2. Percorre o modeloFinanceiro e atualiza apenas os itens que estão no mapa
     this.modeloFinanceiro = this.modeloFinanceiro.map(itemOriginal => {
       const dadosAtualizados = mapaNovosDados.get(itemOriginal.os);
-
+      this.confereSeExisteBorderoSemEnviar();
       // Se encontrou dados correspondentes no array de remessa, mescla/substitui
       if (dadosAtualizados) {
         return { ...itemOriginal, ...dadosAtualizados };
@@ -1588,6 +1622,7 @@ export class FormFinanceiroComponent {
   }
 
   limpar() {
+    this.confereSeExisteBorderoSemEnviar();
     this.isClickEvent = false; // Reseta a flag após o clique
     this.router.navigate(['/home']).then(() => {
       this.router.navigate(['financeiro/consulta']);
@@ -1746,7 +1781,7 @@ atualizarModeloFinanceiroComarrayAlterarStatusFinanceiro(): void {
     // 2. Percorre o modeloFinanceiro e atualiza apenas os itens que estão no mapa
     this.modeloFinanceiro = this.modeloFinanceiro.map(itemOriginal => {
       const dadosAtualizados = mapaNovosDados.get(itemOriginal.os);
-
+      this.confereSeExisteBorderoSemEnviar();
       // Se encontrou dados correspondentes no array de remessa, mescla/substitui
       if (dadosAtualizados) {
         return { ...itemOriginal, ...dadosAtualizados };
@@ -1797,6 +1832,19 @@ atualizarModeloFinanceiroComarrayAlterarStatusFinanceiro(): void {
   });
 
   }
+
+  confereSeExisteBorderoSemEnviar() {
+  // Começa desligando o botão. Se a gente achar o que procura, ligamos ele de novo.
+  this.exibirBotaoGerarNovoBordero = false; 
+
+  // Olha item por item dentro da nossa caixa privada
+  this._modeloFinanceiro.forEach((os) => {
+    if (os.tipoPagamento === "BORDERO" && os.codRemessa && !os.codBordero) {
+      this.exibirBotaoGerarNovoBordero = true; // Achou! Liga o botão!
+    }
+  });
+}
+
 
   }
 

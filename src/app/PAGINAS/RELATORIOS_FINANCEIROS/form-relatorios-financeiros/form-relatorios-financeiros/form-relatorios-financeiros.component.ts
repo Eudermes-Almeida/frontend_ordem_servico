@@ -120,7 +120,7 @@ export class FormRelatoriosFinanceirosComponent {
   statusSelecionado: string = "TODOS";
   tipoDataSelecionado: string = "fechamento";
 
-  private buscarDadosFinanceiros() {
+  buscarDadosFinanceiros() {
     this.financeiroService.getRegistrosFiltrados(
       this.dataInicialIntervalo,
       this.dataFinalIntervalo,
@@ -214,8 +214,6 @@ export class FormRelatoriosFinanceirosComponent {
     }
     this.cdr.detectChanges();
   }
-
-
 
   totalCustoBancario: number = 0;
   qtCustoBancario: number = 0;
@@ -547,15 +545,12 @@ export class FormRelatoriosFinanceirosComponent {
       return acc
     }, 0)
 
-
   }
-
 
   borderoVencimento30Dias: number = 0;
   qtBorderoVencimento30Dias: number = 0;
 
   borderoVencimentoProximos30Dias() {
-
     this.qtBorderoVencimento30Dias = 0;
     //////DATA FUTURA = HOJE + 30 DIAS:
     const data = new Date();
@@ -636,5 +631,7 @@ export class FormRelatoriosFinanceirosComponent {
 
   }
 
+  
 
 }
+                  
