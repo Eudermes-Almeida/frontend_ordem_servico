@@ -5,10 +5,15 @@
     border: 2px solid #007bff; /* Azul primário do Bootstrap */
     border-radius: 8px;
     padding: 10px;
-    margin: 10px;
-    width: 99%;
+    margin: 5px; 
+    width: calc(100vw - 20px); 
     
+    /* ALTERAÇÃO AQUI: Mudou de 100vh para 85vh para liberar espaço para o rodapé */
+    height: calc(75vh - 10px) !important; 
+    min-height: calc(75vh - 10px) !important;
+    box-sizing: border-box;
 }
+
 
 .form-row {
     display: flex;
@@ -103,17 +108,17 @@ table td {
 
 .tabelas_flex {
     display: flex;
-    justify-content: space-between; /* Adiciona espaço entre as tabelas */
-    gap: 20px; /* Espaçamento entre as tabelas (opcional) */
-    max-height: 400px; /* Ajuste conforme necessário */
-    overflow-y: auto; /* Adiciona a barra de rolagem vertical */
-    overflow-x: hidden; /* Evita barra horizontal (se não for necessária) */
-    
-  }
+    justify-content: space-between; 
+    gap: 20px; 
+    height: 100% !important; /* Força a ocupar todo o espaço vertical disponível */
+    align-items: stretch; /* Obriga as tabelas a terem exatamente o mesmo tamanho vertical */
+}
   
-  .tabelas_flex .table {
-    width: 48%; /* Ajusta a largura de cada tabela para caberem lado a lado */
-  }
+/* CORREÇÃO: Ajustado de 48% para 32% para caberem as 3 tabelas perfeitamente lado a lado */
+.tabelas_flex .table {
+    width: 32% !important; 
+    margin-bottom: 0 !important;
+}
 
   .icone{
     margin: 0px;
