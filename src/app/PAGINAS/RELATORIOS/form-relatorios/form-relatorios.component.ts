@@ -61,7 +61,7 @@ export class FORMRELATORIOSComponent {
     "faturamentoManutencaoNobreakAcima3kva", "vendaNobreakNovo", "vendaNobreakSemiNovo", "nobreakInviavel", "nobreakOrcamentoNaoAprovado",
     "nobreakGarantiaLoja", "nobreakGarantiaFabrica", "vendaBateriaAvulsa", "vendaSucataBateria", "faturamentoMonitor", "faturamentoManutencaoMonitor",
     "vendaMonitorSemiNovo", "monitorInviavel", "monitorOrcamentoNaoAprovado", "monitorGarantiaLoja", "faturamentoOutroEquipamento", "entradaEquipamento",
-    "orcamentoNoPeriodo", "tecnicoEudermes", "tecnicoVinicius", "tecnicoLeonardo", "tecnicoRafael", "tecnicoGabriel"];
+    "orcamentoNoPeriodo", "tecnicoEudermes", "tecnicoVinicius", "tecnicoLeonardo", "tecnicoRafael", "tecnicoGabriel", "tecnicoSophia"];
 
   status: string[] = ["aberta", "pronta", "passarOrcamento", "aguardandoAprovacao", "aprovadas", "naoAprovadas", "baixadas", "garantiaLojaAindaNoLaboratorio",
     "garantiaFabricaAindaNoLaboratorio", "emAnalise", "osImpressaMasNaoFechada"]
@@ -96,6 +96,7 @@ export class FORMRELATORIOSComponent {
   arrayTecnicoLeonardo: any[] = [];
   arrayTecnicoRafael: any[] = [];
   arrayTecnicoGabriel: any[] = [];
+  arrayTecnicoSophia: any[] = [];
   arrayAprovadasOuReprovadasRemotamente: any[] = [];
 
   /// array de status:
@@ -400,6 +401,10 @@ export class FORMRELATORIOSComponent {
           case "tecnicoGabriel":
             this.arrayTecnicoGabriel = data;
             break;
+
+          case "tecnicoSophia":
+            this.arrayTecnicoSophia = data;
+            break;  
           default:
             console.warn(`Relatório ${busca} não reconhecido.`);
         }

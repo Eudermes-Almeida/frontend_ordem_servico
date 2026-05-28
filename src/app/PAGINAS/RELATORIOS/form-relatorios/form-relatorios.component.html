@@ -469,7 +469,19 @@
                 arrayFaturamentoTotal[0]?.somatoriaDTO?.somatotaliq * 100) | number: '1.0-0' }}%</td>
             </tr>
 
-
+            <tr>
+              <td><a>
+                  <button type="button" class="btn btn-dark"
+                    (click)="memorizaRelatorio(arrayTecnicoSophia, 'ORDENS SERVIÇOS FECHADAS PELA TECNICA SOPHIA' , 'INTERVALO')">
+                    <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+                  </button>
+                </a></td>
+              <td>Sophia-Fechamento OS</td>
+              <td class="valor">{{ arrayTecnicoSophia[0]?.somatoriaDTO.somatotaliq | number:'1.2-2' }}</td>
+              <td class="qt">{{arrayTecnicoSophia[0]?.somatoriaDTO.qtOs}}</td>
+              <td class="percentual">{{ (arrayTecnicoSophia[0]?.somatoriaDTO?.somatotaliq /
+                arrayFaturamentoTotal[0]?.somatoriaDTO?.somatotaliq * 100) | number: '1.0-0' }}%</td>
+            </tr>
 
             <tr>
               <td><a>
