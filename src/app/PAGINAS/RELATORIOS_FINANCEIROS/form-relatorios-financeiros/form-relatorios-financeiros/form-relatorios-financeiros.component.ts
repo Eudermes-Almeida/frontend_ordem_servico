@@ -196,24 +196,67 @@ export class FormRelatoriosFinanceirosComponent {
   totalPago: number = 0;
   qttotalPago: number = 0;
   percentualTotalPago: number = 0;
-  calculaTotalPago() {
-    this.qttotalPago = 0;
-    this.totalPago = this.arrayGeral.reduce((acc, os) => {
-      if (os.statusGeral === "PAGO") {
-        this.qttotalPago++;
-        return acc + (+os.totaliq || 0);
-      }
-      return acc;
-    }, 0);
+ calculaTotalPago() {
+  this.qttotalPago = 0;
 
-    const faturamentoTotalGeral = this.arrayFaturamentoTotal?.[0]?.somatoriaDTO?.somatotaliq;
-    if (faturamentoTotalGeral && +faturamentoTotalGeral > 0) {
-      this.percentualTotalPago = (this.totalPago / +faturamentoTotalGeral) * 100;
-    } else {
-      this.percentualTotalPago = 0;
+  this.totalPago = this.arrayGeral.reduce((acc, os) => {
+    
+    // 1. DINHEIRO ou PIX
+    if (os.tipoPagamento === "DINHEIRO" || os.tipoPagamento === "PIX") {
+      this.qttotalPago++;
+      return acc + (+os.totaliq || 0);
     }
-    this.cdr.detectChanges();
+
+    // 2. BORDERÔ ou CARTÕES
+    if (os.tipoPagamento === "BORDERO" || os.tipoPagamento === "CARTAO DEBITO" || os.tipoPagamento === "CARTAO CREDITO") {
+      this.qttotalPago++;
+      return acc + (+os.valorLiquidoCreditado || 0);
+    }
+
+    // 3. BOLETO (Suas comparações de texto originais continuam aqui)
+    if (os.tipoPagamento === "BOLETO") {
+      let somaBoletosDaOS = 0;
+
+      // Parcela 1
+      if (os.valorParcela1 && os.statusParcela1 === "PAGO" && os.vencimento1 >= this.dataInicialIntervalo && os.vencimento1 <= this.dataFinalIntervalo) {
+        this.qttotalPago++;
+        somaBoletosDaOS += +os.valorParcela1;
+      }
+
+      // Parcela 2
+      if (os.valorParcela2 && os.statusParcela2 === "PAGO" && os.vencimento2 >= this.dataInicialIntervalo && os.vencimento2 <= this.dataFinalIntervalo) {
+        this.qttotalPago++;
+        somaBoletosDaOS += +os.valorParcela2;
+      }
+
+      // Parcela 3
+      if (os.valorParcela3 && os.statusParcela3 === "PAGO" && os.vencimento3 >= this.dataInicialIntervalo && os.vencimento3 <= this.dataFinalIntervalo) {
+        this.qttotalPago++;
+        somaBoletosDaOS += +os.valorParcela3;
+      }
+
+      // RETORNO OBRIGATÓRIO DO BOLETO: Soma o que achou nesta OS ao total acumulado
+      return acc + somaBoletosDaOS;
+    }
+
+    // RETORNO OBRIGATÓRIO GERAL: Se a OS não for nenhum dos tipos acima, 
+    // apenas passa o valor acumulado para a próxima OS da lista sem quebrar
+    return acc;
+  }, 0);
+
+  // Cálculo do percentual final
+  const faturamentoTotalGeral = this.arrayFaturamentoTotal?.[0]?.somatoriaDTO?.somatotaliq;
+  if (faturamentoTotalGeral && +faturamentoTotalGeral > 0) {
+    this.percentualTotalPago = (this.totalPago / +faturamentoTotalGeral) * 100;
+  } else {
+    this.percentualTotalPago = 0;
   }
+  
+  this.cdr.detectChanges();
+}
+
+
+
 
   totalCustoBancario: number = 0;
   qtCustoBancario: number = 0;
