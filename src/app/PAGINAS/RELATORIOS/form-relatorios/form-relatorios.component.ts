@@ -545,7 +545,7 @@ export class FORMRELATORIOSComponent {
   percentualOsZeradas: number = 0;
   osZeradas: Os[] = [];
 
-  osFechadasZeradas(){
+    osFechadasZeradas(){
     this.qtOsZeradas = 0
     this.arrayFaturamentoTotal.forEach((os) => {
       if(os.totaliq ==="0.00"){

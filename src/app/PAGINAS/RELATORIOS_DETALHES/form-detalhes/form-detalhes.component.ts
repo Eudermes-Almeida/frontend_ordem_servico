@@ -24,7 +24,7 @@ import { ActivatedRoute } from '@angular/router';
 export class FORMDETALHESComponent {
   @ViewChild('numOsInput') numOsInput!: ElementRef;
   variavelEnviada: string = "";
-  dadosRecebidos: any;
+  dadosRecebidos: Os[] = [];
   dataInicio: string = "";
   dataFim: string = "";
   currentDateTime: string = '';
@@ -49,8 +49,22 @@ export class FORMDETALHESComponent {
   this.carregaNumOsdaUrl() // trata dados que vieram na url
   this.dadosRecebidos = this.servico.getData(); // busca dados que estão na memoria (ultimo relatório chamado)
   console.log(" dados recebidos " , this.dadosRecebidos)
-
   this.updateDateTime(); // chama metodo para capturar hora e data atual
+  this.calculaValorTotalFechado();
+}
+
+
+
+////////CALCULA O VALOR TOTAL FECHADO//////////
+
+valorTotalFechado: number = 0;
+
+calculaValorTotalFechado(){
+this.valorTotalFechado = this.dadosRecebidos.reduce((acc, os) => {
+
+  return acc + (+os.totaliq)
+},0)
+
 }
 
 //GERA DATA E HORA NO FORMATO DD-MM-AAAA   HH:MM:SS
