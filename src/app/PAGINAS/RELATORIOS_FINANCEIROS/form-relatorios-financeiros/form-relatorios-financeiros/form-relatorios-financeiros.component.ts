@@ -1,5 +1,5 @@
 
-import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, ViewChild, OnInit } from '@angular/core'; // Adicionado OnInit aqui
 import { OrdemservicoService } from '../../../../servico/ordemservico.service';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -7,6 +7,10 @@ import { Financeiro } from '../../../../modelo/Financeiro';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { FinanceiroService } from '../../../../servico/financeiro.service';
+
+// Força o TypeScript a entender que 'bootstrap' existe globalmente na janela do navegador
+const bootstrap = (window as any).bootstrap;
+
 
 @Component({
   selector: 'app-form-relatorios-financeiros',
@@ -16,7 +20,17 @@ import { FinanceiroService } from '../../../../servico/financeiro.service';
   styleUrl: './form-relatorios-financeiros.component.css'
 })
 export class FormRelatoriosFinanceirosComponent {
-  ngOnInit(): void { }
+ ngOnInit(): void { 
+    // Captura os elementos da tela
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+    
+    // Array.from resolve o erro TS2488 (não precisa do operador de espalhar ...)
+    if (bootstrap && bootstrap.Tooltip) {
+      Array.from(tooltipTriggerList).forEach(tooltipTriggerEl => {
+        new bootstrap.Tooltip(tooltipTriggerEl);
+      });
+    }
+  }
 
   //////////////////////////////////NOVAS VARIÁVEIS///////////////////////////////////////////////////
   arrayGeral: Financeiro[] = [];
