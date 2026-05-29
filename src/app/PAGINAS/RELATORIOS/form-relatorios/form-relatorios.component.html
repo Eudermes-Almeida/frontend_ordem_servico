@@ -62,6 +62,19 @@
             <tr>
               <td><a>
                   <button type="button" class="btn btn-dark"
+                    (click)="memorizaRelatorio(arrayFaturamentoTotal, 'FATURAMENTO TOTAL', 'INTERVALO')">
+                    <i class="bi bi-check-circle icone" style="font-size: 25px;"></i>
+                  </button>
+                </a></td>
+              <td>OS Fechadas ZERADAS </td>
+              <td class="valor">0.00</td>
+              <td class="qt">{{qtOsZeradas}}</td>
+              <td class="percentual">{{(percentualOsZeradas * 100) | number: '1.0-0' }}%</td>
+            </tr>
+
+            <tr>
+              <td><a>
+                  <button type="button" class="btn btn-dark"
                     (click)="memorizaRelatorio(arrayFaturamentoNobreak, 'FATURAMENTO NOBREAKS', 'INTERVALO')">
                     <i class="bi bi-check-circle icone" style="font-size: 25px;"></i>
                   </button>

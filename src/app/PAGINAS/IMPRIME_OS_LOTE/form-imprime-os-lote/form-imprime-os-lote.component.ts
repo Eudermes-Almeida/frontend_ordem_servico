@@ -629,28 +629,28 @@ gerarPDF = () => {
   const element = document.getElementById('pdf-content');
 
   const options = {
-    margin: 0, // Margem zero para controle total via CSS
-    filename: 'documento.pdf',
-    image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: {
-      scale: 0.9, // Aumentado para 2 para melhor nitidez em textos pequenos
-      letterRendering: true,
-      useCORS: true,
-      scrollY: 0, // Garante que a captura comece do topo do elemento
-      windowWidth: element?.scrollWidth // Estabiliza a largura da captura
-    },
-    jsPDF: {
-      unit: 'mm',
-      format: 'a4',
-      orientation: 'portrait',
-      compress: true
-    },
-    pagebreak: {
-      // avoid-all impede que elementos internos sejam cortados ao meio
-      mode: ['css', 'legacy'], 
-      //after: '.quebra-pagina',
-    },
-  };
+  margin: 0, 
+  filename: 'documento.pdf',
+  image: { type: 'jpeg', quality: 1.0 }, // Máxima qualidade do JPEG (ajuda na nitidez)
+  html2canvas: {
+    scale: 1.7, // Equilíbrio perfeito: muito mais nítido que 0.9 e não trava com muitas páginas
+    letterRendering: false, // DESATIVE (true deixa o processamento extremamente lento em textos longos)
+    useCORS: true,
+    scrollY: 0, 
+    windowWidth: element?.scrollWidth,
+    logging: false // Garante que o console não perca tempo processando logs
+  },
+  jsPDF: {
+    unit: 'mm',
+    format: 'a4',
+    orientation: 'portrait',
+    compress: true // Mantém o arquivo final leve
+  },
+  pagebreak: {
+    mode: ['css', 'legacy'], 
+  },
+};
+
 
   html2pdf()
     .set(options)

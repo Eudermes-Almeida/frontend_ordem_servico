@@ -1843,6 +1843,7 @@ atualizarModeloFinanceiroComarrayAlterarStatusFinanceiro(): void {
       this.exibirBotaoGerarNovoBordero = true; // Achou! Liga o botão!
     }
   });
+  this.executaVerificacaoDeAtrasos();
 }
 
 

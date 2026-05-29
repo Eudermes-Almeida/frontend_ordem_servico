@@ -175,7 +175,9 @@ export class FORMRELATORIOSComponent {
     // Após o loop, chama as funções seguintes
     this.SelecionaRelatoriosStatus();
     this.buscaCalculoComissaoTecnicos();
-    this.buscaOsAprovadasOuReprovadasRemotamente()
+    this.buscaOsAprovadasOuReprovadasRemotamente();
+    this.osFechadasZeradas();
+
 
     ////Se existir Alguma OS reprovada ou Aprovada Remotamente, irá ficar piscando o nome do relatório
     //console.log(" Esta é a quantidade de os Aprovadas ou Reprovadas: " , this.arrayAprovadasOuReprovadasRemotamente[0]?.somatoriaDTO.qtOs )
@@ -536,6 +538,24 @@ export class FORMRELATORIOSComponent {
 
   ngOnDestroy() {
     this.stopBlinking();
+  }
+
+
+  qtOsZeradas: number = 0;
+  percentualOsZeradas: number = 0;
+
+  osFechadasZeradas(){
+
+    this.qtOsZeradas = 0
+
+    this.arrayFaturamentoTotal.forEach((os) => {
+      if(os.totaliq ==="0.00"){
+        this.qtOsZeradas ++
+      }
+    })
+    console.log("Esta é a quantidade do OS ZERADAS ", this.qtOsZeradas)
+
+    this.percentualOsZeradas = this.qtOsZeradas / this.arrayFaturamentoTotal.length
   }
 
 
