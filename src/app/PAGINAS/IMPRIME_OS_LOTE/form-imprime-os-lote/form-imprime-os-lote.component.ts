@@ -558,21 +558,34 @@ processarOSSelecionadas() {
   if (processadosComSucesso.length > 0) {
     const ultimaOsAtualizada = processadosComSucesso[processadosComSucesso.length - 1];
     
-    // Criamos um objeto temporário tipado como 'any' para o TypeScript ignorar as diferenças de tipo
-    const dadosFormatadosParaForm: any = {
-      ...ultimaOsAtualizada,
-      os: String(ultimaOsAtualizada.os)
-    };
+    // SEGREDO: Se 'this.os' já existe, alteramos DIRETAMENTE as propriedades dele.
+    // Isso força o HTML que está amarrado a ele a enxergar a mudança na mesma hora.
+    if (this.os) {
+      this.os.status = "FECHADA";
+      this.os.fechamento = ultimaOsAtualizada.fechamento || new Date().toISOString();
+    } else {
+      // Caso ele estivesse nulo (o que é difícil pelo seu fluxo), inicializamos
+      this.os = { ...ultimaOsAtualizada, status: "FECHADA" };
+    }
 
-    // Agora o formulário aceita sem nenhuma restrição ou erro de build
-    this.formulario.patchValue(dadosFormatadosParaForm);
+    // Atualiza o formulário por garantia
+    this.formulario.patchValue(this.os as any);
+    
+    // Torna a tabela visível
+    this.escondeTabela = false;
 
-    this.os = ultimaOsAtualizada;
+    // Força o Angular a renderizar os dois novos textos na tela
     this.cdr.detectChanges();
 
-    setTimeout(() => this.gerarPDF(), 500);
+    // Aguarda o navegador aplicar visualmente os novos textos e gera o PDF
+    setTimeout(() => {
+      this.gerarPDF();
+    }, 1000);
   }
 }
+
+
+
 
 
   });
@@ -667,35 +680,56 @@ const dadosParaEnviar: Partial<Financeiro> = {
 }
 
 gerarPDF = () => {
-
   this.escondeTabela = false;
-  this.cdr.detectChanges();
+
+  // 1. Captura TODOS os elementos que possuem as classes em todas as páginas
+  const elementosStatus = document.querySelectorAll('.pdf-status');
+  const elementosFechamento = document.querySelectorAll('.pdf-fechamento');
+
+  // 2. Força o texto "FECHADA" em absolutamente todas as páginas
+  elementosStatus.forEach((el: any) => {
+    el.innerText = 'FECHADA';
+  });
+
+  // 3. Calcula a data de hoje no formato brasileiro (DD-MM-YYYY)
+  const hoje = new Date();
+  const dia = String(hoje.getDate()).padStart(2, '0');
+  const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+  const ano = hoje.getFullYear();
+  const dataFormatada = `${dia}-${mes}-${ano}`;
+
+  // 4. Força a data correta em absolutamente todas as páginas
+  elementosFechamento.forEach((el: any) => {
+    el.innerText = dataFormatada;
+  });
+
+  // 5. Captura o elemento pai já com todas as páginas modificadas e prontas
   const element = document.getElementById('pdf-content');
 
   const options = {
-  margin: 0, 
-  filename: 'documento.pdf',
-  image: { type: 'jpeg', quality: 1.0 }, // Máxima qualidade do JPEG (ajuda na nitidez)
-  html2canvas: {
-    scale: 1.7, // Equilíbrio perfeito: muito mais nítido que 0.9 e não trava com muitas páginas
-    letterRendering: false, // DESATIVE (true deixa o processamento extremamente lento em textos longos)
-    useCORS: true,
-    scrollY: 0, 
-    windowWidth: element?.scrollWidth,
-    logging: false // Garante que o console não perca tempo processando logs
-  },
-  jsPDF: {
-    unit: 'mm',
-    format: 'a4',
-    orientation: 'portrait',
-    compress: true // Mantém o arquivo final leve
-  },
-  pagebreak: {
-    mode: ['css', 'legacy'], 
-  },
-};
+    margin: 0, 
+    filename: 'documento.pdf',
+    image: { type: 'jpeg', quality: 1.0 },
+    html2canvas: {
+      scale: 1.7, 
+      letterRendering: false, 
+      useCORS: true,
+      scrollY: 0, 
+      windowWidth: element?.scrollWidth,
+      logging: false 
+    },
+    jsPDF: {
+      unit: 'mm',
+      format: 'a4',
+      orientation: 'portrait',
+      compress: true 
+    },
+    pagebreak: {
+      mode: ['css', 'legacy'], 
+    },
+  };
 
-
+  // 6. Executa a geração do PDF
   html2pdf()
     .set(options)
     .from(element)
@@ -711,9 +745,10 @@ gerarPDF = () => {
       console.error('Erro ao gerar o PDF:', error);
     });
 
-    this.spinnerLoading = false;
-
+  this.spinnerLoading = false;
 }
+
+
 
 limpar(event?: MouseEvent) {
   if (event) {
