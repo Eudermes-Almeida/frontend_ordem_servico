@@ -540,25 +540,25 @@ export class FORMRELATORIOSComponent {
     this.stopBlinking();
   }
 
-
+//////////////////////////////////OS ZERADAS//////////////////////////////////////////////////////
   qtOsZeradas: number = 0;
   percentualOsZeradas: number = 0;
+  osZeradas: Os[] = [];
 
   osFechadasZeradas(){
-
     this.qtOsZeradas = 0
-
     this.arrayFaturamentoTotal.forEach((os) => {
       if(os.totaliq ==="0.00"){
         this.qtOsZeradas ++
       }
     })
-    console.log("Esta é a quantidade do OS ZERADAS ", this.qtOsZeradas)
-
     this.percentualOsZeradas = this.qtOsZeradas / this.arrayFaturamentoTotal.length
+    this.arrayFaturamentoTotal.map((os) => {
+      if(os.totaliq === "0.00"){
+        this.osZeradas.push(os)
+      }
+    })
   }
-
-
 
 }
 
