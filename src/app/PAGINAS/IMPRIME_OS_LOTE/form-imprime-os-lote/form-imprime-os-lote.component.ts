@@ -15,6 +15,8 @@ import { NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { of } from 'rxjs'; // Importe o 'of'
 import { catchError, finalize } from 'rxjs/operators';
+import { Financeiro } from '../../../modelo/Financeiro';
+import { FinanceiroService } from '../../../servico/financeiro.service';
 
 
 
@@ -42,6 +44,7 @@ export class FORMIMPRIMEOSLOTEComponent {
   novaOs: number = 0;
   osClicadasCheckbox: any[] = [];
   spinnerLoading: boolean = false;
+  modeloFinanceiro: Financeiro[] = [];
 
   ///////////CONTROLE DE RENDERIZAÇÃO/////////
   exibirTabela: boolean = false;
@@ -121,6 +124,7 @@ export class FORMIMPRIMEOSLOTEComponent {
       private cdr: ChangeDetectorRef,
       private zone: NgZone,
        private router: Router,
+       private financeiroService: FinanceiroService,
   ) {}
 
 
@@ -535,41 +539,42 @@ onOspeloSerialKey(event: KeyboardEvent): void {
 //////ATUALIZA ORDEM DE SERVIÇO - MUDA STATUS E DATA PARA "FECHADA" //////////////////////////////
 
 processarOSSelecionadas() {
-
-  
-  console.log('Iniciando processamento de:', this.osClicadasCheckbox.length);
   this.spinnerLoading = true;
-
   from(this.osClicadasCheckbox).pipe(
     mergeMap(osItem => {
       const dadosFormatados = this.geraObjetoOs(osItem);
-      
-      // O segredo está em tratar o erro AQUI DENTRO
       return this.servico.atualizarOrdemServico(osItem.os, dadosFormatados).pipe(
         catchError(error => {
           console.error(`Erro na OS ${osItem.os}:`, error);
-          return of(null); // Retorna nulo mas NÃO mata o fluxo das outras 29
+          return of(null);
         })
       );
-    }, 2), // Reduzi para 2 para dar mais estabilidade ao seu banco local
-    toArray(), // Aguarda as 30 respostas (ou nulos)
-    finalize(() => {
-      // O finalize é disparado APENAS quando o fluxo fecha de vez
-      console.log('Fluxo RxJS finalizado totalmente.');
-      
-    })
+    }, 2),
+    toArray(), 
   ).subscribe({
     next: (resultados) => {
-      const processadosComSucesso = resultados.filter(r => r !== null).length;
-      console.log(`Sucesso em ${processadosComSucesso} de ${resultados.length}`);
-      
-      // Só gera o PDF quando o array de resultados estiver cheio
-      if (processadosComSucesso > 0) {
-        console.log(" Está dentro do processsados com sucesso ", this.osClicadasCheckbox.length)
+  const processadosComSucesso = resultados.filter(r => r !== null);
+  
+  if (processadosComSucesso.length > 0) {
+    const ultimaOsAtualizada = processadosComSucesso[processadosComSucesso.length - 1];
     
-        setTimeout(() => this.gerarPDF(), 200);
-      }
-    }
+    // Criamos um objeto temporário tipado como 'any' para o TypeScript ignorar as diferenças de tipo
+    const dadosFormatadosParaForm: any = {
+      ...ultimaOsAtualizada,
+      os: String(ultimaOsAtualizada.os)
+    };
+
+    // Agora o formulário aceita sem nenhuma restrição ou erro de build
+    this.formulario.patchValue(dadosFormatadosParaForm);
+
+    this.os = ultimaOsAtualizada;
+    this.cdr.detectChanges();
+
+    setTimeout(() => this.gerarPDF(), 500);
+  }
+}
+
+
   });
 }
 
@@ -618,14 +623,53 @@ geraObjetoOs(osItem: any) {
       os: Number(osItem.os || 0),
       // Adicione aqui apenas os campos que o seu DTO no Java exige
   };
-
   this.os = objetoParaRetorno; 
+
+  console.log("verificar se o status da os está fechado************************ ", this.os)
+  /////SE O STATUS ESTIVER COMO FECHADA, INSERE A OS NA TABELA DO FINANCEIRO, COM O STATUS GERAL "NAO FATURADO"
+if (this.os.status === "FECHADA" && Number(this.os.totaliq) > 0) {
+  this.enviaParaFinanceiro(this.os);
+}
+
+
+
   return objetoParaRetorno; 
+}
+
+enviaParaFinanceiro(os: Os) {
+  // Inicializa o objeto para evitar lixo de memória
+
+const dadosParaEnviar: Partial<Financeiro> = {
+  ...this.modeloFinanceiro,
+  os: Number(os.os),
+  dataEntrada: os.data ? String(os.data).split('T')[0] : '',
+  fantasia: os.fantasia ? String(os.fantasia).toUpperCase() : '',
+  codcli: Number(os.codcli),
+  equipamento: os.equipamento ? String(os.equipamento).toUpperCase() : '',
+  marca: os.marca ? String(os.marca).toUpperCase() : '',
+  modelo: os.modelo ? String(os.modelo).toUpperCase() : '',
+  totaliq: String(os.totaliq),
+  fechamento: os.fechamento ? String(os.fechamento).split('T')[0] : '',
+  statusGeral: "NAO FATURADO"
+};
+
+//58775 e 53806
+
+  this.financeiroService.CadastrarOsFechadaNoFinanceiro(dadosParaEnviar as Financeiro).subscribe({
+  next: (res) => {
+      //this.exibirAlertOsSalva = true;
+      console.log("Salvo no financeiro:", res);
+    },
+    error: (err) => {
+      console.error("Erro no servidor:", err);
+    }
+  });
 }
 
 gerarPDF = () => {
 
   this.escondeTabela = false;
+  this.cdr.detectChanges();
   const element = document.getElementById('pdf-content');
 
   const options = {
