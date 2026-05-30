@@ -136,17 +136,7 @@ export class FORMRELATORIOSComponent {
 
   ) { }
 
-  // ///////ATIVA FULL SCREEN////
-  // ativarFullscreen(): void {
-  //   const elem = document.documentElement;
-  //   if (elem.requestFullscreen) {
-  //     elem.requestFullscreen();
-  //   } else if ((elem as any).webkitRequestFullscreen) { /* Safari */
-  //     (elem as any).webkitRequestFullscreen();
-  //   } else if ((elem as any).msRequestFullscreen) { /* IE11 */
-  //     (elem as any).msRequestFullscreen();
-  //   }
-  // }
+  
 
   // Função delay para aguardar 100 ms
   delay(ms: number): Promise<void> {
@@ -176,7 +166,7 @@ export class FORMRELATORIOSComponent {
     this.SelecionaRelatoriosStatus();
     this.buscaCalculoComissaoTecnicos();
     this.buscaOsAprovadasOuReprovadasRemotamente();
-    this.osFechadasZeradas();
+   
 
 
     ////Se existir Alguma OS reprovada ou Aprovada Remotamente, irá ficar piscando o nome do relatório
@@ -287,6 +277,7 @@ export class FORMRELATORIOSComponent {
             console.warn(`Relatório ${status} não reconhecido.`);
         }
         console.log(`Resultados do relatório ${status}:`, data);
+         
       },
       (error) => {
         if (error.status === 404) {
@@ -321,6 +312,7 @@ export class FORMRELATORIOSComponent {
         switch (busca) {
           case "faturamentoTotal":
             this.arrayFaturamentoTotal = data;
+            this.osFechadasZeradas();
             console.log(" array faturamento total ", this.arrayFaturamentoTotal)
             const memoFaturamentoTotal = this.servico.getData();
             console.log("memoria faturamento total ", memoFaturamentoTotal)
