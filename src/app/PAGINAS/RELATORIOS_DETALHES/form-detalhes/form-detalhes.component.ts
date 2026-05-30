@@ -59,13 +59,18 @@ export class FORMDETALHESComponent {
 
 valorTotalFechado: number = 0;
 
-calculaValorTotalFechado(){
-this.valorTotalFechado = this.dadosRecebidos.reduce((acc, os) => {
+calculaValorTotalFechado() {
+  this.valorTotalFechado = this.dadosRecebidos.reduce((acc, os) => {
+    // Converte para número. Se o resultado for inválido (NaN) ou nulo, assume 0.
+    const valorItem = Number(os.totaliq);
+    const valorValido = isNaN(valorItem) ? 0 : valorItem;
+    
+    return acc + valorValido;
+  }, 0);
 
-  return acc + (+os.totaliq)
-},0)
-
+  console.log("Este é o valor total fechado: ", this.valorTotalFechado);
 }
+
 
 //GERA DATA E HORA NO FORMATO DD-MM-AAAA   HH:MM:SS
 updateDateTime() {
