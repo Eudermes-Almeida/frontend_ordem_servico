@@ -11,8 +11,8 @@ export class FinanceiroService {
    constructor(private http:HttpClient) { }
 
   // quando mudar de servidor, basta alterar este endereço///////////////////
-  urlServidor: string = 'http://localhost:8085/'
-  //urlServidor: string = 'http://192.168.15.14:8085/'
+  //urlServidor: string = 'http://localhost:8085/'
+  urlServidor: string = 'http://192.168.15.14:8085/'
 
   // URL CADASTRAR ORDEM SERVICO:
 urlFinanceiro: string = this.urlServidor + 'financeiro';
