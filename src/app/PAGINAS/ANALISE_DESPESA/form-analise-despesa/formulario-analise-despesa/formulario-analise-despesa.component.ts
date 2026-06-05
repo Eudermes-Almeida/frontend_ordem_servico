@@ -326,9 +326,32 @@ export class FormularioAnaliseDespesaComponent {
 
  montaArrayTotalDespesasCadaMes(dados: Despesa[], index: number) {
   // 1. Soma o mês atual
-  const totalDoMes = dados.reduce((soma, despesa) => {
-    return soma + (+despesa.valor || 0);
-  }, 0);
+ const totalDoMes = dados.reduce((soma, despesa) => {
+  let valorNum = despesa.valor;
+  
+  if (typeof valorNum === 'string') {
+    valorNum = valorNum.trim();
+
+    // 1. Se tem vírgula, o ponto obrigatoriamente é milhar (Ex: 1.136,66 ou 820,93)
+    if (valorNum.includes(',')) {
+      valorNum = valorNum.replace(/\./g, '').replace(',', '.');
+    } 
+    // 2. Se SÓ tem ponto, precisamos checar se é decimal ou milhar
+    else if (valorNum.includes('.')) {
+      const partes = valorNum.split('.');
+      // Se tiver exatamente 3 dígitos após o ponto (Ex: 1.500 ou 15.000), o ponto é milhar!
+      if (partes[1].length === 3) {
+        valorNum = valorNum.replace(/\./g, ''); // Remove o ponto de milhar
+      }
+      // Se tiver 1 ou 2 dígitos (Ex: 820.93 ou 112.00), é decimal. Não faz nada.
+    }
+  }
+
+  const valorFinal = parseFloat(valorNum) || 0;
+  return soma + valorFinal;
+}, 0);
+
+
   this.totaisMensaisDespesas[index] = totalDoMes;
 
   // 2. Calcula o total anual (Gaveta 12)
@@ -402,10 +425,30 @@ this.datasIniciaisEfinais.forEach((periodo, index) => {
 }
 
 montaArrayDespesasCasaEIgreja(dados: Despesa[], index: number){
-// 1. Soma o mês atual
+  // 1. Soma o mês atual tratando os formatos de texto de forma segura
   const totalDoMes = dados.reduce((soma, despesa) => {
-    return soma + (+despesa.valor || 0);
+    let valorNum = despesa.valor;
+    
+    if (typeof valorNum === 'string') {
+      valorNum = valorNum.trim();
+
+      // Se tem vírgula, o ponto obrigatoriamente é milhar (Ex: 1.136,66 ou 820,93)
+      if (valorNum.includes(',')) {
+        valorNum = valorNum.replace(/\./g, '').replace(',', '.');
+      } 
+      // Se SÓ tem ponto, checa se é milhar (Ex: 1.500 com 3 dígitos após o ponto)
+      else if (valorNum.includes('.')) {
+        const partes = valorNum.split('.');
+        if (partes && partes[partes.length - 1].length === 3) {
+          valorNum = valorNum.replace(/\./g, '');
+        }
+      }
+    }
+
+    const valorFinal = parseFloat(valorNum) || 0;
+    return soma + valorFinal;
   }, 0);
+  
   this.arraydespesasCasaEigreja[index] = totalDoMes;
 
   // 2. Calcula o total anual (Gaveta 12)
@@ -415,21 +458,16 @@ montaArrayDespesasCasaEIgreja(dados: Despesa[], index: number){
   this.arraydespesasCasaEigreja[12] = totalDespesaAnual;
 
   // 3. Calcula a média mensal (Gaveta 13)
-  // Primeiro: filtramos apenas os meses que são maiores que zero
-
   const mesesComDinheiro = this.arraydespesasCasaEigreja
     .slice(0, 12)
     .filter(valor => valor > 0);
 
-  // Segundo: pegamos a quantidade desses meses
   const quantidadeDeMeses = mesesComDinheiro.length;
-
-  // Terceiro: calculamos a média (só se a quantidade for maior que 0 para não dar erro!)
   const mediaMensal = quantidadeDeMeses > 0 ? totalDespesaAnual / quantidadeDeMeses : 0;
   
   this.arraydespesasCasaEigreja[13] = mediaMensal;
-
 }
+
 
 ///////////////////////////FATURAMENTO/////////////////////////////
 

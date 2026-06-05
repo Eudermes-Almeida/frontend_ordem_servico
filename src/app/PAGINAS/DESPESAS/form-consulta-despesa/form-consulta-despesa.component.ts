@@ -337,24 +337,60 @@ onStatus(event: any) {
 calcularValorTotal(): void {
   this.valorGeral = 0;
   this.valorGeral = this.dadosConsultaFiltro.reduce((acumulador, item) => {
-    // Converte string para número (substitui vírgula por ponto se necessário)
-    const valorNumerico = parseFloat(item.valor.replace(',', '.'));
+    let valorNum = item.valor;
+
+    if (typeof valorNum === 'string') {
+      valorNum = valorNum.trim();
+
+      // Se tem vírgula, o ponto obrigatoriamente é milhar (Ex: 1.136,66 ou 820,93)
+      if (valorNum.includes(',')) {
+        valorNum = valorNum.replace(/\./g, '').replace(',', '.');
+      } 
+      // Se SÓ tem ponto, checa se é milhar (Ex: 1.500 com 3 dígitos após o ponto)
+      else if (valorNum.includes('.')) {
+        const partes = valorNum.split('.');
+        if (partes && partes[partes.length - 1].length === 3) {
+          valorNum = valorNum.replace(/\./g, '');
+        }
+      }
+    }
+
+    // Converte para número de forma segura e garante zero se inválido
+    const valorNumerico = parseFloat(valorNum) || 0;
     
-    // Soma apenas se for um número válido, senão soma 0
-    return acumulador + (isNaN(valorNumerico) ? 0 : valorNumerico);
+    return acumulador + valorNumerico;
   }, 0);
 }
+
 
 
 calcularValorApagar(): void {
   this.valorTotalApagar = this.dadosConsultaFiltro.reduce((acumulador, item) => {
     // 1. Verifica se o status é exatamente 'A PAGAR'
     if (item.status === 'A PAGAR') {
-      // 2. Converte a string para número
-      const valorNumerico = parseFloat(item.valor.replace(',', '.'));
+      let valorNum = item.valor;
+
+      if (typeof valorNum === 'string') {
+        valorNum = valorNum.trim();
+
+        // Se tem vírgula, o ponto obrigatoriamente é milhar (Ex: 1.136,66 ou 820,93)
+        if (valorNum.includes(',')) {
+          valorNum = valorNum.replace(/\./g, '').replace(',', '.');
+        } 
+        // Se SÓ tem ponto, checa se é milhar (Ex: 1.500 com 3 dígitos após o ponto)
+        else if (valorNum.includes('.')) {
+          const partes = valorNum.split('.');
+          if (partes && partes[partes.length - 1].length === 3) {
+            valorNum = valorNum.replace(/\./g, '');
+          }
+        }
+      }
+
+      // 2. Converte para número de forma segura e garante zero se inválido
+      const valorNumerico = parseFloat(valorNum) || 0;
       
-      // 3. Soma apenas se for um número válido
-      return acumulador + (isNaN(valorNumerico) ? 0 : valorNumerico);
+      // 3. Soma o valor numérico tratado
+      return acumulador + valorNumerico;
     }
     
     // Se o status não for 'A PAGAR', mantém o valor acumulado anterior
@@ -362,35 +398,102 @@ calcularValorApagar(): void {
   }, 0);
 }
 
+
 calcularValorPago(): void {
   this.valorTotalPago = this.dadosConsultaFiltro.reduce((acumulador, item) => {
     if (item.status === 'PAGO') {
-      const valorNumerico = parseFloat(item.valor.replace(',', '.'));
-      return acumulador + (isNaN(valorNumerico) ? 0 : valorNumerico);
+      let valorNum = item.valor;
+
+      if (typeof valorNum === 'string') {
+        valorNum = valorNum.trim();
+
+        // Se tem vírgula, o ponto obrigatoriamente é milhar (Ex: 1.136,66 ou 820,93)
+        if (valorNum.includes(',')) {
+          valorNum = valorNum.replace(/\./g, '').replace(',', '.');
+        } 
+        // Se SÓ tem ponto, checa se é milhar (Ex: 1.500 com 3 dígitos após o ponto)
+        else if (valorNum.includes('.')) {
+          const partes = valorNum.split('.');
+          if (partes && partes[partes.length - 1].length === 3) {
+            valorNum = valorNum.replace(/\./g, '');
+          }
+        }
+      }
+
+      const valorNumerico = parseFloat(valorNum) || 0;
+      return acumulador + valorNumerico;
     }
     return acumulador;
   }, 0);
 }
 
 calcularValorEmpresa(): void {
+  // Lista de categorias permitidas para facilitar a leitura e manutenção
+  const categoriasPermitidas = [
+    'ADMINISTRATIVA', 'ALUGUEL', 'BANCARIA', 'BATERIA', 
+    'IMPOSTO', 'INSUMOS', 'SALARIO', 'VEICULO', 'EMPRESTIMO'
+  ];
+
   this.valorTotalEmpresa = this.dadosConsultaFiltro.reduce((acumulador, item) => {
-    if (item.categoria === 'ADMINISTRATIVA' || item.categoria ==='ALUGUEL' || item.categoria === 'BANCARIA' || item.categoria === 'BATERIA' || item.categoria === 'IMPOSTO' || item.categoria === 'INSUMOS' || item.categoria === 'SALARIO' || item.categoria === 'VEICULO' || item.categoria === 'EMPRESTIMO') {
-      const valorNumerico = parseFloat(item.valor.replace(',', '.'));
-      return acumulador + (isNaN(valorNumerico) ? 0 : valorNumerico);
+    // Verifica se a categoria do item está na lista permitida
+    if (categoriasPermitidas.includes(item.categoria)) {
+      let valorNum = item.valor;
+
+      if (typeof valorNum === 'string') {
+        valorNum = valorNum.trim();
+
+        // 1. Se tem vírgula, o ponto obrigatoriamente é milhar (Ex: 1.136,66 ou 820,93)
+        if (valorNum.includes(',')) {
+          valorNum = valorNum.replace(/\./g, '').replace(',', '.');
+        } 
+        // 2. Se SÓ tem ponto, checa se é milhar (Ex: 1.500) ou decimal (Ex: 820.93)
+        else if (valorNum.includes('.')) {
+          const partes = valorNum.split('.');
+          // Se o último bloco tiver exatamente 3 dígitos após o ponto, trata-se de milhar puro
+          if (partes && partes[partes.length - 1].length === 3) {
+            valorNum = valorNum.replace(/\./g, '');
+          }
+        }
+      }
+
+      // Converte para número de forma segura
+      const valorFinal = parseFloat(valorNum) || 0;
+      return acumulador + valorFinal;
+    }
+    
+    return acumulador;
+  }, 0);
+}
+
+
+calcularValorCasa(): void {
+  this.valorTotalCasa = this.dadosConsultaFiltro.reduce((acumulador, item) => {
+    if (item.categoria === 'CASA' || item.categoria === 'IGREJA') {
+      let valorNum = item.valor;
+
+      if (typeof valorNum === 'string') {
+        valorNum = valorNum.trim();
+
+        // Se tem vírgula, o ponto obrigatoriamente é milhar (Ex: 1.136,66 ou 820,93)
+        if (valorNum.includes(',')) {
+          valorNum = valorNum.replace(/\./g, '').replace(',', '.');
+        } 
+        // Se SÓ tem ponto, checa se é milhar (Ex: 1.500 com 3 dígitos após o ponto)
+        else if (valorNum.includes('.')) {
+          const partes = valorNum.split('.');
+          if (partes && partes[partes.length - 1].length === 3) {
+            valorNum = valorNum.replace(/\./g, '');
+          }
+        }
+      }
+
+      const valorNumerico = parseFloat(valorNum) || 0;
+      return acumulador + valorNumerico;
     }
     return acumulador;
   }, 0);
 }
 
-calcularValorCasa(): void {
-  this.valorTotalCasa = this.dadosConsultaFiltro.reduce((acumulador, item) => {
-    if (item.categoria === 'CASA' || item.categoria ==='IGREJA') {
-      const valorNumerico = parseFloat(item.valor.replace(',', '.'));
-      return acumulador + (isNaN(valorNumerico) ? 0 : valorNumerico);
-    }
-    return acumulador;
-  }, 0);
-}
 
 alterarDespesa(dados: Despesa) {
   console.log("Estes são os dados da linha", dados);
