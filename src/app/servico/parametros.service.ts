@@ -7,8 +7,10 @@ import { ParametrosCombobox } from '../modelo/ParametrosCombobox'; // Certifique
 })
 export class ParametrosService {
 
-    //urlServidor: string = 'http://localhost:8085/';
-    urlServidor: string = 'http://192.168.15.14:8085/'
+  urlServidor: string = `http://${window.location.hostname}:8085/`;
+
+   // urlServidor: string = 'http://localhost:8085/';   ///roda localmente
+    //urlServidor: string = 'http://192.168.15.14:8085/'   ///roda e rede
   
     //URL BUSCAR CIDADES
   urlCidades = this.urlServidor +'parametro/parametro?parametro=CIDADE';

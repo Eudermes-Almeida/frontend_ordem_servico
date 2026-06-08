@@ -7,12 +7,15 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class FinanceiroService {
+  
 
    constructor(private http:HttpClient) { }
 
+  urlServidor: string = `http://${window.location.hostname}:8085/`;
+
   // quando mudar de servidor, basta alterar este endereço///////////////////
-  //urlServidor: string = 'http://localhost:8085/'
-  urlServidor: string = 'http://192.168.15.14:8085/'
+  //urlServidor: string = 'http://localhost:8085/'  //roda localmente
+  //urlServidor: string = 'http://192.168.15.14:8085/'   /// roda em rede
 
   // URL CADASTRAR ORDEM SERVICO:
 urlFinanceiro: string = this.urlServidor + 'financeiro';
