@@ -930,6 +930,9 @@ set modeloFinanceiro(novosDados: Financeiro[]) {
       this.somatoriaTotaliq += Number(item.valorLiquidoCreditado || 0);
     });
 
+
+    
+
     // 3. ATUALIZA A TELA: Envia os resultados diretamente para os inputs do formulário
     this.formProcessaRemessa.patchValue({
       fantasia: this.osSelecionadasParaRemessa[0].fantasia,
@@ -940,6 +943,7 @@ set modeloFinanceiro(novosDados: Financeiro[]) {
       valorTotalLiquido: this.totalOs.toFixed(2),
     });
     this.persisteRemessa();
+    
   }
 
    pagamentoComCartao(tipoCartao: string): void {
@@ -964,6 +968,8 @@ set modeloFinanceiro(novosDados: Financeiro[]) {
         valorLiquidoCreditado: (Number(item.totaliq) - (Number(item.totaliq) * taxaCartao)).toFixed(2)
       };
     });
+
+     this.enviarCustosCartaoParaDespesas(this.osSelecionadasParaRemessa, tipoCartao);
 
     this.totalOs = 0;
     this.totalDespesasBancarias = 0;
@@ -1823,6 +1829,37 @@ atualizarModeloFinanceiroComarrayAlterarStatusFinanceiro(): void {
     next: (response) => {
       console.log('Lote salvo com sucesso:', response);
       //alert("Todas as despesas  foram cadastradas com sucesso.");
+      this.arrayDespesaBancaria = [];
+    },
+    error: (error) => {
+      console.error('Erro ao salvar lote:', error);
+      alert("Erro ao salvar despesas: " + (error.error || "Erro desconhecido"));
+    }
+  });
+
+  }
+
+  enviarCustosCartaoParaDespesas(dados: Financeiro[], tipoCartao: String){
+
+    const despesaCartao = dados.reduce((acc, os) => {
+      return acc = acc + Number(os.jurosBordero)
+    }, 0)
+
+    const hoje = new Date().toLocaleDateString('sv-SE');
+
+    this.despesaBancaria = {
+    descricao: `Tarifa Recebimento  ${ tipoCartao}: ${dados[0].fantasia}`,
+    categoria: "BANCARIA",
+    vencimento: hoje,
+    valor: (despesaCartao).toFixed(2),
+    status: "PAGO",
+    iniciomes: "NAO"
+    }
+
+    this.arrayDespesaBancaria.push(this.despesaBancaria);
+    this.despesaService.salvarDespesasEmLote(this.arrayDespesaBancaria).subscribe({
+    next: (response) => {
+      console.log('Lote salvo com sucesso:', response);
       this.arrayDespesaBancaria = [];
     },
     error: (error) => {
