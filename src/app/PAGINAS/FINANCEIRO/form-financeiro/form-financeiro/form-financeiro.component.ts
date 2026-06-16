@@ -1146,6 +1146,9 @@ set modeloFinanceiro(novosDados: Financeiro[]) {
         valorLiquidoCreditado: (Number(item.totaliq) - Number(custoBoleto)).toFixed(2)
       };
     });
+ 
+    this.enviarCustosBoleto(this.osSelecionadasParaRemessa);
+
     this.atualizaTotalizadores()
   }
 
@@ -1852,6 +1855,37 @@ atualizarModeloFinanceiroComarrayAlterarStatusFinanceiro(): void {
     categoria: "BANCARIA",
     vencimento: hoje,
     valor: (despesaCartao).toFixed(2),
+    status: "PAGO",
+    iniciomes: "NAO"
+    }
+
+    this.arrayDespesaBancaria.push(this.despesaBancaria);
+    this.despesaService.salvarDespesasEmLote(this.arrayDespesaBancaria).subscribe({
+    next: (response) => {
+      console.log('Lote salvo com sucesso:', response);
+      this.arrayDespesaBancaria = [];
+    },
+    error: (error) => {
+      console.error('Erro ao salvar lote:', error);
+      alert("Erro ao salvar despesas: " + (error.error || "Erro desconhecido"));
+    }
+  });
+
+  }
+
+   enviarCustosBoleto(dados: Financeiro[]){
+
+    const despesaBoleto = dados.reduce((acc, os) => {
+      return acc = acc + Number(os.custoBancarioTotal)
+    }, 0)
+
+    const hoje = new Date().toLocaleDateString('sv-SE');
+
+    this.despesaBancaria = {
+    descricao: `Tarifa Emissão Boleto: ${dados[0].fantasia}`,
+    categoria: "BANCARIA",
+    vencimento: hoje,
+    valor: (despesaBoleto).toFixed(2),
     status: "PAGO",
     iniciomes: "NAO"
     }
