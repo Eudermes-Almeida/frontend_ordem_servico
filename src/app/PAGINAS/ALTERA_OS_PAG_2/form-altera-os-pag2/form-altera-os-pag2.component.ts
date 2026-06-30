@@ -16,6 +16,8 @@ import { switchMap, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { Financeiro } from '../../../modelo/Financeiro';
 import { FinanceiroService } from '../../../servico/financeiro.service';
+import { catchError, of } from 'rxjs';
+
 
 @Component({
   selector: 'app-form-altera-os-pag2',
@@ -695,6 +697,7 @@ atualizarOS() {
 
   /////SE O STATUS ESTIVER COMO FECHADA, INSERE A OS NA TABELA DO FINANCEIRO, COM O STATUS GERAL "NAO FATURADO"
 if (this.os.status === "FECHADA" && Number(this.os.totaliq) > 0) {
+  console.log("Enviando para financeiro a os ", this.os.os)
   this.enviaParaFinanceiro(this.os);
 }
 
@@ -827,7 +830,6 @@ gerarPDF() {
 }
 
 enviaParaFinanceiro(os: Os) {
-  // Inicializa o objeto para evitar lixo de memória
   const dadosParaEnviar: Financeiro = {
     ...this.modeloFinanceiro,
     os: Number(os.os),
@@ -842,15 +844,37 @@ enviaParaFinanceiro(os: Os) {
     statusGeral: "NAO FATURADO"
   };
 
-  this.financeiroService.CadastrarOsFechadaNoFinanceiro(dadosParaEnviar).subscribe({
-    next: (res) => {
-      this.exibirAlertOsSalva = true;
-      console.log("Salvo no financeiro:", res);
-    },
-    error: (err) => {
-      console.error("Erro no servidor:", err);
-    }
-  });
+  if (this.os.os) {
+    this.financeiroService.deleteOsDoFinanceiro(this.os.os).pipe(
+      // Captura o erro caso a OS não exista no banco (registro novo)
+      catchError((err) => {
+        console.log("OS não encontrada para deletar (é um registro novo). Prosseguindo...");
+        // 'of(null)' finge que deu tudo certo e libera a continuação do fluxo
+        return of(null);
+      }),
+      // Executa o POST somente após a resposta do DELETE (com sucesso ou erro tratado)
+      switchMap(() => {
+        console.log("Iniciando a persistência no financeiro...");
+        return this.financeiroService.CadastrarOsFechadaNoFinanceiro(dadosParaEnviar);
+      })
+    ).subscribe({
+      next: (res) => {
+        this.exibirAlertOsSalva = true;
+        console.log("Salvo no financeiro com sucesso:", res);
+      },
+      error: (err) => {
+        console.error("Erro crítico na persistência do financeiro:", err);
+      }
+    });
+  } else {
+    this.financeiroService.CadastrarOsFechadaNoFinanceiro(dadosParaEnviar).subscribe({
+      next: (res) => {
+        this.exibirAlertOsSalva = true;
+        console.log("Salvo diretamente sem ID de OS:", res);
+      },
+      error: (err) => console.error("Erro ao cadastrar diretamente:", err)
+    });
+  }
 }
 
 }

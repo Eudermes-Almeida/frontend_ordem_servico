@@ -100,5 +100,10 @@ buscaTudoMenosPago(): Observable<number> {
   return this.http.get<number>(url);
 }
 
+deleteOsDoFinanceiro(id: number): Observable<void> {
+  const url = `${this.urlServidor}financeiro/${id}`;
+  return this.http.delete<void>(url);
+}
+
 }
 
