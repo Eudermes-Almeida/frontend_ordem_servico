@@ -97,6 +97,21 @@
                 <td class="percentual">100%</td>
               </tr>
 
+              <!-- Valor total de descontos consedidos no período -->
+              <tr>
+                <td><a>
+                    <button type="button" class="btn btn-dark">
+                      <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
+                    </button>
+                  </a></td>
+                <td>TOTAL DESCONTOS CONCEDIDOS <i class="bi bi-question-circle text-primary fs-3" data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    data-bs-title="Valor do total dos descontos concedidos no período."></i></td>
+                <td class="valor">{{ totalDescontos | number:'1.2-2' }}</td>
+                <td class="qt">{{qtDescontosConcedidos}}</td>
+                <td class="percentual">{{ (totalDescontos / (arrayFaturamentoTotal[0]?.somatoriaDTO?.somatotaliq)) * 100 | number:'1.2-2' }}%</td>
+              </tr>
+
               <!-- 2. DINHEIRO -->
               <tr>
                 <td><a>
@@ -213,10 +228,10 @@
                   </a></td>
                 <td>TOTAL CONTABILIZADO <i class="bi bi-question-circle text-primary fs-3" data-bs-toggle="tooltip"
                     data-bs-placement="top"
-                    data-bs-title="As OS ainda NÃO FATURADAS e em CARTEIRA são contempladas aqui."></i></td>
+                    data-bs-title="As OS ainda NÃO FATURADAS e em CARTEIRA também são contempladas aqui."></i></td>
                 <td class="valor">{{totalContabilizado | number:'1.2-2' }}</td>
                 <td class="qt">{{qtContabilizado}}</td>
-                <td class="percentual">{{percentualContabizadoDeFaturamentoTotal}}%</td>
+                <td class="percentual">{{(totalContabilizado/arrayFaturamentoTotal[0]?.somatoriaDTO?.somatotaliq)*100 | number:'1.2-2'}}%</td>
               </tr>
             </tbody>
           </table>

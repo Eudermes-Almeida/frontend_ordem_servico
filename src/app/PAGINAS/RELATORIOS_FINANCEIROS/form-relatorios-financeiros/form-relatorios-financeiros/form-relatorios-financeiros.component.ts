@@ -106,6 +106,28 @@ export class FormRelatoriosFinanceirosComponent {
     "CARTAO CREDITO": { total: 0, qt: 0, percentual: 0 }
   };
 
+  reiniciarTotaisFinanceiros() {
+  Object.keys(this.totaisFinanceiros).forEach(chave => {
+    this.totaisFinanceiros[chave] = {
+      total: 0,
+      qt: 0,
+      percentual: 0
+    };
+  });
+
+  this.arrayFaturamentoTotal = [];
+  this.qtOsfechadas = 0;
+  this.totalDescontos = 0;
+  this.qtDescontosConcedidos = 0;
+  this.totalPago = 0;
+  this.qttotalPago = 0;
+  this.percentualTotalPago = 0;
+  this.totalCustoBancario = 0;
+  this.qtCustoBancario = 0;
+  this.percentualCustoBancario = 0;
+  this.totalContabilizado =0;
+  this.qtContabilizado = 0;
+}
 
   buscaDadosParaPopularArrayGeral() {
     const dataInicio = this.converterDataParaFormatoLimpo(this.dataInicialIntervalo);
@@ -123,6 +145,7 @@ export class FormRelatoriosFinanceirosComponent {
           }
         })
         this.buscarDadosFinanceiros();
+        this.totalDescontosPeriodo();
       },
       error: (error) => {
         console.error(`Erro ao buscar relatório ${busca}:`, error);
@@ -130,6 +153,42 @@ export class FormRelatoriosFinanceirosComponent {
       }
     });
   }
+
+  totalDescontos: number = 0;
+qtDescontosConcedidos: number = 0;
+
+totalDescontosPeriodo() {
+  this.totalDescontos = 0;
+  this.qtDescontosConcedidos = 0;
+
+  this.totalDescontos = this.arrayFaturamentoTotal.reduce((acc, os) => {
+    // 1. Garante que o valor existe e remove espaços em branco das pontas
+    let valorStr = os?.valordesconto ? String(os.valordesconto).trim() : '0';
+    
+    // 2. Substitui a vírgula por ponto (trata o cenário "10,50")
+    valorStr = valorStr.replace(',', '.');
+
+    // 3. Converte para número puro
+    const valorNumerico = Number(valorStr);
+
+    // 4. Valida se a conversão deu certo (não é NaN)
+    const valorValido = isNaN(valorNumerico) ? 0 : valorNumerico;
+
+    // 5. IF CORRIGIDO: Incrementa o contador usando o valor já numérico e maior que zero
+    if (valorValido > 0) {
+      this.qtDescontosConcedidos++;
+    }
+
+    // 6. Retorna a soma acumulada
+    return acc + valorValido;
+  }, 0);
+
+  console.log("Este é o valor total dos descontos:", this.totalDescontos);
+  console.log("Quantidade de OS com desconto:", this.qtDescontosConcedidos);
+}
+
+
+
 
   statusSelecionado: string = "TODOS";
   tipoDataSelecionado: string = "fechamento";
@@ -155,6 +214,7 @@ export class FormRelatoriosFinanceirosComponent {
       error: (erro) => {
         console.error('Erro na busca avançada:', erro);
         if (erro.status === 404) {
+          this.reiniciarTotaisFinanceiros();
           alert('Nenhum registro financeiro localizado para os critérios informados.');
         } else {
           alert('Erro interno ao processar a busca no servidor.');
