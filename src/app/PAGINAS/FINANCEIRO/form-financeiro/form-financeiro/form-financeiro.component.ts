@@ -1520,7 +1520,7 @@ set modeloFinanceiro(novosDados: Financeiro[]) {
         return acc + custo
       }, 0)
 
-      this.formProcessaBordero.patchValue({ totalDespesasBancarias: String(valorDespesasTotalBancaria) });
+      this.formProcessaBordero.patchValue({ totalDespesasBancarias: String(valorDespesasTotalBancaria.toFixed(2)) });
     });
 
     ////////RECALCULAR VALOR LIQUIDO DE CADA OS
