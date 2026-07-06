@@ -372,10 +372,10 @@
                     </button>
                   </a></td>
                 <td>TOTAL EM CRÉDITOS PARA RECEBER <i class="bi bi-question-circle text-primary fs-3" data-bs-toggle="tooltip" data-bs-placement="top"
-      data-bs-title="Contemplados: BOLETOS, NÃO FATURADOS e em CARTEIRA"></i></td>
-                <td class="valor">{{totalAreceber | number:'1.2-2' }}
+      data-bs-title="Contemplados: BOLETOS (em dia e atrazados), NÃO FATURADOS e em CARTEIRA"></i></td>
+                <td class="valor">{{totalBoletoEmDia + totalBoletoAtrazado + totalNaoFaturado + totalCarteira  | number:'1.2-2' }}
                 </td>
-                <td class="qt">{{qtTotalAreceber}}</td>
+                <td class="qt">{{qtBoletoEmDia + qtBoletoAtrazado + qtNaoFaturado + qtCarteira}}</td>
               </tr>
 
             </tbody>

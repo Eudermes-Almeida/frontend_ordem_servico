@@ -187,9 +187,6 @@ totalDescontosPeriodo() {
   console.log("Quantidade de OS com desconto:", this.qtDescontosConcedidos);
 }
 
-
-
-
   statusSelecionado: string = "TODOS";
   tipoDataSelecionado: string = "fechamento";
 
@@ -329,9 +326,6 @@ totalDescontosPeriodo() {
   this.cdr.detectChanges();
 }
 
-
-
-
   totalCustoBancario: number = 0;
   qtCustoBancario: number = 0;
   percentualCustoBancario: number = 0;
@@ -389,7 +383,6 @@ totalDescontosPeriodo() {
         this.totalBorderoGeral();
         this.boletoVencimentoProximos30Dias();
         this.borderoVencimentoProximos30Dias();
-        this.totalAindaAreceber();
       },
       error: (error) => {
         console.error(`Erro ao buscar tudão`, error);
@@ -404,7 +397,7 @@ totalDescontosPeriodo() {
   boletoEmDia() {
     this.qtBoletoEmDia = 0;
 
-    this.totalBoletoEmDia = this.arrayGeral.reduce((acc, os) => {
+    this.totalBoletoEmDia = this.arrayTudao.reduce((acc, os) => {
 
       if (os.tipoPagamento !== "BOLETO") {
         return acc;
@@ -445,7 +438,7 @@ totalDescontosPeriodo() {
   borderoEmDia() {
     this.qtBorderoEmDia = 0;
 
-    this.totalBorderoEmDia = this.arrayGeral.reduce((acc, os) => {
+    this.totalBorderoEmDia = this.arrayTudao.reduce((acc, os) => {
 
       if (os.tipoPagamento !== "BORDERO") {
         return acc;
@@ -485,7 +478,7 @@ totalDescontosPeriodo() {
   boletoAtrazado() {
     this.qtBoletoAtrazado = 0;
 
-    this.totalBoletoAtrazado = this.arrayGeral.reduce((acc, os) => {
+    this.totalBoletoAtrazado = this.arrayTudao.reduce((acc, os) => {
 
       if (os.tipoPagamento !== "BOLETO") {
         return acc;
@@ -524,7 +517,7 @@ totalDescontosPeriodo() {
   borderoAtrazado() {
     this.qtBorderoAtrazado = 0;
 
-    this.totalBorderoAtrazado = this.arrayGeral.reduce((acc, os) => {
+    this.totalBorderoAtrazado = this.arrayTudao.reduce((acc, os) => {
 
       if (os.tipoPagamento !== "BORDERO") {
         return acc;
@@ -702,52 +695,7 @@ totalDescontosPeriodo() {
   }
 
 
-  totalAreceber: number = 0;
-  qtTotalAreceber: number = 0;
-
-  totalAindaAreceber() {
-    this.qtTotalAreceber = 0;
-
-    this.totalAreceber = this.arrayTudao.reduce((acc, os) => {
-
-      if (os.tipoPagamento === "BORDERO") {
-        return acc;
-      }
-
-      // Parcela 1
-      if (os.valorParcela1) {
-        acc = acc + (+os.valorParcela1 || 0);
-        this.qtTotalAreceber++;
-
-      }
-
-      // Parcela 2
-      if (os.valorParcela2) {
-        acc = acc + (+os.valorParcela2 || 0);
-        this.qtTotalAreceber++;
-
-      }
-
-      // Parcela 3
-      if (os.valorParcela3) {
-        acc = acc + (+os.valorParcela3 || 0);
-        this.qtTotalAreceber++;
-
-      }
-
-      if (os.tipoPagamento !== "BOLETO" && os.tipoPagamento !== "BORDERO") {
-        this.qtTotalAreceber++;
-        acc = acc + (+os.totaliq || 0)
-        return acc
-      }
-
-      return acc;
-    }, 0);
-
-    this.cdr.detectChanges(); // Garante a atualização imediata no HTML do Angular
-
-  }
-
+  
   
 
 }
