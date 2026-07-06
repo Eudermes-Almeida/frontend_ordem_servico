@@ -73,7 +73,6 @@
           <table class="table table-dark table-hover tabela-espacada" style="font-size: 1.15rem;">
             <thead>
               <tr>
-                <th>Selecione</th>
                 <th>Relatórios</th>
                 <th>Valor</th>
                 <th>Qt</th>
@@ -83,11 +82,7 @@
             <tbody>
               <!-- 1. FECHAMENTO OS -->
               <tr>
-                <td><a>
-                    <button type="button" class="btn btn-dark">
-                      <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
-                    </button>
-                  </a></td>
+               
                 <td>FECHAMENTO OS <i class="bi bi-question-circle text-primary fs-3" data-bs-toggle="tooltip"
                     data-bs-placement="top"
                     data-bs-title="Só foi contabilizada a quantidade de OS fechadas com valor."></i></td>
@@ -99,11 +94,7 @@
 
               <!-- Valor total de descontos consedidos no período -->
               <tr>
-                <td><a>
-                    <button type="button" class="btn btn-dark">
-                      <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
-                    </button>
-                  </a></td>
+               
                 <td>TOTAL DESCONTOS CONCEDIDOS <i class="bi bi-question-circle text-primary fs-3" data-bs-toggle="tooltip"
                     data-bs-placement="top"
                     data-bs-title="Valor do total dos descontos concedidos no período."></i></td>
@@ -114,11 +105,7 @@
 
               <!-- 2. DINHEIRO -->
               <tr>
-                <td><a>
-                    <button type="button" class="btn btn-dark">
-                      <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
-                    </button>
-                  </a></td>
+                
                 <td>DINHEIRO</td>
                 <td class="valor">{{ totaisFinanceiros['DINHEIRO']?.total | number:'1.2-2' }}</td>
                 <td class="qt">{{ totaisFinanceiros['DINHEIRO']?.qt }}</td>
@@ -127,11 +114,7 @@
 
               <!-- 3. PIX -->
               <tr>
-                <td><a>
-                    <button type="button" class="btn btn-dark">
-                      <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
-                    </button>
-                  </a></td>
+               
                 <td>PIX</td>
                 <td class="valor">{{ totaisFinanceiros['PIX']?.total | number:'1.2-2' }}</td>
                 <td class="qt">{{ totaisFinanceiros['PIX']?.qt }}</td>
@@ -140,11 +123,7 @@
 
               <!-- 3. PIX -->
               <tr>
-                <td><a>
-                    <button type="button" class="btn btn-dark">
-                      <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
-                    </button>
-                  </a></td>
+               
                 <td>CARTÃO DÉBITO</td>
                 <td class="valor">{{ totaisFinanceiros['CARTAO DEBITO']?.total | number:'1.2-2' }}</td>
                 <td class="qt">{{ totaisFinanceiros['CARTAO DEBITO']?.qt }}</td>
@@ -153,11 +132,7 @@
 
               <!-- 3. PIX -->
               <tr>
-                <td><a>
-                    <button type="button" class="btn btn-dark">
-                      <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
-                    </button>
-                  </a></td>
+                
                 <td>CARTÃO CRÉDITO</td>
                 <td class="valor">{{ totaisFinanceiros['CARTAO CREDITO']?.total | number:'1.2-2' }}</td>
                 <td class="qt">{{ totaisFinanceiros['CARTAO CREDITO']?.qt }}</td>
@@ -166,11 +141,7 @@
 
               <!-- 4. BOLETO -->
               <tr>
-                <td><a>
-                    <button type="button" class="btn btn-dark">
-                      <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
-                    </button>
-                  </a></td>
+               
                 <td>BOLETO</td>
                 <td class="valor">{{ totaisFinanceiros['BOLETO']?.total | number:'1.2-2' }}</td>
                 <td class="qt">{{ totaisFinanceiros['BOLETO']?.qt }}</td>
@@ -179,11 +150,7 @@
 
               <!-- 5. BORDERÔ -->
               <tr>
-                <td><a>
-                    <button type="button" class="btn btn-dark">
-                      <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
-                    </button>
-                  </a></td>
+                
                 <td>BORDERÔ</td>
                 <td class="valor">{{ totaisFinanceiros['BORDERO']?.total | number:'1.2-2' }}</td>
                 <td class="qt">{{ totaisFinanceiros['BORDERO']?.qt }}</td>
@@ -193,11 +160,7 @@
 
               <!-- 8. PAGO -->
               <tr>
-                <td><a>
-                    <button type="button" class="btn btn-dark">
-                      <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
-                    </button>
-                  </a></td>
+                
                 <td>CRÉDITO EM CONTA <i class="bi bi-question-circle text-primary fs-3" data-bs-toggle="tooltip"
                     data-bs-placement="top" data-bs-title="Só foram contemplados os valores liquidos creditados."></i>
                 </td>
@@ -208,11 +171,7 @@
 
               <!-- 9. TOTAL DESPESA BANCÁRIA -->
               <tr>
-                <td><a>
-                    <button type="button" class="btn btn-dark">
-                      <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
-                    </button>
-                  </a></td>
+               
                 <td>TOTAL DESPESA BANCÁRIA</td>
                 <td class="valor">{{totalCustoBancario | number:'1.2-2'}}</td>
                 <td class="qt">{{qtCustoBancario}}</td>
@@ -221,11 +180,7 @@
 
               <!-- 10. FECHAMENTO MENOS CONTABILIZADO -->
               <tr>
-                <td><a>
-                    <button type="button" class="btn btn-dark">
-                      <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
-                    </button>
-                  </a></td>
+                
                 <td>TOTAL CONTABILIZADO <i class="bi bi-question-circle text-primary fs-3" data-bs-toggle="tooltip"
                     data-bs-placement="top"
                     data-bs-title="As OS ainda NÃO FATURADAS e em CARTEIRA também são contempladas aqui."></i></td>
@@ -246,7 +201,6 @@
           <table class="table table-dark table-hover tabela-espacada" style="font-size: 1.15rem;">
             <thead>
               <tr>
-                <th>Selecione</th>
                 <th>Relatórios</th>
                 <th>Valor</th>
                 <th>Qt</th>
@@ -255,11 +209,7 @@
             <tbody>
 
               <tr>
-                <td><a>
-                    <button type="button" class="btn btn-dark">
-                      <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
-                    </button>
-                  </a></td>
+                
                 <td>BOLETO EM DIA</td>
                 <td class="valor">{{totalBoletoEmDia | number:'1.2-2' }}
                 </td>
@@ -267,11 +217,7 @@
               </tr>
 
               <tr>
-                <td><a>
-                    <button type="button" class="btn btn-dark">
-                      <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
-                    </button>
-                  </a></td>
+               
                 <td>BORDERO EM DIA</td>
                 <td class="valor">{{totalBorderoEmDia | number:'1.2-2' }}
                 </td>
@@ -279,11 +225,7 @@
               </tr>
 
               <tr>
-                <td><a>
-                    <button type="button" class="btn btn-dark">
-                      <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
-                    </button>
-                  </a></td>
+                
                 <td>BOLETO ATRAZADO</td>
                 <td class="valor">{{totalBoletoAtrazado | number:'1.2-2'}}
                 </td>
@@ -291,11 +233,7 @@
               </tr>
 
               <tr>
-                <td><a>
-                    <button type="button" class="btn btn-dark">
-                      <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
-                    </button>
-                  </a></td>
+                
                 <td>BORDERO ATRAZADO</td>
                 <td class="valor">{{totalBorderoAtrazado | number:'1.2-2'}}
                 </td>
@@ -303,12 +241,7 @@
               </tr>
 
               <tr>
-                <td><a>
-                    <button type="button" class="btn btn-dark">
-
-                      <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
-                    </button>
-                  </a></td>
+               
                 <td>NÃO FATURADO</td>
                 <td class="valor">{{totalNaoFaturado | number:'1.2-2'}}
                 </td>
@@ -316,11 +249,7 @@
               </tr>
 
               <tr>
-                <td><a>
-                    <button type="button" class="btn btn-dark">
-                      <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
-                    </button>
-                  </a></td>
+               
                 <td>EM CARTEIRA</td>
                 <td class="valor">{{totalCarteira | number:'1.2-2'}}
                 </td>
@@ -328,11 +257,7 @@
               </tr>
 
               <tr>
-                <td><a>
-                    <button type="button" class="btn btn-dark">
-                      <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
-                    </button>
-                  </a></td>
+               
                 <td>VALOR EM USO DE TÍTULOS TROCADOS <i class="bi bi-question-circle text-primary fs-3"
                     data-bs-toggle="tooltip" data-bs-placement="top"
                     data-bs-title="Contemplados todos borderôs em dia e atrazados"></i></td>
@@ -342,11 +267,7 @@
               </tr>
 
               <tr>
-                <td><a>
-                    <button type="button" class="btn btn-dark">
-                      <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
-                    </button>
-                  </a></td>
+               
                 <td>BOLETO A RECEBER NOS PRÓXIMOS 30 DIAS</td>
                 <td class="valor">{{ boletoVencimento30Dias | number:'1.2-2'}}
                 </td>
@@ -354,11 +275,7 @@
               </tr>
 
               <tr>
-                <td><a>
-                    <button type="button" class="btn btn-dark">
-                      <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
-                    </button>
-                  </a></td>
+               
                 <td>BORDERO VENCIMENTO PRÓXIMO 30 DIAS</td>
                 <td class="valor">{{borderoVencimento30Dias | number:'1.2-2' }}
                 </td>
@@ -366,11 +283,7 @@
               </tr>
 
               <tr>
-                <td><a>
-                    <button type="button" class="btn btn-dark">
-                      <i class="bi bi-check-circle icone" style="font-size: 15px;"></i>
-                    </button>
-                  </a></td>
+                
                 <td>TOTAL EM CRÉDITOS PARA RECEBER <i class="bi bi-question-circle text-primary fs-3" data-bs-toggle="tooltip" data-bs-placement="top"
       data-bs-title="Contemplados: BOLETOS (em dia e atrazados), NÃO FATURADOS e em CARTEIRA"></i></td>
                 <td class="valor">{{totalBoletoEmDia + totalBoletoAtrazado + totalNaoFaturado + totalCarteira  | number:'1.2-2' }}
