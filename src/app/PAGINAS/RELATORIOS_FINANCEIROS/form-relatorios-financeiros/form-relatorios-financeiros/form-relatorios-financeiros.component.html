@@ -291,6 +291,15 @@
                 <td class="qt">{{qtBoletoEmDia + qtBoletoAtrazado + qtNaoFaturado + qtCarteira}}</td>
               </tr>
 
+               <tr>
+                
+                <td>LIMITE AINDA DISPONIVEL PARA TROCA BORDERÔ <i class="bi bi-question-circle text-primary fs-3" data-bs-toggle="tooltip" data-bs-placement="top"
+      data-bs-title="Considerando o limite disponível total de 170.000"></i></td>
+                <td class="valor">{{170000 - totalBorderoTudo  | number:'1.2-2'}}
+                </td>
+                <td class="qt"></td>
+              </tr>
+
             </tbody>
           </table>
           <p>.</p>
