@@ -234,6 +234,19 @@
                 arrayFaturamentoTotal[0]?.somatoriaDTO?.somatotaliq * 100) | number: '1.0-0' }}%</td>
             </tr>
 
+            <tr>
+              <td><a>
+                  <button type="button" class="btn btn-dark"
+                    (click)="memorizaRelatorio(arrayVendaSucataBateria, 'VENDA SUCATA BATERIAS' , 'INTERVALO')">
+                    <i class="bi bi-check-circle icone" style="font-size: 25px;"></i>
+                  </button>
+                </a></td>
+              <td>Qt Sucata Bateria Acumulada</td>
+              <td class="valor">{{pesoSucataAcumulada | number: '1.0-0'}} kilos</td>
+              <td class="qt"> </td>
+              <td class="percentual"></td>
+            </tr>
+
           </tbody>
         </table>
 

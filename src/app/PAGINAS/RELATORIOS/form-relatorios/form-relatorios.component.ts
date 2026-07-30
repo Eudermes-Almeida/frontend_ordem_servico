@@ -379,6 +379,7 @@ export class FORMRELATORIOSComponent {
             break;
           case "orcamentoNoPeriodo":
             this.arrayOrcamentoNoPeriodo = data;
+            this.calculoQuantidadeKilosAcumuladosSucataBateria();
             break;
           case "tecnicoEudermes":
             this.arrayTecnicoEudermes = data;
@@ -550,7 +551,47 @@ export class FORMRELATORIOSComponent {
         this.osZeradas.push(os)
       }
     })
+
   }
+
+ pesoSucataAcumulada: number = 0;                                                                                  
+                                                                                                                                                                                                           
+    calculoQuantidadeKilosAcumuladosSucataBateria() { 
+      this.pesoSucataAcumulada = 0;                                                                                                                                                      
+                                                                                                                      
+      // Proteção: caso o array ainda esteja undefined ou vazio                                                       
+      if (!this.arrayOrcamentoNoPeriodo || this.arrayOrcamentoNoPeriodo.length === 0) {                               
+        this.pesoSucataAcumulada = 0;                                                                                 
+        return;                                                                                                       
+      }                                                                                                               
+                                                                                                                      
+      this.pesoSucataAcumulada = this.arrayOrcamentoNoPeriodo.reduce((acc, os) => {                                   
+        // Filtra as condições iniciais                                                                               
+        if (os.equipamento === "NOBREAK") {                                                                           
+          let pesoItem = 0;                                                                                           
+                                                                                                                      
+          // Normaliza a string da bateria removendo a palavra "BATERIA " do início                                   
+          const modeloBateria = os.baterias ? os.baterias.replace(/^BATERIA\s+/i, "").trim() : "";                    
+                                                                                                                      
+          switch (modeloBateria) {                                                                                    
+            case "12V/5A":        pesoItem = os.qt1 * 2.2; break;                                                       
+            case "12V/7A":        pesoItem = os.qt1 * 3; break;                                                     
+            case "12V/9A":        pesoItem = os.qt1 * 3.2; break;                                                     
+            case "12V/12A":       pesoItem = os.qt1 * 4.7; break;                                                     
+            case "12V/18A":       pesoItem = os.qt1 * 7.1; break;                                                     
+            case "ESTACIONÁRIA":  pesoItem = os.qt1 * 11.5; break;                                                    
+          }                                                                                                           
+                                                                                                                      
+          // Incrementa o contador apenas se encontrou um modelo válido                                               
+          if (pesoItem > 0) {                                                                                                                                                                          
+            acc += pesoItem;                                                                                          
+          }                                                                                                           
+        }                                                                                                             
+                                                                                                                      
+        return acc;                                                                                                   
+      }, 0);                                                                                                          
+                                                                                                                                             
+    }   
 
 }
 
