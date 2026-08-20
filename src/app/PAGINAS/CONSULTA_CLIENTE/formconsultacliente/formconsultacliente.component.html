@@ -1,105 +1,129 @@
-
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-<div class="d-flex justify-content-center flex-column"> <!-- Adicione flex-column para empilhar os elementos -->
-    <form [formGroup]="formulario" id="meuFormulario" class="centralizado-formulario">
-        <div class="form-row align-items-center">
-            <div class="form-group col-3">
-                <div class="d-flex align-items-center">
-                    <label for="id">Código Cliente:</label>
-                    <span class="espaco"></span> <!-- Espaço de 10 caracteres -->
+<div class="cc-page">
+  <div class="cc-shell">
 
-                    <input 
-    type="checkbox" 
-    id="buscarUltimoCliente" 
-    name="buscarUltimoCliente" 
-    class="checkbox" 
-    (click)="buscaUltimocliente(codigoClienteInput)">
-                    
-                    <label for="buscarUltimoCliente">Último Cliente</label>
-                </div>
-                
-                <input 
-    type="text" 
-    id="codigoCliente" 
-    #codigoClienteInput  
-    (input)="onClienteInput($event)"
-    (keydown)="onClienteKey($event)"
-    maxlength="10" 
-    class="form-control">
-            </div>
-
-            <div class="form-group col-3">
-                <label for="nomefantasia">Nome Fantasia:</label>
-                <input 
-                  type="text" 
-                  formControlName="nomefantasia" 
-                  id="nomefantasia" 
-                  name="nomefantasia" 
-                  class="form-control"
-                  placeholder="Digite o nome fantasia"
-                >
-              </div>
-              
-            
-              <div class="form-group col-3">
-                <label for="razaosocial">Razao Social:</label>
-                <input 
-                  type="text" 
-                  formControlName="razaosocial" 
-                  id="razaosocial" 
-                  name="razaosocial" 
-                  class="form-control"
-                  placeholder="Digite a Razao Social"
-                >
-              </div>
-
-              <div class="form-group col-3">
-                <label for="cidade">Cidade:</label>
-                <select id="cidades" name="cidades" (change)="onCityChange($event)" class="form-control">
-                  <option *ngFor="let city of cidades" [value]="city.valor">{{ city.valor }}</option>
-                </select>
-              </div>
-
-              <button style="margin-top: 25px;" class="btn btn-primary" (click)="limpar()">Limpar</button>
-              
+    <!-- HEADER -->
+    <div class="cc-header">
+      <div class="cc-header-title">
+        <span class="cc-header-icon"><i class="bi bi-search-heart"></i></span>
+        <div>
+          <h1>Consulta de Cliente</h1>
+          <p>Pesquise clientes por código, nome, razão social ou cidade</p>
         </div>
+      </div>
+      <button type="button" class="cc-btn cc-btn-ghost" (click)="limpar()">
+        <i class="bi bi-arrow-counterclockwise"></i> Limpar
+      </button>
+    </div>
+
+    <form [formGroup]="formulario" id="meuFormulario">
+
+      <!-- SEÇÃO: FILTROS -->
+      <section class="cc-card">
+        <div class="cc-card-title">
+          <i class="bi bi-funnel"></i> Filtros de Busca
+        </div>
+        <div class="cc-grid">
+
+          <div class="cc-field">
+            <label for="codigoCliente" class="cc-label"><i class="bi bi-hash"></i> Código Cliente</label>
+            <input
+              type="text"
+              id="codigoCliente"
+              #codigoClienteInput
+              (input)="onClienteInput($event)"
+              (keydown)="onClienteKey($event)"
+              maxlength="10"
+              class="cc-input">
+            <label for="buscarUltimoCliente" class="cc-checkbox">
+              <input
+                type="checkbox"
+                id="buscarUltimoCliente"
+                name="buscarUltimoCliente"
+                class="cc-checkbox-input"
+                (click)="buscaUltimocliente(codigoClienteInput)">
+              <span>Buscar Último Cliente</span>
+            </label>
+          </div>
+
+          <div class="cc-field">
+            <label for="nomefantasia" class="cc-label"><i class="bi bi-shop"></i> Nome Fantasia</label>
+            <input
+              type="text"
+              formControlName="nomefantasia"
+              id="nomefantasia"
+              name="nomefantasia"
+              class="cc-input"
+              placeholder="Digite o nome fantasia">
+          </div>
+
+          <div class="cc-field">
+            <label for="razaosocial" class="cc-label"><i class="bi bi-building"></i> Razão Social</label>
+            <input
+              type="text"
+              formControlName="razaosocial"
+              id="razaosocial"
+              name="razaosocial"
+              class="cc-input"
+              placeholder="Digite a Razão Social">
+          </div>
+
+          <div class="cc-field">
+            <label for="cidades" class="cc-label"><i class="bi bi-buildings"></i> Cidade</label>
+            <select id="cidades" name="cidades" (change)="onCityChange($event)" class="cc-input cc-select">
+              <option *ngFor="let city of cidades" [value]="city.valor">{{ city.valor }}</option>
+            </select>
+          </div>
+
+        </div>
+      </section>
     </form>
 
-    <!-- Adicionando uma margem superior para separar o formulário da tabela -->
-<div class="mt-3 tabela-scroll" style="max-height: 300px; overflow-y: auto;"> <!-- Define a altura máxima e ativa a rolagem -->
-  <p class="text-secondary" >Quantidade de clientes selecionados: {{objetocliente.length}} </p>  
-  <table class="table table-dark table-hover">
-        <thead>
+    <!-- SEÇÃO: RESULTADOS -->
+    <section class="cc-card cc-results">
+      <div class="cc-card-title cc-results-title">
+        <span><i class="bi bi-table"></i> Resultados</span>
+        <span class="cc-badge">{{objetocliente.length}} cliente(s) encontrado(s)</span>
+      </div>
+
+      <div class="cc-table-wrap">
+        <table class="cc-table">
+          <thead>
             <tr>
-                <th>Codigo</th>
-                <th>Nome Fantasia</th>
-                <th>Razão Social</th>
-                <th>Fone</th>
-                <th>Celular</th>
-                <th>Contato</th>
-                <th>Detalhes</th>  
+              <th>Código</th>
+              <th>Nome Fantasia</th>
+              <th>Razão Social</th>
+              <th>Fone</th>
+              <th>Celular</th>
+              <th>Contato</th>
+              <th>Detalhes</th>
             </tr>
-        </thead>
-        <tbody>
+          </thead>
+          <tbody>
             <tr *ngFor="let cli of objetocliente">
-              <td>{{ cli.id }}</td>
-              <td>{{ cli.nomefantasia }}</td>
-              <td>{{ cli.razaosocial }}</td>
-              <td>{{ cli.fonefixo }}</td>
-              <td>{{ cli.celular2 }}</td>
-              <td>{{ cli.contato }}</td>
-              <td>
+              <td data-label="Código">{{ cli.id }}</td>
+              <td data-label="Nome Fantasia">{{ cli.nomefantasia }}</td>
+              <td data-label="Razão Social">{{ cli.razaosocial }}</td>
+              <td data-label="Fone">{{ cli.fonefixo }}</td>
+              <td data-label="Celular">{{ cli.celular2 }}</td>
+              <td data-label="Contato">{{ cli.contato }}</td>
+              <td data-label="Detalhes">
                 <a [routerLink]="['/cliente/altera', cli.id]" routerLinkActive="active">
-                  <button type="button" class="btn btn-dark">
-                    <i class="bi bi-search" style="font-size: 15px;"></i>
+                  <button type="button" class="cc-icon-btn">
+                    <i class="bi bi-search"></i>
                   </button>
                 </a>
-                
+              </td>
+            </tr>
+            <tr *ngIf="objetocliente.length === 0" class="cc-empty-row">
+              <td colspan="7">
+                <i class="bi bi-inbox"></i> Nenhum cliente encontrado. Use os filtros acima para buscar.
               </td>
             </tr>
           </tbody>
-    </table>
-    
-</div>
+        </table>
+      </div>
+    </section>
 
+  </div>
 </div>
