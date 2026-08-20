@@ -1,32 +1,100 @@
-.footer-container {
-  background-color: #1c1c22;
-  padding: 2px 0; /* Reduzir o padding vertical para diminuir a altura */
-  color: white;
+/* ==========================================================================
+   RODAPÉ - VISUAL TECNOLÓGICO
+   Paleta original preservada: preto + laranja + branco
+   Altura mantida igual à original (compacta) para não afetar o layout.
+   ========================================================================== */
+
+:host {
+  display: block;
+  --cc-orange: #ffa500;
+  --cc-text-muted: #b3b3b3;
+  font-family: 'Segoe UI', 'Rajdhani', 'Trebuchet MS', sans-serif;
+}
+
+.cc-footer {
+  position: relative;
   width: 100%;
+  background: linear-gradient(180deg, #17171b, #0e0e11);
+  padding: 12px 16px;
+  overflow: hidden;
+}
+
+.cc-footer-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 165, 0, 0.6), transparent);
+}
+
+.cc-footer-inner {
+  max-width: 1400px;
+  margin: 0 auto;
   text-align: center;
 }
 
-.footer-text {
-  margin: 0;
-  font-size: 1rem; /* Reduzir o tamanho da fonte do texto para diminuir a altura */
+.cc-footer-quote {
+  margin: 0 0 6px;
+  font-size: 22px;
+  font-style: italic;
+  line-height: 1.25;
+  color: var(--cc-text-muted);
 }
 
-.footer-links {
-  list-style-type: none;
+.cc-footer-quote i {
+  color: var(--cc-orange);
+  margin-right: 5px;
+}
+
+.cc-footer-links {
+  list-style: none;
   margin: 0;
   padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  column-gap: 22px;
+  row-gap: 6px;
 }
 
-.footer-links li {
-  margin: 0 10px; /* Reduzir a margem lateral entre os itens */
-}
-
-.footer-link {
-  color: orange;
+.cc-footer-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--cc-orange);
   text-decoration: none;
-  font-size: 1rem; /* Reduzir o tamanho da fonte do link */
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
 }
 
-.footer-link:hover {
+.cc-footer-link i {
+  font-size: 20px;
+  color: currentColor;
+}
+
+.cc-footer-link:hover {
+  color: #fff8ee;
+  text-shadow: 0 0 8px rgba(255, 165, 0, 0.65);
   text-decoration: underline;
+}
+
+.cc-footer-sep {
+  color: rgba(255, 165, 0, 0.35);
+  font-size: 18px;
+  line-height: 1;
+}
+
+@media (max-width: 480px) {
+  .cc-footer-links {
+    column-gap: 14px;
+  }
+
+  .cc-footer-sep {
+    display: none;
+  }
 }

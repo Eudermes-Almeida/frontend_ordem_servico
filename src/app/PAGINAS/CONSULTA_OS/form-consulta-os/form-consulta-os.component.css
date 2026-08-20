@@ -1,87 +1,486 @@
-/* Estilos do Formulário Centralizado */
-.centralizado-formulario {
-    background-color: #1a1a1a;
-    padding: 10px; /* Aumentei o padding para dar um espaço melhor */
-    border: 2px solid orange;
-    border-radius: 10px;
-    max-width: 99%; /* Limite de largura para o formulário */
-    width: 100%; /* Largura total do container */
-    box-shadow: 0 0 10px rgba(255, 165, 0, 0.5);
+/* ==========================================================================
+   CONSULTA DE ORDEM DE SERVIÇO - VISUAL TECNOLÓGICO
+   Paleta original preservada: preto + laranja + branco
+   ========================================================================== */
+
+:host {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  --cc-bg: #0a0a0a;
+  --cc-panel: rgba(20, 20, 20, 0.82);
+  --cc-panel-border: rgba(255, 165, 0, 0.28);
+  --cc-orange: #ffa500;
+  --cc-orange-strong: #ff8c00;
+  --cc-orange-dark: #e69500;
+  --cc-orange-glow: rgba(255, 165, 0, 0.45);
+  --cc-text: #ffffff;
+  --cc-text-muted: #c9c9c9;
+  --cc-danger: #ff4d4d;
+  --cc-success: #34d97a;
+  font-family: 'Segoe UI', 'Rajdhani', 'Trebuchet MS', sans-serif;
 }
 
-.btn-salvar-ordem-servico{
-    display: flex;
-    flex-direction: row;
-    justify-content:space-between;
-    margin-top: 10px;
-    align-items: end;
+/* ---------- PÁGINA FULLSCREEN ---------- */
+.cc-page {
+  width: 100%;
+  min-height: 100%;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  background:
+    radial-gradient(circle at 15% 0%, rgba(255, 165, 0, 0.10), transparent 40%),
+    radial-gradient(circle at 85% 100%, rgba(255, 140, 0, 0.08), transparent 45%),
+    repeating-linear-gradient(0deg, rgba(255, 165, 0, 0.035) 0px, rgba(255, 165, 0, 0.035) 1px, transparent 1px, transparent 42px),
+    repeating-linear-gradient(90deg, rgba(255, 165, 0, 0.035) 0px, rgba(255, 165, 0, 0.035) 1px, transparent 1px, transparent 42px),
+    var(--cc-bg);
+  padding: 24px;
+  box-sizing: border-box;
 }
 
-
-
-.tabela-scroll {
-    max-height: 300px; /* Ajuste a altura conforme necessário */
-    overflow-y: auto;
-    overflow-x: hidden; /* Oculta rolagem horizontal se não for necessária */
+.cc-shell {
+  width: 100%;
+  max-width: 1700px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
 }
 
-.espaco-label {
-    margin-left: 7ch; /* 10 caracteres de espaço */
+/* ---------- HEADER ---------- */
+.cc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  background: linear-gradient(135deg, rgba(255, 165, 0, 0.12), rgba(20, 20, 20, 0.6));
+  border: 1px solid var(--cc-panel-border);
+  border-radius: 14px;
+  padding: 18px 24px;
+  position: relative;
+  overflow: hidden;
 }
 
-.espaco {
-    display: inline-block;
-    width: 10ch; /* 10 caracteres de espaço */
+.cc-header::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, var(--cc-orange), transparent);
+  height: 2px;
+  top: 0;
+  opacity: 0.8;
 }
 
-.checkbox {
-    width: 15px; /* Define a largura do checkbox */
-    height: 15px; /* Define a altura do checkbox */
-    margin-right: 5px; /* Espaço entre o checkbox e o label */
-    vertical-align: middle; /* Alinha verticalmente o checkbox com o texto do label */
+.cc-header-title {
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
-.form-row {
-    display: flex;
-    justify-content: space-between; /* Alinha os elementos uniformemente */
-    align-items: center; /* Alinha os elementos verticalmente */
-    margin-bottom: 5px; /* Espaçamento entre as linhas */
+.cc-header-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 12px;
+  font-size: 26px;
+  color: var(--cc-orange);
+  background: rgba(255, 165, 0, 0.1);
+  border: 1px solid var(--cc-orange-glow);
+  box-shadow: 0 0 18px rgba(255, 165, 0, 0.35);
+  animation: cc-pulse 2.8s ease-in-out infinite;
 }
 
-.form-group {
-    flex: 1; /* Faz com que todos os elementos ocupem a mesma largura */
-    margin-right: 10px; /* Espaço à direita entre os elementos */
+.cc-header-title h1 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--cc-text);
 }
 
-.form-group:last-child {
-    margin-right: 1; /* Remove margem do último elemento */
+.cc-header-title p {
+  margin: 2px 0 0;
+  font-size: 13px;
+  color: var(--cc-text-muted);
 }
 
-label {
-    color: white; /* Cor dos labels */
-    margin-bottom: 1px; /* Espaçamento inferior do label */
+@keyframes cc-pulse {
+  0%, 100% { box-shadow: 0 0 12px rgba(255, 165, 0, 0.30); }
+  50% { box-shadow: 0 0 24px rgba(255, 165, 0, 0.6); }
 }
 
-input, select {
-    padding: 4px; /* Padding interno */
-    border: 1px solid orange;
-    border-radius: 4px;
-    background-color: black;
-    color: orange;
-    width: 100%; /* Faz com que os inputs ocupem a largura total */
-    height: 30px; /* Define altura uniforme para inputs */
+/* ---------- CORPO / SEÇÕES ---------- */
+.cc-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
-/* Responsividade */
-@media (max-width: 768px) {
-    .form-row {
-        flex-direction: column; /* Coloca os elementos em coluna em telas pequenas */
-    }
+.cc-card {
+  background: var(--cc-panel);
+  border: 1px solid var(--cc-panel-border);
+  border-radius: 14px;
+  padding: 18px 22px 22px;
+  backdrop-filter: blur(6px);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
 
-    .form-group {
-        margin-right: 0; /* Remove a margem direita em telas pequenas */
-        margin-bottom: 10px; /* Adiciona espaço inferior em telas pequenas */
-    }
+.cc-card:hover {
+  border-color: rgba(255, 165, 0, 0.5);
+  box-shadow: 0 0 20px rgba(255, 165, 0, 0.08);
+}
 
+.cc-card-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: var(--cc-orange);
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 165, 0, 0.2);
+}
 
+.cc-card-title i { font-size: 16px; }
+
+.cc-results-title {
+  justify-content: space-between;
+}
+
+.cc-card-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.cc-badge {
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  color: var(--cc-orange);
+  background: rgba(255, 165, 0, 0.1);
+  border: 1px solid rgba(255, 165, 0, 0.35);
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-weight: 600;
+}
+
+.cc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px 18px;
+}
+
+/* ---------- CAMPOS ---------- */
+.cc-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.cc-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--cc-orange);
+}
+
+.cc-label i { font-size: 16px; opacity: 0.9; }
+
+.cc-input {
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(255, 165, 0, 0.35);
+  border-radius: 8px;
+  color: var(--cc-text);
+  padding: 9px 12px;
+  height: 40px;
+  font-size: 14px;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.cc-input::placeholder {
+  color: #888;
+}
+
+.cc-input:hover {
+  border-color: rgba(255, 165, 0, 0.6);
+}
+
+.cc-input:focus {
+  outline: none;
+  border-color: var(--cc-orange);
+  background: rgba(0, 0, 0, 0.75);
+  box-shadow: 0 0 0 3px rgba(255, 165, 0, 0.18), 0 0 16px rgba(255, 165, 0, 0.25);
+}
+
+.cc-select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' stroke='%23ffa500' stroke-width='2' fill='none' fill-rule='evenodd'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
+  cursor: pointer;
+}
+
+.cc-select option {
+  background: #111;
+  color: #fff;
+}
+
+/* ---------- CHECKBOX ---------- */
+.cc-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+  font-size: 14px;
+  color: var(--cc-text-muted);
+  cursor: pointer;
+  user-select: none;
+}
+
+.cc-checkbox-input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--cc-orange);
+  cursor: pointer;
+}
+
+.cc-checkbox:hover {
+  color: var(--cc-orange);
+}
+
+/* ---------- LOADING ---------- */
+.cc-loading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--cc-orange);
+  letter-spacing: 0.5px;
+}
+
+.cc-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 165, 0, 0.25);
+  border-top-color: var(--cc-orange);
+  border-radius: 50%;
+  animation: cc-spin 0.7s linear infinite;
+}
+
+@keyframes cc-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ---------- BOTÕES ---------- */
+.cc-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 9px;
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: transform 0.15s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+
+.cc-btn:active {
+  transform: scale(0.97);
+}
+
+.cc-btn-ghost {
+  background: rgba(255, 165, 0, 0.08);
+  border-color: rgba(255, 165, 0, 0.4);
+  color: var(--cc-orange);
+}
+
+.cc-btn-ghost:hover {
+  background: rgba(255, 165, 0, 0.18);
+  box-shadow: 0 0 14px rgba(255, 165, 0, 0.25);
+}
+
+.cc-btn-primary {
+  background: linear-gradient(135deg, var(--cc-orange-strong), var(--cc-orange-dark));
+  color: #1a1a1a;
+  box-shadow: 0 4px 18px rgba(255, 165, 0, 0.35);
+}
+
+.cc-btn-primary:hover:not(:disabled) {
+  box-shadow: 0 6px 26px rgba(255, 165, 0, 0.55);
+  transform: translateY(-1px);
+}
+
+.cc-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: rgba(255, 165, 0, 0.1);
+  border: 1px solid rgba(255, 165, 0, 0.4);
+  color: var(--cc-orange);
+  cursor: pointer;
+  transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+}
+
+.cc-icon-btn:hover {
+  background: rgba(255, 165, 0, 0.22);
+  box-shadow: 0 0 14px rgba(255, 165, 0, 0.35);
+  transform: translateY(-1px);
+}
+
+/* ---------- TABELAS ---------- */
+.cc-table-wrap-inline {
+  margin-top: 16px;
+}
+
+.cc-table-count {
+  font-size: 12px;
+  color: var(--cc-text-muted);
+  margin: 0 0 8px;
+}
+
+.cc-table-wrap {
+  max-height: 340px;
+  overflow-y: auto;
+  overflow-x: auto;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 165, 0, 0.2);
+}
+
+.cc-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  color: var(--cc-text);
+}
+
+.cc-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #161616;
+  color: var(--cc-orange);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 11px;
+  font-weight: 700;
+  text-align: left;
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(255, 165, 0, 0.35);
+  white-space: nowrap;
+}
+
+.cc-table tbody td {
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  white-space: nowrap;
+}
+
+.cc-table tbody tr {
+  transition: background 0.15s ease;
+}
+
+.cc-table tbody tr:hover {
+  background: rgba(255, 165, 0, 0.08);
+}
+
+.cc-table tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.cc-table tbody tr:nth-child(even):hover {
+  background: rgba(255, 165, 0, 0.08);
+}
+
+.cc-table-wrap::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.cc-table-wrap::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.cc-table-wrap::-webkit-scrollbar-thumb {
+  background: rgba(255, 165, 0, 0.4);
+  border-radius: 8px;
+}
+
+.cc-table-wrap::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 165, 0, 0.6);
+}
+
+/* ---------- BARRA DE AÇÕES ---------- */
+.cc-actions {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 4px 4px;
+  margin-top: 4px;
+}
+
+.cc-actions a {
+  display: contents;
+}
+
+/* ---------- RESPONSIVIDADE ---------- */
+@media (max-width: 900px) {
+  .cc-page {
+    padding: 14px;
+  }
+  .cc-header {
+    padding: 14px 16px;
+  }
+  .cc-shell {
+    gap: 14px;
+  }
+  .cc-card-actions {
+    flex-wrap: wrap;
+  }
+  .cc-actions {
+    flex-direction: column-reverse;
+  }
+  .cc-actions .cc-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .cc-header-title h1 {
+    font-size: 18px;
+  }
+  .cc-header-icon {
+    width: 44px;
+    height: 44px;
+    font-size: 20px;
+  }
+  .cc-grid {
+    grid-template-columns: 1fr;
+  }
 }

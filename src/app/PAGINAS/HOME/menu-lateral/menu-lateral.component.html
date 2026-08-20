@@ -1,95 +1,92 @@
-
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark todo">
+<nav class="navbar navbar-expand-lg navbar-dark cc-nav">
     <div class="container-fluid">
-        <a class="navbar-brand" routerLink="/home" routerLinkActive="active">Home</a>
-        <P style="color: orange; font-size: 12px;">versão 3.0.3</P>
-       <!--<button class="btn - btn-primary btn-sm" (click)="reiniciarPagina()">Limpar</button>-->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <a class="navbar-brand cc-brand" routerLink="/home" routerLinkActive="active">
+            <i class="bi bi-cpu-fill cc-brand-icon"></i>
+            <span>Home</span>
+        </a>
+        <span class="cc-version-badge">v3.0.3</span>
+        <!--<button class="btn - btn-primary btn-sm" (click)="reiniciarPagina()">Limpar</button>-->
+        <button class="navbar-toggler cc-nav-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
-            <ul class="navbar-nav mx-auto"> <!-- Adicione mx-auto para centralizar -->
+            <ul class="navbar-nav mx-auto cc-nav-list"> <!-- Adicione mx-auto para centralizar -->
                 <li class="nav-item dropdown">
-                    <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                        CLIENTES
+                    <button class="btn dropdown-toggle cc-nav-btn" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-people"></i> Clientes
                     </button>
-                    <ul class="dropdown-menu dropdown-menu-dark">
-                        <a class="dropdown-item" routerLink="/cliente/cadastro" routerLinkActive="active">Cadastrar Cliente</a>
-                        <li><a class="dropdown-item" routerLink="/cliente/consulta" routerLinkActive="active" >Consultar Cliente</a></li>
-                        <li><a class="dropdown-item" routerLink="/cliente/consulta" routerLinkActive="active">Alterar Cliente</a></li>
+                    <ul class="dropdown-menu dropdown-menu-dark cc-dropdown-menu">
+                        <li><a class="dropdown-item cc-dropdown-item" routerLink="/cliente/cadastro" routerLinkActive="active"><i class="bi bi-person-plus"></i> Cadastrar Cliente</a></li>
+                        <li><a class="dropdown-item cc-dropdown-item" routerLink="/cliente/consulta" routerLinkActive="active"><i class="bi bi-search"></i> Consultar Cliente</a></li>
+                        <li><a class="dropdown-item cc-dropdown-item" routerLink="/cliente/consulta" routerLinkActive="active"><i class="bi bi-pencil-square"></i> Alterar Cliente</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
-                    <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                        ORDENS DE SERVIÇO
+                    <button class="btn dropdown-toggle cc-nav-btn" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-clipboard2-data"></i> Ordens de Serviço
                     </button>
-                    <ul class="dropdown-menu dropdown-menu-dark">
-                        <li><a class="dropdown-item" routerLink="/os/cadastro" routerLinkActive="active">Cadastrar Ordem Serviço</a></li>
-                        <li><a class="dropdown-item" routerLink="/os/consulta" routerLinkActive="active">Consultar Ordem Serviço</a></li>
-                        <li><a class="dropdown-item" routerLink="/os/consulta" routerLinkActive="active">Alterar Ordem Serviço</a></li>
-                        <li><a class="dropdown-item" routerLink="/os/lote" routerLinkActive="active">Cadastrar O.S. EM LOTE</a></li>
-                        <li><a class="dropdown-item" routerLink="/os/lote/imprime" routerLinkActive="active">Imprimir O. S. EM LOTE</a></li>
-                        <li><a class="dropdown-item" routerLink="/os/deletar" routerLinkActive="active" style="color: red;">Apagar Ordem Serviço</a></li>
+                    <ul class="dropdown-menu dropdown-menu-dark cc-dropdown-menu">
+                        <li><a class="dropdown-item cc-dropdown-item" routerLink="/os/cadastro" routerLinkActive="active"><i class="bi bi-clipboard2-plus"></i> Cadastrar Ordem Serviço</a></li>
+                        <li><a class="dropdown-item cc-dropdown-item" routerLink="/os/consulta" routerLinkActive="active"><i class="bi bi-search"></i> Consultar Ordem Serviço</a></li>
+                        <li><a class="dropdown-item cc-dropdown-item" routerLink="/os/consulta" routerLinkActive="active"><i class="bi bi-pencil-square"></i> Alterar Ordem Serviço</a></li>
+                        <li><a class="dropdown-item cc-dropdown-item" routerLink="/os/lote" routerLinkActive="active"><i class="bi bi-stack"></i> Cadastrar O.S. em Lote</a></li>
+                        <li><a class="dropdown-item cc-dropdown-item" routerLink="/os/lote/imprime" routerLinkActive="active"><i class="bi bi-printer"></i> Imprimir O.S. em Lote</a></li>
+                        <li><hr class="cc-dropdown-divider"></li>
+                        <li><a class="dropdown-item cc-dropdown-item cc-item-danger" routerLink="/os/deletar" routerLinkActive="active"><i class="bi bi-trash3"></i> Apagar Ordem Serviço</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
-                    <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                        RELATÓRIOS
+                    <button class="btn dropdown-toggle cc-nav-btn" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-bar-chart-line"></i> Relatórios
                     </button>
-                    <ul class="dropdown-menu dropdown-menu-dark">
-                        <li><a class="dropdown-item" routerLink="/os/relatorio" routerLinkActive="active">Consultar Relatórios</a></li>
-                        <li><a class="dropdown-item" routerLink="/os/relatorio/faturamento" routerLinkActive="active">Análise Faturamento</a></li>
-                        <li><a class="dropdown-item" routerLink="/os/relatorio/despesa" routerLinkActive="active">Análise Despesa</a></li>
-                        
+                    <ul class="dropdown-menu dropdown-menu-dark cc-dropdown-menu">
+                        <li><a class="dropdown-item cc-dropdown-item" routerLink="/os/relatorio" routerLinkActive="active"><i class="bi bi-search"></i> Consultar Relatórios</a></li>
+                        <li><a class="dropdown-item cc-dropdown-item" routerLink="/os/relatorio/faturamento" routerLinkActive="active"><i class="bi bi-graph-up-arrow"></i> Análise Faturamento</a></li>
+                        <li><a class="dropdown-item cc-dropdown-item" routerLink="/os/relatorio/despesa" routerLinkActive="active"><i class="bi bi-graph-down-arrow"></i> Análise Despesa</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
-                    <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                        ORÇAMENTOS
+                    <button class="btn dropdown-toggle cc-nav-btn" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-file-earmark-text"></i> Orçamentos
                     </button>
-                    <ul class="dropdown-menu dropdown-menu-dark">
-                        <li><a class="dropdown-item" routerLink="/os/orcamento" routerLinkActive="active">Cadastrar Orçamentos</a></li>
+                    <ul class="dropdown-menu dropdown-menu-dark cc-dropdown-menu">
+                        <li><a class="dropdown-item cc-dropdown-item" routerLink="/os/orcamento" routerLinkActive="active"><i class="bi bi-file-earmark-plus"></i> Cadastrar Orçamentos</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
-                    <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                        PARÂMETROS
+                    <button class="btn dropdown-toggle cc-nav-btn" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-sliders"></i> Parâmetros
                     </button>
-                    <ul class="dropdown-menu dropdown-menu-dark">
-                        <li><a class="dropdown-item" routerLink="/parametros" routerLinkActive="active">Adicionar Parâmetros</a></li>
-                        <li><a class="dropdown-item" routerLink="/parametros" routerLinkActive="active">Consultar Parâmetros</a></li>
-                        <li><a class="dropdown-item" routerLink="/parametros" routerLinkActive="active">Alterar Parâmetros</a></li>
-                        <li><a class="dropdown-item" routerLink="/parametros" routerLinkActive="active">Apagar Parâmetros</a></li>
+                    <ul class="dropdown-menu dropdown-menu-dark cc-dropdown-menu">
+                        <li><a class="dropdown-item cc-dropdown-item" routerLink="/parametros" routerLinkActive="active"><i class="bi bi-plus-circle"></i> Adicionar Parâmetros</a></li>
+                        <li><a class="dropdown-item cc-dropdown-item" routerLink="/parametros" routerLinkActive="active"><i class="bi bi-search"></i> Consultar Parâmetros</a></li>
+                        <li><a class="dropdown-item cc-dropdown-item" routerLink="/parametros" routerLinkActive="active"><i class="bi bi-pencil-square"></i> Alterar Parâmetros</a></li>
+                        <li><a class="dropdown-item cc-dropdown-item" routerLink="/parametros" routerLinkActive="active"><i class="bi bi-trash3"></i> Apagar Parâmetros</a></li>
                     </ul>
                 </li>
 
                 <li class="nav-item dropdown">
-                    <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                        DESPESAS
+                    <button class="btn dropdown-toggle cc-nav-btn" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-cash-stack"></i> Despesas
                     </button>
-                    <ul class="dropdown-menu dropdown-menu-dark">
-                        <li><a class="dropdown-item" routerLink="/despesa/cadastro" routerLinkActive="active">Cadastrar Despesa</a></li>
-                        <li><a class="dropdown-item" routerLink="/despesa/consulta" routerLinkActive="active">Consultar Despesa</a></li>
+                    <ul class="dropdown-menu dropdown-menu-dark cc-dropdown-menu">
+                        <li><a class="dropdown-item cc-dropdown-item" routerLink="/despesa/cadastro" routerLinkActive="active"><i class="bi bi-plus-circle"></i> Cadastrar Despesa</a></li>
+                        <li><a class="dropdown-item cc-dropdown-item" routerLink="/despesa/consulta" routerLinkActive="active"><i class="bi bi-search"></i> Consultar Despesa</a></li>
                     </ul>
                 </li>
 
                  <li class="nav-item dropdown">
-                    <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                        FINANCEIRO
+                    <button class="btn dropdown-toggle cc-nav-btn" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-wallet2"></i> Financeiro
                     </button>
-                    <ul class="dropdown-menu dropdown-menu-dark">
-                        <li><a class="dropdown-item" routerLink="/financeiro/consulta" routerLinkActive="active">Consultar</a></li>
-                        <li><a class="dropdown-item" routerLink="/financeiro/relatorio" routerLinkActive="active">Relatorios</a></li>
+                    <ul class="dropdown-menu dropdown-menu-dark cc-dropdown-menu">
+                        <li><a class="dropdown-item cc-dropdown-item" routerLink="/financeiro/consulta" routerLinkActive="active"><i class="bi bi-search"></i> Consultar</a></li>
+                        <li><a class="dropdown-item cc-dropdown-item" routerLink="/financeiro/relatorio" routerLinkActive="active"><i class="bi bi-bar-chart"></i> Relatórios</a></li>
                     </ul>
                 </li>
-                
-
-
-
 
             </ul>
         </div>
     </div>
 </nav>
-

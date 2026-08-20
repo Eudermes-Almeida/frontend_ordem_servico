@@ -198,14 +198,14 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 600;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
   text-transform: uppercase;
   color: var(--cc-orange);
 }
 
-.cc-label i { font-size: 13px; opacity: 0.9; }
+.cc-label i { font-size: 16px; opacity: 0.9; }
 
 .cc-input {
   background: rgba(0, 0, 0, 0.55);

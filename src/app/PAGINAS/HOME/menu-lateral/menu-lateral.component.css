@@ -1,4 +1,226 @@
-.custom-brand {
-    font-size: 10px; /* ajuste para o tamanho desejado */
+/* ==========================================================================
+   MENU PRINCIPAL - VISUAL TECNOLÓGICO
+   Paleta original preservada: preto + laranja + branco
+   Mantém as classes/atributos do Bootstrap (navbar, dropdown, collapse)
+   pois o comportamento de abrir/fechar depende do JS do Bootstrap.
+   ========================================================================== */
+
+:host {
+  display: block;
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+  --cc-orange: #ffa500;
+  --cc-orange-strong: #ff8c00;
+  --cc-orange-glow: rgba(255, 165, 0, 0.45);
+  --cc-panel: rgba(15, 15, 15, 0.92);
+  --cc-text: #ffffff;
+  --cc-text-muted: #c9c9c9;
+  --cc-danger: #ff4d4d;
+  font-family: 'Segoe UI', 'Rajdhani', 'Trebuchet MS', sans-serif;
 }
 
+/* ---------- BARRA PRINCIPAL ---------- */
+.cc-nav {
+  background: linear-gradient(180deg, rgba(20, 20, 20, 0.97), rgba(10, 10, 10, 0.97));
+  border-bottom: 1px solid rgba(255, 165, 0, 0.28);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+  padding: 10px 20px;
+  position: relative;
+}
+
+.cc-nav::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--cc-orange), transparent);
+  opacity: 0.7;
+}
+
+/* ---------- MARCA ---------- */
+.cc-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 25px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--cc-text) !important;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+.cc-brand:hover {
+  color: var(--cc-orange) !important;
+  text-shadow: 0 0 12px rgba(255, 165, 0, 0.5);
+}
+
+.cc-brand-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 11px;
+  font-size: 22px;
+  color: var(--cc-orange);
+  background: rgba(255, 165, 0, 0.1);
+  border: 1px solid var(--cc-orange-glow);
+  box-shadow: 0 0 14px rgba(255, 165, 0, 0.3);
+}
+
+.cc-version-badge {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: var(--cc-orange);
+  background: rgba(255, 165, 0, 0.08);
+  border: 1px solid rgba(255, 165, 0, 0.3);
+  border-radius: 999px;
+  padding: 4px 12px;
+  margin-left: 10px;
+}
+
+/* ---------- TOGGLER (MOBILE) ---------- */
+.cc-nav-toggle {
+  border-color: rgba(255, 165, 0, 0.4) !important;
+  box-shadow: none !important;
+}
+
+.cc-nav-toggle .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'><path stroke='%23ffa500' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/></svg>");
+}
+
+/* ---------- LISTA / BOTÕES DE CATEGORIA ---------- */
+.cc-nav-list {
+  gap: 6px;
+  row-gap: 10px;
+  flex-wrap: wrap;
+}
+
+.cc-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--cc-text-muted) !important;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  padding: 9px 18px;
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cc-nav-btn i {
+  font-size: 21px;
+  color: var(--cc-orange);
+}
+
+.cc-nav-btn:hover,
+.cc-nav-btn:focus,
+.cc-nav-btn.show {
+  color: var(--cc-orange) !important;
+  background: rgba(255, 165, 0, 0.1);
+  border-color: rgba(255, 165, 0, 0.35);
+  box-shadow: 0 0 14px rgba(255, 165, 0, 0.2);
+}
+
+/* Remove a seta padrão do bootstrap e usa o ícone bi já presente */
+.cc-nav-btn.dropdown-toggle::after {
+  margin-left: 6px;
+  vertical-align: 1px;
+  opacity: 0.7;
+}
+
+/* ---------- MENUS SUSPENSOS ---------- */
+.cc-dropdown-menu {
+  --bs-dropdown-bg: var(--cc-panel);
+  --bs-dropdown-border-color: rgba(255, 165, 0, 0.3);
+  --bs-dropdown-border-width: 1px;
+  --bs-dropdown-link-color: var(--cc-text);
+  --bs-dropdown-link-hover-color: var(--cc-orange);
+  --bs-dropdown-link-hover-bg: rgba(255, 165, 0, 0.12);
+  --bs-dropdown-link-active-color: #1a1a1a;
+  --bs-dropdown-link-active-bg: var(--cc-orange);
+  border-radius: 12px;
+  padding: 8px;
+  margin-top: 10px !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55), 0 0 18px rgba(255, 165, 0, 0.12);
+  backdrop-filter: blur(8px);
+  min-width: 290px;
+}
+
+.cc-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-radius: 8px;
+  padding: 11px 15px;
+  font-size: 18px;
+  transition: background 0.15s ease, color 0.15s ease, padding-left 0.15s ease;
+}
+
+.cc-dropdown-item i {
+  font-size: 19px;
+  color: var(--cc-orange);
+  width: 20px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.cc-dropdown-item:hover,
+.cc-dropdown-item:focus {
+  padding-left: 16px;
+}
+
+.cc-dropdown-item.active,
+.cc-dropdown-item.router-link-active {
+  background: rgba(255, 165, 0, 0.16);
+  color: var(--cc-orange);
+}
+
+.cc-dropdown-divider {
+  border-top: 1px solid rgba(255, 165, 0, 0.15);
+  margin: 6px 4px;
+  opacity: 1;
+}
+
+/* Item destrutivo (ex.: Apagar Ordem de Serviço) */
+.cc-item-danger,
+.cc-item-danger i {
+  color: var(--cc-danger) !important;
+}
+
+.cc-item-danger:hover {
+  background: rgba(255, 77, 77, 0.14) !important;
+  color: var(--cc-danger) !important;
+}
+
+/* ---------- RESPONSIVIDADE ---------- */
+@media (max-width: 991.98px) {
+  .cc-nav-list {
+    padding: 10px 4px 4px;
+    gap: 4px;
+  }
+
+  .cc-nav-btn {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .cc-dropdown-menu {
+    box-shadow: none;
+    background: rgba(0, 0, 0, 0.35) !important;
+    margin-top: 2px !important;
+  }
+
+  .cc-version-badge {
+    margin-left: auto;
+    margin-right: 8px;
+  }
+}

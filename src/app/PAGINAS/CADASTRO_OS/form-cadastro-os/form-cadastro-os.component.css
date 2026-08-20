@@ -1,164 +1,572 @@
-/* Estilos do Formulário Centralizado */
-.centralizado-formulario {
-    background-color: #1a1a1a;
-    padding: 10px; /* Aumentei o padding para dar um espaço melhor */
-    border: 2px solid orange;
-    border-radius: 10px;
-    max-width: 99%; /* Limite de largura para o formulário */
-    width: 100%; /* Largura total do container */
-    box-shadow: 0 0 10px rgba(255, 165, 0, 0.5);
+/* ==========================================================================
+   CADASTRO DE ORDEM DE SERVIÇO - VISUAL TECNOLÓGICO
+   Paleta original preservada: preto + laranja + branco (+ azul de destaque
+   na busca de cliente, como no layout original)
+   ========================================================================== */
+
+:host {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  --cc-bg: #0a0a0a;
+  --cc-panel: rgba(20, 20, 20, 0.82);
+  --cc-panel-border: rgba(255, 165, 0, 0.28);
+  --cc-orange: #ffa500;
+  --cc-orange-strong: #ff8c00;
+  --cc-orange-dark: #e69500;
+  --cc-orange-glow: rgba(255, 165, 0, 0.45);
+  --cc-blue: #007bff;
+  --cc-blue-glow: rgba(0, 123, 255, 0.45);
+  --cc-text: #ffffff;
+  --cc-text-muted: #c9c9c9;
+  --cc-danger: #ff4d4d;
+  --cc-success: #34d97a;
+  font-family: 'Segoe UI', 'Rajdhani', 'Trebuchet MS', sans-serif;
 }
 
-/*******************TABELA 1 */
-/* Tabela 1: Estilo atualizado */
-.tabela1 {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 1px;
-    background-color: #2b2b2b;
-    table-layout: fixed; /* Controla melhor a largura das colunas */
+/* ---------- PÁGINA FULLSCREEN ---------- */
+.cc-page {
+  width: 100%;
+  min-height: 100%;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  background:
+    radial-gradient(circle at 15% 0%, rgba(255, 165, 0, 0.10), transparent 40%),
+    radial-gradient(circle at 85% 100%, rgba(255, 140, 0, 0.08), transparent 45%),
+    repeating-linear-gradient(0deg, rgba(255, 165, 0, 0.035) 0px, rgba(255, 165, 0, 0.035) 1px, transparent 1px, transparent 42px),
+    repeating-linear-gradient(90deg, rgba(255, 165, 0, 0.035) 0px, rgba(255, 165, 0, 0.035) 1px, transparent 1px, transparent 42px),
+    var(--cc-bg);
+  padding: 24px;
+  box-sizing: border-box;
 }
 
-/* Remover largura fixa e aplicar max-width */
-.tabela1 th, .tabela1 td {
-    font-size: 18px;
-    padding: 8px;
-    text-align: left;
-    line-height: 1.2;
-    color: white;
-    white-space: nowrap;
-    max-width: 200px; /* Limite máximo de largura */
-    overflow: hidden;
-    text-overflow: ellipsis; /* Adiciona reticências se o conteúdo ultrapassar a largura */
+.cc-shell {
+  width: 100%;
+  max-width: 1700px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
 }
 
-/* Cor e tamanho do cabeçalho */
-.tabela1 th {
-    color: orange;
-    font-size: 20px;
+/* ---------- HEADER ---------- */
+.cc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  background: linear-gradient(135deg, rgba(255, 165, 0, 0.12), rgba(20, 20, 20, 0.6));
+  border: 1px solid var(--cc-panel-border);
+  border-radius: 14px;
+  padding: 18px 24px;
+  position: relative;
+  overflow: hidden;
 }
 
-
-/* Tabela 1: Estilo atualizado */
-.tabela1 {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 1px;
-    background-color: #2b2b2b;
-    table-layout: fixed;
+.cc-header::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, var(--cc-orange), transparent);
+  height: 2px;
+  top: 0;
+  opacity: 0.8;
 }
 
-/* Permitir quebra de linha automática */
-.tabela1 th, .tabela1 td {
-    font-size: 18px;
-    padding: 8px;
-    text-align: left;
-    line-height: 1.4; /* Ajuste do espaçamento entre linhas */
-    color: white;
-    white-space: normal; /* Permite quebras de linha */
-    overflow-wrap: break-word; /* Garante a quebra de linha em palavras longas */
+.cc-header-title {
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
-
-/*************************  FIM TABELA 1****/
-
-.texto_buscaCliente{
-    color: orange;
-    display: flex;
-    justify-content: center;
+.cc-header-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 12px;
+  font-size: 26px;
+  color: var(--cc-orange);
+  background: rgba(255, 165, 0, 0.1);
+  border: 1px solid var(--cc-orange-glow);
+  box-shadow: 0 0 18px rgba(255, 165, 0, 0.35);
+  animation: cc-pulse 2.8s ease-in-out infinite;
 }
 
-.borda_azul {
-    border: 2px solid #007bff; /* Azul primário do Bootstrap */
-    border-radius: 8px;
-    padding: 10px;
-    margin-bottom: 5px; /* Espaço inferior */
-    margin-left: 2px;
-    margin-right: 2px;
+.cc-header-title h1 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--cc-text);
+}
+
+.cc-header-title p {
+  margin: 2px 0 0;
+  font-size: 13px;
+  color: var(--cc-text-muted);
+}
+
+@keyframes cc-pulse {
+  0%, 100% { box-shadow: 0 0 12px rgba(255, 165, 0, 0.30); }
+  50% { box-shadow: 0 0 24px rgba(255, 165, 0, 0.6); }
+}
+
+/* ---------- ALERTAS ---------- */
+.cc-alert {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 14px;
+  background: rgba(20, 20, 20, 0.85);
+  border: 1px solid var(--cc-orange-glow);
+  color: var(--cc-text);
+  margin-bottom: 14px;
+}
+
+.cc-alert-success {
+  border-color: rgba(52, 217, 122, 0.5);
+}
+.cc-alert-success i { color: var(--cc-success); }
+
+.cc-alert-warning {
+  border-color: rgba(255, 165, 0, 0.5);
+}
+.cc-alert-warning i { color: var(--cc-orange); }
+
+.cc-alert span { flex: 1; }
+
+.cc-alert-close {
+  background: none;
+  border: none;
+  color: var(--cc-text-muted);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+}
+.cc-alert-close:hover { color: var(--cc-orange); }
+
+/* ---------- CORPO / SEÇÕES ---------- */
+.cc-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cc-card {
+  background: var(--cc-panel);
+  border: 1px solid var(--cc-panel-border);
+  border-radius: 14px;
+  padding: 18px 22px 22px;
+  backdrop-filter: blur(6px);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.cc-card:hover {
+  border-color: rgba(255, 165, 0, 0.5);
+  box-shadow: 0 0 20px rgba(255, 165, 0, 0.08);
+}
+
+/* Card de destaque azul (Busca Cliente), mantendo a cor original de contraste */
+.cc-card-accent {
+  border-color: var(--cc-blue-glow);
+}
+
+.cc-card-accent:hover {
+  border-color: rgba(0, 123, 255, 0.6);
+  box-shadow: 0 0 20px rgba(0, 123, 255, 0.12);
+}
+
+.cc-card-accent .cc-card-title {
+  color: #4da3ff;
+  border-bottom-color: rgba(0, 123, 255, 0.25);
+}
+
+.cc-card-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: var(--cc-orange);
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 165, 0, 0.2);
+}
+
+.cc-card-title i { font-size: 16px; }
+
+.cc-card-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.cc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px 18px;
+}
+
+/* ---------- CAMPOS ---------- */
+.cc-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.cc-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--cc-orange);
+}
+
+.cc-card-accent .cc-label {
+  color: #4da3ff;
+}
+
+.cc-label i { font-size: 16px; opacity: 0.9; }
+
+.cc-input {
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(255, 165, 0, 0.35);
+  border-radius: 8px;
+  color: var(--cc-text);
+  padding: 9px 12px;
+  height: 40px;
+  font-size: 14px;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.cc-card-accent .cc-input {
+  border-color: rgba(0, 123, 255, 0.4);
+}
+
+.cc-input::placeholder {
+  color: #888;
+}
+
+.cc-input:hover {
+  border-color: rgba(255, 165, 0, 0.6);
+}
+
+.cc-card-accent .cc-input:hover {
+  border-color: rgba(0, 123, 255, 0.7);
+}
+
+.cc-input:focus {
+  outline: none;
+  border-color: var(--cc-orange);
+  background: rgba(0, 0, 0, 0.75);
+  box-shadow: 0 0 0 3px rgba(255, 165, 0, 0.18), 0 0 16px rgba(255, 165, 0, 0.25);
+}
+
+.cc-card-accent .cc-input:focus {
+  border-color: var(--cc-blue);
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.18), 0 0 16px rgba(0, 123, 255, 0.25);
+}
+
+.cc-select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' stroke='%23ffa500' stroke-width='2' fill='none' fill-rule='evenodd'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
+  cursor: pointer;
+}
+
+.cc-select option {
+  background: #111;
+  color: #fff;
 }
 
 .is-invalid {
-    border: 1px solid red; /* Borda vermelha para campos inválidos */
+  border-color: var(--cc-danger) !important;
+  box-shadow: 0 0 0 3px rgba(255, 77, 77, 0.15) !important;
 }
 
-.btn-salvar-ordem-servico{
-    display: flex;
-    flex-direction: row;
-    justify-content:space-between;
-    margin-top: 10px;
-    align-items: end;
+.cc-error {
+  font-size: 12px;
+  color: var(--cc-danger);
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
-
-
-.tabela-scroll {
-    max-height: 300px; /* Ajuste a altura conforme necessário */
-    overflow-y: auto;
-    overflow-x: hidden; /* Oculta rolagem horizontal se não for necessária */
+/* ---------- CHECKBOX ---------- */
+.cc-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+  font-size: 14px;
+  color: var(--cc-text-muted);
+  cursor: pointer;
+  user-select: none;
 }
 
-.espaco-label {
-    margin-left: 7ch; /* 10 caracteres de espaço */
+.cc-checkbox-input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--cc-blue);
+  cursor: pointer;
 }
 
-.espaco {
-    display: inline-block;
-    width: 10ch; /* 10 caracteres de espaço */
+.cc-checkbox:hover {
+  color: #4da3ff;
 }
 
-.checkbox {
-    width: 15px; /* Define a largura do checkbox */
-    height: 15px; /* Define a altura do checkbox */
-    margin-right: 5px; /* Espaço entre o checkbox e o label */
-    vertical-align: middle; /* Alinha verticalmente o checkbox com o texto do label */
+/* ---------- BOTÕES ---------- */
+.cc-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 9px;
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: transform 0.15s ease, box-shadow 0.25s ease, background 0.25s ease;
 }
 
-.form-row {
-    display: flex;
-    justify-content: space-between; /* Alinha os elementos uniformemente */
-    align-items: center; /* Alinha os elementos verticalmente */
-    margin-bottom: 5px; /* Espaçamento entre as linhas */
+.cc-btn:active {
+  transform: scale(0.97);
 }
 
-.form-group {
-    flex: 1; /* Faz com que todos os elementos ocupem a mesma largura */
-    margin-right: 10px; /* Espaço à direita entre os elementos */
+.cc-btn-ghost {
+  background: rgba(255, 165, 0, 0.08);
+  border-color: rgba(255, 165, 0, 0.4);
+  color: var(--cc-orange);
 }
 
-.form-group:last-child {
-    margin-right: 1; /* Remove margem do último elemento */
+.cc-btn-ghost:hover {
+  background: rgba(255, 165, 0, 0.18);
+  box-shadow: 0 0 14px rgba(255, 165, 0, 0.25);
 }
 
-label {
-    color: white; /* Cor dos labels */
-    margin-bottom: 1px; /* Espaçamento inferior do label */
+.cc-btn-primary {
+  background: linear-gradient(135deg, var(--cc-orange-strong), var(--cc-orange-dark));
+  color: #1a1a1a;
+  box-shadow: 0 4px 18px rgba(255, 165, 0, 0.35);
 }
 
-input, select {
-    padding: 4px; /* Padding interno */
-    border: 1px solid orange;
-    border-radius: 4px;
-    background-color: black;
-    color: orange;
-    width: 100%; /* Faz com que os inputs ocupem a largura total */
-    height: 30px; /* Define altura uniforme para inputs */
+.cc-btn-primary:hover:not(:disabled) {
+  box-shadow: 0 6px 26px rgba(255, 165, 0, 0.55);
+  transform: translateY(-1px);
 }
 
-.botao_imprimir{
-    width: 100px;
+.cc-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: rgba(37, 211, 102, 0.1);
+  border: 1px solid rgba(37, 211, 102, 0.4);
+  color: #25D366;
+  cursor: pointer;
+  transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
 }
 
-/* css do cabeçalho do comprovante de entrega ////////////////////////////////////////////////*/
+.cc-icon-btn:hover {
+  background: rgba(37, 211, 102, 0.22);
+  box-shadow: 0 0 14px rgba(37, 211, 102, 0.35);
+  transform: translateY(-1px);
+}
+
+/* ---------- TABELA DE CLIENTES (BUSCA) ---------- */
+.cc-table-wrap-inline {
+  margin-top: 16px;
+}
+
+.cc-table-count {
+  font-size: 12px;
+  color: var(--cc-text-muted);
+  margin: 0 0 8px;
+}
+
+.cc-table-wrap {
+  max-height: 300px;
+  overflow-y: auto;
+  overflow-x: auto;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 123, 255, 0.25);
+}
+
+.cc-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  color: var(--cc-text);
+}
+
+.cc-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #161616;
+  color: #4da3ff;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 11px;
+  font-weight: 700;
+  text-align: left;
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(0, 123, 255, 0.35);
+  white-space: nowrap;
+}
+
+.cc-table tbody td {
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  white-space: nowrap;
+}
+
+.cc-table tbody tr {
+  transition: background 0.15s ease;
+}
+
+.cc-table tbody tr:hover {
+  background: rgba(0, 123, 255, 0.08);
+}
+
+.cc-table tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.cc-table tbody tr:nth-child(even):hover {
+  background: rgba(0, 123, 255, 0.08);
+}
+
+.cc-table-wrap::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.cc-table-wrap::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.cc-table-wrap::-webkit-scrollbar-thumb {
+  background: rgba(0, 123, 255, 0.4);
+  border-radius: 8px;
+}
+
+.cc-table-wrap::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 123, 255, 0.6);
+}
+
+/* ---------- BARRA DE AÇÕES ---------- */
+.cc-actions {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 4px 4px;
+  margin-top: 4px;
+}
+
+.cc-actions a {
+  display: contents;
+}
+
+.cc-badge {
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  color: var(--cc-orange);
+  background: rgba(255, 165, 0, 0.1);
+  border: 1px solid rgba(255, 165, 0, 0.35);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-weight: 600;
+  margin-right: auto;
+}
+
+.cc-print-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 6px;
+}
+
+/* ---------- RESPONSIVIDADE (FORMULÁRIO) ---------- */
+@media (max-width: 900px) {
+  .cc-page {
+    padding: 14px;
+  }
+  .cc-header {
+    padding: 14px 16px;
+  }
+  .cc-shell {
+    gap: 14px;
+  }
+  .cc-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+  .cc-actions .cc-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  .cc-badge {
+    margin-right: 0;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .cc-header-title h1 {
+    font-size: 18px;
+  }
+  .cc-header-icon {
+    width: 44px;
+    height: 44px;
+    font-size: 20px;
+  }
+  .cc-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================================================
+   COMPROVANTE DE IMPRESSÃO (PDF/ETIQUETA) - LAYOUT ORIGINAL PRESERVADO
+   Estas regras não fazem parte do visual "tecnológico" pois representam
+   o documento físico impresso (papel branco), gerado via html2canvas/jsPDF.
+   ========================================================================== */
 
 .header {
-    width: 100%; /* Define a largura total */
+    width: 100%;
     text-align: center;
     margin-bottom: 1px;
     border-bottom: 1px solid #000;
     padding-bottom: 1px;
 }
 
-.icone{
+.icone {
     display: flex;
 }
 
@@ -172,17 +580,17 @@ input, select {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%; /* Ocupa toda a largura */
+    width: 100%;
 }
 
 .logo {
-    width: 300px; /* Ajuste o tamanho da imagem conforme necessário */
+    width: 300px;
     margin-right: 15px;
 }
 
 .header-text {
     text-align: center;
-    max-width: 100%; /* Limita a largura do texto para uma boa distribuição */
+    max-width: 100%;
 }
 
 .header-text h2 {
@@ -197,60 +605,56 @@ input, select {
 }
 
 .phone-number {
-    color: #3178C2; /* Azul para o número de telefone */
+    color: #3178C2;
     font-weight: bold;
 }
 
-
-
-/*////////////////////////////////////////////////////////////////////////////////////*/
-
-/* Estilo global para todas as tabelas */
-table {
+/* Tabelas do comprovante impresso (escopadas em .info-table para não
+   vazar para a tabela de busca de clientes, que agora usa .cc-table) */
+.info-table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 1px;
 }
 
-table th {
-    font-size: 26px; /* Tamanho da fonte do cabeçalho */
-    padding: 5px;    /* Reduz o espaçamento do cabeçalho */
+.info-table th {
+    font-size: 26px;
+    padding: 5px;
     text-align: left;
-    line-height: 1.2; /* Ajusta o espaçamento entre as linhas do cabeçalho */
+    line-height: 1.2;
 }
 
-table td {
-    font-size: 22px; /* Tamanho da fonte para as células de dados */
-    padding: 5px;    /* Reduz o espaçamento nas células */
-    line-height: 1.2; /* Ajusta o espaçamento entre as linhas do conteúdo */
+.info-table td {
+    font-size: 22px;
+    padding: 5px;
+    line-height: 1.2;
 }
 
-/* Estilo opcional para colunas específicas */
-table th:nth-child(1), table td:nth-child(1) {
+.info-table th:nth-child(1), .info-table td:nth-child(1) {
     width: 250px;
 }
 
-table th:nth-child(2), table td:nth-child(2) {
+.info-table th:nth-child(2), .info-table td:nth-child(2) {
     width: 400px;
 }
 
-table th:nth-child(3), table td:nth-child(3) {
+.info-table th:nth-child(3), .info-table td:nth-child(3) {
     width: 400px;
 }
 
-table th:nth-child(4), table td:nth-child(4) {
+.info-table th:nth-child(4), .info-table td:nth-child(4) {
     width: 250px;
 }
 
-table th:nth-child(5), table td:nth-child(5) {
+.info-table th:nth-child(5), .info-table td:nth-child(5) {
     width: 250px;
 }
 
-table th:nth-child(6), table td:nth-child(6) {
+.info-table th:nth-child(6), .info-table td:nth-child(6) {
     width: 250px;
 }
 
-table th:nth-child(7), table td:nth-child(7) {
+.info-table th:nth-child(7), .info-table td:nth-child(7) {
     width: 250px;
 }
 
@@ -259,13 +663,12 @@ table th:nth-child(7), table td:nth-child(7) {
 }
 
 .garantias p {
-    margin: 0; /* Remove o espaçamento padrão entre os parágrafos */
-    line-height: 1.4; /* Ajusta o espaçamento entre as linhas dentro do parágrafo */
+    margin: 0;
+    line-height: 1.4;
 }
 
-.atencao{
+.atencao {
     margin: 30px;
-
 }
 
 .assinatura {
@@ -279,49 +682,31 @@ table th:nth-child(7), table td:nth-child(7) {
 .assinatura-cliente,
 .assinatura-monitores {
     position: relative;
-    padding-top: 5px; /* Ajusta o espaço acima do texto para a linha */
+    padding-top: 5px;
 }
 
 .assinatura-cliente::before,
 .assinatura-monitores::before {
     content: '';
     position: absolute;
-    top: 1%; /* Posiciona a linha no meio do elemento */
+    top: 1%;
     left: 0;
     width: 100%;
-    border-top: 2px dashed black; /* Linha tracejada */
-    transform: translateY(-50%); /* Centraliza verticalmente a linha */
+    border-top: 2px dashed black;
+    transform: translateY(-50%);
 }
 
-
 .etiqueta {
-    width: 50%; /* A largura da etiqueta será 50% da largura da página */
-    margin: 0 auto; /* Centraliza a div na página */
+    width: 50%;
+    margin: 0 auto;
     border: 3px solid black;
     border-radius: 4px;
     display: flex;
     flex-direction: column;
-    align-items: center; /* Alinha os itens no centro horizontal */
-    justify-content: center; /* Alinha os itens no centro vertical */
-    padding: 10px; /* Adiciona um pouco de espaço dentro da borda */
-    box-sizing: border-box; /* Garante que o padding não afete a largura total */
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    box-sizing: border-box;
     font-size: 35px;
     font-weight: bold;
-}
-
-
-
-
-/* Responsividade */
-@media (max-width: 768px) {
-    .form-row {
-        flex-direction: column; /* Coloca os elementos em coluna em telas pequenas */
-    }
-
-    .form-group {
-        margin-right: 0; /* Remove a margem direita em telas pequenas */
-        margin-bottom: 10px; /* Adiciona espaço inferior em telas pequenas */
-    }
-
-
 }
