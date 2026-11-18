@@ -159,7 +159,7 @@
           <div class="form-group col-3">
             <label [for]="'equipamento' + i">Equipamento:</label>
             <select [id]="'equipamento' + i" class="form-control" [formControlName]="'equipamento' + i"
-              (change)="$any(this)['onEquipamentoChange' + i]($event)"
+              (change)="$any(this)['onEquipamentoChange' + i]($event); limparMarcaModeloLinha(i)"
               [ngClass]="{'is-invalid': formulario.get('equipamento' + i)?.invalid && formulario.get('equipamento' + i)?.touched}">
               <option *ngFor="let city of equipamentos" [value]="city.valor">{{ city.valor }}</option>
             </select>
@@ -172,14 +172,11 @@
           <!-- Marca -->
           <div class="form-group col-3">
             <label [for]="'marca' + i">Marca:</label>
-            <select *ngIf="$any(this)['exibirListaMarcas' + i]" [id]="'marca' + i" class="form-control"
-              [formControlName]="'marca' + i" (blur)="$any(this)['onMarcaChange' + i]()"
+            <!-- sempre select (só valores cadastrados em Parâmetros), com a lista do equipamento DESTA linha -->
+            <select [id]="'marca' + i" class="form-control" [formControlName]="'marca' + i"
               [ngClass]="{'is-invalid': formulario.get('marca' + i)?.invalid && formulario.get('marca' + i)?.touched}">
-              <option *ngFor="let option of getMarcaOptions()" [value]="option.valor">{{ option.valor }}</option>
+              <option *ngFor="let option of getMarcaOptionsLinha(i)" [value]="option.valor">{{ option.valor }}</option>
             </select>
-
-            <input *ngIf="$any(this)['exibirSoUmaMarca' + i]" type="text" class="form-control"
-              [value]="$any(this)['marcaSelecionada' + i]" />
 
             <div *ngIf="formulario.get('marca' + i)?.invalid && formulario.get('marca' + i)?.touched"
               class="text-danger">
@@ -190,14 +187,11 @@
           <!-- Modelo -->
           <div class="form-group col-3">
             <label [for]="'modelo' + i">Modelo:</label>
-            <select *ngIf="$any(this)['exibirListaModelo' + i]" [id]="'modelo' + i" class="form-control"
-              [formControlName]="'modelo' + i" (blur)="$any(this)['onModeloChange' + i]()"
+            <!-- sempre select (só valores cadastrados em Parâmetros), com a lista do equipamento DESTA linha -->
+            <select [id]="'modelo' + i" class="form-control" [formControlName]="'modelo' + i"
               [ngClass]="{'is-invalid': formulario.get('modelo' + i)?.invalid && formulario.get('modelo' + i)?.touched}">
-              <option *ngFor="let option of getModeloOptions()" [value]="option.valor">{{ option.valor }}</option>
+              <option *ngFor="let option of getModeloOptionsLinha(i)" [value]="option.valor">{{ option.valor }}</option>
             </select>
-
-            <input *ngIf="$any(this)['exibirSoUmModelo' + i]" type="text" class="form-control"
-              [value]="$any(this)['modeloSelecionada' + i]" />
 
             <div *ngIf="formulario.get('modelo' + i)?.invalid && formulario.get('modelo' + i)?.touched"
               class="text-danger">

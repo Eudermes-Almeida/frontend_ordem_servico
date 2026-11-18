@@ -1984,6 +1984,43 @@ onTopologiaChange(event: Event): void {
 
 }
 
+// ---------------------------------------------------------------------------------------------
+// LISTAS POR LINHA: cada equipamento do lote usa as marcas/modelos do SEU tipo de equipamento.
+// (antes a lista era global — o último equipamento escolhido trocava a lista de todas as linhas —
+//  e por isso o select virava um input de texto livre, que permitia dados fora do padrão)
+// ---------------------------------------------------------------------------------------------
+private equipamentoDaLinha(i: number): string {
+  return String(this.formulario.get('equipamento' + i)?.value ?? '').trim().toUpperCase();
+}
+
+getMarcaOptionsLinha(i: number): ParametrosCombobox[] {
+  switch (this.equipamentoDaLinha(i)) {
+    case 'NOBREAK': return this.marcasNobreaks;
+    case 'MONITOR': return this.marcasMonitores;
+    case 'BATERIA': return this.marcasBaterais;
+    case 'ESTABILIZADOR': return this.marcasEstabilizador;
+    case 'ACESSORIOS': return this.marcasAcessorio;
+    default: return [];
+  }
+}
+
+getModeloOptionsLinha(i: number): ParametrosCombobox[] {
+  switch (this.equipamentoDaLinha(i)) {
+    case 'NOBREAK': return this.modelosNobreaks;
+    case 'MONITOR': return this.modelosMonitores;
+    case 'BATERIA': return this.modelosBateria;
+    case 'ESTABILIZADOR': return this.modelosEstabilizador;
+    case 'ACESSORIOS': return this.modelosAcessorio;
+    default: return [];
+  }
+}
+
+/** Ao trocar o equipamento de uma linha, a marca/modelo escolhidos deixam de valer: limpa os dois. */
+limparMarcaModeloLinha(i: number): void {
+  this.formulario.get('marca' + i)?.setValue('');
+  this.formulario.get('modelo' + i)?.setValue('');
+}
+
 getMarcaOptions() {
   if (this.nobreak) return this.marcasNobreaks;
   if (this.monitor) return this.marcasMonitores;
@@ -2875,6 +2912,9 @@ async enviarOs(): Promise<void> {
             (this as any)[`os${i}`] = String(os.os);
             (this as any)[`serial${i}`] = String(os.serial);
             (this as any)[`patrimonio${i}`] = String(os.patrimonio);
+            // a impressão do lote mostra exatamente a marca/modelo que foram salvos
+            (this as any)[`marcaSelecionada${i}`] = String(os.marca ?? "");
+            (this as any)[`modeloSelecionada${i}`] = String(os.modelo ?? "");
             
             
 
@@ -3133,8 +3173,8 @@ validarFormularioDinamico(): boolean {
         const controle = this.formulario.get(nomeCampo);
         
         if (controle) {
-          // Se o campo estiver vazio, marca como inválido
-          if (!controle.value || controle.value === '') {
+          // Se o campo estiver vazio (ou só com espaços), marca como inválido
+          if (String(controle.value ?? '').trim() === '') {
             controle.setErrors({ required: true });
             controle.markAsTouched(); // Faz o erro aparecer no HTML (text-danger)
             formValido = false;

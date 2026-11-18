@@ -296,24 +296,24 @@
 }
 
 .cc-btn-ghost {
-  background: rgba(255, 165, 0, 0.08);
-  border-color: rgba(255, 165, 0, 0.4);
-  color: var(--cc-orange);
+  background: rgba(77, 148, 255, 0.08);
+  border-color: rgba(77, 148, 255, 0.4);
+  color: #4d94ff;
 }
 
 .cc-btn-ghost:hover {
-  background: rgba(255, 165, 0, 0.18);
-  box-shadow: 0 0 14px rgba(255, 165, 0, 0.25);
+  background: rgba(77, 148, 255, 0.18);
+  box-shadow: 0 0 14px rgba(77, 148, 255, 0.25);
 }
 
 .cc-btn-primary {
-  background: linear-gradient(135deg, var(--cc-orange-strong), var(--cc-orange-dark));
-  color: #1a1a1a;
-  box-shadow: 0 4px 18px rgba(255, 165, 0, 0.35);
+  background: linear-gradient(135deg, #3d8bfd, #0b5ed7);
+  color: #ffffff;
+  box-shadow: 0 4px 18px rgba(77, 148, 255, 0.35);
 }
 
 .cc-btn-primary:hover:not(:disabled) {
-  box-shadow: 0 6px 26px rgba(255, 165, 0, 0.55);
+  box-shadow: 0 6px 26px rgba(77, 148, 255, 0.55);
   transform: translateY(-1px);
 }
 
@@ -326,7 +326,7 @@
 .cc-btn-cep {
   background: none;
   border: none;
-  color: var(--cc-orange);
+  color: #4d94ff;
   font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
@@ -339,7 +339,7 @@
 }
 
 .cc-btn-cep:hover {
-  color: var(--cc-orange-strong);
+  color: #6ea8fe;
   text-decoration: underline;
 }
 

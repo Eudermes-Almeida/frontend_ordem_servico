@@ -372,6 +372,13 @@ table.fonte-tabela td {
     font-size: 9px !important; /* Garante que a regra seja aplicada */
 }
 
+/* botão Imprimir na linha dos filtros: alinha com os inputs (que têm label em cima) */
+.botao-acao-lote {
+    display: flex;
+    align-items: flex-end;
+    margin-top: 20px;
+}
+
 .btn-primary-custom {
     background-color: #007bff !important; /* Cor de fundo azul */
     color: white !important; /* Cor do texto */

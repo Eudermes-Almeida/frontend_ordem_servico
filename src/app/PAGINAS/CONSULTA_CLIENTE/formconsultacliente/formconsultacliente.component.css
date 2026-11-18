@@ -273,14 +273,14 @@
 }
 
 .cc-btn-ghost {
-  background: rgba(255, 165, 0, 0.08);
-  border-color: rgba(255, 165, 0, 0.4);
-  color: var(--cc-orange);
+  background: rgba(77, 148, 255, 0.08);
+  border-color: rgba(77, 148, 255, 0.4);
+  color: #4d94ff;
 }
 
 .cc-btn-ghost:hover {
-  background: rgba(255, 165, 0, 0.18);
-  box-shadow: 0 0 14px rgba(255, 165, 0, 0.25);
+  background: rgba(77, 148, 255, 0.18);
+  box-shadow: 0 0 14px rgba(77, 148, 255, 0.25);
 }
 
 .cc-icon-btn {
@@ -290,16 +290,16 @@
   width: 34px;
   height: 34px;
   border-radius: 8px;
-  background: rgba(255, 165, 0, 0.1);
-  border: 1px solid rgba(255, 165, 0, 0.4);
-  color: var(--cc-orange);
+  background: rgba(77, 148, 255, 0.1);
+  border: 1px solid rgba(77, 148, 255, 0.4);
+  color: #4d94ff;
   cursor: pointer;
   transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
 }
 
 .cc-icon-btn:hover {
-  background: rgba(255, 165, 0, 0.22);
-  box-shadow: 0 0 14px rgba(255, 165, 0, 0.35);
+  background: rgba(77, 148, 255, 0.22);
+  box-shadow: 0 0 14px rgba(77, 148, 255, 0.35);
   transform: translateY(-1px);
 }
 

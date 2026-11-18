@@ -1,7 +1,7 @@
 <div class="d-flex align-items-center w-100" style="gap: 15px;">
   <!-- Bloco da Esquerda -->
   <p style="color: yellow; margin: 0; font-size: 1.5rem;">Fator Meta</p>
-  <button class="btn btn-outline-warning" (click)="aumentarFator()">+</button>
+  <button class="btn btn-outline-primary" (click)="aumentarFator()">+</button>
   <button class="btn btn-outline-danger" (click)="diminuirFator()">-</button>
   <p style="color: yellow; margin: 0; font-size: 40px;">
   {{fatorMeta | number: '1.2-2'}} <span>%</span>
@@ -16,10 +16,10 @@
   <!-- Bloco da Direita -->
   <div class="btn-group mb-0 me-3" role="group" aria-label="Seleção de Visualização" style="margin-right: 20px;">
     <input type="radio" class="btn-check" name="btnview" id="btnAnalitica" autocomplete="off" checked (click)="funcModoAnalitico()">
-    <label class="btn btn-outline-warning" for="btnAnalitica">Analítico</label>
+    <label class="btn btn-outline-primary" for="btnAnalitica">Analítico</label>
 
     <input type="radio" class="btn-check" name="btnview" id="btnGrafico" autocomplete="off" (click)="funcModoGrafico()">
-    <label class="btn btn-outline-warning" for="btnGrafico">Gráfico</label>
+    <label class="btn btn-outline-primary" for="btnGrafico">Gráfico</label>
 </div>
 
 </div>

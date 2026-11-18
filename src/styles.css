@@ -1,1 +1,25 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* =====================================================================================
+   PADRÃO DE COR DOS ÍCONES (Bootstrap Icons - classe "bi")
+   Todos os ícones do sistema em azul turquesa. Para mudar a cor de todos: troque a variável.
+
+   Exceções (mantêm a cor própria):
+   - ícones dentro de botões de fundo cheio (azul/verde/vermelho/amarelo): acompanham o
+     texto do botão, senão o ícone some sobre o fundo;
+   - ícones de alerta/erro (sucesso verde, aviso, erro vermelho, "Sair" vermelho do menu):
+     a cor é a própria mensagem.
+   ===================================================================================== */
+:root {
+  --cor-icone: #40e0d0; /* azul turquesa */
+}
+
+.bi:not(:is(.btn-primary, .btn-success, .btn-danger, .btn-warning, .btn-info, .cc-btn-primary,
+            .alert, .cc-alert, .cc-alerta, .cc-error, .text-danger, .cc-item-danger) .bi) {
+  color: var(--cor-icone) !important;
+}
+
+/* dentro de botões com fundo azul o ícone é sempre BRANCO */
+:is(.btn-primary, .cc-btn-primary) .bi {
+  color: #ffffff !important;
+}

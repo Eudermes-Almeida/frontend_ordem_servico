@@ -302,17 +302,17 @@
 .cc-btn-sm { padding: 4px 14px; font-size: 11px; }
 
 .cc-btn-ghost {
-  background: rgba(255, 165, 0, 0.08);
-  border-color: rgba(255, 165, 0, 0.4);
-  color: var(--cc-orange);
+  background: rgba(77, 148, 255, 0.08);
+  border-color: rgba(77, 148, 255, 0.4);
+  color: #4d94ff;
 }
 
-.cc-btn-ghost:hover { background: rgba(255, 165, 0, 0.18); }
+.cc-btn-ghost:hover { background: rgba(77, 148, 255, 0.18); }
 
 .cc-btn-primary {
-  background: linear-gradient(135deg, var(--cc-orange-strong), var(--cc-orange-dark));
-  color: #1a1a1a;
-  box-shadow: 0 4px 14px rgba(255, 165, 0, 0.35);
+  background: linear-gradient(135deg, #3d8bfd, #0b5ed7);
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(77, 148, 255, 0.35);
 }
 
 .cc-btn-primary:disabled { opacity: 0.45; cursor: not-allowed; box-shadow: none; }
@@ -324,13 +324,13 @@
   width: 28px;
   height: 26px;
   border-radius: 8px;
-  background: rgba(255, 165, 0, 0.1);
-  border: 1px solid rgba(255, 165, 0, 0.4);
-  color: var(--cc-orange);
+  background: rgba(77, 148, 255, 0.1);
+  border: 1px solid rgba(77, 148, 255, 0.4);
+  color: #4d94ff;
   cursor: pointer;
 }
 
-.cc-icon-btn:hover { background: rgba(255, 165, 0, 0.22); }
+.cc-icon-btn:hover { background: rgba(77, 148, 255, 0.22); }
 
 /* ---------- LOADING / MENSAGENS ---------- */
 .cc-loading {
@@ -664,15 +664,15 @@
 
 .cc-limpar-filtro {
   background: none;
-  border: 1px solid rgba(255, 165, 0, 0.45);
+  border: 1px solid rgba(77, 148, 255, 0.45);
   border-radius: 6px;
-  color: var(--cc-orange);
+  color: #4d94ff;
   font-size: 11px;
   padding: 1px 8px;
   cursor: pointer;
 }
 
-.cc-limpar-filtro:hover { background: rgba(255, 165, 0, 0.15); }
+.cc-limpar-filtro:hover { background: rgba(77, 148, 255, 0.15); }
 
 /* Formulário de contato (dentro do modal) */
 .cc-form-contato {

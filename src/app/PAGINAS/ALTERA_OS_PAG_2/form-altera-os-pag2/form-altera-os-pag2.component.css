@@ -332,3 +332,37 @@ p.separador {
     line-height: 1 !important; /* Ajuste para reduzir ainda mais o espaço se necessário */
 }
 
+
+/* ---------- INCREMENTADOR DE QUANTIDADE ( - [ campo ] + ) ---------- */
+.qt-stepper {
+    display: flex;
+    align-items: stretch;
+    width: 100%;
+}
+
+.qt-stepper input {
+    flex: 1;
+    min-width: 0;
+    border-radius: 0;
+    text-align: center;
+}
+
+.qt-btn {
+    flex: 0 0 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    background: rgba(77, 148, 255, 0.10);
+    border: 1px solid rgba(77, 148, 255, 0.55);
+    color: #4d94ff;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background 0.15s ease;
+}
+
+.qt-btn:first-child { border-radius: 4px 0 0 4px; border-right: none; }
+.qt-btn:last-child  { border-radius: 0 4px 4px 0; border-left: none; }
+.qt-btn:hover       { background: rgba(77, 148, 255, 0.25); }
+.qt-btn:active      { transform: scale(0.95); }

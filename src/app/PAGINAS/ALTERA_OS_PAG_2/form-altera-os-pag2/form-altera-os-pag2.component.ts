@@ -459,6 +459,21 @@ getOsPorId(os: number): Observable<Os> {
   this.formulario.get('valorunit1')?.valueChanges.subscribe(() => this.atualizarValortotal1());
 }
 
+/**
+ * Botões - / + dos campos de quantidade (opcional: o usuário também pode digitar no campo).
+ * Soma `passo` à quantidade (nunca abaixo de 0) e chama o mesmo recálculo que a digitação chama;
+ * o total bruto/líquido se atualiza sozinho pelos valueChanges dos subtotais.
+ */
+alterarQuantidade(campo: string, passo: number, recalcular: string): void {
+  const controle = this.formulario.get(campo);
+  if (!controle) return;
+  const atual = parseFloat(String(controle.value ?? '').replace(',', '.')) || 0;
+  const novo = Math.max(0, Math.round((atual + passo) * 100) / 100);
+  controle.setValue(String(novo));
+  controle.markAsDirty();
+  (this as any)[recalcular]?.();
+}
+
 atualizarValortotal1() {
   const qt1 = parseFloat(this.formulario.get('qt1')?.value) || 0;
   const valorunit1 = parseFloat(this.formulario.get('valorunit1')?.value) || 0;

@@ -64,8 +64,8 @@
                 </select>
               </div>
 
-              <div class="btn-primary-custom">
-              <button type="button" (click)="onButtonClick()">LIMPAR</button>
+              <div class="botao-acao-linha">
+              <button type="button" class="btn btn-primary" (click)="onButtonClick()">LIMPAR</button>
             </div>
               
         </div>
@@ -178,15 +178,15 @@
           class="form-control">
       </div>
 
-      <div class="btn-primary-custom" *ngIf="exibirBotoesGerarPdfEnviarEmailEnviarWhats" > 
+      <div class="botoes-orcamento" *ngIf="exibirBotoesGerarPdfEnviarEmailEnviarWhats" >
         <div *ngIf="spinnerLoading">
         <p style="color: orange; margin: 10px;">processando...</p>
         <div class="spinner-border text-primary"></div>
         <div class="spinner-grow"></div>
       </div>
-        <button style="margin: 5px;" type="button" (click)="processarOSSelecionadas()">GERAR PDF</button>
-        <button style="margin: 5px;" type="button" (click)="enviarMensagemWhatsapp()">ENVIAR WHATSAPP</button>
-        <button style="margin: 5px;" type="button" (click)="sendEmail()">ENVIAR EMAIL</button>
+        <button style="margin: 5px;" type="button" class="btn btn-primary" (click)="processarOSSelecionadas()">GERAR PDF</button>
+        <button style="margin: 5px;" type="button" class="btn btn-primary" (click)="enviarMensagemWhatsapp()">ENVIAR WHATSAPP</button>
+        <button style="margin: 5px;" type="button" class="btn btn-primary" (click)="sendEmail()">ENVIAR EMAIL</button>
        
         </div> 
   </div>

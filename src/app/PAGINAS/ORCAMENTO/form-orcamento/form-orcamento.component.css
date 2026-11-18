@@ -423,3 +423,19 @@ table.fonte-tabela td {
     box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5); /* Efeito de foco */
 }
 
+
+/* botão LIMPAR na linha dos filtros: alinha com os inputs (que têm label em cima) */
+.botao-acao-linha {
+    display: flex;
+    align-items: flex-end;
+    margin-top: 20px;
+}
+
+/* GERAR PDF / ENVIAR WHATSAPP / ENVIAR EMAIL */
+.botoes-orcamento {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: 8px;
+}
