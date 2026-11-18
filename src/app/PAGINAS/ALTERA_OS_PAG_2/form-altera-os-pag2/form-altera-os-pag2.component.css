@@ -21,8 +21,8 @@
     display: flex;
     border: 2px solid #007bff; /* Azul primário do Bootstrap */
     border-radius: 8px;
-    padding: 10px;
-    margin-bottom: 5px; /* Espaço inferior */
+    padding: 3px 8px 5px;
+    margin-bottom: 3px; /* Espaço inferior */
     margin-left: 2px;
     margin-right: 2px;
     width: 100%;
@@ -36,14 +36,30 @@
     display: flex;
     flex-direction: row;
     justify-content: end;
-    margin-top: 10px;
-    align-items: end;
+    margin-top: 4px;
+    align-items: center;
 }
 
+.btn-salvar-ordem-servico p {
+    margin: 0 0 0 8px;
+}
+
+/* Área dos materiais/totais: ocupa a altura que sobra na tela (descontando menu,
+   campos do topo, botões e o rodapé fixo). O scroll fica só aqui dentro. */
 .tabela-scroll {
-    max-height: 300px; /* Ajuste a altura conforme necessário */
+    max-height: max(200px, calc(100vh - 430px));
     overflow-y: auto;
     overflow-x: hidden; /* Oculta rolagem horizontal se não for necessária */
+}
+
+/* Alertas mais baixos para não empurrar o formulário */
+.centralizado-formulario .alert {
+    padding: 6px 40px 6px 12px;
+    margin-bottom: 6px;
+}
+
+.centralizado-formulario .alert .btn-close {
+    padding: 9px 12px;
 }
 
 .espaco-label {
@@ -66,7 +82,7 @@
     display: flex;
     justify-content: space-between; /* Alinha os elementos uniformemente */
     align-items: center; /* Alinha os elementos verticalmente */
-    margin-bottom: 5px; /* Espaçamento entre as linhas */
+    margin-bottom: 3px; /* Espaçamento entre as linhas */
 }
 
 .form-group {

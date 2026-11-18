@@ -32,3 +32,10 @@
 
 
   
+
+/* Reserva espaço no fim da página para o rodapé fixo (position: fixed)
+   não cobrir o conteúdo / botões do formulário */
+.todo {
+    padding-bottom: 75px;
+    box-sizing: border-box; /* inclui o espaço nos 100vh, sem gerar scroll extra */
+}

@@ -218,30 +218,65 @@ private os: any;
     this.data = null;
   }
 
+  /////MEMORIZA AS DATAS DO RELATÓRIO NA MEMÓRIA E NO LOCALSTORAGE
+  ///// (assim as datas sobrevivem a um F5 / reabertura do navegador)
+  private static readonly CHAVE_DATA_INICIO = 'relatorio.dataInicio';
+  private static readonly CHAVE_DATA_FIM = 'relatorio.dataFim';
+
+  private lerStorage(chave: string): string | null {
+    try {
+      return localStorage.getItem(chave);
+    } catch {
+      return null; // navegador bloqueando storage: segue só com a memória
+    }
+  }
+
+  private gravarStorage(chave: string, valor: any): void {
+    try {
+      if (valor === null || valor === undefined || valor === '') {
+        localStorage.removeItem(chave);
+      } else {
+        localStorage.setItem(chave, String(valor));
+      }
+    } catch {
+      // ignora: a memória continua funcionando
+    }
+  }
+
   /////MEMORIZA DATA INCIAL DO RELATÓRIO
   setDataInicio(dataInicio: any): void {
     this.dataInicio = dataInicio;
+    this.gravarStorage(OrdemservicoService.CHAVE_DATA_INICIO, dataInicio);
   }
 
   getDataInicio(): any {
+    if (!this.dataInicio) {
+      this.dataInicio = this.lerStorage(OrdemservicoService.CHAVE_DATA_INICIO);
+    }
     return this.dataInicio;
   }
 
   clearDataInicio(): void {
     this.dataInicio = null;
+    this.gravarStorage(OrdemservicoService.CHAVE_DATA_INICIO, null);
   }
 
   /////MEMORIZA DATA FIM DO RELATÓRIO
   setDataFim(dataFim: any): void {
     this.dataFim = dataFim;
+    this.gravarStorage(OrdemservicoService.CHAVE_DATA_FIM, dataFim);
   }
 
   getDataFim(): any {
+    if (!this.dataFim) {
+      this.dataFim = this.lerStorage(OrdemservicoService.CHAVE_DATA_FIM);
+    }
     return this.dataFim;
   }
 
   clearDatafim(): void {
     this.dataFim = null;
+    this.gravarStorage(OrdemservicoService.CHAVE_DATA_FIM, null);
   }
 
   //////////MEMORIZA ORDEM DE SERVICO PARA SER EXIBIDA NO TIME LNNE////////
