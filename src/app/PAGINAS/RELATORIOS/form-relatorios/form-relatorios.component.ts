@@ -1,4 +1,5 @@
-import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Injectable, ViewChild } from '@angular/core';
+import { NgbDateParserFormatter, NgbDateStruct, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { ParametrosCombobox } from '../../../modelo/ParametrosCombobox';
 import { Cliente } from '../../../modelo/Cliente';
 import { Os } from '../../../modelo/Os';
@@ -13,10 +14,38 @@ import jsPDF from 'jspdf';
 import html2pdf from 'html2pdf.js';
 import { Router } from '@angular/router';
 
+///// FORMATADOR DO DATEPICKER: EXIBE dd/MM/yyyy E ACEITA DIGITAR "01112026" OU "01/11/2026"
+@Injectable()
+export class DataBrParserFormatter extends NgbDateParserFormatter {
+  parse(value: string): NgbDateStruct | null {
+    if (!value) return null;
+    const digitos = value.replace(/\D/g, '');
+    let dia: number, mes: number, ano: number;
+    const partes = value.trim().split(/[\/\-.]/);
+    if (partes.length === 3 && partes[2].length === 4) {
+      [dia, mes, ano] = partes.map(p => parseInt(p, 10));
+    } else if (digitos.length === 8) {
+      dia = parseInt(digitos.substring(0, 2), 10);
+      mes = parseInt(digitos.substring(2, 4), 10);
+      ano = parseInt(digitos.substring(4, 8), 10);
+    } else {
+      return null;
+    }
+    if (!dia || !mes || !ano || mes > 12 || dia > 31) return null;
+    return { day: dia, month: mes, year: ano };
+  }
+
+  format(date: NgbDateStruct | null): string {
+    if (!date) return '';
+    return `${String(date.day).padStart(2, '0')}/${String(date.month).padStart(2, '0')}/${date.year}`;
+  }
+}
+
 @Component({
   selector: 'app-form-relatorios',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, NgbDatepickerModule],
+  providers: [{ provide: NgbDateParserFormatter, useClass: DataBrParserFormatter }],
   templateUrl: './form-relatorios.component.html',
   styleUrl: './form-relatorios.component.css'
 })
@@ -25,14 +54,41 @@ export class FORMRELATORIOSComponent {
   // CONFIGURA AS FUNÇÕES QUE SERÃO EXECUTADAS NA INICIALIZAÇÃO DA PÁGINA
   ngOnInit(): void {
     this.buscaEescreveDatas();
+
+    // Sempre que a data mudar (pelo calendário ou digitando), converte para ddMMyyyy e memoriza
+    this.formulario.get('datainicial')?.valueChanges.subscribe((data) => {
+      this.dataInicio = this.structParaDdMMyyyy(data);
+      if (this.dataInicio) this.servico.setDataInicio(this.dataInicio);
+    });
+    this.formulario.get('datafinal')?.valueChanges.subscribe((data) => {
+      this.dataFim = this.structParaDdMMyyyy(data);
+      if (this.dataFim) this.servico.setDataFim(this.dataFim);
+    });
   }
 
-  ///BUSCA DATASNA MEMORIA E ESCREVE NO INPUT
+  ///BUSCA DATAS NA MEMORIA E ESCREVE NO INPUT (DATEPICKER)
   buscaEescreveDatas() {
-    this.dataInicio = this.servico.getDataInicio();
-    this.dataFim = this.servico.getDataFim();
-    this.formulario.patchValue({ datainicial: this.dataInicio });
-    this.formulario.patchValue({ datafinal: this.dataFim });
+    this.dataInicio = this.servico.getDataInicio() || "";
+    this.dataFim = this.servico.getDataFim() || "";
+    this.formulario.patchValue({
+      datainicial: this.ddMMyyyyParaStruct(this.dataInicio),
+      datafinal: this.ddMMyyyyParaStruct(this.dataFim)
+    }, { emitEvent: false });
+  }
+
+  ///// CONVERSÕES ENTRE O OBJETO DO DATEPICKER E A STRING ddMMyyyy USADA NO BACKEND
+  structParaDdMMyyyy(data: NgbDateStruct | null | undefined): string {
+    if (!data || typeof data !== 'object' || !data.day || !data.month || !data.year) return "";
+    return `${String(data.day).padStart(2, '0')}${String(data.month).padStart(2, '0')}${data.year}`;
+  }
+
+  ddMMyyyyParaStruct(data: string | null | undefined): NgbDateStruct | null {
+    if (!data || data.length !== 8) return null;
+    return {
+      day: parseInt(data.substring(0, 2), 10),
+      month: parseInt(data.substring(2, 4), 10),
+      year: parseInt(data.substring(4, 8), 10)
+    };
   }
 
 
@@ -123,8 +179,8 @@ export class FORMRELATORIOSComponent {
 
   // CONFIGURA FORMULÁRIO
   formulario = new FormGroup({
-    datainicial: new FormControl(''),
-    datafinal: new FormControl(''),
+    datainicial: new FormControl<NgbDateStruct | null>(null),
+    datafinal: new FormControl<NgbDateStruct | null>(null),
 
   });
 
@@ -145,12 +201,12 @@ export class FORMRELATORIOSComponent {
 
   async selecionaRelatorios() {
     if (!this.dataInicio) {
-      alert("Data inicial inválida! Digite ou selecione a data e tecle TAB");
+      alert("Data inicial inválida! Selecione a data no calendário ou digite no formato dd/mm/aaaa");
       return;
     }
 
     if (!this.dataFim) {
-      alert("Data final inválida! Digite ou selecione a data e tecle TAB");
+      alert("Data final inválida! Selecione a data no calendário ou digite no formato dd/mm/aaaa");
       return;
     }
 
@@ -415,28 +471,6 @@ export class FORMRELATORIOSComponent {
     );
 
     
-  }
-
-  // Método chamado ao perder o foco do input Data Inicial
-  gravaDataInicial(event: KeyboardEvent): void {
-    const input = (event.target as HTMLInputElement).value;
-
-    if (event.key === 'Tab') { // Dispara a busca ao digitar 4 algarismos
-      this.dataInicio = input // Converte o valor para número
-      this.servico.setDataInicio(this.dataInicio); //memoriza a data de início
-      console.log("esta é a data inicial: " + this.dataInicio)
-
-    }
-  }
-
-  gravaDataFinal(event: KeyboardEvent): void {
-    const input = (event.target as HTMLInputElement).value;
-
-    if (event.key === 'Tab') { // Dispara a busca ao digitar 4 algarismos
-      this.dataFim = input // Converte o valor para número
-      this.servico.setDataFim(this.dataFim); //memoriza a data de início
-      console.log("esta é a data final: " + this.dataFim)
-    }
   }
 
   private isClickEvent: boolean = false;

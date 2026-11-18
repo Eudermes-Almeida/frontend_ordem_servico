@@ -34,7 +34,8 @@
     repeating-linear-gradient(0deg, rgba(255, 165, 0, 0.035) 0px, rgba(255, 165, 0, 0.035) 1px, transparent 1px, transparent 42px),
     repeating-linear-gradient(90deg, rgba(255, 165, 0, 0.035) 0px, rgba(255, 165, 0, 0.035) 1px, transparent 1px, transparent 42px),
     var(--cc-bg);
-  padding: 24px;
+  /* padding-bottom reserva espaço para o rodapé fixo (position: fixed) não cobrir os botões */
+  padding: 10px 24px 80px;
   box-sizing: border-box;
 }
 
@@ -44,7 +45,7 @@
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 10px;
 }
 
 /* ---------- HEADER ---------- */
@@ -56,8 +57,8 @@
   gap: 16px;
   background: linear-gradient(135deg, rgba(255, 165, 0, 0.12), rgba(20, 20, 20, 0.6));
   border: 1px solid var(--cc-panel-border);
-  border-radius: 14px;
-  padding: 18px 24px;
+  border-radius: 12px;
+  padding: 8px 18px;
   position: relative;
   overflow: hidden;
 }
@@ -82,10 +83,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 54px;
-  height: 54px;
-  border-radius: 12px;
-  font-size: 26px;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  font-size: 19px;
   color: var(--cc-orange);
   background: rgba(255, 165, 0, 0.1);
   border: 1px solid var(--cc-orange-glow);
@@ -95,7 +96,7 @@
 
 .cc-header-title h1 {
   margin: 0;
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 700;
   letter-spacing: 1.5px;
   text-transform: uppercase;
@@ -103,8 +104,8 @@
 }
 
 .cc-header-title p {
-  margin: 2px 0 0;
-  font-size: 13px;
+  margin: 0;
+  font-size: 12px;
   color: var(--cc-text-muted);
 }
 
@@ -148,14 +149,14 @@
 .cc-body {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 8px;
 }
 
 .cc-card {
   background: var(--cc-panel);
   border: 1px solid var(--cc-panel-border);
-  border-radius: 14px;
-  padding: 18px 22px 22px;
+  border-radius: 12px;
+  padding: 8px 18px 12px;
   backdrop-filter: blur(6px);
   transition: border-color 0.25s ease, box-shadow 0.25s ease;
 }
@@ -169,29 +170,29 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 1.8px;
   text-transform: uppercase;
   color: var(--cc-orange);
-  margin-bottom: 16px;
-  padding-bottom: 10px;
+  margin-bottom: 8px;
+  padding-bottom: 5px;
   border-bottom: 1px solid rgba(255, 165, 0, 0.2);
 }
 
-.cc-card-title i { font-size: 16px; }
+.cc-card-title i { font-size: 14px; }
 
 .cc-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 16px 18px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 8px 16px;
 }
 
 /* ---------- CAMPOS ---------- */
 .cc-field {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 3px;
   min-width: 0;
 }
 
@@ -199,22 +200,22 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.5px;
   text-transform: uppercase;
   color: var(--cc-orange);
 }
 
-.cc-label i { font-size: 16px; opacity: 0.9; }
+.cc-label i { font-size: 13px; opacity: 0.9; }
 
 .cc-input {
   background: rgba(0, 0, 0, 0.55);
   border: 1px solid rgba(255, 165, 0, 0.35);
   border-radius: 8px;
   color: var(--cc-text);
-  padding: 9px 12px;
-  height: 40px;
+  padding: 4px 10px;
+  height: 32px;
   font-size: 14px;
   width: 100%;
   box-sizing: border-box;
@@ -264,7 +265,7 @@
   align-items: center;
   gap: 8px;
   border-radius: 9px;
-  padding: 10px 20px;
+  padding: 8px 18px;
   font-size: 13px;
   font-weight: 700;
   letter-spacing: 1px;
@@ -308,8 +309,8 @@
   align-items: center;
   justify-content: flex-end;
   gap: 12px;
-  padding: 16px 4px 4px;
-  margin-top: 4px;
+  padding: 4px 4px 0;
+  margin-top: 0;
 }
 
 .cc-actions a {
@@ -332,9 +333,27 @@
 }
 
 /* ---------- RESPONSIVIDADE ---------- */
+
+/* Telas mais baixas (ex.: notebooks 1366x768): aperta ainda mais para caber sem scroll */
+@media (max-height: 950px) and (min-width: 901px) {
+  .cc-shell { gap: 6px; }
+  .cc-body { gap: 6px; }
+  .cc-header { padding: 5px 16px; }
+  .cc-header-icon { width: 30px; height: 30px; font-size: 15px; }
+  .cc-header-title h1 { font-size: 16px; }
+  .cc-header-title p { display: none; }
+  .cc-card { padding: 5px 16px 8px; }
+  .cc-card-title { margin-bottom: 5px; padding-bottom: 3px; font-size: 11px; }
+  .cc-grid { gap: 5px 14px; }
+  .cc-field { gap: 2px; }
+  .cc-label { font-size: 11px; }
+  .cc-input { height: 28px; font-size: 13px; }
+  .cc-btn { padding: 6px 16px; }
+}
+
 @media (max-width: 900px) {
   .cc-page {
-    padding: 14px;
+    padding: 14px 14px 100px;
   }
   .cc-header {
     padding: 14px 16px;

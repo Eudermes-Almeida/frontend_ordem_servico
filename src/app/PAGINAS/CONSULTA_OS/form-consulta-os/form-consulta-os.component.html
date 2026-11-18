@@ -19,8 +19,16 @@
 
         <!-- SEÇÃO: BUSCA CLIENTE -->
         <section class="cc-card">
-          <div class="cc-card-title">
-            <i class="bi bi-search-heart"></i> Buscar Cliente
+          <div class="cc-card-title cc-results-title">
+            <span><i class="bi bi-search-heart"></i> Buscar Cliente</span>
+            <div class="cc-card-actions">
+              <div class="cc-loading" *ngIf="spinnerLoading">
+                <span class="cc-spinner"></span> processando...
+              </div>
+              <button type="button" class="cc-btn cc-btn-ghost cc-btn-sm" (click)="onButtonClick()">
+                <i class="bi bi-arrow-counterclockwise"></i> Limpar
+              </button>
+            </div>
           </div>
           <div class="cc-grid">
 
@@ -54,15 +62,6 @@
               </select>
             </div>
 
-          </div>
-
-          <div class="cc-card-actions">
-            <div class="cc-loading" *ngIf="spinnerLoading">
-              <span class="cc-spinner"></span> processando...
-            </div>
-            <button type="button" class="cc-btn cc-btn-ghost" (click)="onButtonClick()">
-              <i class="bi bi-arrow-counterclockwise"></i> Limpar
-            </button>
           </div>
 
           <!-- TABELA DE CLIENTES ENCONTRADOS -->
@@ -151,7 +150,7 @@
             <span class="cc-badge">{{objetoOs.length}} ordem(ns) de serviço encontrada(s)</span>
           </div>
 
-          <div class="cc-table-wrap">
+          <div class="cc-table-wrap cc-table-wrap-results">
             <table class="cc-table">
               <thead>
                 <tr>

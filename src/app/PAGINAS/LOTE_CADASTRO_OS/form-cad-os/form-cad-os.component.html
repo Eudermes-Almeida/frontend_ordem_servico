@@ -101,12 +101,12 @@
       </div>
     </div>
 
-    <p style="color: orange;">Quantidade Equipamentos {{contadorEquipamento}}</p>
+    <p style="color: orange; margin: 0 0 4px;">Quantidade Equipamentos {{contadorEquipamento}}</p>
 
 
     <!-- Adicionando uma margem superior para separar o formulário da tabela -->
-    <div class="mt-3 tabela-scroll" style="max-height: 300px; overflow-y: auto;">
-      <!-- Define a altura máxima e ativa a rolagem -->
+    <!-- Altura máxima acompanha a altura da tela (ver .tabela-scroll no CSS) -->
+    <div class="tabela-scroll">
       <p class="text-secondary" *ngIf="exibirTabela">Quantidade de clientes selecionados: {{objetocliente.length}} </p>
       <table class="table table-dark table-hover tabela1" *ngIf="exibirTabela">
         <thead>
@@ -147,7 +147,7 @@
         <!-- O $any(this) permite acessar as variáveis dinâmicas do seu TS (ex: exibirEntrada + 11) -->
         <div class="form-row align-items-center" *ngIf="$any(this)['exibirEntrada' + i]">
 
-          <h2 style="color: white;">{{ i }}º</h2>
+          <h2 class="numero-equipamento">{{ i }}º</h2>
 
           <!-- Ordem de Serviço -->
           <div class="form-group col-3">
@@ -240,12 +240,13 @@
           </div>
 
         </div>
-        <hr *ngIf="$any(this)['exibirEntrada' + i]" style="border-color: #444; margin: 20px 0;">
+        <hr *ngIf="$any(this)['exibirEntrada' + i]" class="separador-equipamento">
       </div>
 
+    </div>
 
       <!--------------------------------------------------------------------------------------->
-      <!--------------------------------------------------------------------------------------->
+      <!-- Botões fora da área de scroll: ficam sempre visíveis -->
 
       <div class="btn-salvar-ordem-servico d-flex flex-column align-items-end">
 
@@ -275,10 +276,6 @@
 
         </div>
       </div>
-
-
-
-    </div>
 
   </form>
   <button class="btn btn-primary botao_imprimir" (click)="gerarPDF()" *ngIf="exibirBotaoImprimir">Imprimir:</button>

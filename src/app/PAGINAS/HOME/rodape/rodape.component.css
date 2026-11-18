@@ -15,7 +15,7 @@
   position: relative;
   width: 100%;
   background: linear-gradient(180deg, #17171b, #0e0e11);
-  padding: 12px 16px;
+  padding: 5px 16px;
   overflow: hidden;
 }
 
@@ -35,10 +35,10 @@
 }
 
 .cc-footer-quote {
-  margin: 0 0 6px;
-  font-size: 22px;
+  margin: 0 0 2px;
+  font-size: 13px;
   font-style: italic;
-  line-height: 1.25;
+  line-height: 1.2;
   color: var(--cc-text-muted);
 }
 
@@ -55,17 +55,17 @@
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  column-gap: 22px;
-  row-gap: 6px;
+  column-gap: 16px;
+  row-gap: 2px;
 }
 
 .cc-footer-link {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
+  gap: 5px;
   color: var(--cc-orange);
   text-decoration: none;
-  font-size: 22px;
+  font-size: 14px;
   font-weight: 600;
   letter-spacing: 0.3px;
   white-space: nowrap;
@@ -73,7 +73,7 @@
 }
 
 .cc-footer-link i {
-  font-size: 20px;
+  font-size: 13px;
   color: currentColor;
 }
 
@@ -85,7 +85,7 @@
 
 .cc-footer-sep {
   color: rgba(255, 165, 0, 0.35);
-  font-size: 18px;
+  font-size: 12px;
   line-height: 1;
 }
 

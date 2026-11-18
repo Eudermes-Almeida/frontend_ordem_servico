@@ -34,7 +34,8 @@
     repeating-linear-gradient(0deg, rgba(255, 165, 0, 0.035) 0px, rgba(255, 165, 0, 0.035) 1px, transparent 1px, transparent 42px),
     repeating-linear-gradient(90deg, rgba(255, 165, 0, 0.035) 0px, rgba(255, 165, 0, 0.035) 1px, transparent 1px, transparent 42px),
     var(--cc-bg);
-  padding: 24px;
+  /* padding-bottom reserva espaço para o rodapé fixo (position: fixed) não cobrir o conteúdo */
+  padding: 10px 24px 80px;
   box-sizing: border-box;
 }
 
@@ -44,7 +45,7 @@
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 8px;
 }
 
 /* ---------- HEADER ---------- */
@@ -56,8 +57,8 @@
   gap: 16px;
   background: linear-gradient(135deg, rgba(255, 165, 0, 0.12), rgba(20, 20, 20, 0.6));
   border: 1px solid var(--cc-panel-border);
-  border-radius: 14px;
-  padding: 18px 24px;
+  border-radius: 12px;
+  padding: 6px 18px;
   position: relative;
   overflow: hidden;
 }
@@ -82,10 +83,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 54px;
-  height: 54px;
-  border-radius: 12px;
-  font-size: 26px;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  font-size: 17px;
   color: var(--cc-orange);
   background: rgba(255, 165, 0, 0.1);
   border: 1px solid var(--cc-orange-glow);
@@ -95,7 +96,7 @@
 
 .cc-header-title h1 {
   margin: 0;
-  font-size: 22px;
+  font-size: 17px;
   font-weight: 700;
   letter-spacing: 1.5px;
   text-transform: uppercase;
@@ -103,8 +104,8 @@
 }
 
 .cc-header-title p {
-  margin: 2px 0 0;
-  font-size: 13px;
+  margin: 0;
+  font-size: 12px;
   color: var(--cc-text-muted);
 }
 
@@ -117,14 +118,14 @@
 .cc-body {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 8px;
 }
 
 .cc-card {
   background: var(--cc-panel);
   border: 1px solid var(--cc-panel-border);
-  border-radius: 14px;
-  padding: 18px 22px 22px;
+  border-radius: 12px;
+  padding: 6px 18px 10px;
   backdrop-filter: blur(6px);
   transition: border-color 0.25s ease, box-shadow 0.25s ease;
 }
@@ -138,28 +139,31 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 1.8px;
   text-transform: uppercase;
   color: var(--cc-orange);
-  margin-bottom: 16px;
-  padding-bottom: 10px;
+  margin-bottom: 6px;
+  padding-bottom: 4px;
+  min-height: 28px;
   border-bottom: 1px solid rgba(255, 165, 0, 0.2);
 }
 
-.cc-card-title i { font-size: 16px; }
+.cc-card-title i { font-size: 14px; }
 
 .cc-results-title {
   justify-content: space-between;
 }
 
+/* Ações do card (Limpar / processando) ficam na própria linha do título */
 .cc-card-actions {
   display: flex;
   align-items: center;
   justify-content: flex-end;
   gap: 14px;
-  margin-top: 14px;
+  letter-spacing: normal;
+  text-transform: none;
 }
 
 .cc-badge {
@@ -175,15 +179,15 @@
 
 .cc-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 16px 18px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 6px 16px;
 }
 
 /* ---------- CAMPOS ---------- */
 .cc-field {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 2px;
   min-width: 0;
 }
 
@@ -191,23 +195,23 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 14px;
+  font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.5px;
   text-transform: uppercase;
   color: var(--cc-orange);
 }
 
-.cc-label i { font-size: 16px; opacity: 0.9; }
+.cc-label i { font-size: 13px; opacity: 0.9; }
 
 .cc-input {
   background: rgba(0, 0, 0, 0.55);
   border: 1px solid rgba(255, 165, 0, 0.35);
   border-radius: 8px;
   color: var(--cc-text);
-  padding: 9px 12px;
-  height: 40px;
-  font-size: 14px;
+  padding: 3px 10px;
+  height: 30px;
+  font-size: 13px;
   width: 100%;
   box-sizing: border-box;
   transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
@@ -248,8 +252,8 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-top: 4px;
-  font-size: 14px;
+  margin-top: 2px;
+  font-size: 12px;
   color: var(--cc-text-muted);
   cursor: pointer;
   user-select: none;
@@ -309,6 +313,11 @@
   transform: scale(0.97);
 }
 
+.cc-btn-sm {
+  padding: 3px 12px;
+  font-size: 11px;
+}
+
 .cc-btn-ghost {
   background: rgba(255, 165, 0, 0.08);
   border-color: rgba(255, 165, 0, 0.4);
@@ -335,8 +344,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
+  width: 28px;
+  height: 26px;
   border-radius: 8px;
   background: rgba(255, 165, 0, 0.1);
   border: 1px solid rgba(255, 165, 0, 0.4);
@@ -353,7 +362,13 @@
 
 /* ---------- TABELAS ---------- */
 .cc-table-wrap-inline {
-  margin-top: 16px;
+  margin-top: 8px;
+}
+
+/* Tabela de resultados: usa só a altura que sobra na tela (descontando menu,
+   cards de busca e rodapé fixo). O scroll fica apenas dentro da tabela. */
+.cc-table-wrap-results {
+  max-height: max(160px, calc(100vh - 500px));
 }
 
 .cc-table-count {
@@ -388,13 +403,13 @@
   font-size: 11px;
   font-weight: 700;
   text-align: left;
-  padding: 12px 14px;
+  padding: 7px 12px;
   border-bottom: 1px solid rgba(255, 165, 0, 0.35);
   white-space: nowrap;
 }
 
 .cc-table tbody td {
-  padding: 10px 14px;
+  padding: 3px 12px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   white-space: nowrap;
 }
@@ -434,14 +449,20 @@
 }
 
 /* ---------- BARRA DE AÇÕES ---------- */
+/* Fica "grudada" logo acima do rodapé fixo */
 .cc-actions {
   position: sticky;
-  bottom: 0;
+  bottom: 70px;
+  z-index: 5;
   display: flex;
   justify-content: flex-end;
   gap: 12px;
-  padding: 16px 4px 4px;
+  padding: 4px 4px 0;
   margin-top: 4px;
+}
+
+.cc-actions:empty {
+  display: none;
 }
 
 .cc-actions a {
@@ -451,7 +472,10 @@
 /* ---------- RESPONSIVIDADE ---------- */
 @media (max-width: 900px) {
   .cc-page {
-    padding: 14px;
+    padding: 14px 14px 100px;
+  }
+  .cc-table-wrap-results {
+    max-height: 60vh;
   }
   .cc-header {
     padding: 14px 16px;

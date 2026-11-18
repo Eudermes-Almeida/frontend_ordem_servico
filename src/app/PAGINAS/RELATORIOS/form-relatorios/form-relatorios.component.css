@@ -53,6 +53,23 @@ input, select {
     height: 30px; /* Define altura uniforme para inputs */
 }
 
+/* Datepicker: anula o width 15% global dos inputs dentro do input-group */
+.data-picker {
+    max-width: 170px;
+    flex-wrap: nowrap;
+}
+
+.data-picker input {
+    width: auto;
+    flex: 1 1 auto;
+    height: 32px;
+    text-align: center;
+}
+
+.data-picker button {
+    height: 32px;
+}
+
 .datas{
     display: flex;
     align-items: center;
