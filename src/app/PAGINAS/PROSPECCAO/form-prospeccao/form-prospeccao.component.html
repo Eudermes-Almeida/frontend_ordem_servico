@@ -1,0 +1,484 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<div class="cc-page">
+  <div class="cc-shell">
+
+    <!-- HEADER -->
+    <div class="cc-header">
+      <div class="cc-header-title">
+        <span class="cc-header-icon"><i class="bi bi-binoculars"></i></span>
+        <div>
+          <h1>Prospecção – Nobreaks com Baterias Vencidas</h1>
+          <p>Nobreaks cuja última manutenção foi há mais tempo que o prazo escolhido (até 6 anos)</p>
+        </div>
+      </div>
+    </div>
+
+    <form [formGroup]="formulario" (ngSubmit)="buscar()" (keydown.enter)="$event.preventDefault()">
+      <div class="cc-body">
+
+        <!-- FILTROS -->
+        <section class="cc-card">
+          <div class="cc-card-title cc-title-row">
+            <span><i class="bi bi-funnel"></i> Filtros</span>
+            <div class="cc-card-actions">
+              <div class="cc-loading" *ngIf="carregando">
+                <span class="cc-spinner"></span> processando...
+              </div>
+              <button type="button" class="cc-btn cc-btn-ghost cc-btn-sm" (click)="limparTudo()">
+                <i class="bi bi-arrow-counterclockwise"></i> Limpar
+              </button>
+              <button type="submit" class="cc-btn cc-btn-primary cc-btn-sm" [disabled]="carregando || potenciaInvalida">
+                <i class="bi bi-search"></i> Buscar
+              </button>
+            </div>
+          </div>
+
+          <div class="cc-grid">
+
+            <!-- RAZÃO SOCIAL -->
+            <div class="cc-field cc-field-cliente">
+              <label for="razaosocial" class="cc-label"><i class="bi bi-building"></i> Razão Social (vazio = todos os clientes)</label>
+              <div class="cc-input-wrap">
+                <input type="text" id="razaosocial" formControlName="razaosocial" class="cc-input"
+                  placeholder="Digite ao menos 4 letras da razão social" autocomplete="off">
+                <button type="button" class="cc-input-clear" *ngIf="formulario.controls.razaosocial.value"
+                  (click)="limparCliente()" title="Limpar cliente">
+                  <i class="bi bi-x-lg"></i>
+                </button>
+              </div>
+
+              <span class="cc-hint" *ngIf="clienteSelecionado">
+                <i class="bi bi-check-circle-fill"></i>
+                Cliente selecionado: <strong>{{ clienteSelecionado.id }} – {{ clienteSelecionado.nomefantasia }}</strong>
+              </span>
+              <span class="cc-hint cc-hint-muted" *ngIf="buscandoClientes">buscando clientes...</span>
+              <span class="cc-hint cc-hint-warn" *ngIf="nenhumClienteEncontrado">Nenhum cliente com essa razão social.</span>
+
+              <!-- LISTA DE CLIENTES ENCONTRADOS -->
+              <div class="cc-sugestoes" *ngIf="clientesEncontrados.length > 0">
+                <button type="button" class="cc-sugestao" *ngFor="let cli of clientesEncontrados"
+                  (click)="selecionarCliente(cli)">
+                  <span class="cc-sugestao-cod">{{ cli.id }}</span>
+                  <span class="cc-sugestao-nome">{{ cli.razaosocial }}</span>
+                  <span class="cc-sugestao-fant">{{ cli.nomefantasia }}</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- PRAZO -->
+            <div class="cc-field">
+              <label for="meses" class="cc-label"><i class="bi bi-hourglass-split"></i> Última troca de baterias há</label>
+              <select id="meses" formControlName="meses" class="cc-input cc-select">
+                <option *ngFor="let p of prazos" [ngValue]="p.meses">{{ p.nome }} ou mais</option>
+              </select>
+            </div>
+
+            <!-- POTÊNCIA MÍNIMA -->
+            <div class="cc-field">
+              <label for="potenciaMinima" class="cc-label"><i class="bi bi-lightning-charge"></i> Potência mínima</label>
+              <select id="potenciaMinima" formControlName="potenciaMinima" class="cc-input cc-select"
+                [class.is-invalid]="potenciaInvalida">
+                <option [ngValue]="null">Sem limite</option>
+                <option *ngFor="let m of modelos" [ngValue]="m.va">{{ m.nome }}</option>
+              </select>
+            </div>
+
+            <!-- POTÊNCIA MÁXIMA -->
+            <div class="cc-field">
+              <label for="potenciaMaxima" class="cc-label"><i class="bi bi-lightning-charge-fill"></i> Potência máxima</label>
+              <select id="potenciaMaxima" formControlName="potenciaMaxima" class="cc-input cc-select"
+                [class.is-invalid]="potenciaInvalida">
+                <option [ngValue]="null">Sem limite</option>
+                <option *ngFor="let m of modelos" [ngValue]="m.va">{{ m.nome }}</option>
+              </select>
+              <span class="cc-error" *ngIf="potenciaInvalida">A mínima não pode ser maior que a máxima.</span>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- RESULTADO -->
+        <section class="cc-card" *ngIf="pesquisou">
+          <div class="cc-card-title cc-title-row">
+            <span><i class="bi bi-table"></i> Nobreaks encontrados</span>
+            <div class="cc-card-actions" *ngIf="resultado.length > 0">
+              <label for="ordenacao" class="cc-ordenar-label">Ordenar por</label>
+              <select id="ordenacao" class="cc-input cc-select cc-select-sm"
+                [value]="ordenacao" (change)="ordenacao = $any($event.target).value">
+                <option value="cliente">Cliente (A–Z)</option>
+                <option value="meses">Meses (mais vencidos primeiro)</option>
+              </select>
+              <span class="cc-filtro-ativo" *ngIf="filtroAtivo">
+                <i class="bi bi-funnel-fill"></i>
+                Mostrando {{ resultadoOrdenado.length }} de {{ resultado.length }}
+                <button type="button" class="cc-limpar-filtro" (click)="limparFiltroSituacao()" title="Mostrar todas as situações">
+                  <i class="bi bi-x-lg"></i> limpar filtro
+                </button>
+              </span>
+              <span class="cc-badge">
+                {{ resultado.length }} nobreak(s) em {{ qtClientesNoResultado }} cliente(s)
+              </span>
+            </div>
+          </div>
+
+          <div class="cc-alerta" *ngIf="mensagemErro">
+            <i class="bi bi-exclamation-triangle-fill"></i> {{ mensagemErro }}
+          </div>
+
+          <p class="cc-vazio" *ngIf="!mensagemErro && resultado.length === 0">
+            Nenhum nobreak com bateria vencida para os filtros escolhidos.
+          </p>
+
+          <div class="cc-table-wrap cc-table-resultado" #tabelaResultado *ngIf="resultado.length > 0"
+            [style.max-height.px]="alturaTabela">
+            <table class="cc-table">
+              <thead>
+                <tr>
+                  <th>Cliente</th>
+                  <th>Marca</th>
+                  <th>Modelo</th>
+                  <th>Serial</th>
+                  <th>Patrimônio</th>
+                  <th>Últ. OS</th>
+                  <th>Últ. manutenção</th>
+                  <th class="cc-num">Meses</th>
+                  <th class="cc-num">Valor</th>
+                  <th class="cc-num" title="Manutenções válidas">Manut.</th>
+                  <th class="cc-th-filtro" [class.cc-th-filtro-ativo]="filtroAtivo">
+                    <select class="cc-select-cabecalho" [(ngModel)]="filtroSituacao" [ngModelOptions]="{ standalone: true }"
+                      title="Filtrar por situação">
+                      <option value="TODOS">Situação: todas ({{ resultado.length }})</option>
+                      <option value="SEM_CONTATO">Sem contato ({{ qtNoFiltro('SEM_CONTATO') }})</option>
+                      <option value="CLIENTE_CONTATADO">Cliente contatado – equip. não tratado ({{ qtNoFiltro('CLIENTE_CONTATADO') }})</option>
+                      <optgroup label="Em andamento">
+                        <option *ngFor="let o of opcoesFiltroAndamento" [value]="o.codigo">{{ o.nome }} ({{ qtNoFiltro(o.codigo) }})</option>
+                      </optgroup>
+                      <optgroup label="Rejeitado">
+                        <option *ngFor="let o of opcoesFiltroRejeitado" [value]="o.codigo">{{ o.nome }} ({{ qtNoFiltro(o.codigo) }})</option>
+                      </optgroup>
+                    </select>
+                  </th>
+                  <th class="cc-col-acao">Detalhar</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let n of resultadoOrdenado">
+                  <td class="cc-col-cliente" [title]="n.codcli + ' – ' + n.fantasia + ' / ' + n.rzsocial">
+                    <i class="bi bi-telephone-outbound-fill cc-recente" *ngIf="contatadoRecentemente(n.clienteUltimoContato)"
+                      [title]="'Cliente contatado nos últimos ' + diasAvisoRecente + ' dias'"></i>
+                    <span class="cc-cod">{{ n.codcli }}</span> {{ n.fantasia }}
+                  </td>
+                  <td class="cc-col-curta" [title]="n.marca">{{ n.marca }}</td>
+                  <td>{{ n.modelo }}</td>
+                  <td class="cc-col-serial"
+                    [title]="n.identificadoPor === 'SERIAL' ? n.serial : 'Sem serial: identificado por cliente + marca + modelo'">
+                    <ng-container *ngIf="n.identificadoPor === 'SERIAL'; else semSerial">{{ n.serial }}</ng-container>
+                    <ng-template #semSerial><span class="cc-tag">sem serial</span></ng-template>
+                  </td>
+                  <td class="cc-col-curta" [title]="n.patrimonio">{{ n.patrimonio }}</td>
+                  <td>{{ n.ultimaOs }}</td>
+                  <td>{{ dataBr(n.ultimaManutencao) }}</td>
+                  <td class="cc-num cc-meses">{{ n.mesesDesdeManutencao }}</td>
+                  <td class="cc-num">{{ moeda(n.valorUltimaOs) }}</td>
+                  <td class="cc-num">{{ n.qtManutencoes }}</td>
+                  <td class="cc-col-situacao" [title]="dicaSituacao(n)">
+                    <span class="cc-sit" [ngClass]="classeSituacao(n.situacao)">{{ textoSituacao(n) }}</span>
+                    <span class="cc-sit-obs" *ngIf="n.situacao === 'CLIENTE_CONTATADO'">equip. não tratado</span>
+                    <span class="cc-sit-obs" *ngIf="n.situacao === 'ANDAMENTO' && n.equipDataRetorno"
+                      [class.cc-vencido]="retornoVencido(n)">
+                      <i class="bi bi-calendar-event"></i> {{ dataBr(n.equipDataRetorno) }}
+                    </span>
+                  </td>
+                  <td class="cc-col-acao">
+                    <button type="button" class="cc-icon-btn" (click)="abrirDetalhe(n)" title="Detalhar equipamento e cliente">
+                      <i class="bi bi-search"></i>
+                    </button>
+                  </td>
+                </tr>
+                <tr *ngIf="resultadoOrdenado.length === 0">
+                  <td colspan="12" class="cc-vazio">Nenhum equipamento nesta situação.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ======================== MODAL DE DETALHAMENTO ======================== -->
+<div class="cc-modal-fundo" *ngIf="detalheAberto" (click)="fecharDetalhe()">
+  <div class="cc-modal" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
+
+    <div class="cc-modal-topo">
+      <div>
+        <h2><i class="bi bi-hdd-stack"></i> {{ itemDetalhe?.marca }} {{ itemDetalhe?.modelo }}</h2>
+        <p>
+          Última manutenção em <strong>{{ dataBr(itemDetalhe?.ultimaManutencao) }}</strong>
+          (há {{ itemDetalhe?.mesesDesdeManutencao }} meses) – OS
+          <a class="cc-link" [routerLink]="['/os/consulta/alterapg1', itemDetalhe?.ultimaOs]" target="_blank"
+            title="Abrir a ordem de serviço em uma nova aba">{{ itemDetalhe?.ultimaOs }} <i class="bi bi-box-arrow-up-right"></i></a>
+        </p>
+      </div>
+      <button type="button" class="cc-modal-fechar" (click)="fecharDetalhe()" title="Fechar (Esc)">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+
+    <div class="cc-modal-corpo">
+
+      <div class="cc-loading" *ngIf="carregandoDetalhe">
+        <span class="cc-spinner"></span> carregando...
+      </div>
+      <div class="cc-alerta" *ngIf="erroDetalhe">
+        <i class="bi bi-exclamation-triangle-fill"></i> {{ erroDetalhe }}
+      </div>
+
+      <div class="cc-detalhe-grid">
+
+        <!-- EQUIPAMENTO -->
+        <section class="cc-card">
+          <div class="cc-card-title"><i class="bi bi-hdd-stack"></i> Equipamento</div>
+          <dl class="cc-dados">
+            <dt>Marca / Modelo</dt><dd>{{ itemDetalhe?.marca }} {{ itemDetalhe?.modelo }}</dd>
+            <dt>Potência</dt><dd>{{ nomePotencia(itemDetalhe?.potenciaVa) || '—' }}</dd>
+            <dt>Serial</dt>
+            <dd>
+              {{ textoOuTraco(itemDetalhe?.serial) }}
+              <span class="cc-tag" *ngIf="itemDetalhe?.identificadoPor !== 'SERIAL'">sem serial confiável</span>
+            </dd>
+            <dt>Patrimônio</dt><dd>{{ textoOuTraco(itemDetalhe?.patrimonio) }}</dd>
+            <dt>Identificado por</dt>
+            <dd>{{ itemDetalhe?.identificadoPor === 'SERIAL' ? 'Serial' : 'Cliente + marca + modelo' }}</dd>
+            <dt>Manutenções</dt>
+            <dd>{{ itemDetalhe?.qtManutencoes }} válida(s) de {{ itemDetalhe?.qtPassagensTotal }} passagem(ns)</dd>
+          </dl>
+        </section>
+
+        <!-- CLIENTE -->
+        <section class="cc-card">
+          <div class="cc-card-title"><i class="bi bi-person-lines-fill"></i> Cliente</div>
+          <dl class="cc-dados" *ngIf="clienteDetalhe">
+            <dt>Código</dt>
+            <dd>
+              <a class="cc-link" [routerLink]="['/cliente/altera', itemDetalhe?.codcli]" target="_blank"
+                title="Abrir o cliente em uma nova aba">{{ itemDetalhe?.codcli }} <i class="bi bi-box-arrow-up-right"></i></a>
+            </dd>
+            <dt>Fantasia</dt><dd>{{ textoOuTraco(clienteDetalhe.nomefantasia) }}</dd>
+            <dt>Razão social</dt><dd>{{ textoOuTraco(clienteDetalhe.razaosocial) }}</dd>
+            <dt>Contato</dt><dd>{{ textoOuTraco(clienteDetalhe.contato) }}</dd>
+            <dt>Telefones</dt>
+            <dd>{{ textoOuTraco(telefones(clienteDetalhe)) }}</dd>
+            <dt>E-mail</dt><dd>{{ textoOuTraco(clienteDetalhe.email) }}</dd>
+            <dt>Endereço</dt><dd>{{ textoOuTraco(enderecoCompleto(clienteDetalhe)) }}</dd>
+            <dt>Segmento</dt><dd>{{ textoOuTraco(clienteDetalhe.segmento) }}</dd>
+          </dl>
+        </section>
+      </div>
+
+      <!-- CONTATOS DO TELEMARKETING -->
+      <section class="cc-card cc-card-contatos">
+        <div class="cc-card-title cc-title-row">
+          <span><i class="bi bi-headset"></i> Contatos com o cliente</span>
+          <div class="cc-card-actions">
+            <span class="cc-sit" *ngIf="itemDetalhe" [ngClass]="classeSituacao(itemDetalhe.situacao)"
+              title="Situação deste equipamento">
+              Este equipamento: {{ textoSituacao(itemDetalhe) }}
+            </span>
+            <button type="button" class="cc-btn cc-btn-primary cc-btn-sm" *ngIf="!formContatoAberto"
+              (click)="abrirFormContato()">
+              <i class="bi bi-plus-circle"></i> Registrar contato
+            </button>
+          </div>
+        </div>
+
+        <div class="cc-alerta" *ngIf="erroContato && !formContatoAberto">
+          <i class="bi bi-exclamation-triangle-fill"></i> {{ erroContato }}
+        </div>
+
+        <!-- FORMULÁRIO DE NOVO CONTATO -->
+        <div class="cc-form-contato" *ngIf="formContatoAberto">
+
+          <div class="cc-aviso" *ngIf="avisoContatoRecente as recente">
+            <i class="bi bi-exclamation-circle-fill"></i>
+            Este cliente já foi contatado em <strong>{{ dataHoraBr(recente.dataHora) }}</strong>
+            por <strong>{{ recente.operador }}</strong> (menos de {{ diasAvisoRecente }} dias).
+          </div>
+
+          <div class="cc-grid-contato">
+            <div class="cc-field">
+              <label class="cc-label" for="operador"><i class="bi bi-person-badge"></i> Operador</label>
+              <select id="operador" class="cc-input cc-select" [(ngModel)]="novoContato.operador" name="operador">
+                <option value="">Selecione...</option>
+                <option *ngFor="let a of atendentes" [value]="a">{{ a }}</option>
+              </select>
+            </div>
+            <div class="cc-field">
+              <label class="cc-label" for="canal"><i class="bi bi-chat-dots"></i> Canal</label>
+              <select id="canal" class="cc-input cc-select" [(ngModel)]="novoContato.canal" name="canal">
+                <option *ngFor="let c of canais" [value]="c.codigo">{{ c.nome }}</option>
+              </select>
+            </div>
+            <div class="cc-field">
+              <label class="cc-label" for="pessoa"><i class="bi bi-person"></i> Falou com</label>
+              <input id="pessoa" class="cc-input" [(ngModel)]="novoContato.pessoaContatada" name="pessoa"
+                maxlength="100" placeholder="Nome da pessoa">
+            </div>
+            <div class="cc-field">
+              <label class="cc-label" for="retorno"><i class="bi bi-calendar-event"></i> Retornar em</label>
+              <input id="retorno" type="date" class="cc-input" [(ngModel)]="novoContato.dataRetorno" name="retorno">
+            </div>
+          </div>
+
+          <div class="cc-field">
+            <label class="cc-label" for="observacao"><i class="bi bi-chat-left-text"></i> Observação</label>
+            <textarea id="observacao" class="cc-input cc-textarea" [(ngModel)]="novoContato.observacao" name="observacao"
+              maxlength="1000" rows="2" placeholder="O que foi conversado"></textarea>
+          </div>
+
+          <!-- EQUIPAMENTOS DO CLIENTE -->
+          <div class="cc-equip-contato">
+            <div class="cc-equip-contato-topo">
+              <span class="cc-label"><i class="bi bi-hdd-stack"></i> Equipamentos tratados neste contato
+                ({{ qtEquipamentosMarcados }} de {{ equipamentosNoContato.length }})</span>
+              <div class="cc-aplicar-todos">
+                <select class="cc-input cc-select cc-select-sm" [(ngModel)]="resultadoParaTodos" name="paraTodos">
+                  <option value="">Mesmo resultado para os marcados...</option>
+                  <option *ngFor="let r of resultadosContato" [value]="r.codigo">{{ r.nome }}</option>
+                </select>
+                <button type="button" class="cc-btn cc-btn-ghost cc-btn-sm" (click)="aplicarResultadoATodos()"
+                  [disabled]="!resultadoParaTodos">Aplicar</button>
+              </div>
+            </div>
+
+            <table class="cc-table cc-table-equip-contato">
+              <thead>
+                <tr>
+                  <th>Falado?</th>
+                  <th>Equipamento</th>
+                  <th>Serial</th>
+                  <th>Últ. manutenção</th>
+                  <th>Situação atual</th>
+                  <th>Resultado neste contato</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let e of equipamentosNoContato; let i = index" [class.cc-linha-marcada]="e.marcado">
+                  <td class="cc-centro">
+                    <input type="checkbox" class="cc-check" [(ngModel)]="e.marcado" [name]="'marcado' + i">
+                  </td>
+                  <td>{{ e.item.marca }} {{ e.item.modelo }} <span class="cc-muted">(OS {{ e.item.ultimaOs }})</span></td>
+                  <td>{{ e.item.identificadoPor === 'SERIAL' ? e.item.serial : 'sem serial' }}</td>
+                  <td>{{ dataBr(e.item.ultimaManutencao) }}</td>
+                  <td><span class="cc-sit" [ngClass]="classeSituacao(e.item.situacao)">{{ textoSituacao(e.item) }}</span></td>
+                  <td>
+                    <select class="cc-input cc-select cc-select-sm" [(ngModel)]="e.resultado" [name]="'resultado' + i"
+                      [disabled]="!e.marcado" [class.is-invalid]="e.marcado && !e.resultado && erroContato">
+                      <option value="">{{ e.marcado ? 'Selecione...' : '—' }}</option>
+                      <optgroup label="Em andamento">
+                        <ng-container *ngFor="let r of resultadosContato">
+                          <option *ngIf="r.grupo === 'ANDAMENTO'" [value]="r.codigo">{{ r.nome }}</option>
+                        </ng-container>
+                      </optgroup>
+                      <optgroup label="Rejeitado">
+                        <ng-container *ngFor="let r of resultadosContato">
+                          <option *ngIf="r.grupo === 'REJEITADO'" [value]="r.codigo">{{ r.nome }}</option>
+                        </ng-container>
+                      </optgroup>
+                    </select>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <p class="cc-muted cc-nota">
+              Mostra os nobreaks vencidos deste cliente que estão na busca atual. Desmarcados = não foram falados neste contato.
+            </p>
+          </div>
+
+          <div class="cc-alerta" *ngIf="erroContato">
+            <i class="bi bi-exclamation-triangle-fill"></i> {{ erroContato }}
+          </div>
+
+          <div class="cc-form-acoes">
+            <button type="button" class="cc-btn cc-btn-ghost cc-btn-sm" (click)="cancelarFormContato()"
+              [disabled]="salvandoContato">Cancelar</button>
+            <button type="button" class="cc-btn cc-btn-primary cc-btn-sm" (click)="salvarContato()"
+              [disabled]="salvandoContato">
+              <i class="bi bi-check2-circle"></i> {{ salvandoContato ? 'Gravando...' : 'Gravar contato' }}
+            </button>
+          </div>
+        </div>
+
+        <!-- LINHA DO TEMPO DOS CONTATOS -->
+        <div class="cc-loading" *ngIf="carregandoContatos"><span class="cc-spinner"></span> carregando contatos...</div>
+        <p class="cc-vazio" *ngIf="!carregandoContatos && contatos.length === 0 && !formContatoAberto">
+          Nenhum contato registrado com este cliente.
+        </p>
+        <ul class="cc-timeline" *ngIf="contatos.length > 0">
+          <li *ngFor="let c of contatos" class="cc-timeline-item">
+            <div class="cc-timeline-topo">
+              <span><i class="bi" [ngClass]="iconeCanal(c.canal)"></i> <strong>{{ dataHoraBr(c.dataHora) }}</strong></span>
+              <span>{{ c.operador }}</span>
+              <span *ngIf="c.pessoaContatada" class="cc-muted">falou com {{ c.pessoaContatada }}</span>
+              <span *ngIf="c.dataRetorno" class="cc-muted"><i class="bi bi-calendar-event"></i> retornar em {{ dataBr(c.dataRetorno) }}</span>
+            </div>
+            <p class="cc-timeline-obs" *ngIf="c.observacao">{{ c.observacao }}</p>
+            <div class="cc-timeline-equips">
+              <span class="cc-muted" *ngIf="c.equipamentos.length === 0">Nenhum equipamento tratado neste contato.</span>
+              <span *ngFor="let e of c.equipamentos" class="cc-sit"
+                [ngClass]="grupoResultado(e.resultado) === 'REJEITADO' ? 'cc-sit-rejeitado' : 'cc-sit-andamento'"
+                [class.cc-sit-destaque]="itemDetalhe?.chaveEquip === e.chaveEquip">
+                {{ e.marca }} {{ e.modelo }}<ng-container *ngIf="e.serial"> ({{ e.serial }})</ng-container>: {{ nomeResultado(e.resultado) }}
+              </span>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <!-- HISTÓRICO -->
+      <section class="cc-card">
+        <div class="cc-card-title cc-title-row">
+          <span><i class="bi bi-clock-history"></i> Histórico do equipamento</span>
+          <span class="cc-badge" *ngIf="historico.length > 0">{{ historico.length }} passagem(ns)</span>
+        </div>
+        <div class="cc-table-wrap cc-table-historico" *ngIf="historico.length > 0">
+          <table class="cc-table">
+            <thead>
+              <tr>
+                <th>OS</th>
+                <th>Entrada</th>
+                <th>Fechamento</th>
+                <th>Status</th>
+                <th class="cc-num">Valor</th>
+                <th>Tarefa</th>
+                <th>Baterias</th>
+                <th>Técnico</th>
+                <th>Serial</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let h of historico" [class.cc-linha-invalida]="!h.valida"
+                [title]="h.valida ? 'Manutenção válida (fechada com valor)' : 'Não conta como manutenção (não fechada ou sem valor)'">
+                <td>
+                  <a class="cc-link" [routerLink]="['/os/consulta/alterapg1', h.os]" target="_blank"
+                    title="Abrir a ordem de serviço em uma nova aba">{{ h.os }}</a>
+                </td>
+                <td>{{ dataBr(h.data) }}</td>
+                <td>{{ dataBr(h.fechamento) }}</td>
+                <td>{{ h.status }}</td>
+                <td class="cc-num">{{ moeda(h.totaliq) }}</td>
+                <td>{{ h.tarefa1 }}</td>
+                <td>{{ h.baterias }}<span *ngIf="h.qt1 && h.baterias"> ({{ h.qt1 }})</span></td>
+                <td>{{ h.tecnico }}</td>
+                <td>{{ h.serial }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>

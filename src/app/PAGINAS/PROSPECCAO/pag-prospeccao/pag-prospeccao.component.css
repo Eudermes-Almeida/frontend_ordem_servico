@@ -1,0 +1,29 @@
+.todo {
+    background: black;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+app-cabecalho, app-menu-lateral, app-rodape {
+    flex-shrink: 0;
+}
+
+app-form-prospeccao,
+app-form-acompanhamento-contatos {
+    flex-grow: 1;
+}
+
+/* Rodapé fixo na parte inferior. O espaço que ele ocupa já é reservado
+   no padding-bottom do .cc-page do formulário. */
+app-rodape {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    z-index: 10;
+}

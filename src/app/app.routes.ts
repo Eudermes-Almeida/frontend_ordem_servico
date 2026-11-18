@@ -22,6 +22,8 @@ import { PagConsultaDespesaComponent } from './PAGINAS/DESPESAS/pag-consulta-des
 import { PaginaAnaliseDespesaComponent } from './PAGINAS/ANALISE_DESPESA/pag-analise-despesa/pagina-analise-despesa/pagina-analise-despesa.component';
 import { PagFinanceiroComponent } from './PAGINAS/FINANCEIRO/pag-financeiro/pag-financeiro/pag-financeiro.component';
 import { PagRelatoriosFinanceirosComponent } from './PAGINAS/RELATORIOS_FINANCEIROS/pag-relatorios-financeiros/pag-relatorios-financeiros/pag-relatorios-financeiros.component';
+import { PagProspeccaoComponent } from './PAGINAS/PROSPECCAO/pag-prospeccao/pag-prospeccao.component';
+import { PagAcompanhamentoContatosComponent } from './PAGINAS/PROSPECCAO/pag-acompanhamento-contatos/pag-acompanhamento-contatos.component';
 
 
 export const routes: Routes = [ 
@@ -49,5 +51,7 @@ export const routes: Routes = [
     { path: 'despesa/consulta',component: PagConsultaDespesaComponent},
     { path: 'financeiro/consulta',component: PagFinanceiroComponent},
     { path: 'financeiro/relatorio',component: PagRelatoriosFinanceirosComponent},
+    { path: 'prospeccao/nobreaks', component: PagProspeccaoComponent },
+    { path: 'prospeccao/contatos', component: PagAcompanhamentoContatosComponent },
     
 ];
