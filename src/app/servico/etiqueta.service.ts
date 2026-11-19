@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { EquipamentoPublico, EtiquetaOs } from '../modelo/Etiqueta';
+import { EquipamentoPublico, EtiquetaOs, FrotaCliente } from '../modelo/Etiqueta';
 
 /**
  * Endereço do backend.
@@ -33,5 +33,10 @@ export class EtiquetaService {
   /** Página pública do QR: última manutenção e histórico do equipamento (sem valores). */
   consultarEquipamento(codigo: string): Observable<EquipamentoPublico> {
     return this.http.get<EquipamentoPublico>(this.urlServidor + `publico/equipamento/${encodeURIComponent(codigo)}`);
+  }
+
+  /** Nobreaks do cliente da etiqueta com a situação do banco de baterias (ativo / atenção / vencido). */
+  consultarFrota(codigo: string): Observable<FrotaCliente> {
+    return this.http.get<FrotaCliente>(this.urlServidor + `publico/equipamento/${encodeURIComponent(codigo)}/frota`);
   }
 }
