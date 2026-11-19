@@ -1,0 +1,11 @@
+logo-so-monitores.cdr  original da logomarca (CorelDRAW X3).
+
+As versões usadas pelo sistema ficam em src/assets/ (SVG):
+  logo-so-monitores.svg  logo completa (página pública do QR)
+  logo-mascote.svg       só o mascote (cabeçalho, à esquerda)
+  logo-marca.svg         só "SÓ monitores & nobreaks" (cabeçalho, à direita)
+
+Foram convertidas com o Inkscape. Na conversão, o "SÓ" (que é uma imagem dentro do arquivo)
+veio com um quadro branco e marcas pretas de recorte: foram removidos, deixando o fundo
+transparente. As letras "SÓ" são vazadas (mostram o fundo escuro) — conferido com o dono.
+O texto "monitores & nobreaks" é branco: a logo só funciona sobre fundo escuro.
