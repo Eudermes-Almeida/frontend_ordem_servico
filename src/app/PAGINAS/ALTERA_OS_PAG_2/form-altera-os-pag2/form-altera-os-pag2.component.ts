@@ -70,6 +70,8 @@ export class FORMALTERAOSPAG2Component {
   exibeMensagemErroValidacao: boolean = false;
   exibirImpOs: boolean = false;
   exibirBotaoImprimir: boolean = false;
+  /** true quando a OS está GRAVADA como FECHADA (ao abrir ou depois de salvar) -> botão "Imprimir etiqueta" */
+  osSalvaFechada: boolean = false;
   
 
   // CONFIGURA FORMULÁRIO
@@ -425,6 +427,16 @@ this.formulario.patchValue({
   }
 
   // Busca ORDEM SERVIÇO por id
+  ////////////////// ETIQUETA 100 x 50 mm COM QR CODE (só OS FECHADA) //////
+  statusFechada(status: string | null | undefined): boolean {
+    return (status || '').trim().toUpperCase() === 'FECHADA';
+  }
+
+  imprimirEtiqueta(): void {
+    if (!this.osSalvaFechada || !this.os?.os) return;
+    window.open(`/os/etiqueta/${this.os.os}`, '_blank');
+  }
+
   // Atualização do método getOsPorId para retornar um Observable
 getOsPorId(os: number): Observable<Os> {
   console.log(`Este é o num os recebido na url ${os}`);
@@ -432,6 +444,7 @@ getOsPorId(os: number): Observable<Os> {
     tap((data: Os) => {
       this.objetoOs = [data]; // Coloca a ordem de serviço dentro de um array
       this.os = data; // Atualiza os dados da ordem de serviço
+      this.osSalvaFechada = this.statusFechada(data?.status);
       console.log('O.S. obtida:', this.objetoOs);
       this.escreveDadosOsNosInputs(data);
     })
@@ -704,6 +717,7 @@ atualizarOS() {
       console.log("Ordem de serviço atualizada com sucesso:", osAtualizado);
       this.exibirTextoOssalva = true;
       this.exibirBotaoImprimir = true;
+      this.osSalvaFechada = this.statusFechada(this.os.status);
     },
     error: (erro) => {
       console.error("Erro ao atualizar a ordem de serviço:", erro);

@@ -1,0 +1,110 @@
+<div class="ep-pagina">
+
+  <header class="ep-topo">
+    <img class="ep-logo" src="assets/logo-so-monitores.svg" alt="Só Monitores & Nobreaks">
+    <div class="ep-titulo">Histórico de manutenção</div>
+  </header>
+
+  <main class="ep-conteudo">
+
+    <div class="ep-aviso" *ngIf="carregando">
+      <span class="spinner-border spinner-border-sm"></span> Carregando...
+    </div>
+
+    <div class="ep-aviso ep-aviso-erro" *ngIf="naoEncontrada">
+      <i class="bi bi-qr-code"></i>
+      <b>Etiqueta não encontrada.</b>
+      <span>Confira se o QR Code foi lido por inteiro ou entre em contato com a Só Monitores.</span>
+    </div>
+
+    <div class="ep-aviso ep-aviso-erro" *ngIf="erro">
+      <i class="bi bi-wifi-off"></i>
+      <b>Não foi possível consultar agora.</b>
+      <span>Tente novamente em alguns minutos.</span>
+    </div>
+
+    <ng-container *ngIf="dados">
+
+      <!-- EQUIPAMENTO -->
+      <section class="ep-card">
+        <div class="ep-equip">{{ descricaoEquipamento() }}</div>
+        <dl class="ep-dados">
+          <div *ngIf="dados.serial"><dt>Nº de série</dt><dd>{{ dados.serial }}</dd></div>
+          <div *ngIf="dados.patrimonio"><dt>Patrimônio</dt><dd>{{ dados.patrimonio }}</dd></div>
+          <div *ngIf="dados.cliente"><dt>Cliente</dt><dd>{{ dados.cliente }}</dd></div>
+        </dl>
+      </section>
+
+      <!-- GARANTIAS DA ÚLTIMA MANUTENÇÃO -->
+      <section class="ep-card" *ngIf="dados.ultimaManutencao as u">
+        <h2><i class="bi bi-shield-check"></i> Garantia</h2>
+        <div class="ep-garantia">
+          <span>Peças e serviço</span>
+          <span class="ep-ate">até {{ dataBr(u.garantiaServicoAte) }}</span>
+          <span class="ep-selo" [class.ep-selo-ok]="vigente(u.garantiaServicoAte)">
+            {{ vigente(u.garantiaServicoAte) ? 'Vigente' : 'Encerrada' }}
+          </span>
+        </div>
+        <div class="ep-garantia" *ngIf="u.garantiaBateriaAte">
+          <span>Baterias</span>
+          <span class="ep-ate">até {{ dataBr(u.garantiaBateriaAte) }}</span>
+          <span class="ep-selo" [class.ep-selo-ok]="vigente(u.garantiaBateriaAte)">
+            {{ vigente(u.garantiaBateriaAte) ? 'Vigente' : 'Encerrada' }}
+          </span>
+        </div>
+        <p class="ep-obs">Prazos contados a partir da entrega (fechamento da OS {{ u.os }}).</p>
+      </section>
+
+      <!-- ÚLTIMA MANUTENÇÃO -->
+      <section class="ep-card" *ngIf="dados.ultimaManutencao as u">
+        <h2><i class="bi bi-tools"></i> Última manutenção</h2>
+        <ng-container *ngTemplateOutlet="detalhes; context: { $implicit: u }"></ng-container>
+      </section>
+
+      <!-- HISTÓRICO -->
+      <section class="ep-card">
+        <h2><i class="bi bi-clock-history"></i> Histórico ({{ dados.historico.length }})</h2>
+        <p class="ep-obs" *ngIf="!dados.historicoPorSerial">
+          Este equipamento não tem número de série identificável; é exibida apenas a ordem de serviço desta etiqueta.
+        </p>
+
+        <div class="ep-hist" *ngFor="let p of dados.historico" [class.ep-hist-etiqueta]="p.osDaEtiqueta">
+          <button type="button" class="ep-hist-cab" (click)="alternar(p)">
+            <span class="ep-hist-data">{{ dataBr(p.fechamento || p.entrada) }}</span>
+            <span class="ep-hist-os">OS {{ p.os }}<small *ngIf="p.osDaEtiqueta"> · esta etiqueta</small></span>
+            <span class="ep-hist-sit">{{ situacao(p) }}</span>
+            <i class="bi" [class.bi-chevron-down]="!abertas.has(p.os)" [class.bi-chevron-up]="abertas.has(p.os)"></i>
+          </button>
+          <div class="ep-hist-corpo" *ngIf="abertas.has(p.os)">
+            <ng-container *ngTemplateOutlet="detalhes; context: { $implicit: p }"></ng-container>
+          </div>
+        </div>
+      </section>
+
+    </ng-container>
+  </main>
+
+  <footer class="ep-rodape">Só Monitores · Assistência técnica</footer>
+</div>
+
+<!-- detalhes de uma OS (usado na última manutenção e no histórico) -->
+<ng-template #detalhes let-p>
+  <dl class="ep-dados">
+    <div><dt>Ordem de serviço</dt><dd>{{ p.os }}</dd></div>
+    <div><dt>Entrada</dt><dd>{{ dataBr(p.entrada) }}</dd></div>
+    <div><dt>Entrega</dt><dd>{{ p.status === 'FECHADA' ? dataBr(p.fechamento) : situacao(p) }}</dd></div>
+    <div *ngIf="p.tecnico"><dt>Técnico</dt><dd>{{ p.tecnico }}</dd></div>
+  </dl>
+  <div class="ep-lista" *ngIf="p.defeitos.length">
+    <h3>Defeito informado</h3>
+    <ul><li *ngFor="let d of p.defeitos">{{ d }}</li></ul>
+  </div>
+  <div class="ep-lista" *ngIf="p.servicos.length">
+    <h3>Serviço realizado</h3>
+    <ul><li *ngFor="let s of p.servicos">{{ s }}</li></ul>
+  </div>
+  <div class="ep-lista" *ngIf="p.itens.length">
+    <h3>Peças e baterias</h3>
+    <ul><li *ngFor="let i of p.itens">{{ i }}</li></ul>
+  </div>
+</ng-template>

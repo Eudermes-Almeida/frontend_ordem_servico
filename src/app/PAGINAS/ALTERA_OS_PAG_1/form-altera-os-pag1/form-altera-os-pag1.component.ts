@@ -184,6 +184,16 @@ onGarantiaChange(event: Event): void {
     
   }
 
+  ////////////////// ETIQUETA 100 x 50 mm COM QR CODE (só OS FECHADA) //////
+  osFechada(): boolean {
+    return (this.os?.status || '').trim().toUpperCase() === 'FECHADA';
+  }
+
+  imprimirEtiqueta(): void {
+    if (!this.osFechada()) return;
+    window.open(`/os/etiqueta/${this.os.os}`, '_blank');
+  }
+
   //////////////////CAPTURA NUM OS QUE VEIO NA URL E CHAMA FUNÇÃO PARA BUSCA O OBJETO OS //////
   carregaNumOsdaUrl(): void {
     // Captura o ID da URL

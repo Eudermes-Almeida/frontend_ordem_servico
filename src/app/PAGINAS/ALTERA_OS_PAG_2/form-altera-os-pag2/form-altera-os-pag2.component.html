@@ -530,6 +530,10 @@ class="form-control total"
 </form>
 </div>
 <button class="btn btn-primary" (click)="gerarPDF()" *ngIf="exibirBotaoImprimir">Imprimir</button>
+<button class="btn btn-primary ms-2" (click)="imprimirEtiqueta()" *ngIf="osSalvaFechada"
+  title="Imprimir a etiqueta com QR Code do histórico do equipamento">
+  <i class="bi bi-qr-code"></i> Imprimir etiqueta
+</button>
 
 
 <!-----------------------------------------------------IMPRIMIR ORDEM SERVIÇO---------------------->

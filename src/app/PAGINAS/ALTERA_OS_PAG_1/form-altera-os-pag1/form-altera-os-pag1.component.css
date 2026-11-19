@@ -285,7 +285,13 @@
   color: #4d94ff;
 }
 
-.cc-btn-ghost:hover {
+.cc-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.cc-btn-ghost:hover:not(:disabled) {
   background: rgba(77, 148, 255, 0.18);
   box-shadow: 0 0 14px rgba(77, 148, 255, 0.25);
 }
