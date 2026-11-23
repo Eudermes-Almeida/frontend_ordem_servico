@@ -82,3 +82,12 @@
     margin: 20px auto; /* Centraliza o formulário */
   }
 }
+
+/* nobreaks do cliente (componente compartilhado com a página do QR) */
+.frota-login {
+  width: 100%;
+  max-width: 640px;
+  margin: 16px auto 8px;
+  padding: 0 8px;
+  box-sizing: border-box;
+}

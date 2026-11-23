@@ -141,5 +141,10 @@
         </div>
       </div>
     </div>
+
+    <!-- nobreaks do cliente (abaixo dos orçamentos): situação dos bancos de baterias e orçamento pelo WhatsApp -->
+    <div class="frota-login" *ngIf="frota && frota.nobreaks.length">
+      <app-frota-nobreaks [frota]="frota" rotulo="Meus nobreaks"></app-frota-nobreaks>
+    </div>
   </form>
 </div>

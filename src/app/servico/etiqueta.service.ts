@@ -39,4 +39,28 @@ export class EtiquetaService {
   consultarFrota(codigo: string): Observable<FrotaCliente> {
     return this.http.get<FrotaCliente>(this.urlServidor + `publico/equipamento/${encodeURIComponent(codigo)}/frota`);
   }
+
+  /**
+   * Nobreaks do cliente para a lista do login externo. O backend confere o CPF/CNPJ com o cadastro
+   * (vai no corpo do POST, não na URL). 403 quando não confere.
+   */
+  consultarFrotaCliente(codcli: number, documento: string): Observable<FrotaCliente> {
+    return this.http.post<FrotaCliente>(this.urlServidor + 'publico/cliente/frota', { codcli, documento });
+  }
+}
+
+/** login externo: guarda codcli + CPF/CNPJ só nesta aba (sessionStorage) para a lista pedir a frota */
+const CHAVE_LOGIN_EXTERNO = 'loginExterno';
+
+export function guardarLoginExterno(codcli: number, documento: string): void {
+  try { sessionStorage.setItem(CHAVE_LOGIN_EXTERNO, JSON.stringify({ codcli, documento })); } catch { }
+}
+
+export function lerLoginExterno(): { codcli: number; documento: string } | null {
+  try {
+    const v = sessionStorage.getItem(CHAVE_LOGIN_EXTERNO);
+    return v ? JSON.parse(v) : null;
+  } catch {
+    return null;
+  }
 }

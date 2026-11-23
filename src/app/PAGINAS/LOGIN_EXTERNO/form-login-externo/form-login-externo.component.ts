@@ -8,6 +8,7 @@ import { OrdemservicoService } from '../../../servico/ordemservico.service';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Router } from '@angular/router';
+import { guardarLoginExterno } from '../../../servico/etiqueta.service';
 
 
 @Component({
@@ -69,6 +70,8 @@ export class FORMLOGINEXTERNOComponent {
 
           if(this.cpfCnpjBuscadoAPI == this.cpfCnpj){
             console.log(" ok os cnpj estão iguais")
+            // a lista usa estes dados para pedir a frota de nobreaks (o backend confere o documento)
+            guardarLoginExterno(Number(this.codcli), this.cpfCnpj);
             //this.router.navigate([`/login/lista/${this.codcli}`]); // aqui chama a página login lista e passa o codcli
               this.router.navigate([`/login/lista/${this.codcli}`]); // Verifique se this.codcli é um número
 

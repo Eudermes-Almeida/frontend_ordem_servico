@@ -47,6 +47,26 @@
   gap: 14px;
 }
 
+/* botão-acordeão verde (mesmo formato do botão laranja da frota) */
+.ep-btn-acordeao {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 16px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #1e9e57, #2fc46f);
+  color: #04210f;
+  font-size: 17px;
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0 4px 18px rgba(47, 196, 111, 0.30);
+}
+.ep-btn-acordeao i { font-size: 22px; color: #04210f; }
+
 .ep-card {
   background: var(--ep-card);
   border: 1px solid var(--ep-borda);
@@ -143,117 +163,14 @@
   padding: 10px 14px;
   border-radius: 10px;
   border: 2px solid;
+  max-width: 45%;          /* "ANÁLISE TÉCNICA" quebra em 2 linhas no celular */
+  text-align: center;
 }
 .ep-estado-ATIVO   { color: var(--ep-ok); border-color: var(--ep-ok); background: rgba(61, 220, 132, 0.10); }
 .ep-estado-ATENCAO { color: #ffc107; border-color: #ffc107; background: rgba(255, 193, 7, 0.10); }
 .ep-estado-VENCIDO { color: #ff6b6b; border-color: #ff6b6b; background: rgba(255, 107, 107, 0.10); }
 .ep-estado-texto { font-size: 15px; }
 .ep-estado-meses { color: var(--ep-suave); font-size: 14px; margin-top: 2px; }
-
-/* ---------- nobreaks deste cliente ---------- */
-.ep-btn-frota {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 14px 16px;
-  border-radius: 12px;
-  border: 1px solid var(--ep-azul);
-  background: rgba(77, 148, 255, 0.12);
-  color: #fff;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-}
-.ep-btn-frota i:first-child { font-size: 20px; color: var(--ep-turquesa); }
-
-.ep-legenda {
-  margin: 12px 0;
-  padding: 10px 12px;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.04);
-  font-size: 14px;
-}
-.ep-legenda-titulo { color: var(--ep-suave); font-size: 13px; margin-bottom: 6px; }
-.ep-legenda-item { display: grid; grid-template-columns: 82px 1fr; gap: 8px; padding: 2px 0; }
-.ep-cor-ATIVO   { color: var(--ep-ok); }
-.ep-cor-ATENCAO { color: #ffc107; }
-.ep-cor-VENCIDO { color: #ff6b6b; }
-
-.ep-filtros {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 6px;
-  margin-bottom: 12px;
-}
-.ep-filtro {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  padding: 8px 4px;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  background: rgba(255, 255, 255, 0.04);
-  color: var(--ep-suave);
-  font-size: 13px;
-  cursor: pointer;
-}
-.ep-filtro b { font-size: 18px; color: var(--ep-texto); }
-.ep-f-ativo b   { color: var(--ep-ok); }
-.ep-f-atencao b { color: #ffc107; }
-.ep-f-vencido b { color: #ff6b6b; }
-.ep-filtro-sel { border-color: var(--ep-azul); background: rgba(77, 148, 255, 0.18); color: #fff; }
-
-.ep-nobreak {
-  padding: 10px 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.07);
-}
-.ep-nobreak-cab { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
-.ep-nobreak-nome { font-size: 15px; font-weight: bold; word-break: break-word; }
-.ep-nobreak-id { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 13px; color: var(--ep-suave); margin-top: 3px; word-break: break-all; }
-.ep-nobreak-data { font-size: 13px; color: var(--ep-suave); margin-top: 3px; }
-
-.ep-sit {
-  flex-shrink: 0;
-  font-size: 12px;
-  font-weight: bold;
-  padding: 3px 10px;
-  border-radius: 20px;
-  border: 1px solid;
-}
-.ep-sit-ATIVO   { color: var(--ep-ok); border-color: var(--ep-ok); }
-.ep-sit-ATENCAO { color: #ffc107; border-color: #ffc107; }
-.ep-sit-VENCIDO { color: #ff6b6b; border-color: #ff6b6b; }
-
-.ep-btn-mais {
-  width: 100%;
-  margin-top: 8px;
-  padding: 10px;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  background: transparent;
-  color: var(--ep-azul);
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.ep-btn-whats {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 14px;
-  padding: 14px 16px;
-  border-radius: 12px;
-  background: #25d366;
-  color: #062b14;
-  font-size: 16px;
-  font-weight: bold;
-  text-decoration: none;
-}
-.ep-btn-whats i { font-size: 22px; }
 
 .ep-rodape {
   text-align: center;

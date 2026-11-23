@@ -9,11 +9,14 @@ import { OrdemservicoService } from '../../../servico/ordemservico.service';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Router } from '@angular/router';
+import { EtiquetaService, lerLoginExterno } from '../../../servico/etiqueta.service';
+import { FrotaCliente } from '../../../modelo/Etiqueta';
+import { FrotaNobreaksComponent } from '../../FROTA_NOBREAKS/frota-nobreaks/frota-nobreaks.component';
 
 @Component({
   selector: 'app-form-login-lista',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, FrotaNobreaksComponent],
   templateUrl: './form-login-lista.component.html',
   styleUrl: './form-login-lista.component.css'
 })
@@ -38,6 +41,7 @@ ngOnInit(): void {
    console.log("Valor convertido para número:", codcli);
  
    this.getAprovacaoOnline(codcli)
+   this.carregarFrota(codcli)
    
  }
  
@@ -75,8 +79,22 @@ ngOnInit(): void {
          private parametrosService: ParametrosService, 
          private servico: OrdemservicoService,
          private cdr: ChangeDetectorRef,
-         private route: ActivatedRoute // Injeta a rota ativa
+         private route: ActivatedRoute, // Injeta a rota ativa
+         private etiquetaService: EtiquetaService
      ) {}
+
+     ///////// NOBREAKS DO CLIENTE (situação dos bancos de baterias + orçamento pelo WhatsApp) /////////
+     frota: FrotaCliente | null = null;
+
+     /** só depois do login: usa o código + CPF/CNPJ digitados (o backend confere com o cadastro) */
+     carregarFrota(codcli: number): void {
+       const login = lerLoginExterno();
+       if (!login || Number(login.codcli) !== codcli) return;   // abriu a URL direto, sem login
+       this.etiquetaService.consultarFrotaCliente(codcli, login.documento).subscribe({
+         next: (f) => this.frota = f,
+         error: () => this.frota = null
+       });
+     }
      
    
      escreveDadosClienteNosInputs(cliente: Cliente): void {

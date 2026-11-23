@@ -25,10 +25,22 @@
 
     <ng-container *ngIf="dados">
 
+      <!-- A página abre só com 2 botões (acordeão exclusivo: abrir um fecha o outro) -->
+
+      <!-- 1) HISTÓRICO DO APARELHO DESTA ETIQUETA (verde) -->
+      <button type="button" class="ep-btn-acordeao" (click)="alternarHistorico()">
+        <i class="bi bi-clock-history"></i>
+        <span>Histórico do {{ nomeAparelho() }} lido no QR Code</span>
+        <i class="bi" [class.bi-chevron-down]="painel !== 'historico'" [class.bi-chevron-up]="painel === 'historico'"></i>
+      </button>
+
+      <ng-container *ngIf="painel === 'historico'">
+
       <!-- EQUIPAMENTO -->
       <section class="ep-card">
         <div class="ep-equip">{{ descricaoEquipamento() }}</div>
         <dl class="ep-dados">
+          <div *ngIf="osDaEtiqueta() as os"><dt>Ordem de serviço</dt><dd>{{ os }}</dd></div>
           <div *ngIf="dados.serial"><dt>Nº de série</dt><dd>{{ dados.serial }}</dd></div>
           <div *ngIf="dados.patrimonio"><dt>Patrimônio</dt><dd>{{ dados.patrimonio }}</dd></div>
           <div *ngIf="dados.cliente"><dt>Cliente</dt><dd>{{ dados.cliente }}</dd></div>
@@ -53,7 +65,6 @@
             {{ vigente(u.garantiaBateriaAte) ? 'Vigente' : 'Encerrada' }}
           </span>
         </div>
-        <p class="ep-obs">Prazos contados a partir da entrega (fechamento da OS {{ u.os }}).</p>
       </section>
 
       <!-- ESTADO DA BATERIA DESTE APARELHO (critério da prospecção) -->
@@ -61,14 +72,14 @@
         <h2><i class="bi bi-battery-half"></i> Estado da bateria</h2>
         <div class="ep-estado">
           <span class="ep-estado-selo" [ngClass]="'ep-estado-' + dados.bateriaSituacao">
-            {{ rotuloSituacao(dados.bateriaSituacao).toUpperCase() }}
+            {{ rotuloSituacao(dados.bateriaSituacao) }}
           </span>
           <div class="ep-estado-texto">
             <div>Última manutenção {{ dataBr(dados.bateriaUltimaManutencao) }}</div>
-            <div class="ep-estado-meses">{{ tempoDesde(dados.bateriaMeses ?? 0) }} · OS {{ dados.bateriaOs }}</div>
+            <div class="ep-estado-meses">{{ tempoDesde(dados.bateriaMeses ?? 0) }}</div>
           </div>
         </div>
-        <ng-container *ngTemplateOutlet="legendaBateria"></ng-container>
+        <app-legenda-bateria></app-legenda-bateria>
       </section>
 
       <!-- ÚLTIMA MANUTENÇÃO -->
@@ -97,57 +108,17 @@
         </div>
       </section>
 
-      <!-- NOBREAKS DESTE CLIENTE (situação dos bancos de baterias) -->
-      <button type="button" class="ep-btn-frota" *ngIf="frota && frota.nobreaks.length" (click)="alternarFrota()">
-        <i class="bi bi-battery-charging"></i>
-        <span>Nobreaks deste cliente ({{ frota.nobreaks.length }})</span>
-        <i class="bi" [class.bi-chevron-down]="!frotaAberta" [class.bi-chevron-up]="frotaAberta"></i>
-      </button>
+      </ng-container>
 
-      <section class="ep-card" *ngIf="frota && frotaAberta">
-        <h2><i class="bi bi-battery-half"></i> Situação dos bancos de baterias</h2>
-        <ng-container *ngTemplateOutlet="legendaBateria"></ng-container>
-
-        <div class="ep-filtros">
-          <button type="button" class="ep-filtro" [class.ep-filtro-sel]="filtro === 'TODOS'" (click)="escolherFiltro('TODOS')">
-            Todos <b>{{ frota.nobreaks.length }}</b>
-          </button>
-          <button type="button" class="ep-filtro ep-f-ativo" [class.ep-filtro-sel]="filtro === 'ATIVO'" (click)="escolherFiltro('ATIVO')">
-            Ativos <b>{{ frota.ativos }}</b>
-          </button>
-          <button type="button" class="ep-filtro ep-f-atencao" [class.ep-filtro-sel]="filtro === 'ATENCAO'" (click)="escolherFiltro('ATENCAO')">
-            Atenção <b>{{ frota.atencao }}</b>
-          </button>
-          <button type="button" class="ep-filtro ep-f-vencido" [class.ep-filtro-sel]="filtro === 'VENCIDO'" (click)="escolherFiltro('VENCIDO')">
-            Vencidos <b>{{ frota.vencidos }}</b>
-          </button>
-        </div>
-
-        <p class="ep-obs" *ngIf="!nobreaksFiltrados().length">Nenhum nobreak nesta situação.</p>
-
-        <div class="ep-nobreak" *ngFor="let n of nobreaksVisiveis()">
-          <div class="ep-nobreak-cab">
-            <span class="ep-nobreak-nome">{{ n.marca }} {{ n.modelo }}</span>
-            <span class="ep-sit" [ngClass]="'ep-sit-' + n.situacao">{{ rotuloSituacao(n.situacao) }}</span>
-          </div>
-          <div class="ep-nobreak-id" *ngIf="n.serial || n.patrimonio">
-            <span *ngIf="n.serial">Série {{ n.serial }}</span>
-            <span *ngIf="n.patrimonio">Patrimônio {{ n.patrimonio }}</span>
-          </div>
-          <div class="ep-nobreak-data">
-            Última manutenção {{ dataBr(n.ultimaManutencao) }} ({{ tempoDesde(n.meses) }})
-          </div>
-          <div class="ep-nobreak-data">OS {{ n.ultimaOs }}</div>
-        </div>
-
-        <button type="button" class="ep-btn-mais" *ngIf="nobreaksFiltrados().length > nobreaksVisiveis().length" (click)="mostrarMais()">
-          Mostrar mais ({{ nobreaksFiltrados().length - nobreaksVisiveis().length }} restantes)
-        </button>
-
-        <a class="ep-btn-whats" *ngIf="temOrcamento()" [href]="linkWhatsapp()" target="_blank" rel="noopener">
-          <i class="bi bi-whatsapp"></i> Solicitar orçamento pelo WhatsApp
-        </a>
-      </section>
+      <!-- 2) STATUS DAS BATERIAS DE TODOS OS NOBREAKS DO CLIENTE (laranja; componente compartilhado com o login externo) -->
+      <app-frota-nobreaks
+        [frota]="frota"
+        [aberta]="painel === 'frota'"
+        (abertaChange)="aoAlternarFrota($event)"
+        [destaque]="true"
+        rotulo="Status baterias de TODOS* nobreaks do cliente"
+        nota="*considerando nobreaks consertados por nossa empresa, nos últimos 6 anos">
+      </app-frota-nobreaks>
 
     </ng-container>
   </main>
@@ -174,15 +145,5 @@
   <div class="ep-lista" *ngIf="p.itens.length">
     <h3>Peças e baterias</h3>
     <ul><li *ngFor="let i of p.itens">{{ i }}</li></ul>
-  </div>
-</ng-template>
-
-<!-- legenda da situação do banco de baterias (card do aparelho e lista do cliente) -->
-<ng-template #legendaBateria>
-  <div class="ep-legenda">
-    <div class="ep-legenda-titulo">Legenda (tempo desde a última manutenção):</div>
-    <div class="ep-legenda-item"><b class="ep-cor-ATIVO">ATIVO</b><span>até 18 meses</span></div>
-    <div class="ep-legenda-item"><b class="ep-cor-ATENCAO">ATENÇÃO</b><span>mais de 18 meses até 24 meses</span></div>
-    <div class="ep-legenda-item"><b class="ep-cor-VENCIDO">VENCIDO</b><span>mais de 24 meses</span></div>
   </div>
 </ng-template>

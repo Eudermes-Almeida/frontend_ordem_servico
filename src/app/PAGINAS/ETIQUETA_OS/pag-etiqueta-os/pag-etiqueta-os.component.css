@@ -93,34 +93,30 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
+  justify-content: center;
+  gap: 1.2mm;
   line-height: 1.15;
-  white-space: nowrap;
 }
 
-.etq-empresa { font-size: 8.3pt; font-weight: bold; letter-spacing: -0.03mm; }
-.etq-whats {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1mm;
-  font-size: 12pt;
+/* logomarca completa (mascote + marca + WhatsApp) em preto e branco: assets/logo_preto_e_branco_com_telefone.jpg,
+   arte do dono usada como está (branco sobre fundo preto; não inverter nem recortar) */
+.etq-logo { display: block; width: 100%; max-height: 18mm; object-fit: contain; }
+
+.etq-os { font-size: 15pt; font-weight: bold; line-height: 1.05; white-space: nowrap; }
+
+/* nome do cliente: até 2 linhas, o resto vira "..." */
+.etq-cliente {
+  font-size: 9pt;
   font-weight: bold;
-  line-height: 5.5mm;
-  min-height: 5.5mm;
-  margin: 0.6mm 0 1.2mm;
+  max-width: 100%;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  word-break: break-word;
 }
-.etq-whats svg {
-  display: block;
-  width: 4.6mm;
-  height: 4.6mm;
-  flex: 0 0 4.6mm;
-  overflow: visible;
-}
-.etq-linha   { font-size: 9pt; margin-bottom: 1.2mm; }
-.etq-rotulo  { font-size: 8.5pt; line-height: 1.2; }
-.etq-data    { font-size: 12pt; font-weight: bold; line-height: 1.1; margin-bottom: 0.9mm; }
-.etq-os      { font-size: 15pt; font-weight: bold; line-height: 1.05; margin-top: 0.4mm; }
-.etq-leia    { font-size: 7.5pt; margin-top: 0.6mm; }
+
+.etq-leia { font-size: 8pt; line-height: 1.2; }
 
 @media (max-width: 620px) {
   .etq-moldura { width: calc(100mm * 0.9); height: calc(50mm * 0.9); }

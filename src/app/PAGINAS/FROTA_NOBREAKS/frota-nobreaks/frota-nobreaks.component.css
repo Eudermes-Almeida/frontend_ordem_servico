@@ -1,0 +1,144 @@
+:host {
+  --fn-card: #161a20;
+  --fn-borda: rgba(77, 148, 255, 0.28);
+  --fn-azul: #4d94ff;
+  --fn-turquesa: #3fd0c9;
+  --fn-texto: #e8e8e8;
+  --fn-suave: #a3a9b3;
+  --fn-ok: #3ddc84;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: var(--fn-texto);
+  text-align: left;
+}
+
+.fn-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--fn-azul);
+  background: rgba(77, 148, 255, 0.12);
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.fn-btn i:first-child { font-size: 20px; color: var(--fn-turquesa); }
+
+/* versão em evidência (página do QR): laranja sólido, texto escuro */
+.fn-btn-destaque {
+  border: none;
+  background: linear-gradient(135deg, #ff8f00, #ffb300);
+  color: #1d1300;
+  font-size: 17px;
+  text-align: center;
+  box-shadow: 0 4px 18px rgba(255, 152, 0, 0.35);
+}
+.fn-btn-destaque i,
+.fn-btn-destaque i:first-child { color: #1d1300; font-size: 22px; }
+
+.fn-nota {
+  margin: 6px 4px 0;
+  font-size: 13px;
+  color: var(--fn-suave);
+  text-align: center;
+}
+
+.fn-card {
+  background: var(--fn-card);
+  border: 1px solid var(--fn-borda);
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+.fn-card h2 {
+  font-size: 17px;
+  margin: 0 0 4px;
+  color: var(--fn-turquesa);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fn-obs { font-size: 13px; color: var(--fn-suave); margin: 8px 0 0; }
+
+.fn-filtros {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  margin-bottom: 12px;
+}
+.fn-filtro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 8px 4px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--fn-suave);
+  font-size: 13px;
+  line-height: 1.2;
+  text-align: center;      /* "ANÁLISE TÉCNICA" quebra em 2 linhas no celular */
+  cursor: pointer;
+}
+.fn-filtro b { font-size: 18px; color: var(--fn-texto); }
+.fn-f-ativo b   { color: var(--fn-ok); }
+.fn-f-atencao b { color: #ffc107; }
+.fn-f-vencido b { color: #ff6b6b; }
+.fn-filtro-sel { border-color: var(--fn-azul); background: rgba(77, 148, 255, 0.18); color: #fff; }
+
+.fn-nobreak {
+  padding: 10px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+.fn-nobreak-cab { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.fn-nobreak-nome { font-size: 15px; font-weight: bold; word-break: break-word; }
+.fn-nobreak-id { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 13px; color: var(--fn-suave); margin-top: 3px; word-break: break-all; }
+.fn-nobreak-data { font-size: 13px; color: var(--fn-suave); margin-top: 3px; }
+
+.fn-sit {
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 3px 10px;
+  border-radius: 20px;
+  border: 1px solid;
+}
+.fn-sit-ATIVO   { color: var(--fn-ok); border-color: var(--fn-ok); }
+.fn-sit-ATENCAO { color: #ffc107; border-color: #ffc107; }
+.fn-sit-VENCIDO { color: #ff6b6b; border-color: #ff6b6b; }
+
+.fn-btn-mais {
+  width: 100%;
+  margin-top: 8px;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: transparent;
+  color: var(--fn-azul);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.fn-btn-whats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 14px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: #25d366;
+  color: #062b14;
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: none;
+}
+.fn-btn-whats i { font-size: 22px; }

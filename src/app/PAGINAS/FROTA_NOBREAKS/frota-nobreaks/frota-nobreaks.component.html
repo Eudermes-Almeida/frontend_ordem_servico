@@ -1,0 +1,57 @@
+<ng-container *ngIf="frota && frota.nobreaks.length">
+
+  <div class="fn-btn-bloco">
+    <button type="button" class="fn-btn" [class.fn-btn-destaque]="destaque" (click)="alternar()">
+      <i class="bi bi-battery-charging"></i>
+      <span>{{ rotulo }} ({{ frota.nobreaks.length }})</span>
+      <i class="bi" [class.bi-chevron-down]="!aberta" [class.bi-chevron-up]="aberta"></i>
+    </button>
+    <p class="fn-nota" *ngIf="nota">{{ nota }}</p>
+  </div>
+
+  <section class="fn-card" *ngIf="aberta">
+    <h2><i class="bi bi-battery-half"></i> Situação dos bancos de baterias</h2>
+    <app-legenda-bateria></app-legenda-bateria>
+
+    <div class="fn-filtros">
+      <button type="button" class="fn-filtro" [class.fn-filtro-sel]="filtro === 'TODOS'" (click)="escolherFiltro('TODOS')">
+        Todos <b>{{ frota.nobreaks.length }}</b>
+      </button>
+      <button type="button" class="fn-filtro fn-f-ativo" [class.fn-filtro-sel]="filtro === 'ATIVO'" (click)="escolherFiltro('ATIVO')">
+        ATIVO <b>{{ frota.ativos }}</b>
+      </button>
+      <button type="button" class="fn-filtro fn-f-atencao" [class.fn-filtro-sel]="filtro === 'ATENCAO'" (click)="escolherFiltro('ATENCAO')">
+        TESTAR <b>{{ frota.atencao }}</b>
+      </button>
+      <button type="button" class="fn-filtro fn-f-vencido" [class.fn-filtro-sel]="filtro === 'VENCIDO'" (click)="escolherFiltro('VENCIDO')">
+        ANÁLISE TÉCNICA <b>{{ frota.vencidos }}</b>
+      </button>
+    </div>
+
+    <p class="fn-obs" *ngIf="!nobreaksFiltrados().length">Nenhum nobreak nesta situação.</p>
+
+    <div class="fn-nobreak" *ngFor="let n of nobreaksVisiveis()">
+      <div class="fn-nobreak-cab">
+        <span class="fn-nobreak-nome">{{ n.marca }} {{ n.modelo }}</span>
+        <span class="fn-sit" [ngClass]="'fn-sit-' + n.situacao">{{ rotuloSituacao(n.situacao) }}</span>
+      </div>
+      <div class="fn-nobreak-id" *ngIf="n.serial || n.patrimonio">
+        <span *ngIf="n.serial">Série {{ n.serial }}</span>
+        <span *ngIf="n.patrimonio">Patrimônio {{ n.patrimonio }}</span>
+      </div>
+      <div class="fn-nobreak-data">
+        Última manutenção {{ dataBr(n.ultimaManutencao) }} ({{ tempoDesde(n.meses) }})
+      </div>
+      <div class="fn-nobreak-data">OS {{ n.ultimaOs }}</div>
+    </div>
+
+    <button type="button" class="fn-btn-mais" *ngIf="nobreaksFiltrados().length > nobreaksVisiveis().length" (click)="mostrarMais()">
+      Mostrar mais ({{ nobreaksFiltrados().length - nobreaksVisiveis().length }} restantes)
+    </button>
+
+    <a class="fn-btn-whats" *ngIf="temOrcamento()" [href]="linkWhatsapp()" target="_blank" rel="noopener">
+      <i class="bi bi-whatsapp"></i> Solicitar orçamento pelo WhatsApp
+    </a>
+  </section>
+
+</ng-container>
