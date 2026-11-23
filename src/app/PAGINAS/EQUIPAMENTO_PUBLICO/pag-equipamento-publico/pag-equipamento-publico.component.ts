@@ -8,7 +8,7 @@ import { LegendaBateriaComponent } from '../../FROTA_NOBREAKS/legenda-bateria/le
 
 /**
  * Página pública aberta pelo QR Code da etiqueta do equipamento (sem login).
- * Rota: /e/:codigo   ex.: https://app.somonitores.tec.br/e/97eVe7BEDADS
+ * Rota: /e/:codigo   ex.: https://status.somonitores.tec.br/e/97eVe7BEDADS
  * Mostra a última manutenção, as garantias e o histórico. Nunca mostra valores.
  * Botão "Nobreaks deste cliente": componente compartilhado FrotaNobreaksComponent
  * (o mesmo usado na lista do login externo).

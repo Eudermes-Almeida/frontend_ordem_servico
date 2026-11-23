@@ -3,13 +3,21 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { EquipamentoPublico, EtiquetaOs, FrotaCliente } from '../modelo/Etiqueta';
 
+/** porta do Caddy que serve só as páginas públicas (/e/, /c/) e a API pública em /api/publico/ */
+const PORTA_SITE_PUBLICO = '2024';
+
 /**
  * Endereço do backend.
- *  - Site externo (app.somonitores.tec.br, aberto pelo QR no celular do cliente): https://api.somonitores.tec.br/
- *  - Rede da loja (IP do servidor, localhost):                                    http://<mesmo endereço>:8085/
+ *  - Site público (status.somonitores.tec.br -> Caddy :2024, QR e link do WhatsApp): <mesmo site>/api/
+ *    (o Caddy repassa só /api/publico/* ao backend; o resto do backend não fica exposto)
+ *  - Outros *.somonitores.tec.br (login externo antigo):                     https://api.somonitores.tec.br/
+ *  - Rede da loja (IP do servidor, localhost):                                 http://<mesmo endereço>:8085/
  */
 export function urlBackend(): string {
   const host = window.location.hostname;
+  if (host.startsWith('status.') || window.location.port === PORTA_SITE_PUBLICO) {
+    return `${window.location.origin}/api/`;
+  }
   if (host.endsWith('somonitores.tec.br')) {
     return 'https://api.somonitores.tec.br/';
   }
