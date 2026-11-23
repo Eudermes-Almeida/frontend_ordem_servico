@@ -1,0 +1,48 @@
+<div class="ep-pagina">
+
+  <header class="ep-topo">
+    <img class="ep-logo" src="assets/logo-so-monitores.svg" alt="Só Monitores & Nobreaks">
+    <div class="ep-titulo">Status das baterias dos seus nobreaks</div>
+  </header>
+
+  <main class="ep-conteudo">
+
+    <div class="ep-aviso" *ngIf="carregando">
+      <span class="spinner-border spinner-border-sm"></span> Carregando...
+    </div>
+
+    <div class="ep-aviso ep-aviso-erro" *ngIf="naoEncontrado">
+      <i class="bi bi-link-45deg"></i>
+      <b>Link não encontrado.</b>
+      <span>Confira se o link foi aberto por inteiro ou entre em contato com a Só Monitores.</span>
+    </div>
+
+    <div class="ep-aviso ep-aviso-erro" *ngIf="erro">
+      <i class="bi bi-wifi-off"></i>
+      <b>Não foi possível consultar agora.</b>
+      <span>Tente novamente em alguns minutos.</span>
+    </div>
+
+    <ng-container *ngIf="frota">
+      <section class="ep-card" *ngIf="frota.cliente">
+        <div class="ep-equip">{{ frota.cliente }}</div>
+      </section>
+
+      <div class="ep-aviso" *ngIf="!frota.nobreaks.length">
+        <i class="bi bi-battery"></i>
+        <span>Nenhum nobreak com manutenção em nossa empresa nos últimos 6 anos.</span>
+      </div>
+
+      <!-- mesmo componente da página do QR, já aberto -->
+      <app-frota-nobreaks
+        [frota]="frota"
+        [aberta]="true"
+        [destaque]="true"
+        rotulo="Status baterias de TODOS* nobreaks do cliente"
+        nota="*considerando nobreaks consertados por nossa empresa, nos últimos 6 anos">
+      </app-frota-nobreaks>
+    </ng-container>
+  </main>
+
+  <footer class="ep-rodape">Só Monitores · Assistência técnica</footer>
+</div>

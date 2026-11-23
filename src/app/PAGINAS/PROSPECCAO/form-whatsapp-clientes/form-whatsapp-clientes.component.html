@@ -1,0 +1,360 @@
+<div class="cc-page">
+  <div class="cc-shell">
+
+    <!-- HEADER -->
+    <div class="cc-header">
+      <div class="cc-header-title">
+        <span class="cc-header-icon"><i class="bi bi-whatsapp"></i></span>
+        <div>
+          <h1>Prospecção – Interação por WhatsApp</h1>
+          <p>Clientes com nobreaks de baterias vencidas: marque e envie o link com o status das baterias</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABAS -->
+    <div class="wz-abas">
+      <button type="button" class="wz-aba" [class.wz-aba-ativa]="aba === 'enviar'" (click)="aba = 'enviar'">
+        <i class="bi bi-send"></i> Enviar mensagens
+      </button>
+      <button type="button" class="wz-aba" [class.wz-aba-ativa]="aba === 'acompanhar'" (click)="abrirAcompanhar()">
+        <i class="bi bi-clipboard-data"></i> Acompanhar envios
+      </button>
+    </div>
+
+    <!-- ======================== ABA: ACOMPANHAR ENVIOS ======================== -->
+    <div class="cc-body" *ngIf="aba === 'acompanhar'">
+      <section class="cc-card">
+        <div class="cc-card-title cc-title-row">
+          <span><i class="bi bi-calendar-range"></i> Mensagens enviadas no período</span>
+          <div class="cc-card-actions">
+            <div class="cc-loading" *ngIf="envCarregando"><span class="cc-spinner"></span> processando...</div>
+            <button type="button" class="cc-btn cc-btn-ghost cc-btn-sm" (click)="periodoEnvios('hoje'); buscarEnvios()">Hoje</button>
+            <button type="button" class="cc-btn cc-btn-ghost cc-btn-sm" (click)="periodoEnvios('semana'); buscarEnvios()">Últimos 7 dias</button>
+            <button type="button" class="cc-btn cc-btn-ghost cc-btn-sm" (click)="periodoEnvios('mes'); buscarEnvios()">Mês atual</button>
+            <button type="button" class="cc-btn cc-btn-primary cc-btn-sm" [disabled]="envCarregando || periodoEnviosInvalido" (click)="buscarEnvios()">
+              <i class="bi bi-search"></i> Buscar
+            </button>
+          </div>
+        </div>
+
+        <div class="cc-grid">
+          <div class="cc-field">
+            <label for="envInicio" class="cc-label"><i class="bi bi-calendar-event"></i> Data inicial</label>
+            <input id="envInicio" type="date" class="cc-input" [(ngModel)]="envInicio">
+          </div>
+          <div class="cc-field">
+            <label for="envFim" class="cc-label"><i class="bi bi-calendar-check"></i> Data final</label>
+            <input id="envFim" type="date" class="cc-input" [(ngModel)]="envFim" [class.is-invalid]="envInicio && envFim && envInicio > envFim">
+          </div>
+          <div class="cc-field">
+            <label for="envOperador" class="cc-label"><i class="bi bi-person-badge"></i> Atendente</label>
+            <select id="envOperador" class="cc-input cc-select" [(ngModel)]="envOperador">
+              <option value="">Todos</option>
+              <option *ngFor="let a of atendentes" [value]="a">{{ a }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="cc-alerta" *ngIf="envErro"><i class="bi bi-exclamation-triangle-fill"></i> {{ envErro }}</div>
+      </section>
+
+      <ng-container *ngIf="envPesquisou && !envErro">
+        <!-- TOTALIZADOR -->
+        <section class="wz-totais">
+          <div class="wz-total">
+            <span class="wz-total-num">{{ envTotalMensagens }}</span>
+            <span class="wz-total-rot">mensagens enviadas</span>
+          </div>
+          <div class="wz-total">
+            <span class="wz-total-num">{{ envClientes.length }}</span>
+            <span class="wz-total-rot">clientes</span>
+          </div>
+          <div class="wz-total wz-total-op" *ngFor="let o of envPorOperador">
+            <span class="wz-total-num">{{ o.mensagens }}</span>
+            <span class="wz-total-rot">{{ o.operador }} · {{ o.clientes }} cliente(s)</span>
+          </div>
+        </section>
+
+        <section class="cc-card">
+          <p class="cc-vazio" *ngIf="envClientes.length === 0">Nenhuma mensagem enviada no período.</p>
+          <div class="cc-table-wrap wz-tabela" *ngIf="envClientes.length > 0">
+            <table class="cc-table">
+              <thead>
+                <tr>
+                  <th>Codcli</th>
+                  <th>Fantasia</th>
+                  <th>Contato</th>
+                  <th class="cc-num">Mensagens</th>
+                  <th>Último envio</th>
+                  <th>Atendente</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let c of envClientes">
+                  <td><span class="cc-cod">{{ c.codcli }}</span></td>
+                  <td class="cc-col-cliente" [title]="c.fantasia">{{ c.fantasia }}</td>
+                  <td class="cc-col-cliente">{{ c.contato }}</td>
+                  <td class="cc-num cc-meses">{{ c.mensagens }}</td>
+                  <td>{{ dataHoraBr(c.ultimoEnvio) }}</td>
+                  <td>{{ c.operadores.join(', ') }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </ng-container>
+    </div>
+
+    <!-- ======================== ABA: ENVIAR MENSAGENS ======================== -->
+    <form *ngIf="aba === 'enviar'" [formGroup]="formulario" (ngSubmit)="buscar()" (keydown.enter)="$event.preventDefault()">
+      <div class="cc-body">
+
+        <!-- FILTROS (mesmos da tela Nobreaks – Baterias Vencidas) -->
+        <section class="cc-card">
+          <div class="cc-card-title cc-title-row">
+            <span><i class="bi bi-funnel"></i> Filtros</span>
+            <div class="cc-card-actions">
+              <div class="cc-loading" *ngIf="carregando">
+                <span class="cc-spinner"></span> processando...
+              </div>
+              <button type="button" class="cc-btn cc-btn-ghost cc-btn-sm" (click)="limparTudo()">
+                <i class="bi bi-arrow-counterclockwise"></i> Limpar
+              </button>
+              <button type="submit" class="cc-btn cc-btn-primary cc-btn-sm" [disabled]="carregando || potenciaInvalida">
+                <i class="bi bi-search"></i> Buscar
+              </button>
+            </div>
+          </div>
+
+          <div class="cc-grid">
+            <div class="cc-field cc-field-cliente">
+              <label for="razaosocial" class="cc-label"><i class="bi bi-building"></i> Razão Social (vazio = todos os clientes)</label>
+              <div class="cc-input-wrap">
+                <input type="text" id="razaosocial" formControlName="razaosocial" class="cc-input"
+                  placeholder="Digite ao menos 4 letras da razão social" autocomplete="off">
+                <button type="button" class="cc-input-clear" *ngIf="formulario.controls.razaosocial.value"
+                  (click)="limparCliente()" title="Limpar cliente">
+                  <i class="bi bi-x-lg"></i>
+                </button>
+              </div>
+              <span class="cc-hint" *ngIf="clienteSelecionado">
+                <i class="bi bi-check-circle-fill"></i>
+                Cliente selecionado: <strong>{{ clienteSelecionado.id }} – {{ clienteSelecionado.nomefantasia }}</strong>
+              </span>
+              <span class="cc-hint cc-hint-muted" *ngIf="buscandoClientes">buscando clientes...</span>
+              <span class="cc-hint cc-hint-warn" *ngIf="nenhumClienteEncontrado">Nenhum cliente com essa razão social.</span>
+              <div class="cc-sugestoes" *ngIf="clientesEncontrados.length > 0">
+                <button type="button" class="cc-sugestao" *ngFor="let cli of clientesEncontrados" (click)="selecionarCliente(cli)">
+                  <span class="cc-sugestao-cod">{{ cli.id }}</span>
+                  <span class="cc-sugestao-nome">{{ cli.razaosocial }}</span>
+                  <span class="cc-sugestao-fant">{{ cli.nomefantasia }}</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="cc-field">
+              <label for="meses" class="cc-label"><i class="bi bi-hourglass-split"></i> Última troca de baterias há</label>
+              <select id="meses" formControlName="meses" class="cc-input cc-select">
+                <option *ngFor="let p of prazos" [ngValue]="p.meses">{{ p.nome }} ou mais</option>
+              </select>
+            </div>
+
+            <div class="cc-field">
+              <label for="potenciaMinima" class="cc-label"><i class="bi bi-lightning-charge"></i> Potência mínima</label>
+              <select id="potenciaMinima" formControlName="potenciaMinima" class="cc-input cc-select" [class.is-invalid]="potenciaInvalida">
+                <option [ngValue]="null">Sem limite</option>
+                <option *ngFor="let m of modelos" [ngValue]="m.va">{{ m.nome }}</option>
+              </select>
+            </div>
+
+            <div class="cc-field">
+              <label for="potenciaMaxima" class="cc-label"><i class="bi bi-lightning-charge-fill"></i> Potência máxima</label>
+              <select id="potenciaMaxima" formControlName="potenciaMaxima" class="cc-input cc-select" [class.is-invalid]="potenciaInvalida">
+                <option [ngValue]="null">Sem limite</option>
+                <option *ngFor="let m of modelos" [ngValue]="m.va">{{ m.nome }}</option>
+              </select>
+              <span class="cc-error" *ngIf="potenciaInvalida">A mínima não pode ser maior que a máxima.</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- ENVIO -->
+        <section class="cc-card" *ngIf="pesquisou && linhas.length > 0">
+          <div class="cc-card-title cc-title-row">
+            <span><i class="bi bi-send"></i> Envio</span>
+            <div class="cc-card-actions">
+              <span class="cc-badge">{{ marcados.length }} cliente(s) marcado(s) · {{ qtNobreaksMarcados }} nobreak(s)</span>
+              <button type="button" class="wz-btn-enviar" [disabled]="!podeEnviar" (click)="enviar()">
+                <span class="cc-spinner" *ngIf="preparandoFila"></span>
+                <i class="bi bi-whatsapp" *ngIf="!preparandoFila"></i> Enviar
+              </button>
+            </div>
+          </div>
+
+          <div class="wz-envio">
+            <div class="cc-field">
+              <label for="operador" class="cc-label"><i class="bi bi-person-badge"></i> Quem envia (nome na mensagem)</label>
+              <select id="operador" class="cc-input cc-select" [(ngModel)]="operador" [ngModelOptions]="{ standalone: true }"
+                (ngModelChange)="salvarOperador()">
+                <option *ngFor="let a of atendentes" [value]="a">{{ a }}</option>
+              </select>
+            </div>
+
+            <div class="cc-field">
+              <label for="numeroTeste" class="cc-label"><i class="bi bi-bug"></i> Número de teste (vazio = envia aos clientes)</label>
+              <input id="numeroTeste" class="cc-input" [class.is-invalid]="modoTeste && !numeroTesteNormalizado"
+                [(ngModel)]="numeroTeste" [ngModelOptions]="{ standalone: true }" (ngModelChange)="salvarNumeroTeste()"
+                placeholder="(37) 99999-9999" autocomplete="off">
+              <span class="cc-error" *ngIf="modoTeste && !numeroTesteNormalizado">Informe DDD + número.</span>
+              <span class="wz-teste" *ngIf="modoTeste && numeroTesteNormalizado">
+                <i class="bi bi-exclamation-triangle-fill"></i>
+                MODO TESTE: todas as mensagens vão para {{ numeroFormatado(numeroTesteNormalizado) }} e nada é registrado.
+              </span>
+            </div>
+
+            <div class="wz-previa">
+              <span class="cc-label"><i class="bi bi-chat-text"></i> Prévia da mensagem</span>
+              <div class="wz-balao" [innerHTML]="previaHtml(previa)"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- RESULTADO -->
+        <section class="cc-card" *ngIf="pesquisou">
+          <div class="cc-card-title cc-title-row">
+            <span><i class="bi bi-people"></i> Clientes encontrados</span>
+            <div class="cc-card-actions" *ngIf="linhas.length > 0">
+              <label for="ordenacao" class="cc-ordenar-label">Ordenar por</label>
+              <select id="ordenacao" class="cc-input cc-select cc-select-sm"
+                [value]="ordenacao" (change)="ordenacao = $any($event.target).value">
+                <option value="cliente">Cliente (A–Z)</option>
+                <option value="quantidade">Mais nobreaks primeiro</option>
+              </select>
+              <span class="cc-badge">{{ linhas.length }} cliente(s) · {{ linhasValidas.length }} com WhatsApp</span>
+            </div>
+          </div>
+
+          <div class="cc-alerta" *ngIf="mensagemErro">
+            <i class="bi bi-exclamation-triangle-fill"></i> {{ mensagemErro }}
+          </div>
+
+          <p class="cc-vazio" *ngIf="!mensagemErro && linhas.length === 0">
+            Nenhum cliente com nobreak de bateria vencida para os filtros escolhidos.
+          </p>
+
+          <div class="cc-table-wrap wz-tabela" *ngIf="linhas.length > 0">
+            <table class="cc-table">
+              <thead>
+                <tr>
+                  <th class="wz-col-check">
+                    <input type="checkbox" class="wz-check" [checked]="todosMarcados" (change)="marcarTodos($any($event.target).checked)"
+                      title="Marcar / desmarcar todos com WhatsApp">
+                  </th>
+                  <th>Codcli</th>
+                  <th>Fantasia</th>
+                  <th>Contato</th>
+                  <th>WhatsApp</th>
+                  <th class="cc-num">Qt. nobreaks</th>
+                  <th>Último WhatsApp</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let l of linhasOrdenadas" [class.cc-linha-invalida]="!l.numero" [class.wz-marcada]="l.marcado">
+                  <td class="wz-col-check">
+                    <input type="checkbox" class="wz-check" *ngIf="l.numero" [(ngModel)]="l.marcado" [ngModelOptions]="{ standalone: true }">
+                  </td>
+                  <td><span class="cc-cod">{{ l.c.codcli }}</span></td>
+                  <td class="cc-col-cliente" [title]="l.c.fantasia + ' / ' + l.c.rzsocial">{{ l.c.fantasia }}</td>
+                  <td class="cc-col-cliente">{{ l.c.contato }}</td>
+                  <td>
+                    <ng-container *ngIf="l.numero; else semNumero">{{ numeroFormatado(l.numero) }}</ng-container>
+                    <ng-template #semNumero>
+                      <span class="cc-tag" [title]="l.c.whatsapp ? 'Cadastrado: ' + l.c.whatsapp : 'Campo Whatsapp vazio no cadastro'">sem WhatsApp</span>
+                    </ng-template>
+                  </td>
+                  <td class="cc-num cc-meses">{{ l.c.qtNobreaks }}</td>
+                  <td>
+                    <span class="wz-enviado" *ngIf="l.enviado"><i class="bi bi-check2-all"></i> agora</span>
+                    <span *ngIf="!l.enviado && l.c.ultimoWhatsapp" [title]="l.c.ultimoWhatsappOperador || ''">
+                      {{ dataBr(l.c.ultimoWhatsapp) }}
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ======================== FILA DE ENVIO ======================== -->
+<div class="cc-modal-fundo" *ngIf="filaAberta">
+  <div class="cc-modal wz-modal" role="dialog" aria-modal="true">
+
+    <div class="cc-modal-topo">
+      <div>
+        <h2><i class="bi bi-whatsapp"></i> Envio pelo WhatsApp</h2>
+        <p>
+          {{ filaTerminada ? 'Fila concluída' : 'Cliente ' + (posicao + 1) + ' de ' + fila.length }}
+          · {{ qtAbertos }} aberto(s)
+          <strong class="wz-teste" *ngIf="modoTeste"> · MODO TESTE</strong>
+        </p>
+      </div>
+      <button type="button" class="cc-modal-fechar" (click)="fecharFila()" title="Fechar">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+
+    <div class="cc-modal-corpo">
+
+      <ng-container *ngIf="atual as item; else concluida">
+        <div class="wz-atual">
+          <div class="wz-atual-nome"><span class="cc-cod">{{ item.linha.c.codcli }}</span> {{ item.linha.c.fantasia }}</div>
+          <div class="wz-atual-info">
+            Contato: <strong>{{ item.linha.c.contato || '(sem contato)' }}</strong>
+            · WhatsApp: <strong>{{ numeroFormatado(item.linha.numero) }}</strong>
+            · {{ item.linha.c.qtNobreaks }} nobreak(s)
+          </div>
+          <div class="wz-atual-info wz-teste" *ngIf="modoTeste">
+            Vai para o número de teste {{ numeroFormatado(numeroTesteNormalizado) }}
+          </div>
+        </div>
+
+        <div class="cc-alerta" *ngIf="item.erro"><i class="bi bi-exclamation-triangle-fill"></i> {{ item.erro }}</div>
+
+        <div class="wz-balao" *ngIf="item.url" [innerHTML]="previaHtml(mensagem(item.linha.c.contato, item.url))"></div>
+
+        <div class="wz-acoes">
+          <button type="button" class="cc-btn cc-btn-ghost" (click)="pular()">
+            <i class="bi bi-skip-forward"></i> Pular
+          </button>
+          <button type="button" class="wz-btn-enviar" [disabled]="!item.url" (click)="abrirWhatsapp()">
+            <i class="bi bi-whatsapp"></i> Abrir WhatsApp e ir para o próximo
+          </button>
+        </div>
+        <p class="wz-dica">
+          O WhatsApp abre com a mensagem pronta: confira e clique em enviar lá. Depois volte para esta janela.
+        </p>
+      </ng-container>
+
+      <ng-template #concluida>
+        <p class="wz-fim"><i class="bi bi-check-circle-fill"></i> Todos os clientes da fila foram tratados.</p>
+        <ul class="wz-resumo">
+          <li *ngFor="let i of fila">
+            <span class="cc-cod">{{ i.linha.c.codcli }}</span> {{ i.linha.c.fantasia }} –
+            <span [class.wz-enviado]="i.situacao === 'ABERTO'">{{ i.situacao === 'ABERTO' ? 'aberto' : 'pulado' }}</span>
+            <span class="wz-erro" *ngIf="i.erro"> ({{ i.erro }})</span>
+          </li>
+        </ul>
+        <div class="wz-acoes">
+          <button type="button" class="cc-btn cc-btn-primary" (click)="fecharFila()">Fechar</button>
+        </div>
+      </ng-template>
+
+    </div>
+  </div>
+</div>

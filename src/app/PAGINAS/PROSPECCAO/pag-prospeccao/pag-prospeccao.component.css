@@ -10,7 +10,8 @@ app-cabecalho, app-menu-lateral, app-rodape {
 }
 
 app-form-prospeccao,
-app-form-acompanhamento-contatos {
+app-form-acompanhamento-contatos,
+app-form-whatsapp-clientes {
     flex-grow: 1;
 }
 

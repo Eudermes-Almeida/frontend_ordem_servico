@@ -146,3 +146,27 @@ export const PRAZOS_BATERIA: { nome: string; meses: number }[] = [
   { nome: '36 meses', meses: 36 },
   { nome: '48 meses', meses: 48 },
 ];
+
+/** Cliente com nobreaks de baterias vencidas (tela "Interação por WhatsApp"). */
+export interface ClienteBateriaVencida {
+  codcli: number;
+  fantasia: string;
+  rzsocial: string;
+  /** campo CONTATO do cadastro */
+  contato: string | null;
+  /** campo FONE do cadastro (rótulo "Whatsapp"), como foi digitado */
+  whatsapp: string | null;
+  /** nobreaks do cliente que atendem aos filtros */
+  qtNobreaks: number;
+  mesesMaisAntigo: number;
+  /** último WhatsApp registrado na prospecção (yyyy-MM-ddTHH:mm) */
+  ultimoWhatsapp: string | null;
+  ultimoWhatsappOperador: string | null;
+}
+
+/** Link público fixo do cliente: <site>/c/CODIGO */
+export interface LinkCliente {
+  codcli: number;
+  codigo: string;
+  url: string;
+}

@@ -26,6 +26,8 @@ import { PagProspeccaoComponent } from './PAGINAS/PROSPECCAO/pag-prospeccao/pag-
 import { PagAcompanhamentoContatosComponent } from './PAGINAS/PROSPECCAO/pag-acompanhamento-contatos/pag-acompanhamento-contatos.component';
 import { PagEtiquetaOsComponent } from './PAGINAS/ETIQUETA_OS/pag-etiqueta-os/pag-etiqueta-os.component';
 import { PagEquipamentoPublicoComponent } from './PAGINAS/EQUIPAMENTO_PUBLICO/pag-equipamento-publico/pag-equipamento-publico.component';
+import { PagClientePublicoComponent } from './PAGINAS/EQUIPAMENTO_PUBLICO/pag-cliente-publico/pag-cliente-publico.component';
+import { PagWhatsappClientesComponent } from './PAGINAS/PROSPECCAO/pag-whatsapp-clientes/pag-whatsapp-clientes.component';
 
 
 export const routes: Routes = [ 
@@ -55,8 +57,11 @@ export const routes: Routes = [
     { path: 'financeiro/relatorio',component: PagRelatoriosFinanceirosComponent},
     { path: 'prospeccao/nobreaks', component: PagProspeccaoComponent },
     { path: 'prospeccao/contatos', component: PagAcompanhamentoContatosComponent },
+    { path: 'prospeccao/whatsapp', component: PagWhatsappClientesComponent },
     { path: 'os/etiqueta/:os', component: PagEtiquetaOsComponent },
     // página pública aberta pelo QR Code da etiqueta (sem login)
     { path: 'e/:codigo', component: PagEquipamentoPublicoComponent },
+    // página pública aberta pelo link da mensagem de WhatsApp (sem login): status das baterias do cliente
+    { path: 'c/:codigo', component: PagClientePublicoComponent },
     
 ];

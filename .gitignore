@@ -40,3 +40,8 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# arquivos de trabalho que nao vao para o Git (dados de clientes)
+*.bak
+*.xlsx
+/logo_preto_branco.jpeg

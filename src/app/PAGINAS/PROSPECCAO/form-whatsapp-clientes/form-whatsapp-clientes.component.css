@@ -1,0 +1,93 @@
+/* Interação por WhatsApp: só o que é próprio desta tela (o resto vem de form-prospeccao.component.css) */
+
+.wz-btn-enviar {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 18px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #1e9e57, #25d366);
+  color: #04210f;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  box-shadow: 0 2px 12px rgba(37, 211, 102, 0.3);
+}
+.wz-btn-enviar:disabled { opacity: 0.45; cursor: not-allowed; box-shadow: none; }
+
+.wz-envio {
+  display: grid;
+  grid-template-columns: minmax(200px, 260px) minmax(220px, 320px) 1fr;
+  gap: 12px;
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .wz-envio { grid-template-columns: 1fr; }
+}
+
+.wz-previa { display: flex; flex-direction: column; gap: 4px; }
+
+.wz-balao {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  background: #0b3d2a;
+  border: 1px solid rgba(37, 211, 102, 0.35);
+  border-radius: 10px 10px 10px 2px;
+  padding: 8px 12px;
+  font-size: 13px;
+  line-height: 1.4;
+  color: #e9fbe9;
+}
+
+.wz-teste { color: #ffd54a; font-size: 12px; font-weight: 700; }
+
+.wz-tabela { max-height: calc(100vh - 330px); min-height: 160px; }
+.wz-col-check { width: 34px; text-align: center; }
+.wz-check { width: 16px; height: 16px; accent-color: #25d366; cursor: pointer; }
+.cc-table tbody tr.wz-marcada { background: rgba(37, 211, 102, 0.10); }
+.wz-enviado { color: #34d97a; font-weight: 700; }
+
+.wz-modal { max-width: 640px; }
+.wz-atual { margin-bottom: 10px; }
+.wz-atual-nome { font-size: 16px; font-weight: 700; color: #fff; }
+.wz-atual-info { font-size: 12px; color: var(--cc-text-muted); margin-top: 2px; }
+
+.wz-acoes { display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px; }
+.wz-acoes .wz-btn-enviar { padding: 8px 18px; font-size: 14px; }
+.wz-dica { font-size: 11px; color: var(--cc-text-muted); margin: 8px 0 0; text-align: right; }
+
+/* abas */
+.wz-abas { display: flex; gap: 6px; }
+.wz-aba {
+  padding: 6px 16px;
+  border: 1px solid var(--cc-panel-border);
+  border-radius: 8px;
+  background: rgba(20, 20, 20, 0.82);
+  color: var(--cc-text-muted);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.wz-aba-ativa { background: rgba(255, 165, 0, 0.18); color: #fff; border-color: var(--cc-orange); }
+
+/* totalizador */
+.wz-totais { display: flex; flex-wrap: wrap; gap: 8px; }
+.wz-total {
+  display: flex;
+  flex-direction: column;
+  min-width: 140px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(37, 211, 102, 0.4);
+  background: rgba(37, 211, 102, 0.08);
+}
+.wz-total-op { border-color: var(--cc-panel-border); background: rgba(255, 165, 0, 0.06); }
+.wz-total-num { font-size: 22px; font-weight: 700; color: #fff; line-height: 1.1; }
+.wz-total-rot { font-size: 12px; color: var(--cc-text-muted); }
+
+input[type="date"].cc-input { color-scheme: dark; }
+
+.wz-fim { color: #34d97a; font-size: 15px; font-weight: 700; }
+.wz-resumo { font-size: 12px; color: var(--cc-text); max-height: 300px; overflow: auto; padding-left: 18px; }
+.wz-erro { color: var(--cc-danger); }

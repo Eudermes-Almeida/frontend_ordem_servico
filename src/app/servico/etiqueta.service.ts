@@ -40,6 +40,11 @@ export class EtiquetaService {
     return this.http.get<FrotaCliente>(this.urlServidor + `publico/equipamento/${encodeURIComponent(codigo)}/frota`);
   }
 
+  /** Nobreaks do cliente pelo link fixo da mensagem de WhatsApp (página /c/:codigo). */
+  consultarFrotaPorLinkCliente(codigo: string): Observable<FrotaCliente> {
+    return this.http.get<FrotaCliente>(this.urlServidor + `publico/cliente/${encodeURIComponent(codigo)}/frota`);
+  }
+
   /**
    * Nobreaks do cliente para a lista do login externo. O backend confere o CPF/CNPJ com o cadastro
    * (vai no corpo do POST, não na URL). 403 quando não confere.
