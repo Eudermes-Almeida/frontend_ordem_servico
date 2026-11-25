@@ -433,7 +433,7 @@ this.formulario.patchValue({
   }
 
   imprimirEtiqueta(): void {
-    if (!this.osSalvaFechada || !this.os?.os) return;
+    if (!this.os?.os) return;
     window.open(`/os/etiqueta/${this.os.os}`, '_blank');
   }
 

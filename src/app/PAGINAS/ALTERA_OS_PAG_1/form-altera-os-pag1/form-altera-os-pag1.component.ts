@@ -190,7 +190,7 @@ onGarantiaChange(event: Event): void {
   }
 
   imprimirEtiqueta(): void {
-    if (!this.osFechada()) return;
+    if (!this.os?.os) return;
     window.open(`/os/etiqueta/${this.os.os}`, '_blank');
   }
 

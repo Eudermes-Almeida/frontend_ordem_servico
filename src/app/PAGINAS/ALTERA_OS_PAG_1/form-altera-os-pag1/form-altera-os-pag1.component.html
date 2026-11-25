@@ -236,8 +236,7 @@
         </button>
       </a>
       <button type="button" class="cc-btn cc-btn-ghost" *ngIf="os?.os" (click)="imprimirEtiqueta()"
-        [disabled]="!osFechada()"
-        [title]="osFechada() ? 'Imprimir a etiqueta com QR Code do histórico do equipamento' : 'A etiqueta só pode ser impressa com a OS FECHADA'">
+        title="Imprimir a etiqueta com QR Code do histórico do equipamento">
         <i class="bi bi-qr-code"></i> Imprimir etiqueta
       </button>
       <button type="button" class="cc-btn cc-btn-primary" *ngIf="exibirBotaoSalvar" (click)="atualizarOS()">
