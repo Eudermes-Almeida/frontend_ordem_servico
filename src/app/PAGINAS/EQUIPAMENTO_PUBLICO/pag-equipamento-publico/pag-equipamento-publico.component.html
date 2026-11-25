@@ -25,6 +25,11 @@
 
     <ng-container *ngIf="dados">
 
+      <!-- NOME DO CLIENTE no topo (igual à página do link do WhatsApp): deixa claro de quem são os dados -->
+      <section class="ep-card" *ngIf="dados.cliente">
+        <div class="ep-equip">{{ dados.cliente }}</div>
+      </section>
+
       <!-- A página abre só com 2 botões (acordeão exclusivo: abrir um fecha o outro) -->
 
       <!-- 1) HISTÓRICO DO APARELHO DESTA ETIQUETA (verde) -->
